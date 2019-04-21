@@ -42,6 +42,13 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        'test_sql' => [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -119,7 +126,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'predis'),
-            'prefix' => Str::slug(env('APP_NAME', 'laravel'), '_').'_database_',
+            'prefix' => Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_',
         ],
 
         'default' => [

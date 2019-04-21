@@ -5,10 +5,11 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -29,11 +30,21 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @Overried
+     * Crypt the password before save !
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($user) {
+            $user->password = bcrypt($user->password);
+        });
+    }
+
+    // Just get the role of this client (Who wanna connected)
+    public function checkClientType()
+    {
+        $type = $this->type_user;
+        return strtolower($type);
+    }
 }
