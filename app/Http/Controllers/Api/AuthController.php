@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\SignUpClientRequest;
 use App\User;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -67,7 +68,7 @@ class AuthController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return string message
      */
-    public function logout($request)
+    public function logout(Request $request)
     {
         $request->user()->token()->revoke();
         return response()->json([
@@ -81,7 +82,7 @@ class AuthController extends Controller
      *
      * @return [json] user object with User Infos
      */
-    public function user($request)
+    public function user(Request $request)
     {
         $user = $request->user();
         return response()->json($user);
