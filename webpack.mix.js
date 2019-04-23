@@ -14,8 +14,24 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .webpackConfig({
         output: {chunkFilename: 'js/[name].js'},
+        module: {
+            rules: [
+                {
+                    test: /\.pug$/,
+                    oneOf: [
+                        {
+                            resourceQuery: /^\?vue/,
+                            use: ['pug-plain-loader']
+                        },
+                        {
+                            use: ['raw-loader', 'pug-plain-loader']
+                        }
+                    ]
+                }
+            ]
+        }
     })
-   .sass('resources/sass/app.scss', 'public/css');
+    .sass('resources/sass/app.scss', 'public/css');
 
 //
 mix.browserSync('somalet.io');

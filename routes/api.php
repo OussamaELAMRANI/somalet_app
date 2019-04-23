@@ -28,3 +28,10 @@ Route::prefix('auth')->group(function () {
     });
 
 });
+
+Route::prefix('providers')->group(function () {
+
+    Route::get('', 'Api\ProviderController@index');
+    Route::post('', 'Api\ProviderController@store');
+
+});
