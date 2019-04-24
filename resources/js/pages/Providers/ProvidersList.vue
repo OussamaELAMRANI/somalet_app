@@ -1,20 +1,45 @@
 <template>
     <div id="provider-list">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog modal-xl" role="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Detail d'un Fournisseur</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert segment">
+                            <show-provider :provider="provider"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-primary">Imprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <h3 class="text-lg-center text-secondary m-5">Liste des fournisseurs</h3>
         <div class="dropdown-divider"></div>
-        <div class="row justify-content-around">
+
+        <div class="row justify-content-around ">
             <h5 class="text-uppercase text-secondary m-3"> Parametre de rechercher </h5>
             <div class="col-8">
                 <form @submit.prevent="">
                     <div class="input-group m-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">Filter Par :</span>
-                            <div class="input-group-text">
+                            <span class="input-group-text text-primary" id="inputGroup-sizing-sm">Filter Par :</span>
+                            <div class="input-group-text bg-warning">
                                 <input type="radio" name="opt-filter" value="firstName" v-model="opt"
                                        v-on:change="EmptyText">
                                 <span class="ml-1">Nom</span>
                             </div>
-                            <div class="input-group-text">
+                            <div class="input-group-text bg-success text-white">
                                 <input type="radio" name="opt-filter" value="steName" v-model="opt"
                                        v-on:change="EmptyText">
                                 <span class="ml-1">Societe</span>
@@ -65,10 +90,11 @@
                 <th scope="row">{{index}}</th>
                 <td>{{p.steName}}</td>
                 <td>{{p.numTva}}</td>
-                <td>{{p.numSiret}}</td>
+                <td>{{p.nSiret}}</td>
                 <td>{{p.firstName}} {{p.lastName}}</td>
                 <td>
-                    <button class="btn btn-sm btn-success">
+                    <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
+                            @click="show(p.id)">
                         <i class="fa fa-list" aria-hidden="true"></i>
                     </button>
                     <button class="btn btn-sm btn-danger">
@@ -83,6 +109,7 @@
 
 <script>
     import {SelfBuildingSquareSpinner} from 'epic-spinners'
+    import ShowProvider from "./showProvider";
 
     export default {
         name: "ProvidersList",
@@ -92,6 +119,7 @@
                 searchProviders: null,
                 searchTxt: '',
                 opt: 'steName',
+                provider: {}
             }
         },
         mounted() {
@@ -119,9 +147,17 @@
             },
             EmptyText() {
                 this.searchTxt = ''
+            },
+            show(id) {
+                console.log(id)
+                const val = this.providers
+                this.provider = _.find(val, o => {
+                    return o.id == id
+                });
             }
         },
         components: {
+            ShowProvider,
             'loading': SelfBuildingSquareSpinner
         }
     }
