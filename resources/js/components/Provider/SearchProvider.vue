@@ -8,10 +8,11 @@
                 .input-group-append
                     button.btn.btn-outline-success
                         i( class="fa fa-search" aria-hidden="true")
-                        | Suivant
+                        strong Suivant
         .list-group.list-group-flush(v-if="providers")
 
-            a.list-group-item.list-group-item-action.disabled.bg-secondary {{ providers.length === 0 ? "No Fournisseur existe !" : "listes des fournisseur"}}
+            a.list-group-item.list-group-item-action.disabled.bg-light
+                strong {{ providers.length === 0 ? "No Fournisseur existe !" : "listes des fournisseur"}}
             a.list-group-item.list-group-item-action( v-for="p in providers", @click="addCheck" :id="p.id" ) {{p.steName}}
 
 
@@ -57,11 +58,6 @@
                 span.appendChild(i)
                 el.appendChild(span);
             },
-            deleteEl(id) {
-                const el = document.getElementById(id)
-                el.childNodes = new Array();
-            }
-
         }
     }
 </script>

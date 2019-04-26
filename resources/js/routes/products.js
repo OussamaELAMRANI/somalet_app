@@ -1,11 +1,11 @@
 import Products from '../pages/Products/Products'
 import NewProvider from '../pages/Products/NewProduct'
-// import ProvidersList from '../pages/Products/ProvidersList'
+import ProductList from '../pages/Products/ProductsList'
 
 export default [
     {
         path: '/product',
-        redirect: '/product/new-product'
+        redirect: '/product/product-list'
     },
     {
         name: 'allProducts',
@@ -20,11 +20,11 @@ export default [
                 path: 'new-product',
                 component: NewProvider,
             },
-            // {
-            //     name: 'listProvider',
-            //     path: 'product-list',
-            //     component: ProvidersList,
-            // },
+            {
+                name: 'listProducts',
+                path: 'product-list',
+                component: ProductList,
+            },
         ]
     },
 ]

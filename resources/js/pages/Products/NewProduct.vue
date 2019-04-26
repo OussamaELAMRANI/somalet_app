@@ -10,7 +10,7 @@
                     | Nouveau produit  du Fournissuer :
                     strong.text-dark " {{provider.steName}} "
                 .dropdown-divider
-                form
+                form(@submit.prevent="insert")
                     .form-group.segment
                         .row
                             .col
@@ -39,7 +39,8 @@
                                 select#inputState.form-control(v-on:change="getColor")
                                     option(selected disabled) Selectionnez...
                                     option NOUVEAU ++
-                                    option(v-for=' (c, i) in colors' :key="i") {{ c.name }}
+                                    option(v-for=' c in colors' :id="'color_'+c.id") {{ c.name }}
+
                             .col( v-if="newColor === true")
                                 label(for="name") Nouvelle Couleur
                                 input( type="text" class="form-control " id="new-color"  placeholder="Couleur ..."
@@ -49,13 +50,23 @@
                                 select#unity.form-control(v-on:change="getUnity")
                                     option(selected disabled) Selectionnez...
                                     option NOUVEAU ++
-                                    option(v-for=' (c, i) in unities' :key="i") {{ c.name }}
+                                    option(v-for=' c in unities' :id="'unity_'+c.id") {{ c.name }}
 
                             .col(v-if="newUnity")
                                 label(for="name") Nouvelle Unite
                                 input( type="text" class="form-control " id="new-unity"  placeholder="Unite ..." v-model="unity"
                                 v-on:keyup.enter="addUnity")
-
+                        .dropdown-divider.m-3
+                        .row
+                            .col
+                                label(for='inputState') Selectionnez une unite
+                                select#type.form-control(v-on:change="getType")
+                                    option(selected disabled) Selectionnez...
+                                    option( v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']") {{t}}
+                            .col
+                                button.btn.btn-success.float-right(type="submit")
+                                    i.fa.fa-save
+                                    | Enregister
 
 </template>
 
@@ -78,6 +89,7 @@
                 unities: '',
                 newUnity: false,
                 newColor: false,
+                type: '',
             }
         },
         methods: {
@@ -89,17 +101,29 @@
             },
             getColor(ev) {
                 const val = ev.target.value
+                let id = ev.target.options[ev.target.options.selectedIndex].id
+                id = id.split('_')
                 if (val === 'NOUVEAU ++')
                     this.newColor = true
-                else
+                else {
                     this.newColor = false
+                    this.color = parseInt(id[1])
+                }
             },
             getUnity(ev) {
                 const val = ev.target.value
+                let id = ev.target.options[ev.target.options.selectedIndex].id
+                id = id.split('_')
                 if (val === 'NOUVEAU ++')
                     this.newUnity = true
-                else
+                else {
                     this.newUnity = false
+                    this.unity = parseInt(id[1])
+                }
+            },
+            getType(ev) {
+                let val = ev.target.options[ev.target.options.selectedIndex].value
+                this.type = val
             },
             addColor() {
                 const _this = this
@@ -132,17 +156,43 @@
                     .catch(function (error) {
                         console.log(error.response);
                     })
-            }
+            },
+            insert() {
+                const formData = new FormData()
+                const images = this.$refs.portraits
+
+                formData.append('img', images.file)
+                formData.append('reference', this.refr)
+                formData.append('name', this.name)
+                formData.append('description', this.desc)
+                formData.append('remark', this.note)
+                formData.append('color_id', this.color);
+                formData.append('unit_id', this.unity)
+                formData.append('type', this.type)
+                formData.append('provider_id', this.provider.id)
+
+
+                axios.post('/api/products', formData)
+                    .then(res =>{
+                        console.log(res.data)
+                        this.$router.push({name: 'listProducts'})
+                    })
+                    .catch(err => console.log(err.response))
+            },
+
         },
         mounted() {
             axios.get('/api/colors').then(res => {
                 this.colors = res.data
             }),
-            axios.get('/api/unities').then(res => {
-                this.unities = res.data
-            })
-        },
-        components: {PictureInput, SearchProvider}
+                axios.get('/api/unities').then(res => {
+                    this.unities = res.data
+                })
+        }
+        ,
+        components: {
+            PictureInput, SearchProvider
+        }
     }
 </script>
 

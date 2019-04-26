@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/resources/js/pages/Products/NewProduct.vue" line="109" mnemonic="4" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="38beb0a3-696e-4d8b-8100-9038383014c5" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Color.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Color.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Unit.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Unit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_04_25_232914_create_colors_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_04_25_232914_create_colors_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/Provider/SearchProvider.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Provider/SearchProvider.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/Products/NewProduct.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/Products/NewProduct.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/pages/Products/Products.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/pages/Products/Products.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/routes/products.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/routes/products.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -62,20 +63,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="NewProduct.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NewProduct.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/js/pages/Products/NewProduct.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="38" column="74" selection-start-line="38" selection-start-column="68" selection-end-line="38" selection-end-column="74" />
+            <state relative-caret-position="3765">
+              <caret line="176" column="45" lean-forward="true" selection-start-line="176" selection-start-column="45" selection-end-line="176" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="api.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/routes/api.php">
+      <file leaf-file-name="products.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/js/routes/products.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="524">
-              <caret line="57" selection-start-line="57" selection-end-line="57" />
+            <state relative-caret-position="506">
+              <caret line="23" column="35" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#49#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProductsList.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/js/pages/Products/ProductsList.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="371">
+              <caret line="72" column="32" selection-start-line="72" selection-start-column="32" selection-end-line="72" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -114,6 +127,14 @@
       <find>color</find>
       <find>/api/colors</find>
       <find>newColor</find>
+      <find>stong</find>
+      <find>insert</find>
+      <find>portraits</find>
+      <find>getType</find>
+      <find>EmptyText</find>
+      <find>searchProviders</find>
+      <find>reference</find>
+      <find>Node</find>
     </findStrings>
     <replaceStrings>
       <replace>product</replace>
@@ -126,9 +147,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/sass/app.scss" />
-        <option value="$PROJECT_DIR$/resources/js/components/Divider.vue" />
-        <option value="$PROJECT_DIR$/resources/js/components/Provider/ContactForm.vue" />
         <option value="$PROJECT_DIR$/resources/js/components/Steps/StepBox.vue" />
         <option value="$PROJECT_DIR$/resources/js/routes/provider.js" />
         <option value="$PROJECT_DIR$/resources/js/pages/Providers/Providers.vue" />
@@ -142,7 +160,6 @@
         <option value="$PROJECT_DIR$/resources/js/pages/Providers/NewProvider.vue" />
         <option value="$PROJECT_DIR$/database/seeds/ProviderTableSeeder.php" />
         <option value="$PROJECT_DIR$/storage/app/.gitignore" />
-        <option value="$PROJECT_DIR$/resources/js/pages/Providers/ProvidersList.vue" />
         <option value="$PROJECT_DIR$/resources/js/pages/Providers/showProvider.vue" />
         <option value="$PROJECT_DIR$/storage/app/public/.gitignore" />
         <option value="$PROJECT_DIR$/.gitignore" />
@@ -157,7 +174,6 @@
         <option value="$PROJECT_DIR$/database/migrations/2019_04_25_224257_create_product_table.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_04_25_205026_create_sub_categories_table.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_04_25_232934_create_units_table.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2019_04_25_233031_create_products_table.php" />
         <option value="$PROJECT_DIR$/app/Provider.php" />
         <option value="$PROJECT_DIR$/database/seeds/ProductTableSeeder.php" />
         <option value="$PROJECT_DIR$/database/factories/ProductFactory.php" />
@@ -166,17 +182,22 @@
         <option value="$PROJECT_DIR$/database/migrations/2019_04_25_232914_create_colors_table.php" />
         <option value="$PROJECT_DIR$/resources/js/components/Provider/SeachProvider.vue" />
         <option value="$PROJECT_DIR$/resources/js/routes/index.js" />
-        <option value="$PROJECT_DIR$/resources/js/routes/products.js" />
-        <option value="$PROJECT_DIR$/resources/js/pages/Products/Products.vue" />
         <option value="$PROJECT_DIR$/resources/js/app.js" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/ProviderController.php" />
-        <option value="$PROJECT_DIR$/resources/js/components/Provider/SearchProvider.vue" />
         <option value="$PROJECT_DIR$/app/Unit.php" />
         <option value="$PROJECT_DIR$/app/Color.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/ColorController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/UnityController.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/Provider/SearchProvider.vue" />
         <option value="$PROJECT_DIR$/routes/api.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2019_04_25_233031_create_products_table.php" />
+        <option value="$PROJECT_DIR$/app/Http/Requests/ProductRequest.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/ProductController.php" />
+        <option value="$PROJECT_DIR$/resources/js/routes/products.js" />
+        <option value="$PROJECT_DIR$/resources/js/pages/Providers/ProvidersList.vue" />
+        <option value="$PROJECT_DIR$/resources/js/pages/Products/Products.vue" />
         <option value="$PROJECT_DIR$/resources/js/pages/Products/NewProduct.vue" />
+        <option value="$PROJECT_DIR$/resources/js/pages/Products/ProductsList.vue" />
       </list>
     </option>
   </component>
@@ -301,6 +322,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -337,7 +359,50 @@
             <path>
               <item name="somalet_app" type="b2602c69:ProjectViewProjectNode" />
               <item name="somalet_app" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Requests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="somalet_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="somalet_app" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="somalet_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="somalet_app" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="somalet_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="somalet_app" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="somalet_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="somalet_app" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="Products" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="somalet_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="somalet_app" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="Providers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="somalet_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="somalet_app" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="somalet_app" type="b2602c69:ProjectViewProjectNode" />
@@ -354,13 +419,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="SearchEverywhereHistoryKey" value="app&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/app.js&#10;newP&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/Providers/NewProvider.vue&#10;api&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/api.php&#10;index&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/routes/index.js&#10;rout&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/routes&#10;product&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/migrations/2019_04_25_233031_create_products_table.php&#10;Colo&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/migrations/2019_04_25_232914_create_colors_table.php&#10;ap&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/api.php&#10;User&#9;null&#9;null&#10;cate&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Category.php&#10;Cat&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/CategoryController.php&#10;.gi&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/.gitignore&#10;CC&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/CategoryController.php&#10;subT&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/migrations/2019_04_25_205026_create_sub_categories_table.php&#10;Cate&#9;null&#9;null&#10;Sub&#9;null&#9;null&#10;categoryF&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/factories/CategoryFactory.php&#10;i&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/storage/app/public/.gitignore&#10;pack&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/package.json&#10;inde&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/views/index.blade.php&#10;create&#9;null&#9;null&#10;app.s&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/sass/app.scss&#10;_va&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/sass/_variables.scss&#10;mix&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/webpack.mix.js&#10;log&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/admin/Login.vue&#10;dash&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/admin/Dashbord.vue&#10;logi&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/admin/Login.vue&#10;A&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/AuthController.php&#10;AuthP&#9;null&#9;null&#10;boot&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/bootstrap.js&#10;Auth&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/AuthController.php&#10;conf&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/config&#10;a&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/api.php&#10;AuthC&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/AuthController.php&#10;route&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes&#10;app.&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/app.js&#10;bab&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/.babelrc&#10;web&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/web.php&#10;we&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/web.php&#10;.git&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/.gitignore&#10;test&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/tests/TestCase.php&#10;Case&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/tests/TestCase.php&#10;phpu&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/phpunit.xml&#10;data&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/config/database.php&#10;AutCo&#9;null&#9;null&#10;Aut&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Providers/AuthServiceProvider.php&#10;Test&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/tests/TestCase.php&#10;UseT&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/tests/Feature/UserTest.php&#10;env&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/.env&#10;Use&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/User.php" />
+    <property name="SearchEverywhereHistoryKey" value="routes&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/routes&#10;PC&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/ProductController.php&#10;Pro&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Requests/ProductRequest.php&#10;ProdT&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/migrations/2019_04_25_233031_create_products_table.php&#10;newP&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/Products/NewProduct.vue&#10;New&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/Products/NewProduct.vue&#10;app&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/app.js&#10;api&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/api.php&#10;index&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/routes/index.js&#10;rout&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/routes&#10;product&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/migrations/2019_04_25_233031_create_products_table.php&#10;Colo&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/migrations/2019_04_25_232914_create_colors_table.php&#10;ap&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/api.php&#10;User&#9;null&#9;null&#10;cate&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Category.php&#10;Cat&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/CategoryController.php&#10;.gi&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/.gitignore&#10;CC&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/CategoryController.php&#10;subT&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/migrations/2019_04_25_205026_create_sub_categories_table.php&#10;Cate&#9;null&#9;null&#10;Sub&#9;null&#9;null&#10;categoryF&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/database/factories/CategoryFactory.php&#10;i&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/storage/app/public/.gitignore&#10;pack&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/package.json&#10;inde&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/views/index.blade.php&#10;create&#9;null&#9;null&#10;app.s&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/sass/app.scss&#10;_va&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/sass/_variables.scss&#10;mix&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/webpack.mix.js&#10;log&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/admin/Login.vue&#10;dash&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/admin/Dashbord.vue&#10;logi&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/pages/admin/Login.vue&#10;A&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/AuthController.php&#10;AuthP&#9;null&#9;null&#10;boot&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/bootstrap.js&#10;Auth&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/AuthController.php&#10;conf&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/config&#10;a&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/api.php&#10;AuthC&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/app/Http/Controllers/Api/AuthController.php&#10;route&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes&#10;app.&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/resources/js/app.js&#10;bab&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/.babelrc&#10;web&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/web.php&#10;we&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/routes/web.php&#10;.git&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/.gitignore&#10;test&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/tests/TestCase.php&#10;Case&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/tests/TestCase.php&#10;phpu&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/phpunit.xml&#10;data&#9;FILE&#9;file:///Users/mac/DEV/Laravel/somalet_app/config/database.php&#10;AutCo&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="true" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL&#10;Sqlite (Xerial)" />
@@ -369,7 +433,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="Laravel.SettingsForm" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -484,7 +548,9 @@
       <workItem from="1556230236826" duration="973000" />
       <workItem from="1556231628075" duration="5847000" />
       <workItem from="1556273728566" duration="15738000" />
-      <workItem from="1556299005334" duration="4088000" />
+      <workItem from="1556299005334" duration="4272000" />
+      <workItem from="1556309353600" duration="3666000" />
+      <workItem from="1556313075821" duration="6371000" />
     </task>
     <servers />
   </component>
@@ -521,7 +587,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="138901000" />
+    <option name="totallyTimeSpent" value="149122000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -536,17 +602,17 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3280098" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3275649" />
       <window_info anchor="right" id="SvgViewer" order="3" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3893696" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.37082818" />
       <window_info anchor="bottom" id="Floobits" order="13" weight="0.64400494" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.4684796" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.8331273" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24034335" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="right" id="Database" order="4" weight="0.34406295" />
+      <window_info anchor="right" id="Database" order="4" weight="0.20457797" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
@@ -560,6 +626,31 @@
       <window_info anchor="bottom" id="Database Console" order="12" weight="0.32880098" />
       <window_info anchor="bottom" id="Find" order="1" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24034335" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.37082818" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Floobits" order="13" weight="0.64400494" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3275649" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="right" id="SvgViewer" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" id="Database" order="4" weight="0.20457797" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.8331273" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3893696" />
+      <window_info anchor="bottom" id="Database Console" order="12" weight="0.32880098" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -595,41 +686,10 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="6" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="das://88f68712-5d2c-4a01-99c5-a83b179b1ace/schema/somalet_db/table/sub_categories" />
-    <entry file="file://$PROJECT_DIR$/database/factories/UserFactory.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-335" />
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/88f68712-5d2c-4a01-99c5-a83b179b1ace/console.sql" />
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/CategoryController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1161">
-          <caret line="43" column="46" selection-start-line="43" selection-start-column="46" selection-end-line="43" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="38" column="24" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="20" column="25" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3363f65f-4573-4363-a018-0aa9b1923ab5/console.sql" />
     <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -695,13 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Category.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2019_04_25_232934_create_units_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6">
@@ -731,13 +784,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Product.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/seeds/ProductTableSeeder.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="538">
@@ -752,31 +798,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2019_04_25_233031_create_products_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="26" column="41" lean-forward="true" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2019_04_25_232914_create_colors_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="19" column="48" lean-forward="true" selection-start-line="19" selection-start-column="48" selection-end-line="19" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/pages/Providers/Providers.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="25" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/pages/Products/Products.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -787,27 +812,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/pages/Providers/ProvidersList.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="55" column="30" lean-forward="true" selection-start-line="48" selection-start-column="23" selection-end-line="55" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/routes/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
           <caret line="23" column="10" lean-forward="true" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/routes/products.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -858,20 +866,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ProviderController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
           <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Provider/SearchProvider.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="74" selection-start-line="13" selection-start-column="74" selection-end-line="13" selection-end-column="74" />
         </state>
       </provider>
     </entry>
@@ -893,9 +891,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-122">
           <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
-          <folding>
-            <element signature="e#44#57#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -903,23 +898,138 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-444">
           <caret line="31" column="102" lean-forward="true" selection-start-line="29" selection-start-column="8" selection-end-line="31" selection-end-column="102" />
-          <folding>
-            <element signature="e#44#58#0#PHP" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Provider/SearchProvider.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Category.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/CategoryController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="31" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/api.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
+        <state relative-caret-position="324">
+          <caret line="18" column="50" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2019_04_25_233031_create_products_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="26" column="95" selection-start-line="26" selection-start-column="95" selection-end-line="26" selection-end-column="95" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Requests/category/CategoryRequest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="568">
+          <caret line="36" column="5" selection-start-line="30" selection-start-column="4" selection-end-line="36" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://88f68712-5d2c-4a01-99c5-a83b179b1ace/schema/somalet_db/table/products">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Requests/ProductRequest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="29" column="34" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/pages/Providers/ProvidersList.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+          <folding>
+            <element signature="n#table#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="e#4954#5009#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/pages/Providers/Providers.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="547">
+          <caret line="31" column="10" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="31" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/pages/Products/Products.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="23" selection-start-line="20" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ProductController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="21" column="37" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
+          <folding>
+            <element signature="e#44#81#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Product.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/routes/products.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="23" column="35" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/pages/Products/NewProduct.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="38" column="74" selection-start-line="38" selection-start-column="68" selection-end-line="38" selection-end-column="74" />
+        <state relative-caret-position="3765">
+          <caret line="176" column="45" lean-forward="true" selection-start-line="176" selection-start-column="45" selection-end-line="176" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/pages/Products/ProductsList.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="72" column="32" selection-start-line="72" selection-start-column="32" selection-end-line="72" selection-end-column="32" />
         </state>
       </provider>
     </entry>

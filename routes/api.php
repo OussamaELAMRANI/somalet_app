@@ -60,3 +60,11 @@ Route::prefix('unities')->group(function () {
     Route::get('', 'Api\UnityController@index');
     Route::post('', 'Api\UnityController@store');
 });
+
+Route::prefix('products')->group(function () {
+
+    Route::get('', 'Api\ProductController@index');
+    Route::get('{id}', 'Api\ProductController@show');
+    Route::post('', 'Api\ProductController@store');
+
+});
