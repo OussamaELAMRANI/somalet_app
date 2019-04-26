@@ -14,7 +14,7 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $all = Provider::orderBy('id', 'DESC')->get();
+        $all = Provider::with('products')->orderBy('id', 'DESC')->get();
         return response()->json($all);
     }
 
