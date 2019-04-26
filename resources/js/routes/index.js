@@ -1,5 +1,6 @@
 import adminRoutes from './Admin'
 import Providers from './provider'
+import Products from './products'
 // import AR from './Arabe'
 // import FR from './Francais'
 // import EN from './English'
@@ -20,6 +21,7 @@ export default [
     },
     ...adminRoutes,
     ...Providers,
+    ...Products,
     // ...FR,
     // ...AR,
     // ...EN,

@@ -16,6 +16,8 @@ class CreateColorsTable extends Migration
         Schema::create('colors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique();
+//             Idea for add one color using HTML color's code
+            $table->string('color')->nullable();
         });
     }
 

@@ -43,3 +43,20 @@ Route::prefix('categories')->group(function () {
     Route::post('', 'Api\CategoryController@store');
 
 });
+
+Route::prefix('search')->group(function () {
+    Route::get('', function (Request $req) {
+        $query = $req->query('provider');
+        $result = \App\Provider::where('steName', 'like', "%{$query}%")->get();
+        return response()->json($result);
+    });
+});
+Route::prefix('colors')->group(function () {
+    Route::get('', 'Api\ColorController@index');
+    Route::post('', 'Api\ColorController@store');
+});
+
+Route::prefix('unities')->group(function () {
+    Route::get('', 'Api\UnityController@index');
+    Route::post('', 'Api\UnityController@store');
+});
