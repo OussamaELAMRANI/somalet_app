@@ -18,14 +18,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = Product::with(['unit', 'color', 'provider'])->orderBy('updated_at', 'desc')->get();
+        $data = Product::with(['unit', 'color', 'provider'])->get();
         return response()->json($data);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(ProductRequest $req)
@@ -35,7 +35,7 @@ class ProductController extends Controller
             try {
                 $year = Carbon::parse($req->input('date'))->year;
                 $month = Carbon::parse($req->input('date'))->month;
-                $portrait_url = Storage::disk('public')->putFile("products/{$year}/{$month}", $req->file('img'));
+                $portrait_url = Storage::disk('public')->putFile("articles/{$year}/{$month}", $req->file('img'));
             } catch (\Exception $e) {
                 return response(['error' => $e->getMessage()]);
             }
@@ -57,7 +57,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -68,7 +68,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -79,8 +79,8 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -91,7 +91,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

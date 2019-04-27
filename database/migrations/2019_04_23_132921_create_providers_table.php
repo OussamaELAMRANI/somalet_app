@@ -13,7 +13,6 @@ class CreateProvidersTable extends Migration
      */
     public function up()
     {
-//        todo add Type:[Intern,Externe]
         Schema::create('providers', function (Blueprint $table) {
             $table->bigIncrements('id');
 

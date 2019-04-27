@@ -37,6 +37,7 @@
         </div>
 
 
+
         <table class="table table-hover table-striped">
             <thead>
             <tr>
@@ -69,8 +70,7 @@
             </tr>
             <tr v-else v-for="(p,index) in searchProduct">
                 <th scope="row">{{index+1}}</th>
-                <!--                <td><img :src="'/storage/'+p.img" alt="image produit" height="60px"></td>-->
-                <td><img :src="p.img" alt="image produit" height="60px"></td>
+                <td><img :src="'/storage/'+p.img" alt="image produit" height="60px"></td>
                 <td>{{p.reference}}</td>
                 <td>{{p.name}}</td>
                 <td>{{p.description}}</td>

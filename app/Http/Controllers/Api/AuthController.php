@@ -19,8 +19,8 @@ class AuthController extends Controller
      */
     public function signUp(SignUpClientRequest $req)
     {
-        User::create(request(['username', 'first_name','last_name', 'password']));
-        return response()->json(['message' => 'Cet utilisateur a ete bien cree !'], 201);
+        User::create(request(['name', 'email', 'password']));
+        return response()->json(['message' => 'Successfully created user!'], 201);
     }
 
     /**
@@ -29,11 +29,13 @@ class AuthController extends Controller
      * @param  LoginUserRequest $request
      * @param  Boolean remember_me
      *
-     * @return token
+     * @return [string] access_token
+     * @return [string] token_type
+     * @return [string] expires_at
      */
     public function logIn(LoginUserRequest $request)
     {
-        $credentials = request(['username', 'password']);
+        $credentials = request(['email', 'password']);
         // Error !
         if (!Auth::attempt($credentials))
             return response()->json(['message' => 'Unauthorized'], 401);
