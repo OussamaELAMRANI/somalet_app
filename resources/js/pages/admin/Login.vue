@@ -3,14 +3,14 @@
         <form @submit.prevent="login" class="segment">
             <div class="form-group">
 
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                       placeholder="Enter votre email"
-                       v-model="credentials.email" autofocus>
-                <small id="emailHelp" class="form-text text-muted">Ne pas partager votre email
+                <label for="exampleInputusername1">username address</label>
+                <input type="text" class="form-control" id="exampleInputusername1" aria-describedby="usernameHelp"
+                       placeholder="Enter votre username"
+                       v-model="credentials.username" autofocus>
+                <small id="usernameHelp" class="form-text text-muted">Ne pas partager votre username
                 </small>
-                <div class="alert alert-danger" v-if="errors.email">
-                    {{errors.email}}
+                <div class="alert alert-danger" v-if="errors.username">
+                    {{errors.username}}
                 </div>
                 <div class="dropdown-divider"></div>
 
@@ -49,12 +49,12 @@
         data() {
             return {
                 errors: {
-                    email: null,
+                    username: null,
                     password: null,
                     error: null,
                 },
                 credentials: {
-                    email: '',
+                    username: '',
                     password: '',
                     remember_me: false
                 }
@@ -63,7 +63,7 @@
         methods: {
             clean() {
                 this.errors = {
-                    email: null,
+                    username: null,
                     password: null,
                     error: null,
                 }
@@ -71,17 +71,17 @@
             login() {
                 this.clean()
 
-                if (!this.credentials.email) {
-                    this.errors['email'] = 'Enter votre Email !';
+                if (!this.credentials.username) {
+                    this.errors['username'] = 'Enter votre username !';
                 }
-                else if (!this.validEmail(this.credentials.email)) {
-                    this.errors['email'] = 'Invalid Email !'
-                }
+                // else if (!this.validusername(this.credentials.username)) {
+                //     this.errors['username'] = 'Invalid username !'
+                // }
 
                 if (!this.credentials.password)
                     this.errors['password'] = 'Enter Votre Mot de passe !'
 
-                if (!this.errors.password && !this.errors.email)
+                if (!this.errors.password && !this.errors.username)
 
                     this.signIn(this.credentials)
                         .then(() => {
@@ -89,15 +89,15 @@
                         })
                         .catch(err => {
                             console.log(err.data)
-                            this.errors['error'] = "Imposible de se connecter, votre mot de passe ou email est incorrect !"
+                            this.errors['error'] = "Imposible de se connecter, votre mot de passe ou username est incorrect !"
                         })
             },
             ...mapActions({signIn: 'login'}),
 
-            validEmail: function (email) {
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(email);
-            }
+            // validEmail: function (email) {
+            //     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            //     return re.test(email);
+            // }
         }
     }
 </script>
