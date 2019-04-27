@@ -24,9 +24,9 @@ class SignUpClientRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
+            'username' => 'required|string|unique:users',
 //            'type_user' => 'string',
-            'email' => 'required|string|email|unique:users',
+//            'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed',
         ];
     }
@@ -39,8 +39,8 @@ class SignUpClientRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Vous devez saisir votre nom complet !',
-            'email.required' => 'Vous devez saisir votre Email <exempel@domain.com> !',
+            'username.required' => 'Vous devez saisir votre Login !',
+            'username.unique' => 'Priere de choisir un autre login svp',
             'password.required' => 'Vous devez saisir le mot de passe !',
             'password.confirmed' => 'Les mots de passes ne sont pas correspondents !',
         ];
