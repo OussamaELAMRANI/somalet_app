@@ -24,7 +24,7 @@ class LoginUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|string',
+            'email' => 'required|string|email',
             'password' => 'required|string',
             'remember_me' => 'boolean'
         ];
@@ -37,9 +37,9 @@ class LoginUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'username.required' => 'Vous devez saisir votre Login !',
-//            'email.email' => 'Votre Email est unvalide au niveau de la form, doit etre comme cet exemple <name@exemple.com>',
-            'password.required' => 'Vous devez saisir votre Mot de Passe !',
+            'email.required' => 'Vous dever saisir votre Email !',
+            'email.email' => 'Votre Email est unvalide au niveau de la form, doit etre comme cet exemple <name@exemple.com>',
+            'password.required' => 'Vous dever saisir votre Mot de Passe !',
         ];
     }
 }

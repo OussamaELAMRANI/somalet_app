@@ -10,17 +10,17 @@
                     | Nouveau produit  du Fournissuer :
                     strong.text-dark " {{provider.steName}} "
                 .dropdown-divider
-                .row
-                    .col
-                        picture-input#art-portrait(width="200" height="200" margin="16" accept="image/*" size="10" ref="portraits" buttonClass="btn btn-sm btn-info"
-                            :customStrings="{upload: '<h1>Bummer!</h1>', drag: 'Ajouter une image du Portrait ...'}")
-                        .dropdown-divider
-                form(@submit.prevent="")
+                form(@submit.prevent="insert")
                     .form-group.segment
                         .row
                             .col
-                                label(for="reference") Reference du produit
-                                input( type="text" class="form-control " id="reference" placeholder="Ref ..." v-model="refr")
+                                picture-input#art-portrait(width="200" height="200" margin="16" accept="image/*" size="10" ref="portraits" buttonclass="ui violet button"
+                                :customstrings="{upload: '<h1>Bummer!</h1>', drag: 'Ajouter une image du Portrait ...'}")
+                                .dropdown-divider
+                        .row
+                            .col
+                                label(for="ref") Reference du produit
+                                input( type="text" class="form-control " id="ref" placeholder="Ref ..." v-model="refr")
                             .col
                                 label(for="name") Nom Produit
                                 input( type="text" class="form-control " id="name"  placeholder="SIRET ..." v-model="name")
@@ -44,7 +44,7 @@
                             .col( v-if="newColor === true")
                                 label(for="name") Nouvelle Couleur
                                 input( type="text" class="form-control " id="new-color"  placeholder="Couleur ..."
-                                    v-model="color" v-on:keyup.enter="addColor")
+                                v-model="color" v-on:keyup.enter="addColor")
                             .col
                                 label(for='inputState') Selectionnez une unite
                                 select#unity.form-control(v-on:change="getUnity")
@@ -55,7 +55,7 @@
                             .col(v-if="newUnity")
                                 label(for="name") Nouvelle Unite
                                 input( type="text" class="form-control " id="new-unity"  placeholder="Unite ..." v-model="unity"
-                                    v-on:keyup.enter="addUnity")
+                                v-on:keyup.enter="addUnity")
                         .dropdown-divider.m-3
                         .row
                             .col
@@ -64,7 +64,7 @@
                                     option(selected disabled) Selectionnez...
                                     option( v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']") {{t}}
                             .col
-                                button.btn.btn-success.float-right(@click="insert")
+                                button.btn.btn-success.float-right(type="submit")
                                     i.fa.fa-save
                                     | Enregister
 
@@ -103,10 +103,9 @@
                 const val = ev.target.value
                 let id = ev.target.options[ev.target.options.selectedIndex].id
                 id = id.split('_')
-                if (val === 'NOUVEAU ++') {
-                    this.color = null
+                if (val === 'NOUVEAU ++')
                     this.newColor = true
-                } else {
+                else {
                     this.newColor = false
                     this.color = parseInt(id[1])
                 }
@@ -115,10 +114,9 @@
                 const val = ev.target.value
                 let id = ev.target.options[ev.target.options.selectedIndex].id
                 id = id.split('_')
-                if (val === 'NOUVEAU ++') {
-                    this.unity = null
+                if (val === 'NOUVEAU ++')
                     this.newUnity = true
-                } else {
+                else {
                     this.newUnity = false
                     this.unity = parseInt(id[1])
                 }
@@ -175,7 +173,7 @@
 
 
                 axios.post('/api/products', formData)
-                    .then(res => {
+                    .then(res =>{
                         console.log(res.data)
                         this.$router.push({name: 'listProducts'})
                     })

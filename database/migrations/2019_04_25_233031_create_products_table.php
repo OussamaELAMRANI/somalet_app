@@ -24,7 +24,6 @@ class CreateProductsTable extends Migration
             $table->string('img');
             $table->float('price_sell')->default(0);
             $table->unsignedBigInteger('unit_id'); //todo creation de l'unite
-//            todo add marchandise + fabrication type
             $table->enum('type',['MATIERE_PREMIERE','PRODUIT_FINI'])->default('MATIERE_PREMIERE');
 
             $table->softDeletes();
