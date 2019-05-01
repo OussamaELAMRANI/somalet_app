@@ -6,6 +6,9 @@ import vueRouter from 'vue-router'
 import App from './AppRun'
 import Routes from './routes'
 import store from './store'
+import VeeValidate from 'vee-validate'
+import VueNotification from "@kugatsu/vuenotification";
+
 
 /**
  * Add Plugins
@@ -13,6 +16,13 @@ import store from './store'
 // Vue Routes
 Vue.use(vueRouter);
 // Vuex or the State Manager
+
+// Add Validation Inputs
+Vue.use(VeeValidate);
+
+Vue.use(VueNotification, {
+    timer: 20
+});
 
 const router = new vueRouter({
     routes: Routes,
@@ -37,13 +47,12 @@ router.beforeEach((to, from, next) => {
         if (to.matched.some(record => record.meta.forVisitor)) {
             store.dispatch('isAuthenticated').then(isAuth => {
                 if (isAuth)
-                    next({path: '/admin'})
+                    next({path: '/dashboard'})
                 else
                     next()
             })
 
-        }
-        else
+        } else
             next()
 
 

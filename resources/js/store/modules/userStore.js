@@ -164,12 +164,12 @@ const actions = {
             .catch((error) => Promise.reject(error.response));
     },
 
-    isAuthenticated({commit, state}) {
+    isAuthenticated: function ({commit, state}) {
         const token = window.localStorage.getItem('access_token')
 
-        return Promise.resolve(token !== null);
+        return Promise.resolve(token !== null );
     },
-
+    // isAdmin: ({})
 };
 
 export default {

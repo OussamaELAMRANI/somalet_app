@@ -1,37 +1,42 @@
 <template>
     <div id="dashbord">
-        <p>Dashboard !!</p>
-        <router-link to="/login">To Login !</router-link>
-
-        <button @click="logOut" class="btn btn-info"> Sign out</button>
-
+        <NavBar/>
+        <div class="left">
+            <left-bar/>
+        </div>
+        <main class="container">
+            <router-view/>
+        </main>
     </div>
 </template>
 
 <script>
     import {mapActions} from 'vuex'
+    import LeftBar from "../../components/Admin/LeftBar";
+    import NavBar from "../../components/Admin/NavBar";
 
     export default {
         name: "Dashbord",
+        components: {NavBar, LeftBar},
         methods: {
-            logOut() {
-                this.signOut()
-                    .then(res => {
-                        this.$router.push('/login')
-                    })
-                    .catch(err => console.log(err))
-            },
-
-            ...mapActions({
-                loadIt: 'loadStats',
-                userInfos: 'userInfo',
-                signOut: 'logout'
-            }),
+            // logOut() {
+            //     this.signOut()
+            //         .then(res => {
+            //             this.$router.push('/login')
+            //         })
+            //         .catch(err => console.log(err))
+            // },
+            //
+            // ...mapActions({
+            //     loadIt: 'loadStats',
+            //     userInfos: 'userInfo',
+            //     signOut: 'logout'
+            // }),
 
         },
         mounted() {
-            this.loadIt();
-            this.userInfos();
+            // this.loadIt();
+            // this.userInfos();
         }
     }
 </script>

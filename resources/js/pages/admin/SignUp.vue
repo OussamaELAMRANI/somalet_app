@@ -1,97 +1,124 @@
 <template>
-    <div class="container">
+    <form @submit.prevent="register">
+        <div class="wrap-input100 validate-input">
+            <input class="input100" type="text" name="username" placeholder="username..."
+                   v-validate="'required'" data-vv-delay="500" autofocus v-model="username"/>
+            <span class="focus-input100"></span>
+            <span class="symbol-input100"><i class="fa fa-user" aria-hidden="true"></i></span>
+        </div>
+        <small class="text-danger">{{ errors.first('username') }}</small>
 
-        <form @submit.prevent="signUp" class="segment">
-            <div class="form-group">
+        <div class="wrap-input100 validate-input">
+            <input class="input100" type="text" name="l_name" placeholder="Nom..."
+                   v-validate="'required'" data-vv-delay="500" v-model="lName"/>
+            <span class="focus-input100"></span>
+            <span class="symbol-input100"><i class="fa fa-user" aria-hidden="true"></i></span>
+        </div>
+        <small class="text-danger">{{ errors.first('l_name') }}</small>
 
-                <label for="username">Login</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter votre Login" v-model="username"
-                       autofocus>
-                <!--            <small id="emailHelp" class="form-text text-muted">Ne pas partager votre email</small>-->
 
-                <!--            <div class="alert alert-danger" v-if="errors.email">-->
-                <!--                {{errors.email}}-->
-                <!--            </div>-->
-                <div class="dropdown-divider"></div>
+        <div class="wrap-input100 validate-input">
+            <input class="input100" type="text" name="f_name" placeholder="Prénom..."
+                   v-validate="'required'" data-vv-delay="500" v-model="fName"/>
+            <span class="focus-input100"></span>
+            <span class="symbol-input100"><i class="fa fa-user" aria-hidden="true"></i></span>
+        </div>
+        <small class="text-danger">{{ errors.first('f_name') }}</small>
 
-            </div>
-            <div class="form-group">
-                <div class="row">
-                    <div class="col">
-                        <label for="fname">Prenom</label>
-                        <input type="text" class="form-control" id="fname" placeholder="Prenom .." v-model="first_name">
-                    </div>
-                    <div class="col">
-                        <label for="lname">Nom</label>
-                        <input type="text" class="form-control" id="lname" placeholder="Prenom .." v-model="last_name">
-                    </div>
-                </div>
 
-                <!--            <div class="alert alert-danger" v-if="errors.password">-->
-                <!--                {{errors.password}}-->
-                <!--            </div>-->
-            </div>
-            <div class="form-group">
-                <div class="row">
-                    <div class="col">
-                        <label for="psswd">Password</label>
-                        <input type="password" class="form-control" id="psswd" placeholder="Mot de passe .."
-                               v-model="password">
-                    </div>
-                    <div class="col">
-                        <label for="psswd2">Password</label>
-                        <input type="password" class="form-control" id="psswd2" placeholder="Mot de passe .."
-                               v-model="password2">
-                    </div>
-                </div>
+        <div class="wrap-input100 validate-input">
+            <input class="input100" type="password" name="passwd" placeholder="Mot de passe ..." ref="password"
+                   v-validate="'required'" v-model="password">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100"><i class="fa fa-lock" aria-hidden="true"></i></span>
+        </div>
+        <small class="text-danger">{{ errors.first('passwd') }}</small>
 
-                <!--            <div class="alert alert-danger" v-if="errors.password">-->
-                <!--                {{errors.password}}-->
-                <!--            </div>-->
-            </div>
-            <div class="dropdown-divider"></div>
-            <!--        <div class="alert alert-danger" v-if="errors.error">-->
-            <!--            {{errors.error}}-->
-            <!--        </div>-->
-            <div class="dropdown-divider"></div>
+        <div class="wrap-input100 validate-input">
+            <input class="input100" type="password" name="passwd2" placeholder="confirmer votre Mot de passe ..."
+                   v-validate="'required|confirmed:password'" v-model="password2">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100"><i class="fa fa-lock" aria-hidden="true"></i></span>
+        </div>
+        <small class="text-danger">{{ errors.first('passwd2') }}</small>
 
-            <button type="submit" class="btn btn-primary">Enregister</button>
-
-        </form>
-    </div>
-
+        <div class="container-login100-form-btn">
+            <button class="login100-form-btn" type="submit">
+                Enregistrer
+            </button>
+        </div>
+    </form>
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
+
     export default {
         name: "SignUp",
         data() {
             return {
                 username: null,
-                first_name: null,
-                last_name: null,
+                fName: null,
+                lName: null,
                 password: null,
                 password2: null,
             }
         },
+        mounted() {
+            // Custom Messages for the Validation
+            const dict = {
+                custom: {
+                    username: {
+                        required: () => 'Vous devez saisire votre Login !'
+                    },
+                    f_name: {
+                        required: () => 'Vous devez saisire votre Prénom !'
+                    },
+                    f_name: {
+                        required: () => 'Vous devez saisire votre Nom !'
+                    },
+                    passwd: {
+                        required: () => 'Vous devez saisire votre Mot de Passe !'
+                    },
+                    passwd2: {
+                        required: () => 'Vous devez confirmer votre Mot de Passe !',
+                        confirmed: () => 'Les deux Mots de Passe ne correspandent pas!'
+                    }
+                }
+            };
+
+            this.$validator.localize('en', dict);
+        },
         methods: {
-            signUp() {
-                axios.post('/api/auth/sign-up', {
-                    'username': this.username,
-                    'first_name': this.first_name,
-                    'last_name': this.last_name,
-                    'password': this.password,
-                    'password_confirmation': this.password2,
-                })
-                    .then(res => {
-                        alert(res.data)
-                        this.$router.push('/login')
+            register() {
+                const credentials = {
+                    username: this.username,
+                    first_name: this.fName,
+                    last_name: this.lName,
+                    password: this.password,
+                    password_confirmation: this.password2
+                };
+                this.SignUp(credentials)
+                    .then(() => {
+                        // this.$router.push('/login')
+                        this.$notification.new("l'utilisateur a ete bien enregister. ",
+                            {
+                                timer: 10,
+                                showCloseIcn: true,
+                                type: 'success'
+                            }
+                        )
+                        ;
+                        this.$emit('switchUser')
                     })
                     .catch(err => {
-                        console.log(err.response)
+                        console.log(err.data)
+                        // this.errorConnection = "Imposible de se connecter, votre mot de passe ou username est incorrect !"
                     })
-            }
+            },
+            ...mapActions({SignUp: 'signUp'}),
         }
+
     }
 </script>
 

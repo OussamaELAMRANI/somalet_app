@@ -1,6 +1,7 @@
 import adminRoutes from './Admin'
 import Providers from './provider'
 import Products from './products'
+import Home from './../pages/home'
 // import AR from './Arabe'
 // import FR from './Francais'
 // import EN from './English'
@@ -19,9 +20,15 @@ export default [
         component: NotFound,
 
     },
+    // {
+    //     path: '/home',
+    //     name: 'home_page',
+    //     component: Home,
+    //
+    // },
     ...adminRoutes,
-    ...Providers,
-    ...Products,
+    // ...Providers,
+    // ...Products,
     // ...FR,
     // ...AR,
     // ...EN,

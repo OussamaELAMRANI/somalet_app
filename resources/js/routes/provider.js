@@ -4,15 +4,15 @@ import ProvidersList from '../pages/Providers/ProvidersList'
 
 export default [
     {
-        path: '/provider',
+        path: 'provider',
         redirect: '/provider/provider-list'
     },
     {
         name: 'allProviders',
-        path: '/provider',
+        path: 'provider',
         component: Providers,
         meta: {
-            forVisitor: true
+            // forVisitor: true
         },
         children: [
             {

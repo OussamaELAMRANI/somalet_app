@@ -19,15 +19,16 @@ class AuthController extends Controller
      */
     public function signUp(SignUpClientRequest $req)
     {
-        User::create(request(['username', 'first_name','last_name', 'password']));
-        return response()->json(['message' => 'Cet utilisateur a ete bien cree !'], 201);
+        $credentials = \request(['username', 'first_name', 'last_name', 'password']);
+        User::create($credentials);
+        return response()->json(['message' => 'Cet utilisateur a ete bien crée !'], 201);
     }
 
     /**
      * Login user and generate token and Scope by [ClientType]
      *
-     * @param  LoginUserRequest $request
-     * @param  Boolean remember_me
+     * @param LoginUserRequest $request
+     * @param Boolean remember_me
      *
      * @return token
      */

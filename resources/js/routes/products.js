@@ -4,15 +4,15 @@ import ProductList from '../pages/Products/ProductsList'
 
 export default [
     {
-        path: '/product',
+        path: 'product',
         redirect: '/product/product-list'
     },
     {
         name: 'allProducts',
-        path: '/product',
+        path: 'product',
         component: Products,
         meta: {
-            forVisitor: true
+            // forVisitor: true
         },
         children: [
             {
