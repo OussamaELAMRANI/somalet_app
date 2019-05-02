@@ -18,6 +18,8 @@ class CreateColorsTable extends Migration
             $table->string('name')->unique();
 //             Idea for add one color using HTML color's code
             $table->string('color')->nullable();
+            $table->softDeletes();
+
         });
     }
 

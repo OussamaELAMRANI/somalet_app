@@ -35,6 +35,8 @@ class CreateProvidersTable extends Migration
             $table->text('icp')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
+
         });
 
     }

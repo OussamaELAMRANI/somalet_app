@@ -66,28 +66,13 @@
                 this.isMember = true
             },
             login() {
-                this.clean()
-
-                // if (!this.credentials.username) {
-                //     this.errors['username'] = 'Enter votre username !';
-                // }
-                // else if (!this.validusername(this.credentials.username)) {
-                //     this.errors['username'] = 'Invalid username !'
-                // }
-
-                // if (!this.credentials.password)
-                //     this.errors['password'] = 'Enter Votre Mot de passe !'
-                //
-                // if (!this.errors.password && !this.errors.username)
-
-                return
-
+                this.clean();
                 this.signIn(this.credentials)
                     .then(() => {
                         this.$router.push('/admin')
                     })
                     .catch(err => {
-                        console.log(err.data)
+                        console.log(err.data);
                         this.errors['error'] = "Imposible de se connecter, votre mot de passe ou username est incorrect !"
                     })
             },

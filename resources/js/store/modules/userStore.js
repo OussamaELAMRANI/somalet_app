@@ -2,7 +2,9 @@ const state = {
     accessToken: null,
     TokenType: null,
     ExpireAt: null,
-    name: null,
+    username: null,
+    first_name:null,
+    last_name:null,
     email: null,
     role: null,
 };
@@ -18,8 +20,14 @@ const mutations = {
     setExpireDate: (state, value) => {
         state.ExpireAt = value;
     },
-    setUsername: (state, value) => {
-        state.name = value;
+    setUserName: (state, value) => {
+        state.username = value;
+    },
+    setFirstName: (state, value) => {
+        state.first_name = value;
+    },
+    setLastName: (state, value) => {
+        state.last_name = value;
     },
     setRole: (state, value) => {
         state.role = value;
@@ -54,8 +62,14 @@ const getters = {
     getExpireDate: (state) => {
         return state.ExpireAt;
     },
-    getName(state) {
-        return state.name
+    getUserName(state) {
+        return state.username
+    },
+    getFirstName(state) {
+        return state.first_name
+    },
+    getLastName(state) {
+        return state.last_name
     },
     getEmail(state) {
         return state.email
@@ -91,9 +105,11 @@ const actions = {
                 context.commit('setTokenType', TokenType);
                 context.commit('setExpireDate', ExpireAt);
 
-                context.commit('setUsername', user.name);
+                context.commit('setUserName', user.username);
                 context.commit('setEmail', user.email);
                 context.commit('setRole', user.type_user);
+                context.commit('setFirstName', user.first_name);
+                context.commit('setLastName', user.last_name);
 
                 // Storage in locale
 
@@ -141,9 +157,11 @@ const actions = {
                 context.commit('setAccessToken', null);
                 context.commit('setTokenType', null);
                 context.commit('setExpireDate', null);
-                context.commit('setUsername', null);
+                context.commit('setUserName', null);
                 context.commit('setEmail', null);
                 context.commit('setRole', null);
+                context.commit('setFirstName', null);
+                context.commit('setLastName', null);
 
                 return Promise.resolve(res);
             })
@@ -154,10 +172,12 @@ const actions = {
         const _this = this;
         return axios.get('api/auth/user', {headers: {'Authorization': token}})
             .then(res => {
-                const {name, email, role,} = res.data;
-                context.commit('setUsername', name);
+                const {name: username, email, role,first_name,last_name} = res.data;
+                context.commit('setUserName', username);
                 context.commit('setEmail', email);
                 context.commit('setRole', role);
+                context.commit('setFirstName', first_name);
+                context.commit('setLastName', last_name);
 
                 return Promise.resolve(res);
             })

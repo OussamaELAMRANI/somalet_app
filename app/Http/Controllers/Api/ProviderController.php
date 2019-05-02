@@ -12,9 +12,14 @@ class ProviderController extends Controller
      * Get all providers !
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $req)
     {
-        $all = Provider::with('products')->orderBy('id', 'DESC')->get();
+        if ($req->query('fields')) {
+            $fields = $req->query('fields');
+            $fields = explode(',', $fields);
+            $all = Provider::orderBy('id', 'DESC')->get($fields);
+        } else
+            $all = Provider::with('products')->orderBy('id', 'DESC')->get();
         return response()->json($all);
     }
 

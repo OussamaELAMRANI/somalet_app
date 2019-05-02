@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    // import {mapActions} from 'vuex'
     import LeftBar from "../../components/Admin/LeftBar";
     import NavBar from "../../components/Admin/NavBar";
 
@@ -19,25 +19,13 @@
         name: "Dashbord",
         components: {NavBar, LeftBar},
         methods: {
-            // logOut() {
-            //     this.signOut()
-            //         .then(res => {
-            //             this.$router.push('/login')
-            //         })
-            //         .catch(err => console.log(err))
-            // },
-            //
-            // ...mapActions({
-            //     loadIt: 'loadStats',
-            //     userInfos: 'userInfo',
-            //     signOut: 'logout'
-            // }),
 
         },
         mounted() {
             // this.loadIt();
             // this.userInfos();
         }
+
     }
 </script>
 

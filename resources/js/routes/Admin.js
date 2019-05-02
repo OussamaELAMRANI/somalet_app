@@ -4,6 +4,7 @@ import dashboard from './../pages/admin/Dashbord'
 import provider from './provider'
 import products from './products.js'
 import Home from './../pages/home'
+import arrivals from './arrivals'
 // const dashboard = () => import('./../components/Admin/Dashboard');
 // const Users = () => import('./../components/Admin/Users');
 
@@ -24,7 +25,7 @@ export default [
     },
     {
         path: '/dashboard',
-        redirect:'/dashboard/home'
+        redirect: '/dashboard/home'
     },
     {
         path: '/dashboard',
@@ -39,7 +40,8 @@ export default [
                 component: Home,
             },
             ...provider,
-            ...products
+            ...products,
+            ...arrivals
         ],
     }
 ]
