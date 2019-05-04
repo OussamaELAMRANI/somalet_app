@@ -6,18 +6,18 @@
         </h3>
         <div class="dropdown-divider"></div>
 
-        <div class="row justify-content-center">
-            <div class="col-3">
+        <div class="row d-flex justify-content-center">
+            <div class="col-3 justify-content-center">
                 <StepBox image="presentation.svg" classe="active-box"
                          title="Informations Professionelles" @step="checkStep(0)"
                          :classe="(box===0) ? 'active-box' : 'normal-box'"/>
             </div>
-            <div class="col-3">
+            <div class="col-3 justify-content-center">
                 <StepBox title="Informations personnelle" image="information.svg" @step="checkStep(1)"
                          :classe="(box===1) ? 'active-box' : 'normal-box'"
                 />
             </div>
-            <div class="col-3">
+            <div class="col-3 justify-content-center">
                 <StepBox title="Contact" image="contact.svg" @step="checkStep(2)"
                          :classe=" (box === 2)  ? 'active-box' : 'normal-box'"/>
             </div>

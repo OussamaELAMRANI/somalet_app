@@ -3,10 +3,8 @@
         h2.text-info.mt-4.text-lg-center Page Fournisseurs
         .dropdown-divider
         // 2 Boxes (Back, [New, List])
-        .row.justify-content-center
-            .col-3
-                StepBox(title="Retour", image='back.svg' @step="goTo" to="allProviders" )
-            .col-3
+        .row
+            .col.d-flex.justify-content-center
                 StepBox(title="Nouveau Fournisseur", image='add.svg' @step="goTo" to="newProvider" v-if="getUrl === 'listProvider'")
                 StepBox(title="Liste Fournisseurs", image='list.svg' @step="goTo" to="listProvider" v-else)
 

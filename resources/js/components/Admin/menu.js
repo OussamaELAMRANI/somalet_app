@@ -14,24 +14,24 @@ const menu = (user_type) => {
             //     // attributes: {}
             // }
         },
-        { // item Users
-            title: 'Utilisateurs',
-            icon: 'fa fa-users',
-            child: [
-                {
-                    href: '/users/new-user',
-                    title: 'Nouveau',
-                },
-                {
-                    href: '/users/provider-list',
-                    title: 'Utilisateurs',
-                },
-                {
-                    href: '/users/permission',
-                    title: 'Permissions',
-                }
-            ]
-        },
+        // { // item Users
+        //     title: 'Utilisateurs',
+        //     icon: 'fa fa-users',
+        //     child: [
+        //         {
+        //             href: '/users/new-user',
+        //             title: 'Nouveau',
+        //         },
+        //         {
+        //             href: '/users/provider-list',
+        //             title: 'Utilisateurs',
+        //         },
+        //         {
+        //             href: '/users/permission',
+        //             title: 'Permissions',
+        //         }
+        //     ]
+        // },
         { // item with child
             title: 'Fournisseur',
             icon: 'fa fa-briefcase',
@@ -57,6 +57,20 @@ const menu = (user_type) => {
                 {
                     href: '/dashboard/product/product-list',
                     title: 'Produits',
+                }
+            ]
+        },
+        { // item with child
+            title: 'Arrivage',
+            icon: 'fa fa-dropbox',
+            child: [
+                {
+                    href: '/dashboard/arrivals/new-arrival',
+                    title: 'Nouveau',
+                },
+                {
+                    href: '/dashboard/arrivals/arrival-list',
+                    title: 'Arrivages',
                 }
             ]
         },

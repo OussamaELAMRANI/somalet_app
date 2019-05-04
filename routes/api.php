@@ -66,5 +66,13 @@ Route::prefix('products')->group(function () {
     Route::get('', 'Api\ProductController@index');
     Route::get('{id}', 'Api\ProductController@show');
     Route::post('', 'Api\ProductController@store');
+});
+Route::prefix('arrivals')->group(function () {
+//    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('', 'Api\ArrivalController@index');
+        Route::get('{id}', 'Api\ArrivalController@show');
+        Route::post('', 'Api\ArrivalController@store');
+//        Route::post('', 'Api\ArrivalController@user');
+//    });
 
 });

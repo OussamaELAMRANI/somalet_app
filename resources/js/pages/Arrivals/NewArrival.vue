@@ -1,10 +1,10 @@
 <template>
-    <form-wizard title="Gestion d'arrivages" subtitle="Nouveau arrivage">
-        <tab-content title="Entete de la facture">
-            <arrival-form/>
+    <form-wizard title="Gestion d'arrivages" subtitle="Nouveau arrivage" :nextButtonText="'Suivant'">
+        <tab-content title="Entete de la facture" :before-change="entetePass">
+            <arrival-form ref="entete"/>
         </tab-content>
         <tab-content title="Ajout des produits">
-            My second tab content
+            <arrival-form-products ref="formProduct"/>
         </tab-content>
         <tab-content title="resumer">
             Yuhuuu! This seems pretty damn simple
@@ -14,10 +14,17 @@
 
 <script>
     import ArrivalForm from "../../components/Arrivals/ArrivalForm";
+    import ArrivalFormProducts from "../../components/Arrivals/ArrivalFormProducts";
 
     export default {
         name: "NewArrival",
-        components: {ArrivalForm}
+        components: {ArrivalForm,ArrivalFormProducts},
+        methods:{
+            entetePass() {
+                return this.$refs.entete.validateBeforeSubmit();
+            },
+        }
+
     }
 </script>
 

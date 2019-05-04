@@ -9,6 +9,7 @@ class Arrival extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
+    protected $primaryKey = 'n_facture';
 
     function provider()
     {
@@ -22,8 +23,8 @@ class Arrival extends Model
     {
         return $this->hasMany(LArrival::class, 'arrival_id');
     }
-    function sub_categories()
+    public function getKeyName()
     {
-        return $this->hasMany(SubCategory::class, 'category_id');
+        return $this->primaryKey;
     }
 }

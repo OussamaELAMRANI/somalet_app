@@ -3,9 +3,9 @@ const state = {
     TokenType: null,
     ExpireAt: null,
     username: null,
-    first_name:null,
-    last_name:null,
-    email: null,
+    first_name: null,
+    last_name: null,
+    id: null,
     role: null,
 };
 
@@ -32,8 +32,8 @@ const mutations = {
     setRole: (state, value) => {
         state.role = value;
     },
-    setEmail: (state, value) => {
-        state.email = value;
+    setId: (state, value) => {
+        state.id = value;
     },
 };
 
@@ -53,7 +53,9 @@ const getters = {
 
 
     getToken: (state) => {
-        return state.accessToken;
+        const tk = window.localStorage.getItem('access_token')
+        // if ()
+        return tk;
 
     },
     getTokenType: (state) => {
@@ -71,8 +73,8 @@ const getters = {
     getLastName(state) {
         return state.last_name
     },
-    getEmail(state) {
-        return state.email
+    getId(state) {
+        return state.id
     },
     getRole(state) {
         return state.role
@@ -85,7 +87,7 @@ const actions = {
      *
      * @param context {Object}
      * @param credentials {Object} User credentials
-     * @param credentials.email {string} User email
+     * @param credentials.id {string} User id
      * @param credentials.password {string} User password
      */
     login(context, credentials) {
@@ -106,16 +108,23 @@ const actions = {
                 context.commit('setExpireDate', ExpireAt);
 
                 context.commit('setUserName', user.username);
-                context.commit('setEmail', user.email);
+                context.commit('setId', user.id);
                 context.commit('setRole', user.type_user);
                 context.commit('setFirstName', user.first_name);
                 context.commit('setLastName', user.last_name);
 
                 // Storage in locale
-
                 localStorage.setItem('access_token', AccessToken)
                 localStorage.setItem('token_type', TokenType)
                 localStorage.setItem('expires_at', ExpireAt)
+                localStorage.setItem('user_id', user.id)
+                localStorage.setItem('user_username', user.username)
+                localStorage.setItem('user_type', user.type_user)
+                localStorage.setItem('firstName', user.first_name)
+                localStorage.setItem('lastName', user.last_name)
+
+                // window.axios.defaults.headers.common['Authorization'] = `${TokenType} ${AccessToken}`;
+                axios.defaults.headers.common = {'Authorization': `Bearer ${AccessToken}`}
 
                 return Promise.resolve();
             })
@@ -158,7 +167,7 @@ const actions = {
                 context.commit('setTokenType', null);
                 context.commit('setExpireDate', null);
                 context.commit('setUserName', null);
-                context.commit('setEmail', null);
+                context.commit('setId', null);
                 context.commit('setRole', null);
                 context.commit('setFirstName', null);
                 context.commit('setLastName', null);
@@ -172,10 +181,11 @@ const actions = {
         const _this = this;
         return axios.get('api/auth/user', {headers: {'Authorization': token}})
             .then(res => {
-                const {name: username, email, role,first_name,last_name} = res.data;
+                const {username, id, type_user, first_name, last_name} = res.data;
+
                 context.commit('setUserName', username);
-                context.commit('setEmail', email);
-                context.commit('setRole', role);
+                context.commit('setId', id);
+                context.commit('setRole', type_user);
                 context.commit('setFirstName', first_name);
                 context.commit('setLastName', last_name);
 
@@ -187,7 +197,7 @@ const actions = {
     isAuthenticated: function ({commit, state}) {
         const token = window.localStorage.getItem('access_token')
 
-        return Promise.resolve(token !== null );
+        return Promise.resolve(token !== null);
     },
     // isAdmin: ({})
 };
