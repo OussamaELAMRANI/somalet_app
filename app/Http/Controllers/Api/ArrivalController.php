@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ArrivalController extends Controller
 {
@@ -40,7 +41,7 @@ class ArrivalController extends Controller
     {
         $user_info = $req->user();
 
-        return response()->json([$req, 'user' => $user_info]);
+//        return response()->json([$req, 'user' => $user_info]);
 
         $n_facture = request('n_facture');
         $existe = Arrival::where('n_facture', $n_facture)->first();
@@ -61,11 +62,15 @@ class ArrivalController extends Controller
         $filterRequest['date_facture'] = null;
         $filterRequest['user_id'] = 1; //todo
         if (!$existe) {
-            Arrival::create($filterRequest);
-            $msg = ['message' => "Arrivage bien ajoutee"];
+            $res = Arrival::create($filterRequest);
+            $msg = ['message' => "Arrivage bien ajoutee"
+                    ,'id'=>DB::getPdo()->lastInsertId()
+            ];
         } else {
             $existe->update($filterRequest);
-            $msg = ['message' => "Arrivage bien modifier"];
+            $msg = ['message' => "Arrivage bien modifier"
+                ,'id'=>$existe->id
+            ];
         }
         return response()->json($msg, 201);
     }
@@ -113,6 +118,11 @@ class ArrivalController extends Controller
     public function destroy(Arrival $arrival)
     {
         //
+    }
+
+    public function products(Request $req)
+    {
+        return response()->json($req);
     }
 
 }

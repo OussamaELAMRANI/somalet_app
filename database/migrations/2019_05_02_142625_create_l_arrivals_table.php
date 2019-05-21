@@ -20,6 +20,7 @@ class CreateLArrivalsTable extends Migration
             $table->float('fret_douane')->nullable();
             $table->float('price_unit_ht');
             $table->float('price_unit_ttc');
+            $table->float('price_devise')->nullable();
             $table->string('remark')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->date('date_reception')->nullable();

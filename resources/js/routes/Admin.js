@@ -5,6 +5,7 @@ import provider from './provider'
 import products from './products.js'
 import Home from './../pages/home'
 import arrivals from './arrivals'
+import Users from "../pages/admin/Users";
 // const dashboard = () => import('./../components/Admin/Dashboard');
 // const Users = () => import('./../components/Admin/Users');
 
@@ -38,6 +39,10 @@ export default [
             {
                 path: 'home',
                 component: Home,
+            },
+            {
+                path: 'users',
+                component: Users,
             },
             ...provider,
             ...products,

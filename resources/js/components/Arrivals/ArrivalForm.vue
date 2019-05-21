@@ -286,6 +286,7 @@
                 transport: null,
                 transport_tva: null,
                 transport_ttc: null,
+                //todo
                 magazinage: null,
                 magazinage_tva: null,
                 magazinage_ttc: null,
@@ -461,7 +462,10 @@
                 this.cout_revient = Number(this.transitaire) + Number(this.transport) + Number(this.magazinage) + Number(this.surestaries) + Number(this.manutension) + Number(this.fret) + Number(this.autres);
                 this.cout_revient_tva = Number(this.transitaire_tva) + Number(this.transport_tva) + Number(this.magazinage_tva) + Number(this.surestaries_tva) + Number(this.manutension_tva) + Number(this.fret_tva) + Number(this.autres_tva);
                 this.cout_revient_ttc = Number(this.transitaire_ttc) + Number(this.transport_ttc) + Number(this.magazinage_ttc) + Number(this.surestaries_ttc) + Number(this.manutension_ttc) + Number(this.fret_ttc) + Number(this.autres_ttc);
-            },
+                this.cout_revient = this.round(this.cout_revient,2);
+                this.cout_revient_tva = this.round(this.cout_revient_tva,2);
+                this.cout_revient_ttc = this.round(this.cout_revient_ttc,2);
+                },
             round(value, decimals) {
                 return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
             },
@@ -469,53 +473,19 @@
                 return moment(date).format('DD/MM/YYYY');
             },
             validateBeforeSubmit() {
-                return true;
+                // return true;
                 return this.$validator.validateAll().then((result) => {
                     if (result) {
-                        const formData = new FormData()
-                        formData.append('n_dossier', this.n_dossier);
-                        formData.append('n_facture', this.n_facture);
-                        formData.append('price_devise', this.price_devise);
-                        formData.append('cours_change', this.cours_change);
-                        formData.append('date_facture', this.date_facture1);
-                        formData.append('type', this.type);
-                        formData.append('price_provider', this.price_provider);
-                        formData.append('provider_id', this.provider_id);
-                        if (this.type == 'INTERNATIONAL') {
-                            formData.append('transitaire', this.transitaire);
-                            formData.append('transitaire_tva', this.transitaire_tva);
-                            formData.append('transitaire_ttc', this.transitaire_ttc);
-                            formData.append('transport', this.transport);
-                            formData.append('transport_tva', this.transport_tva);
-                            formData.append('transport_ttc', this.transport_ttc);
-                            formData.append(' magazinage', this.magazinage);
-                            formData.append('magazinage_tva', this.magazinage_tva);
-                            formData.append('magazinage_ttc', this.magazinage_ttc);
-                            formData.append('surestaries', this.surestaries);
-                            formData.append('surestaries_tva', this.surestaries_tva);
-                            formData.append('surestaries_ttc', this.surestaries_ttc);
-                            formData.append('manutension', this.manutension);
-                            formData.append('manutension_tva', this.manutension_tva);
-                            formData.append('manutension_ttc', this.manutension_ttc);
-                            formData.append('fret', this.fret);
-                            formData.append('fret_tva', this.fret_tva);
-                            formData.append('fret_ttc', this.fret_ttc);
-                            formData.append('autres', this.autres);
-                            formData.append('autres_tva', this.autres_tva);
-                            formData.append('autres_ttc', this.autres_ttc);
-                            formData.append('cout_revient', this.cout_revient);
-                            formData.append('cout_revient_tva', this.cout_revient_tva);
-                            formData.append('cout_revient_ttc', this.cout_revient_ttc);
-                        }
-
+                        const formData = this.inputsToFormData();
                         const tokenrise = `Bearer ${this.token}`
-                        // const _this = this;
+                        const _this = this;
                         // formData.append('user_id', this.user_id)
                         return axios.post('/api/arrivals', formData)
                             .then(res => {
-                                console.log(res.data);
+                                _this.$emit('getArrivalId', res.data.id);
+                                _this.$emit('getArrivalId',formData);
+                                _this.$emit('getCharge',formData);
                                 return true
-                                // this.$router.push({name: 'listProducts'})
                             })
                             .catch(err => {
                                 this.formErrors = "Impossible d'ajouter cet enregistrement, contactez votre administrateur ";
@@ -525,7 +495,48 @@
                     }
                     return false;
                 });
+            },
+            inputsToFormData(){
+                const formData = new FormData();
+                formData.append('n_dossier', this.n_dossier);
+                formData.append('n_facture', this.n_facture);
+                formData.append('price_devise', this.price_devise);
+                formData.append('cours_change', this.cours_change);
+                formData.append('date_facture', this.date_facture1);
+                formData.append('type', this.type);
+                formData.append('price_provider', this.price_provider);
+                formData.append('provider_id', this.provider_id);
+                if (this.type == 'INTERNATIONAL') {
+                    formData.append('transitaire', this.transitaire);
+                    formData.append('transitaire_tva', this.transitaire_tva);
+                    formData.append('transitaire_ttc', this.transitaire_ttc);
+                    formData.append('transport', this.transport);
+                    formData.append('transport_tva', this.transport_tva);
+                    formData.append('transport_ttc', this.transport_ttc);
+                    formData.append('magazinage', this.magazinage);
+                    formData.append('magazinage_tva', this.magazinage_tva);
+                    formData.append('magazinage_ttc', this.magazinage_ttc);
+                    formData.append('surestaries', this.surestaries);
+                    formData.append('surestaries_tva', this.surestaries_tva);
+                    formData.append('surestaries_ttc', this.surestaries_ttc);
+                    formData.append('manutension', this.manutension);
+                    formData.append('manutension_tva', this.manutension_tva);
+                    formData.append('manutension_ttc', this.manutension_ttc);
+                    formData.append('fret', this.fret);
+                    formData.append('fret_tva', this.fret_tva);
+                    formData.append('fret_ttc', this.fret_ttc);
+                    formData.append('autres', this.autres);
+                    formData.append('autres_tva', this.autres_tva);
+                    formData.append('autres_ttc', this.autres_ttc);
+                    formData.append('cout_revient', this.cout_revient);
+                    formData.append('cout_revient_tva', this.cout_revient_tva);
+                    formData.append('cout_revient_ttc', this.cout_revient_ttc);
+                }
+                return formData;
             }
+            // getArrivalId(){
+            //     this.$emit('getArrivalId',this.formDATA);
+            // }
         }
         ,
         components: {

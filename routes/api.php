@@ -18,6 +18,8 @@ Route::prefix('auth')->group(function () {
 
     Route::post('sign-up', 'Api\AuthController@signUp');
     Route::post('login', 'Api\AuthController@logIn');
+    Route::get('allUsers', 'Api\AuthController@allUsers');
+    Route::get('users', 'Api\AuthController@allUsers');
 
     // User Should be connected !
     Route::group(['middleware' => 'auth:api'], function () {
@@ -50,6 +52,11 @@ Route::prefix('search')->group(function () {
         $result = \App\Provider::where('steName', 'like', "%{$query}%")->get();
         return response()->json($result);
     });
+    Route::get('products', function (Request $req) {
+        $query = $req->query('products');
+        $result = \App\Product::where('reference', 'like', "%{$query}%")->get();
+        return response()->json($result);
+    });
 });
 Route::prefix('colors')->group(function () {
     Route::get('', 'Api\ColorController@index');
@@ -72,6 +79,8 @@ Route::prefix('arrivals')->group(function () {
         Route::get('', 'Api\ArrivalController@index');
         Route::get('{id}', 'Api\ArrivalController@show');
         Route::post('', 'Api\ArrivalController@store');
+
+        Route::post('products', 'Api\ArrivalController@products');
 //        Route::post('', 'Api\ArrivalController@user');
 //    });
 

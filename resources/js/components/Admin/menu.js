@@ -14,24 +14,24 @@ const menu = (user_type) => {
             //     // attributes: {}
             // }
         },
-        // { // item Users
-        //     title: 'Utilisateurs',
-        //     icon: 'fa fa-users',
-        //     child: [
-        //         {
-        //             href: '/users/new-user',
-        //             title: 'Nouveau',
-        //         },
-        //         {
-        //             href: '/users/provider-list',
-        //             title: 'Utilisateurs',
-        //         },
-        //         {
-        //             href: '/users/permission',
-        //             title: 'Permissions',
-        //         }
-        //     ]
-        // },
+        { // item Users
+            title: 'Utilisateurs',
+            icon: 'fa fa-users',
+            child: [
+                {
+                    href: '/users/new-user',
+                    title: 'Nouveau',
+                },
+                {
+                    href: '/users/provider-list',
+                    title: 'Utilisateurs',
+                },
+                {
+                    href: '/users/permission',
+                    title: 'Permissions',
+                }
+            ]
+        },
         { // item with child
             title: 'Fournisseur',
             icon: 'fa fa-briefcase',

@@ -6,7 +6,8 @@ import vueRouter from 'vue-router'
 import App from './AppRun'
 import Routes from './routes'
 import store from './store'
-import VeeValidate from 'vee-validate'
+// import VeeValidate from 'vee-validate'
+import VeeValidate, { Validator } from 'vee-validate';
 import VueNotification from "@kugatsu/vuenotification";
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
@@ -22,7 +23,9 @@ Vue.use(vueRouter);
 // Vuex or the State Manager
 
 // Add Validation Inputs
+import fr from 'vee-validate/dist/locale/fr';
 Vue.use(VeeValidate);
+Validator.localize('fr', fr);
 
 Vue.use(VueNotification, {
     timer: 20

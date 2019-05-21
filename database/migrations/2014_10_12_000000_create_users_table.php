@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('type_user')->default('guest');
 //            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('is_active')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

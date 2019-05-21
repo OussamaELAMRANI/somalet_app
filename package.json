@@ -22,7 +22,7 @@
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
         "browser-sync": "^2.26.5",
-        "browser-sync-webpack-plugin": "^2.0.1",
+        "browser-sync-webpack-plugin": "^2.2.2",
         "chart.js": "^2.8.0",
         "cross-env": "^5.1",
         "epic-spinners": "^1.0.4",
@@ -59,7 +59,10 @@
     },
     "dependencies": {
         "acorn": "^6.1.1",
+        "ag-grid-community": "^20.2.0",
+        "ag-grid-vue": "^20.2.0",
         "vee-validate": "^2.2.5",
-        "webpack": "^4.30.0"
+        "vue-property-decorator": "^7.3.0",
+        "webpack": "^4.31.0"
     }
 }

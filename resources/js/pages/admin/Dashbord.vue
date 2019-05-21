@@ -14,13 +14,10 @@
     // import {mapActions} from 'vuex'
     import LeftBar from "../../components/Admin/LeftBar";
     import NavBar from "../../components/Admin/NavBar";
-
     export default {
         name: "Dashbord",
         components: {NavBar, LeftBar},
-        methods: {
-
-        },
+        methods: {},
         mounted() {
             // this.loadIt();
             // this.userInfos();
@@ -29,6 +26,5 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss">
 </style>

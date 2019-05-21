@@ -8,7 +8,7 @@
                     </div>
                     <div class="login100-form validate-form">
 					<span class="login100-form-title">
-						Éspace de Membres - Somalet
+						Éspace des Membres - MOLSAT
 					</span>
 
                         <transition name="logIn">
