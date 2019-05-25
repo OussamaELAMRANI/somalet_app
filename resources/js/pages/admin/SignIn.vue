@@ -66,7 +66,7 @@
                         this.$router.push('/dashboard')
                     })
                     .catch(err => {
-                        console.log(err.response)
+                        console.log(err)
                         this.errorConnection = "Imposible de se connecter, votre mot de passe ou username est incorrect !"
                     })
             },

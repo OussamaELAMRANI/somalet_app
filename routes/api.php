@@ -54,7 +54,9 @@ Route::prefix('search')->group(function () {
     });
     Route::get('products', function (Request $req) {
         $query = $req->query('products');
-        $result = \App\Product::where('reference', 'like', "%{$query}%")->get();
+        $rejectId = explode(',', $req->query('reject'));
+//        $rejectId = $req->query('reject');
+        $result = \App\Product::where('reference', 'like', "%{$query}%")->whereNotIn('id', $rejectId)->get();
         return response()->json($result);
     });
 });
@@ -76,11 +78,11 @@ Route::prefix('products')->group(function () {
 });
 Route::prefix('arrivals')->group(function () {
 //    Route::group(['middleware' => 'auth:api'], function () {
-        Route::get('', 'Api\ArrivalController@index');
-        Route::get('{id}', 'Api\ArrivalController@show');
-        Route::post('', 'Api\ArrivalController@store');
+    Route::get('', 'Api\ArrivalController@index');
+    Route::get('{id}', 'Api\ArrivalController@show');
+    Route::post('', 'Api\ArrivalController@store');
 
-        Route::post('products', 'Api\ArrivalController@products');
+    Route::post('products', 'Api\ArrivalController@products');
 //        Route::post('', 'Api\ArrivalController@user');
 //    });
 

@@ -32,6 +32,9 @@ class CreateArrivalsTable extends Migration
             $table->double('magazinage')->nullable();
             $table->double('magazinage_tva')->nullable();
             $table->double('magazinage_ttc')->nullable();
+            $table->double('douane_tva')->nullable();
+            $table->double('douane')->nullable();
+            $table->double('douane_ttc')->nullable();
             $table->double('surestaries')->nullable();
             $table->double('surestaries_tva')->nullable();
             $table->double('surestaries_ttc')->nullable();

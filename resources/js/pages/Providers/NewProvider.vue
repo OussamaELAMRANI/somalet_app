@@ -42,9 +42,9 @@
             <button type="button" class="btn btn-outline-success" @click="submitProvider">VALIDER</button>
         </divider>
 
-        <p><code>
-            {{provider}}
-        </code></p>
+<!--        <p><code>-->
+<!--            {{provider}}-->
+<!--        </code></p>-->
     </div>
 </template>
 

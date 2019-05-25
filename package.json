@@ -20,6 +20,7 @@
         "@babel/preset-env": "^7.0.0",
         "@kugatsu/vuenotification": "^1.1.2",
         "axios": "^0.18",
+        "babel-loader": "^8.0.6",
         "bootstrap": "^4.0.0",
         "browser-sync": "^2.26.5",
         "browser-sync-webpack-plugin": "^2.2.2",

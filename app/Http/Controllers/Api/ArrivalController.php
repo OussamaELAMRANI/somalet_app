@@ -39,37 +39,50 @@ class ArrivalController extends Controller
      */
     public function store(Request $req)
     {
+        return $req->all();
+        $arr = $req->input('arrivals');
+        $prod = $req->input('products');
+
+
+//        TODO PIVO 
+        $newArr = Arrival::create($arr);
+
+        $newArr->products()->saveMany($prod);
+
+
         $user_info = $req->user();
 
 //        return response()->json([$req, 'user' => $user_info]);
 
-        $n_facture = request('n_facture');
+        $n_facture = $req->input('n_facture');
         $existe = Arrival::where('n_facture', $n_facture)->first();
-        $filterRequest = null;
-        if (\request('type') === 'INTERNATIONAL') {
-            $filterRequest = \request(['n_dossier', 'n_facture', 'price_devise', 'cours_change', 'date_facture',
-                'type', 'price_provider', 'provider_id', 'user_id',
-                'transitaire', 'transitaire_tva', 'transitaire_ttc', 'transport', 'transport_tva', 'transport_ttc',
-                ' magazinage', 'magazinage_tva', 'magazinage_ttc', 'surestaries', 'surestaries_tva', 'surestaries_ttc'
-                , 'manutension', 'manutension_tva', 'manutension_ttc', 'fret', 'fret_tva', 'fret_ttc', 'autres',
-                'autres_tva', 'autres_ttc', 'cout_revient', 'cout_revient_tva', 'cout_revient_ttc'
-            ]);
-        } elseif (\request('type') === 'NATIONAL') {
-            $filterRequest = \request(['n_dossier', 'n_facture', 'price_devise', 'cours_change', 'date_facture', 'type', 'price_provider', 'provider_id', 'user_id']);
-        } else {
-            //$filterRequest = \request(['n_dossier','n_facture','price_devise','cours_change','date_facture','type','price_provider','provider_id','user_id']);
-        }
+        $filterRequest = $req->all();
+
+//        if ($req->input('type') === 'INTERNATIONAL') {
+//            $filterRequest = request(['n_dossier', 'n_facture', 'price_devise', 'cours_change', 'date_facture',
+//                'type', 'price_provider', 'provider_id', 'user_id',
+//                'transitaire', 'transitaire_tva', 'transitaire_ttc', 'transport', 'transport_tva', 'transport_ttc',
+//                ' magazinage', 'magazinage_tva', 'magazinage_ttc', 'surestaries', 'surestaries_tva', 'surestaries_ttc'
+//                , 'manutension', 'manutension_tva', 'manutension_ttc', 'fret', 'fret_tva', 'fret_ttc', 'autres',
+//                'autres_tva', 'autres_ttc', 'cout_revient', 'cout_revient_tva', 'cout_revient_ttc'
+//            ]);
+//        }
+//        else {
+//            $filterRequest = request(['n_dossier', 'n_facture', 'price_devise', 'cours_change', 'date_facture', 'type', 'price_provider', 'provider_id', 'user_id']);
+//        }
+
         $filterRequest['date_facture'] = null;
-        $filterRequest['user_id'] = 1; //todo
+        $filterRequest['user_id'] = 1; //todo Add User ID from Request
+
         if (!$existe) {
             $res = Arrival::create($filterRequest);
             $msg = ['message' => "Arrivage bien ajoutee"
-                    ,'id'=>DB::getPdo()->lastInsertId()
+                , 'id' => DB::getPdo()->lastInsertId()
             ];
         } else {
             $existe->update($filterRequest);
             $msg = ['message' => "Arrivage bien modifier"
-                ,'id'=>$existe->id
+                , 'id' => $existe->id
             ];
         }
         return response()->json($msg, 201);
