@@ -4,26 +4,29 @@ import ProductList from '../pages/Products/ProductsList'
 
 export default [
     {
-        path: 'product',
-        redirect: '/product/product-list'
-    },
-    {
         name: 'allProducts',
         path: 'product',
         component: Products,
+        redirect: '/product/product-list',
         meta: {
-            // forVisitor: true
+            title: 'Produits', name: 'allProducts', icon: 'fa fa-briefcase', roles: 'guest'
         },
         children: [
             {
                 name: 'newProduct',
                 path: 'new-product',
                 component: NewProvider,
+                meta: {
+                    title: 'Nouveau Produit', name: 'newProduct', icon: 'fa fa-gor', roles: 'guest'
+                },
             },
             {
                 name: 'listProducts',
                 path: 'product-list',
                 component: ProductList,
+                meta: {
+                    title: 'Liste des produits', name: 'listProducts', icon: 'fa fa-gor', roles: 'guest'
+                },
             },
         ]
     },

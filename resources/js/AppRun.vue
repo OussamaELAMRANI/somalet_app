@@ -1,5 +1,5 @@
 <template>
-    <div id="dao_site_web">
+    <div id="somalet">
         <router-view/>
     </div>
 

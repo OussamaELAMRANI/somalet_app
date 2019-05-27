@@ -76,7 +76,7 @@
                         this.errors['error'] = "Imposible de se connecter, votre mot de passe ou username est incorrect !"
                     })
             },
-            ...mapActions({signIn: 'login'}),
+            ...mapActions({signIn: 'userStore/login'}),
 
         }
     }

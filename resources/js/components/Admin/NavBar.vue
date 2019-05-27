@@ -15,18 +15,22 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ username() }}
+                        {{ user.username }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <li class="dropdown-item text-center">
-                            <img style="height: 120px;width: 120px;" src="https://picsum.photos/200/300" alt="photo d'utilisateur" class="rounded-circle mx-auto d-block mb-2"> <p>
-                            {{ first_name() }} - {{ last_name() }} <p>
-                            <small>{{ role() }}</small></p>
+                            <img style="height: 120px;width: 120px;" src="https://picsum.photos/200/300"
+                                 alt="photo d'utilisateur" class="rounded-circle mx-auto d-block mb-2">
+                            <p>
+                                {{ user.first_name }} - {{ user.last_name }}
+                            <p>
+                                <small>{{ user.type_user }}</small>
+                            </p>
                         </li>
                         <div class="dropdown-divider"></div>
                         <li class="" style="display: inline-list-item">
                             <div style="float: left; display: block">
-                                <a href="#" class="btn btn-light" >Profile</a>
+                                <a href="#" class="btn btn-light">Profile</a>
                             </div>
                             <div style="float: right; display: block">
                                 <a href="#" class="btn btn-light" @click="logout">Sign out</a>
@@ -42,18 +46,19 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
-    import { mapActions } from 'vuex'
+    import store from "@/store"
+    import {mapActions} from 'vuex'
+
     export default {
         name: "NavBar",
         methods: {
-            ...mapGetters({
-                username:'getUserName',
-                role:'getRole',
-                first_name:'getFirstName',
-                last_name:'getLastName',
-            }),
-            logout(){
+            // ...mapGetters({
+            //     username:'userStore/name',
+            //     role:'getRole',
+            //     first_name:'getFirstName',
+            //     last_name:'getLastName',
+            // }),
+            logout() {
                 this.logOut()
                     .then(() => {
                         this.$router.push('/login')
@@ -61,6 +66,11 @@
             },
             ...mapActions({logOut: 'logout'}),
         },
+        computed: {
+            user() {
+                return store.getters.user
+            }
+        }
     }
 </script>
 

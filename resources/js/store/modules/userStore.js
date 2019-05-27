@@ -1,158 +1,63 @@
+import {getToken, setToken, removeToken, expireToken, getExpireTime} from '@/utils/auth';
+
+
 const state = {
-    accessToken: null,
-    TokenType: null,
-    ExpireAt: null,
-    username: null,
-    first_name: null,
-    last_name: null,
-    id: null,
-    role: null,
+    token: getToken(),
+    expired_at: getExpireTime(),
+    name: '',
+    role: '',
+    user: {}
 };
 
 // Setter of this state
 const mutations = {
-    setAccessToken: (state, value) => {
-        state.accessToken = value;
+    SET_TOKEN: (state, token) => {
+        state.token = token;
     },
-    setTokenType: (state, value) => {
-        state.TokenType = value;
+    SET_EXPIRE_TIME: (state, exp) => {
+        state.expired_at = exp;
     },
-    setExpireDate: (state, value) => {
-        state.ExpireAt = value;
-    },
-    setUserName: (state, value) => {
-        state.username = value;
-    },
-    setFirstName: (state, value) => {
-        state.first_name = value;
-    },
-    setLastName: (state, value) => {
-        state.last_name = value;
-    },
-    setRole: (state, value) => {
-        state.role = value;
-    },
-    setId: (state, value) => {
-        state.id = value;
-    },
-};
 
-// Getters of this state
-const getters = {
-
-    // isAvailableToken(state) {
-    //     let exp = null;
-    //     const today = new Date().toDateString();
-    //     if (state.ExpireAt)
-    //         exp = state.ExpireAt;
-
-    //     else if (localStorage.getItem('expires_at'))
-    //         exp = localStorage.getItem('expires_at');
-    //     return today >= exp;
-    // },
-
-
-    getToken: (state) => {
-        const tk = window.localStorage.getItem('access_token')
-        // if ()
-        return tk;
-
+    SET_NAME: (state, name) => {
+        state.name = name;
     },
-    getTokenType: (state) => {
-        return state.TokenType;
+    SET_ROLES: (state, roles) => {
+        state.role = roles;
     },
-    getExpireDate: (state) => {
-        return state.ExpireAt;
-    },
-    getUserName(state) {
-        return state.username
-    },
-    getFirstName(state) {
-        return state.first_name
-    },
-    getLastName(state) {
-        return state.last_name
-    },
-    getId(state) {
-        return state.id
-    },
-    getRole(state) {
-        return state.role
+    SET_USER: (state, user) => {
+        state.user = user;
     },
 };
 
 const actions = {
-    /**
-     * Login a user
-     *
-     * @param context {Object}
-     * @param credentials {Object} User credentials
-     * @param credentials.id {string} User id
-     * @param credentials.password {string} User password
-     */
-    login(context, credentials) {
 
-        return axios.post('api/auth/login', credentials)
-            .then((response) => {
-                // retrieve access token
-                const {
-                    access_token: AccessToken,
-                    token_type: TokenType,
-                    expires_at: ExpireAt,
-                    user: user
-                } = response.data;
-
-                // commit it
-                context.commit('setAccessToken', AccessToken);
-                context.commit('setTokenType', TokenType);
-                context.commit('setExpireDate', ExpireAt);
-
-                context.commit('setUserName', user.username);
-                context.commit('setId', user.id);
-                context.commit('setRole', user.type_user);
-                context.commit('setFirstName', user.first_name);
-                context.commit('setLastName', user.last_name);
-
-                // Storage in locale
-                localStorage.setItem('access_token', AccessToken)
-                localStorage.setItem('token_type', TokenType)
-                localStorage.setItem('expires_at', ExpireAt)
-                localStorage.setItem('user_id', user.id)
-                localStorage.setItem('user_username', user.username)
-                localStorage.setItem('user_type', user.type_user)
-                localStorage.setItem('firstName', user.first_name)
-                localStorage.setItem('lastName', user.last_name)
-
-                // window.axios.defaults.headers.common['Authorization'] = `${TokenType} ${AccessToken}`;
-                axios.defaults.headers.common = {'Authorization': `Bearer ${AccessToken}`}
-
-                return Promise.resolve();
-            })
+    sign_up(context, registers) {
+        return axios.post('/api/auth/sign-up', registers)
+            .then((response) => Promise.resolve(response))
             .catch((error) => Promise.reject(error.response));
     },
-    /**
-     *
-     * @param context
-     * @param registers
-     */
-    signUp(context, registers) {
-        return axios.post('api/auth/sign-up', registers)
-            .then((response) => {
-                return Promise.resolve(response);
+
+    // user login
+    login({commit}, userData) {
+        return axios.post('/api/auth/login', userData)
+            .then(res => {
+                const {data} = res
+                console.log(data)
+                commit('SET_TOKEN', data.access_token);
+                setToken(data.access_token);
+
+                commit('SET_EXPIRE_TIME', data.expires_at);
+                expireToken(data.expires_at);
+
+                commit('SET_ROLES', data.user.type_user);
+
+                Promise.resolve(res)
             })
             .catch((error) => Promise.reject(error.response));
     },
 
-    loadStats({commit}) {
-        commit('setAccessToken', localStorage.getItem('access_token'))
-        commit('setTokenType', localStorage.getItem('token_type'))
-        commit('setExpireDate', localStorage.getItem('expires_at'))
-    },
-
-    logout(context) {
-        const token = `Bearer ${context.getters.getToken}`
-        // const auth = {'Authorization': token};
-        // console.log(token)
+    logout({commit, state}) {
+        const token = `Bearer ${state.token}`;
 
         return axios.get('api/auth/logout', {
             headers: {
@@ -161,50 +66,62 @@ const actions = {
         })
             .then(res => {
                 // Clear storage
-                localStorage.clear();
-                // Clear the states
-                context.commit('setAccessToken', null);
-                context.commit('setTokenType', null);
-                context.commit('setExpireDate', null);
-                context.commit('setUserName', null);
-                context.commit('setId', null);
-                context.commit('setRole', null);
-                context.commit('setFirstName', null);
-                context.commit('setLastName', null);
+                commit('SET_TOKEN', '');
+                commit('SET_ROLES', []);
+                commit('SET_USER', {});
+                removeToken();
 
                 return Promise.resolve(res);
             })
             .catch((error) => Promise.reject(error.response));
     },
-    userInfo(context) {
-        const token = `Bearer ${context.getters.getToken}`
-        const _this = this;
-        return axios.get('api/auth/user', {headers: {'Authorization': token}})
+
+    userInfos({commit, state}) {
+        const token = `Bearer ${state.token}`;
+
+        return axios.get('/api/auth/user', {
+            headers: {
+                'Authorization': token,
+            }
+        })
             .then(res => {
-                const {username, id, type_user, first_name, last_name} = res.data;
+                const {data} = res;
+                const type = data.type_user;
 
-                context.commit('setUserName', username);
-                context.commit('setId', id);
-                context.commit('setRole', type_user);
-                context.commit('setFirstName', first_name);
-                context.commit('setLastName', last_name);
+                // TODO Verify the Role of this User !
+                // roles must be a non-empty array
+                // user.type === 'guest'
+                // if (!type) {
+                //     reject('getInfo: roles must be a non-null array!');
+                // }
 
-                return Promise.resolve(res);
+                commit('SET_ROLES', type);
+                commit('SET_NAME', data.username);
+                commit('SET_USER', data);
+
+                return Promise.resolve(data);
             })
-            .catch((error) => Promise.reject(error.response));
+            .catch((error) => Promise.reject(error));
     },
 
-    isAuthenticated: function ({commit, state}) {
-        const token = window.localStorage.getItem('access_token')
+    // remove token
+    resetToken({commit}) {
+        return new Promise(resolve => {
+            commit('SET_TOKEN', '');
+            commit('SET_ROLES', []);
+            commit('SET_USER', {});
 
-        return Promise.resolve(token !== null);
+            removeToken();
+            resolve();
+        });
     },
-    // isAdmin: ({})
+
+
 };
 
 export default {
+    namespaced: true,
     state,
-    getters,
+    mutations,
     actions,
-    mutations
-}
+};

@@ -74,6 +74,20 @@ const menu = (user_type) => {
                 }
             ]
         },
+        { // item with child
+            title: 'Commande',
+            icon: 'fa fa-dropbox',
+            child: [
+                {
+                    href: '/dashboard/arrivals/new-arrival',
+                    title: 'Nouveau',
+                },
+                {
+                    href: '/dashboard/arrivals/arrival-list',
+                    title: 'Commandes',
+                }
+            ]
+        },
     ]
 }
 export default menu()

@@ -39,24 +39,32 @@ class ArrivalController extends Controller
      */
     public function store(Request $req)
     {
-        return $req->all();
-        $arr = $req->input('arrivals');
-        $prod = $req->input('products');
+        $r = $req->all();
+//        $user_info = $req->user();
+        $arr = $r['arrivals'];
+        $prods = $r['products'];
+//        return response()->json($arr,200);
+//        $arr['date_facture'] = null;
+//        $arr['user_id'] = 1; //todo Add User ID from Request
+//        $filterRequest = [];
+//        foreach ($arr as $k => $v) {
+//            $filterRequest[$k] = $v;
+//        }
+//        TODO PIVO
 
+//        $newArr = Arrival::create(request($filterRequest));
+//        return response()->json($filterRequest, 200);
 
-//        TODO PIVO 
-        $newArr = Arrival::create($arr);
+//        $newArr->products()->createMany($prods);
+//        return response()->json('ok',200);
 
-        $newArr->products()->saveMany($prod);
-
-
-        $user_info = $req->user();
 
 //        return response()->json([$req, 'user' => $user_info]);
 
-        $n_facture = $req->input('n_facture');
+        $n_facture = $arr['n_facture'];
         $existe = Arrival::where('n_facture', $n_facture)->first();
-        $filterRequest = $req->all();
+//        $filterRequest = $req->all();
+        $filterRequest = $arr;
 
 //        if ($req->input('type') === 'INTERNATIONAL') {
 //            $filterRequest = request(['n_dossier', 'n_facture', 'price_devise', 'cours_change', 'date_facture',

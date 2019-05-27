@@ -1,31 +1,27 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-// used to save Data in the Storage
-// import VuexPersist from 'vuex-persist';
+import getters from './guetters';
+import camelCase from 'camelcase';
 
-import users from './modules/userStore'
-
-//Plugin
 Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV !== 'production';
+// // https://webpack.js.org/guides/dependency-management/#requirecontext
+const modulesFiles = require.context('./modules', false, /\.js$/);
 
-// const vuexLocalStorage = new VuexPersist({
-//     key: 'vuex', // The key to store the state on in the storage provider.
-//     storage: window.localStorage, // or window.sessionStorage or localForage
-//     // Function that passes the state and returns the state with only the objects you want to store.
-//     reducer: state => state,
-//     // Function that passes a mutation and lets you decide if it should update the state in localStorage.
-//     // filter: mutation => (true)
-// })
+// you do not need `import app from './modules/app'`
+// it will auto require all vuex module from modules file
+const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+    // set './app.js' => 'app'
+    const moduleName = camelCase(modulePath.replace(/^\.\/(.*)\.\w+$/, '$1'));
+    const value = modulesFiles(modulePath);
+    modules[moduleName] = value.default;
+    return modules;
+}, {});
 
+const store = new Vuex.Store({
+    modules,
+    getters,
+});
 
-export default new Vuex.Store({
-    modules: {
-        users
-    },
-    strict: debug,
-
-    // plugins: [vuexLocalStorage.plugin]
-})
+export default store;

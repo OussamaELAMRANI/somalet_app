@@ -27,4 +27,7 @@ class Arrival extends Model
     {
         return $this->primaryKey;
     }
+    public function products(){
+        return $this->belongsToMany(Product::class);
+    }
 }

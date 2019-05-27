@@ -116,7 +116,7 @@
                         // this.errorConnection = "Imposible de se connecter, votre mot de passe ou username est incorrect !"
                     })
             },
-            ...mapActions({SignUp: 'signUp'}),
+            ...mapActions({SignUp: 'userStore/sign_up'}),
         }
 
     }
