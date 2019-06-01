@@ -8,7 +8,7 @@
             .col-3.d-flex.justify-content-center
                 StepBox(title="Nouveau Produit", image='add.svg' @step="goTo" to="newProduct" v-if="getUrl === 'listProducts'")
                 StepBox(title="Liste Produits", image='list.svg' @step="goTo" to="listProducts" v-else)
-        router-view
+        router-view(:key="$route.path")
 </template>
 
 <script>

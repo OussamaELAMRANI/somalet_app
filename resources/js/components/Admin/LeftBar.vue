@@ -43,10 +43,11 @@
                             else {
                                 const children = []
                                 _.forEach(child.children, c => {
-                                    children.push({
-                                        href: {name: c.meta.name},
-                                        title: c.meta.title,
-                                    })
+                                    if (!c.hidden)
+                                        children.push({
+                                            href: {name: c.meta.name},
+                                            title: c.meta.title,
+                                        })
                                 })
                                 r2.push({
                                     href: child.path,

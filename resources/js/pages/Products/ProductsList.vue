@@ -79,8 +79,9 @@
                 <td>{{p.unit.name}}</td>
                 <td>{{p.provider.steName}}</td>
                 <td>
-                    <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
-                            @click="show(p.id)">
+                    <button  class="btn btn-sm btn-success"
+                                 data-toggle="modal" data-target="#exampleModal"
+                                 @click="redirect(p.id)">
                         <i class="fa fa-list" aria-hidden="true"></i>
                     </button>
                     <button class="btn btn-sm btn-danger">
@@ -118,6 +119,9 @@
                 .catch(err => console.log(err.response))
         },
         methods: {
+            redirect(id){
+                this.$router.push({name:'updateProduct',params:{id}});
+            },
             filter() {
                 const ste = this.searchTxt
                 const val = this.products

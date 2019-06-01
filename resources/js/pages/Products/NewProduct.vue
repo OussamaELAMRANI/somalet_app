@@ -20,9 +20,9 @@
                         .row
                             .col
                                 label(for="reference") Reference du produit
-                                input( type="text" class="form-control " id="reference" placeholder="Ref ..." v-model="refr")
+                                input( type="text" class="form-control " id="reference" placeholder="Ref ..." v-model="refr" :disabled="id")
                             .col
-                                label(for="name") Nom Produit
+                                label(for="name") Nom du Produit
                                 input( type="text" class="form-control " id="name"  placeholder="SIRET ..." v-model="name")
                             .dropdown-divider
                         .row
@@ -39,18 +39,18 @@
                                 select#inputState.form-control(v-on:change="getColor")
                                     option(selected disabled) Selectionnez...
                                     option NOUVEAU ++
-                                    option(v-for=' c in colors' :id="'color_'+c.id") {{ c.name }}
+                                    option(v-for=' c in colors' :id="'color_'+c.id" :selected="(c.id == color)") {{ c.name }}
 
                             .col( v-if="newColor === true")
                                 label(for="name") Nouvelle Couleur
                                 input( type="text" class="form-control " id="new-color"  placeholder="Couleur ..."
                                     v-model="color" v-on:keyup.enter="addColor")
                             .col
-                                label(for='inputState') Selectionnez une unite
+                                label(for='inputState') Selectionnez l'unité
                                 select#unity.form-control(v-on:change="getUnity")
                                     option(selected disabled) Selectionnez...
                                     option NOUVEAU ++
-                                    option(v-for=' c in unities' :id="'unity_'+c.id") {{ c.name }}
+                                    option(v-for=' c in unities' :id="'unity_'+c.id" :selected="(c.id == unity)") {{ c.name }}
 
                             .col(v-if="newUnity")
                                 label(for="name") Nouvelle Unite
@@ -59,12 +59,17 @@
                         .dropdown-divider.m-3
                         .row
                             .col
-                                label(for='inputState') Selectionnez une unite
+                                label(for="stockAlerte") Alert quantité minimum
+                                input( type="Number" class="form-control " id="stockAlerte" placeholder="stockAlerte ..." v-model="alertQte")
+                            .dropdown-divider
+                        .row
+                            .col-12
+                                label(for='inputState') Selectionnez le Type du produit
                                 select#type.form-control(v-on:change="getType")
                                     option(selected disabled) Selectionnez...
-                                    option( v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']") {{t}}
+                                    option( v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']" :selected="(t === type)") {{t}}
                             .col
-                                button.btn.btn-success.float-right(@click="insert")
+                                button.btn.btn-success.float-right.m-4(@click="insert")
                                     i.fa.fa-save
                                     | Enregister
 
@@ -90,6 +95,9 @@
                 newUnity: false,
                 newColor: false,
                 type: '',
+                alertQte: 0,
+                id: null,
+                isNew: true
             }
         },
         methods: {
@@ -164,6 +172,9 @@
                 const images = this.$refs.portraits
 
                 formData.append('img', images.file)
+
+                formData.append('id', this.id)
+
                 formData.append('reference', this.refr)
                 formData.append('name', this.name)
                 formData.append('description', this.desc)
@@ -172,6 +183,7 @@
                 formData.append('unit_id', this.unity)
                 formData.append('type', this.type)
                 formData.append('provider_id', this.provider.id)
+                formData.append('alertQte', this.alertQte)
 
 
                 axios.post('/api/products', formData)
@@ -186,12 +198,49 @@
         mounted() {
             axios.get('/api/colors').then(res => {
                 this.colors = res.data
-            }),
-                axios.get('/api/unities').then(res => {
-                    this.unities = res.data
-                })
-        }
-        ,
+            })
+            axios.get('/api/unities').then(res => {
+                this.unities = res.data
+            })
+            //pour determiner si l'etat de la vue en mode : Ajout ou modification
+            //si id == null => Ajout
+            //si id != null => Modification
+            const id = this.$route.params['id'];
+            if (this.$route.params['id'] !== undefined) {
+                this.isNew = false
+                this.id = id
+                axios.get(`/api/products/${id}`)
+                    .then(res => {
+                        const data = res.data
+                        this.provider = data.provider
+                        this.name = data.name
+                        this.refr = data.reference
+                        this.desc = data.description
+                        this.note = data.remark
+                        this.color = data.color.id
+                        // this.colors = data.colors
+                        this.unity = data.unit.id
+                        // this.unities = data.unities
+                        this.type = data.type
+                        this.alertQte = data.alertQte
+                        this.id = data.id
+                    })
+                    .catch(err => {
+                        // this.$notification.error("Ce produit n'existe pas !")
+                        this.$notification.error(err)
+                        // this.$router.push('/404')
+                    })
+
+            }
+            else {
+                this.provider = null;
+                this.isNew = true
+                this.id = null
+            }
+        },
+        destroyed(){
+          console.log('is destoryed')
+        },
         components: {
             PictureInput, SearchProvider
         }

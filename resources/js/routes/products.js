@@ -15,9 +15,18 @@ export default [
             {
                 name: 'newProduct',
                 path: 'new-product',
-                component: NewProvider,
+                component: () => import('@/pages/Products/NewProduct'),
                 meta: {
                     title: 'Nouveau Produit', name: 'newProduct', icon: 'fa fa-gor', roles: 'guest'
+                },
+            },
+            {
+                name: 'updateProduct',
+                hidden: true,
+                path: ':id/update',
+                component: () => import('@/pages/Products/NewProduct'),
+                meta: {
+                    title: 'Modifier Produit', name: 'updateProduct', icon: 'fa fa-gor', roles: 'guest'
                 },
             },
             {
