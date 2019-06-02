@@ -1,5 +1,4 @@
 import Products from '../pages/Products/Products'
-import NewProvider from '../pages/Products/NewProduct'
 import ProductList from '../pages/Products/ProductsList'
 
 export default [
@@ -27,6 +26,14 @@ export default [
                 component: () => import('@/pages/Products/NewProduct'),
                 meta: {
                     title: 'Modifier Produit', name: 'updateProduct', icon: 'fa fa-gor', roles: 'guest'
+                },
+            },
+            {
+                name: 'deleteProduct',
+                hidden: true,
+                path: ':id/delete',
+                meta: {
+                    title: 'delete Produit', name: 'deleteProduct', icon: 'fa fa-gor', roles: 'guest'
                 },
             },
             {

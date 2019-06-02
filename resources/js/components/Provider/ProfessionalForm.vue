@@ -7,8 +7,8 @@
             input( type="text" class="form-control " id="ste" aria-describedby="emailHelp" placeholder="Societe ..." v-model="steName" autofocus)
             .row
                 .col
-                    label(for="ntva") Numero TVA
-                    input( type="text" class="form-control " id="ntva" aria-describedby="emailHelp" placeholder="TVA ..." v-model="nTva")
+                    label(for="numTva") Numero TVA
+                    input( type="text" class="form-control " id="numTva" aria-describedby="emailHelp" placeholder="TVA ..." v-model="numTva")
                 .col
                     label(for="siret") Numero SIRET
                     input( type="text" class="form-control " id="siret" aria-describedby="emailHelp" placeholder="SIRET ..." v-model="nSiret")
@@ -23,8 +23,9 @@
         data() {
             return {
                 steName: '',
-                nTva: '',
+                numTva: '',
                 nSiret: '',
+                id:null,
             }
         },
         methods: {
@@ -32,12 +33,17 @@
                 this.$emit('update', {
                     professional: {
                         steName: this.steName,
-                        numTva: this.nTva,
+                        numTva: this.numTva,
                         nSiret: this.nSiret,
                     }
                 })
+            },
+            setProfessional(p){
+                this.steName = p.steName;
+                this.numTva = p.numTva;
+                this.nSiret = p.nSiret;
             }
-        }
+        },
     }
 </script>
 

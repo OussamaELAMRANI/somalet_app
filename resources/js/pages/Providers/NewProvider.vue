@@ -25,16 +25,16 @@
 
         <!--<transition name="bounce">-->
 
-        <ProfessionalForm class="segment " v-show="box === 0" @update="getProvider">
+        <ProfessionalForm class="segment " v-show="box === 0" @update="getProvider" ref="ProfessionalForm" >
             <button class="btn btn-info" @click="checkStep(1)" type="button">Suivant</button>
         </ProfessionalForm>
 
-        <PersonalForm class="segment " v-show="box === 1" @update="getProvider">
+        <PersonalForm class="segment " v-show="box === 1" @update="getProvider" ref="PersonalForm">
             <button class="btn btn-info" @click="checkStep(0)"  type="button">precedant</button>
             <button class="btn btn-info" @click="checkStep(2)" type="button">Suivant</button>
 
         </PersonalForm>
-        <ContactForm class="segment" v-show="box === 2" @update="getProvider">
+        <ContactForm class="segment" v-show="box === 2" @update="getProvider" ref="ContactForm">
             <button class="btn btn-info" @click="checkStep(1)"  type="button">precedant</button>
         </ContactForm>
         <!--</transition>-->
@@ -64,12 +64,11 @@
                     professional: {},
                     personal: {},
                     contact: {},
-                }
-
-
+                    id:0,
+                },
+                isNew:true
             }
         },
-
         methods: {
             getProvider(data) {
                 const key = Object.keys(data)
@@ -81,13 +80,60 @@
             submitProvider() {
                 axios.post('/api/providers', this.provider)
                     .then(res => {
-                        // console.log(res.data)
+                        console.log(res.data)
                         this.$router.push({name: 'listProvider'})
                     })
-                    .catch(err => console.log(err.response))
+                    .catch(err => this.$notification.error(err))
             }
         },
-        computed: {},
+        mounted(){
+            const id = this.$route.params['id']
+            if(this.$route.params['id'] !== undefined) {
+                this.isNew = false
+                this.provider.id = id
+                axios.get(`/api/providers/${id}`)
+                    .then(res => {
+                        const data = res.data
+                        this.provider.professional = {
+                            steName: data.steName,
+                            numTva: data.numTva,
+                            nSiret: data.nSiret,
+                        }
+                        this.provider.contact = {
+                            cell: data.cell,
+                            phone: data.phone,
+                            email: data.email,
+                            skype: data.skype,
+                            icp: data.icp,
+                        }
+                        this.provider.personal ={
+                            firstName: data.firstName,
+                            lastName: data.lastName,
+                            address: data.address,
+                            cp: data.cp,
+                            city: data.city,
+                            country: data.country,
+                        }
+                        this.$refs.ProfessionalForm.setProfessional(this.provider.professional);
+                        this.$refs.PersonalForm.setPersonal(this.provider.personal);
+                        this.$refs.ContactForm.setContact(this.provider.contact);
+                    })
+                    .catch(err => {
+                        this.$notification.error("Ce produit n'existe pas !")
+                        this.$notification.error(err)
+                        this.$router.push('/404')
+                    })
+                }
+                else {
+                    this.provider = {
+                        professional: {},
+                        personal: {},
+                        contact: {},
+                        id:0
+                    };
+                    this.isNew = true
+                }
+        },
         components: {
             StepBox,
             Divider,

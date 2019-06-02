@@ -9,7 +9,7 @@
                 StepBox(title="Liste Fournisseurs", image='list.svg' @step="goTo" to="listProvider" v-else)
 
         #change-providers-content
-            router-view
+        router-view(:key="$route.path")
 
 </template>
 

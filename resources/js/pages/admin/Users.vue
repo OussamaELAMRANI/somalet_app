@@ -37,8 +37,11 @@
                 {headerName: 'Actions', field: 'Actions', width:180,sortable: false, filter: false},
             ];
 
-            fetch('../api/auth/allUsers')
+            fetch('../../api/auth/allUsers')
                 .then(result => result.json())
+                // .then(result => {
+                //     console.log(result)
+                // })
                 .then(rowData => this.rowData = rowData);
             this.defaultColDef = { resizable: true };
         },
@@ -46,12 +49,12 @@
         mounted() {
             this.gridApi = this.gridOptions.api;
             this.gridColumnApi = this.gridOptions.columnApi;
-            this.sizeToFit();
+            // this.sizeToFit();
         },
         methods: {
-            sizeToFit() {
-                this.gridApi.sizeColumnsToFit();
-            },
+            // sizeToFit() {
+            //     this.gridApi.sizeColumnsToFit();
+            // },
         }
     }
 </script>

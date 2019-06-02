@@ -14,9 +14,9 @@ import VeeValidate, {Validator} from 'vee-validate';
 import VueNotification from "@kugatsu/vuenotification";
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-
 import VueSelect from 'vue-cool-select'
-
+import VueDialog from 'vue2-dialog'
+import 'vue2-dialog/dist/VueDialog.css'
 
 /**
  * Add Plugins
@@ -31,11 +31,11 @@ Validator.localize('fr', fr);
 Vue.use(VueNotification, {
     timer: 20
 });
-Vue.use(VueFormWizard)
+Vue.use(VueFormWizard);
+Vue.use(VueDialog)
 
 Vue.use(VueSelect, {
     theme: 'bootstrap' // or 'material-design'
 })
-
 
 new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

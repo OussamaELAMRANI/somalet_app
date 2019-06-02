@@ -31,19 +31,18 @@ class ProductController extends Controller
      */
     public function store(Request $req)
     {
-        $existe = Product::find($req->input('id'))->first();
+        $existe = Product::find($req->input('id'));
         $portrait_url = '';
-
-        if (!$existe) {
-            if ($req->has('img') && $req->file('img')) {
-                try {
-                    $year = Carbon::parse($req->input('date'))->year;
-                    $month = Carbon::parse($req->input('date'))->month;
-                    $portrait_url = Storage::disk('public')->putFile("products/{$year}/{$month}", $req->file('img'));
-                } catch (\Exception $e) {
-                    return response(['error' => $e->getMessage()]);
-                }
+        if ($req->has('img') && $req->file('img')) {
+            try {
+                $year = Carbon::parse($req->input('date'))->year;
+                $month = Carbon::parse($req->input('date'))->month;
+                $portrait_url = Storage::disk('public')->putFile("products/{$year}/{$month}", $req->file('img'));
+            } catch (\Exception $e) {
+                return response(['error' => $e->getMessage()]);
             }
+        }
+        if (!$existe) {
             $data = Product::create([
                 'reference' => $req->input('reference'),
                 'name' => $req->input('name'),
@@ -102,8 +101,9 @@ class ProductController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $id)
     {
-        //
+        $v = $id::destroy($id->id);
+        return response()->json(['message' => 'bien supprimé'], 201);
     }
 }

@@ -1,78 +1,96 @@
-<template lang="pug">
-    #new-product.container
-        transition(name="bounce")
-            search-provider(@provider="getProvider" v-if="provider === null")
-            div(v-else)
-                button(@click="emptyProvider" class="btn btn-secondary btn-sm mb-5")
-                    i.fas.fa-arrow-left
-                    | Selection un autre fournisseur
-                h5.text-success.mb-1
-                    | Nouveau produit  du Fournissuer :
-                    strong.text-dark " {{provider.steName}} "
-                .dropdown-divider
-                .row
-                    .col
-                        picture-input#art-portrait(width="200" height="200" margin="16" accept="image/*" size="10" ref="portraits" buttonClass="btn btn-sm btn-info"
-                            :customStrings="{upload: '<h1>Bummer!</h1>', drag: 'Ajouter une image du Portrait ...'}")
-                        .dropdown-divider
-                form(@submit.prevent="")
-                    .form-group.segment
-                        .row
-                            .col
-                                label(for="reference") Reference du produit
-                                input( type="text" class="form-control " id="reference" placeholder="Ref ..." v-model="refr" :disabled="id")
-                            .col
-                                label(for="name") Nom du Produit
-                                input( type="text" class="form-control " id="name"  placeholder="SIRET ..." v-model="name")
-                            .dropdown-divider
-                        .row
-                            .col
-                                label(for="desc") Description
-                                textarea(  class="form-control " id="desc"  placeholder="Description du produit  ..." v-model="desc")
-                            .col
-                                label(for="note") Remarque
-                                textarea( class="form-control " id="note" placeholder="Remarque ..." v-model="note")
-                            .dropdown-divider
-                        .row
-                            .col
-                                label(for='inputState') Selectionnez une couleur
-                                select#inputState.form-control(v-on:change="getColor")
-                                    option(selected disabled) Selectionnez...
-                                    option NOUVEAU ++
-                                    option(v-for=' c in colors' :id="'color_'+c.id" :selected="(c.id == color)") {{ c.name }}
-
-                            .col( v-if="newColor === true")
-                                label(for="name") Nouvelle Couleur
-                                input( type="text" class="form-control " id="new-color"  placeholder="Couleur ..."
-                                    v-model="color" v-on:keyup.enter="addColor")
-                            .col
-                                label(for='inputState') Selectionnez l'unité
-                                select#unity.form-control(v-on:change="getUnity")
-                                    option(selected disabled) Selectionnez...
-                                    option NOUVEAU ++
-                                    option(v-for=' c in unities' :id="'unity_'+c.id" :selected="(c.id == unity)") {{ c.name }}
-
-                            .col(v-if="newUnity")
-                                label(for="name") Nouvelle Unite
-                                input( type="text" class="form-control " id="new-unity"  placeholder="Unite ..." v-model="unity"
-                                    v-on:keyup.enter="addUnity")
-                        .dropdown-divider.m-3
-                        .row
-                            .col
-                                label(for="stockAlerte") Alert quantité minimum
-                                input( type="Number" class="form-control " id="stockAlerte" placeholder="stockAlerte ..." v-model="alertQte")
-                            .dropdown-divider
-                        .row
-                            .col-12
-                                label(for='inputState') Selectionnez le Type du produit
-                                select#type.form-control(v-on:change="getType")
-                                    option(selected disabled) Selectionnez...
-                                    option( v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']" :selected="(t === type)") {{t}}
-                            .col
-                                button.btn.btn-success.float-right.m-4(@click="insert")
-                                    i.fa.fa-save
-                                    | Enregister
-
+<template>
+    <div class="container" id="new-product">
+        <transition name="bounce">
+            <search-provider @provider="getProvider" v-if="provider === null"></search-provider>
+            <div v-else="v-else">
+                <button class="btn btn-secondary btn-sm mb-5" @click="emptyProvider"><i class="fas fa-arrow-left"></i>Selection
+                    un autre fournisseur
+                </button>
+                <h5 class="text-success mb-1">Nouveau produit du Fournissuer :<strong class="text-dark">"
+                    {{provider.steName}} "</strong></h5>
+                <div class="dropdown-divider"></div>
+                <div class="row">
+                    <div class="col">
+                        <picture-input id="art-portrait" width="200" height="200" margin="16" accept="image/*" size="10"
+                                       ref="portraits" buttonClass="btn btn-sm btn-info" :prefill="img_url"
+                                       :customStrings="{upload: '&lt;h1&gt;Bummer!&lt;/h1&gt;', drag: 'Ajouter une image du Portrait ...'}"></picture-input>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                </div>
+                <form @submit.prevent="">
+                    <div class="form-group segment">
+                        <div class="row">
+                            <div class="col"><label for="reference">Reference du produit</label><input
+                                class="form-control " type="text" id="reference" placeholder="Ref ..." v-model="refr"
+                                :disabled="id!==0"/></div>
+                            <div class="col"><label for="name">Nom du Produit</label><input class="form-control "
+                                                                                            type="text" id="name"
+                                                                                            placeholder="SIRET ..."
+                                                                                            v-model="name"/></div>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col"><label for="desc">Description</label><textarea class="form-control "
+                                                                                            id="desc"
+                                                                                            placeholder="Description du produit  ..."
+                                                                                            v-model="desc"></textarea>
+                            </div>
+                            <div class="col"><label for="note">Remarque</label><textarea class="form-control " id="note"
+                                                                                         placeholder="Remarque ..."
+                                                                                         v-model="note"></textarea>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col"><label for="inputState">Selectionnez une couleur</label><select
+                                class="form-control" id="inputState" v-on:change="getColor">
+                                <option selected="selected" disabled="disabled">Selectionnez...</option>
+                                <option>NOUVEAU ++</option>
+                                <option v-for=" c in colors" :id="'color_'+c.id" :selected="(c.id == color)">{{ c.name
+                                    }}
+                                </option>
+                            </select></div>
+                            <div class="col" v-if="newColor === true"><label for="name">Nouvelle Couleur</label><input
+                                class="form-control " type="text" id="new-color" placeholder="Couleur ..."
+                                v-model="color" v-on:keyup.enter="addColor"/></div>
+                            <div class="col"><label for="inputState">Selectionnez l'unité</label><select
+                                class="form-control" id="unity" v-on:change="getUnity">
+                                <option selected="selected" disabled="disabled">Selectionnez...</option>
+                                <option>NOUVEAU ++</option>
+                                <option v-for=" c in unities" :id="'unity_'+c.id" :selected="(c.id == unity)">{{ c.name
+                                    }}
+                                </option>
+                            </select></div>
+                            <div class="col" v-if="newUnity"><label for="name">Nouvelle Unite</label><input
+                                class="form-control " type="text" id="new-unity" placeholder="Unite ..." v-model="unity"
+                                v-on:keyup.enter="addUnity"/></div>
+                        </div>
+                        <div class="dropdown-divider m-3"></div>
+                        <div class="row">
+                            <div class="col"><label for="stockAlerte">Alert quantité minimum</label><input
+                                class="form-control " type="Number" id="stockAlerte" placeholder="stockAlerte ..."
+                                v-model="alertQte"/></div>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12"><label for="inputState">Selectionnez le Type du produit</label><select
+                                class="form-control" id="type" v-on:change="getType">
+                                <option selected="selected" disabled="disabled">Selectionnez...</option>
+                                <option v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']" :selected="(t === type)">
+                                    {{t}}
+                                </option>
+                            </select></div>
+                            <div class="col">
+                                <button class="btn btn-success float-right m-4" @click="insert"><i
+                                    class="fa fa-save"></i>Enregister
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </transition>
+    </div>
 </template>
 
 <script>
@@ -83,6 +101,7 @@
         name: "NewProduct",
         data() {
             return {
+                img_url:null,
                 provider: null,
                 name: '',
                 refr: '',
@@ -96,11 +115,19 @@
                 newColor: false,
                 type: '',
                 alertQte: 0,
-                id: null,
+                id: 0,
+                img:'',
                 isNew: true
             }
         },
         methods: {
+            getImg(img) {
+                try {
+                    return `${process.env.MIX_APP_URL}/storage/${img}`;
+                } catch (e) {
+                    // return require("../assets/undefined.svg");
+                }
+            },
             getProvider(p) {
                 this.provider = p
             },
@@ -224,6 +251,9 @@
                         this.type = data.type
                         this.alertQte = data.alertQte
                         this.id = data.id
+                        this.img = data.img
+                        this.img_url = `${process.env.MIX_APP_URL}/storage/${this.img}`
+                        // this.$refs.portraits.file = data.img
                     })
                     .catch(err => {
                         // this.$notification.error("Ce produit n'existe pas !")
@@ -231,15 +261,14 @@
                         // this.$router.push('/404')
                     })
 
-            }
-            else {
+            } else {
                 this.provider = null;
                 this.isNew = true
-                this.id = null
+                this.id = 0
             }
         },
-        destroyed(){
-          console.log('is destoryed')
+        destroyed() {
+            console.log('is destoryed')
         },
         components: {
             PictureInput, SearchProvider

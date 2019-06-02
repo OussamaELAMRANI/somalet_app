@@ -5,12 +5,12 @@
             .dropdown-divider
             .row
                 .col
-                    label(for="name") Nom
-                    input( type="text" class="form-control " id="name" aria-describedby="emailHelp" placeholder="Nom du fournisseur ici ..." v-model="name" autofocus)
+                    label(for="firstName") Nom
+                    input( type="text" class="form-control " id="firstName" aria-describedby="emailHelp" placeholder="Nom du fournisseur ici ..." v-model="firstName" autofocus)
                 .col
-                    label(for="lastename") Prenom
-                    input( type="text" class="form-control " id="lastename" aria-describedby="emailHelp" placeholder="Prenom du fournisseur ici ..."
-                    v-model="lastname")
+                    label(for="lastName") Prenom
+                    input( type="text" class="form-control " id="lastName" aria-describedby="emailHelp" placeholder="Prenom du fournisseur ici ..."
+                    v-model="lastName")
             .row
                 .col
                     label(for="address") Adresse
@@ -36,8 +36,8 @@
         name: "PersonalForm",
         data() {
             return {
-                name: '',
-                lastname: '',
+                firstName: '',
+                lastName: '',
                 address: '',
                 cp: '',
                 city: '',
@@ -48,14 +48,22 @@
             sendToProvider() {
                 this.$emit('update', {
                     personal: {
-                        firstName: this.name,
-                        lastName: this.lastname,
+                        firstName: this.firstName,
+                        lastName: this.lastName,
                         address: this.address,
                         cp: this.cp,
                         city: this.city,
                         country: this.country,
                     }
                 })
+            },
+            setPersonal(p){
+                this.firstName = p.firstName;
+                this.lastName = p.lastName;
+                this.address = p.address;
+                this.cp = p.cp;
+                this.city = p.city;
+                this.country = p.country;
             }
         }
     }

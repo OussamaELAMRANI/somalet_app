@@ -31,11 +31,22 @@ class ProviderController extends Controller
      */
     public function store(Request $req)
     {
+        $message = null;
         $filterRequest = $this->filterStoreRequest($req);
-
-        $newProvider = Provider::create($filterRequest);
-
-        return response()->json(['message' => "Bien Ajouter ce fournisseur ! {$newProvider->firstName}"], 201);
+        if($filterRequest['id'] === 0){
+            $newProvider = Provider::create($filterRequest);
+            $message = "fournisseur bien ajouter : {$newProvider->firstName}";
+        }else{
+            $existe = Provider::find($filterRequest['id']);
+            $data = $existe;
+            if($existe){
+                $existe->update($filterRequest);
+                $message = "fournisseur bien modifier : {$data->firstName}";
+            }else{
+                return response()->json(['message' => 'impossible de modifier ce fournisseur'], 201);
+            }
+        }
+        return response()->json(['message' => $message], 201);
     }
 
     /**
@@ -49,9 +60,24 @@ class ProviderController extends Controller
         $personal = $in->input('personal');
         $professional = $in->input('professional');
         $contact = $in->input('contact');
-
-        $data = array_merge($personal, $professional, $contact);
-
+        $data = array_merge($personal, $professional, $contact,['id' =>$in->input('id')]);
         return $data;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return \response()->json(Provider::findOrFail($id));
+    }
+
+    public function destroy(Provider $id)
+    {
+        $v = $id::destroy($id->id);
+        return response()->json(['message' => 'bien supprimé'], 201);
     }
 }

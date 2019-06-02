@@ -1,5 +1,37 @@
 <template>
     <div id="products_list" class="container">
+        <alert-modal title="Supperession d'un Produit" id="bitch">
+            <template slot="content">
+                <h5 class="text-uppercase text-danger text-center">
+                    Voullez-vous vraiment supprimer ce produit ?
+                </h5>
+            </template>
+            <template slot="btn">
+                <button class="btn btn-danger" @click="supp()"  data-dismiss="modal">Supprimer</button>
+            </template>
+        </alert-modal>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog modal-xl" role="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Detail d'un Produit</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert segment">
+                            <show-product :product="product"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-primary">Imprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <h3 class="text-lg-center text-secondary m-5">Liste des Produits</h3>
         <div class="dropdown-divider"></div>
 
@@ -37,7 +69,7 @@
         </div>
 
 
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped" v-if="products">
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -70,7 +102,7 @@
             <tr v-else v-for="(p,index) in searchProduct">
                 <th scope="row">{{index+1}}</th>
                 <!--                <td><img :src="'/storage/'+p.img" alt="image produit" height="60px"></td>-->
-                <td><img :src="p.img" alt="image produit" height="60px"></td>
+                <td><img :src="host+''+p.img" alt="image produit" height="60px"></td>
                 <td>{{p.reference}}</td>
                 <td>{{p.name}}</td>
                 <td>{{p.description}}</td>
@@ -79,12 +111,18 @@
                 <td>{{p.unit.name}}</td>
                 <td>{{p.provider.steName}}</td>
                 <td>
+                    <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
+                            @click="show(p.id)">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                    </button>
                     <button  class="btn btn-sm btn-success"
                                  data-toggle="modal" data-target="#exampleModal"
                                  @click="redirect(p.id)">
-                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger">
+                    <button class="btn btn-sm btn-danger"
+                            @click="getElementIdToDelete(p.id)"
+                            data-target="#bitch" data-toggle="modal">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>
                 </td>
@@ -97,11 +135,15 @@
 <script>
 
     import {SelfBuildingSquareSpinner} from 'epic-spinners'
+    import AlertModal from "@/components/Modals/AlertModal";
+    import ShowProduct from "./showProduct";
 
     export default {
         name: "ProductsList",
         data() {
             return {
+                host:`${process.env.MIX_APP_URL}/storage/`,
+                ElementIdToDelete:null,
                 products: null,
                 searchProduct: null,
                 searchTxt: '',
@@ -119,6 +161,40 @@
                 .catch(err => console.log(err.response))
         },
         methods: {
+            getElementIdToDelete(id){
+                this.ElementIdToDelete = id;
+            },
+            supp(){
+                let id = this.ElementIdToDelete;
+                axios.delete(`/api/products/${id}/delete`)
+                    .then(res => {
+                        // this.$notification.error('produit bien supprimer')
+                        // this.$router.push({name:'listProduct',params:{id}});
+                        this.getProducts();
+                    })
+                    .catch(err => {
+                        // this.$notification.error("Ce produit n'existe pas !")
+                        // this.$notification.error('impossible de supprimer ce produit')
+                        // this.$router.push('/404')
+                    })
+            },
+            show(id) {
+                // console.log(id)
+                const val = this.products
+                this.product = _.find(val, o => {
+                    return o.id == id
+                });
+            },
+            getProducts(){
+                this.products = null;
+                axios.get('/api/products')
+                    .then(res => {
+                        const data = res.data
+                        this.products = data
+                        this.searchProduct = data
+                    })
+                    .catch(err => console.log(err.response))
+            },
             redirect(id){
                 this.$router.push({name:'updateProduct',params:{id}});
             },
@@ -147,6 +223,7 @@
             // }
         },
         components: {
+            AlertModal,ShowProduct,
             'loading': SelfBuildingSquareSpinner
         }
     }

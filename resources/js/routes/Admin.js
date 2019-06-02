@@ -32,8 +32,11 @@ export default [
         path: '/dashboard',
         name: 'dashboard_main',
         component: dashboard,
+        // meta: {
+        //     requiresAuth: true
+        // },
         meta: {
-            requiresAuth: true
+            title: 'Utilisateur', name: 'dashboard_main', icon: 'fa fa-briefcase', roles: 'guest'
         },
         children: [
             {
@@ -41,8 +44,12 @@ export default [
                 component: Home,
             },
             {
+                name: 'Allusers',
                 path: 'users',
                 component: Users,
+                meta: {
+                    title: 'Liste des Utilisateurs', name: 'Allusers', icon: 'fa fa-gor', roles: 'guest'
+                },
             },
             ...provider,
             ...products,

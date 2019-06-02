@@ -44,13 +44,20 @@
             sendToProvider() {
                 this.$emit('update', {
                     contact: {
-                        cell: this.phone,
-                        phone: this.fixe,
+                        cell: this.cell,
+                        phone: this.phone,
                         email: this.email,
                         skype: this.skype,
                         icp: this.icp,
                     }
                 })
+            },
+            setContact(p){
+                this.cell = p.cell;
+                this.phone = p.phone;
+                this.email = p.email;
+                this.skype = p.skype;
+                this.icp = p.icp;
             }
         }
     }

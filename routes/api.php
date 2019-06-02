@@ -19,7 +19,7 @@ Route::prefix('auth')->group(function () {
     Route::post('sign-up', 'Api\AuthController@signUp');
     Route::post('login', 'Api\AuthController@logIn');
     Route::get('allUsers', 'Api\AuthController@allUsers');
-    Route::get('users', 'Api\AuthController@allUsers');
+
 
     // User Should be connected !
     Route::group(['middleware' => 'auth:api'], function () {
@@ -35,6 +35,8 @@ Route::prefix('providers')->group(function () {
 
     Route::get('', 'Api\ProviderController@index');
     Route::post('', 'Api\ProviderController@store');
+    Route::get('{id}', 'Api\ProviderController@show');
+    Route::delete('{id}/delete', 'Api\ProviderController@destroy');
 
 });
 //Categories
@@ -75,6 +77,7 @@ Route::prefix('products')->group(function () {
     Route::get('', 'Api\ProductController@index');
     Route::get('{id}', 'Api\ProductController@show');
     Route::post('', 'Api\ProductController@store');
+    Route::delete('{id}/delete', 'Api\ProductController@destroy');
 });
 Route::prefix('arrivals')->group(function () {
 //    Route::group(['middleware' => 'auth:api'], function () {
@@ -85,5 +88,8 @@ Route::prefix('arrivals')->group(function () {
     Route::post('products', 'Api\ArrivalController@products');
 //        Route::post('', 'Api\ArrivalController@user');
 //    });
-
+    Route::get('users', 'Api\AuthController@allUsers');
+});
+Route::prefix('dashboard')->group(function () {
+    Route::get('users', 'Api\AuthController@allUsers');
 });

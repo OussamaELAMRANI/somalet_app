@@ -21,6 +21,23 @@ export default [
                 },
             },
             {
+                name: 'updateProvider',
+                hidden: true,
+                path: ':id/update',
+                component: () => import('@/pages/Providers/NewProvider'),
+                meta: {
+                    title: 'Modifier Fournisseur', name: 'updateProvider', icon: 'fa fa-gor', roles: 'guest'
+                },
+            },
+            {
+                name: 'deleteProvider',
+                hidden: true,
+                path: ':id/delete',
+                meta: {
+                    title: 'delete Fournisseur', name: 'deleteProvider', icon: 'fa fa-gor', roles: 'guest'
+                },
+            },
+            {
                 name: 'listProvider',
                 path: 'provider-list',
                 component: ProvidersList,

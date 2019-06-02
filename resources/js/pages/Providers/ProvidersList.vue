@@ -1,5 +1,15 @@
 <template>
     <div id="provider-list">
+        <alert-modal title="Supperession d'un fournisseur" id="bitch">
+            <template slot="content">
+                <h5 class="text-uppercase text-danger text-center">
+                    Voullez-vous vraiment supprimer ce fournisseur ?
+                </h5>
+            </template>
+            <template slot="btn">
+                <button class="btn btn-danger" @click="supp()"  data-dismiss="modal">Supprimer</button>
+            </template>
+        </alert-modal>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
             <div class="modal-dialog modal-xl" role="">
@@ -60,7 +70,7 @@
             </div>
         </div>
 
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped" v-if="providers">
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -97,7 +107,13 @@
                             @click="show(p.id)">
                         <i class="fa fa-list" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger">
+                    <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
+                            @click="redirect(p.id)">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger"
+                            @click="getElementIdToDelete(p.id)"
+                            data-target="#bitch" data-toggle="modal">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>
                 </td>
@@ -105,16 +121,20 @@
             </tbody>
         </table>
     </div>
+
+
 </template>
 
 <script>
     import {SelfBuildingSquareSpinner} from 'epic-spinners'
     import ShowProvider from "./showProvider";
+    import AlertModal from "@/components/Modals/AlertModal";
 
     export default {
         name: "ProvidersList",
         data() {
             return {
+                ElementIdToDelete:null,
                 providers: null,
                 searchProviders: null,
                 searchTxt: '',
@@ -123,15 +143,39 @@
             }
         },
         mounted() {
-            axios.get('/api/providers')
-                .then(res => {
-                    const data = res.data
-                    this.providers = data
-                    this.searchProviders = data
-                })
-                .catch(err => console.log(err.response))
+            this.getProviders();
         },
         methods: {
+            getElementIdToDelete(id){
+                this.ElementIdToDelete = id;
+            },
+            getProviders(){
+                this.providers = null;
+                axios.get('/api/providers')
+                    .then(res => {
+                        const data = res.data
+                        this.providers = data
+                        this.searchProviders = data
+                    })
+                    .catch(err => console.log(err.response))
+            },
+            supp(){
+                let id = this.ElementIdToDelete;
+                axios.delete(`/api/providers/${id}/delete`)
+                    .then(res => {
+                        // this.$notification.error('produit bien supprimer')
+                        this.$router.push({name:'listProvider',params:{id}});
+                        this.getProviders();
+                    })
+                    .catch(err => {
+                        // this.$notification.error("Ce produit n'existe pas !")
+                        // this.$notification.error('impossible de supprimer ce produit')
+                        // this.$router.push('/404')
+                    })
+            },
+            redirect(id){
+                this.$router.push({name:'updateProvider',params:{id}});
+            },
             filter() {
                 const ste = this.searchTxt
                 const val = this.providers
@@ -157,7 +201,7 @@
             }
         },
         components: {
-            ShowProvider,
+            ShowProvider, AlertModal,
             'loading': SelfBuildingSquareSpinner
         }
     }

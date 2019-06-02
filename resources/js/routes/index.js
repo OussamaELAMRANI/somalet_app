@@ -8,6 +8,7 @@ Vue.use(Router);
 import Providers from './provider'
 import Products from './products'
 import arrivals from './arrivals'
+import Users from './users'
 
 // import NotFound from './../pages/NotFound'
 
@@ -48,9 +49,11 @@ export const asyncRoutes = [
                     title: 'dashboard_home', icon: 'fa fa-gor', roles: 'guest'
                 },
             },
+            ...Users,
             ...Providers,
             ...Products,
             ...arrivals,
+
         ],
     },
 
