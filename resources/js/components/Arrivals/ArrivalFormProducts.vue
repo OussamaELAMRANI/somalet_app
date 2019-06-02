@@ -54,10 +54,19 @@
                                    v-show="errors.has('price_devise'+k)"></i>
                             </div>
                         </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Prix de Douane :</label>
+                                <input type="number" class="form-control" v-model="product.cost.douane"
+                                       :name="'douane'+k" v-validate="'required'"/>
+                                <i class="fa fa-exclamation-triangle text-danger"
+                                   v-show="errors.has('douane'+k)"></i>
+                            </div>
+                        </div>
                         <!--   Calculate Sell Product's price-->
                         <div class="col">
                             <div class="form-group">
-                                <label for="">Ct de revient Unitaire :</label>
+                                <label for="">Cout de revient Unitaire :</label>
                                 <input type="number" class="form-control" v-model="product.sell_price"
                                        :name="'prix_achat'+k" disabled>
                             </div>
@@ -66,19 +75,17 @@
                     <template v-else>
                         <div class="col">
                             <div class="form-group">
-                                <label for="">Prix Unitaire HT :</label>
+                                <label for="">Prix d'achat Unitaire HT :</label>
                                 <input type="number" :name="'prix_u_HT'+k" class="form-control"
-                                       v-model="product.price_unit_ht"
-                                       v-validate="'required'">
+                                       v-model="product.price_unit_ht" v-validate="'required'">
                                 <i class="fa fa-exclamation-triangle text-danger"
                                    v-show="errors.has('prix_u_HT'+k)"></i>
-                                <!--                        <span class="help text-danger" v-show="errors.has('prix_u_HT')">{{ errors.first('prix_u_HT') }}</span>-->
                                 <div class="dropdown-divider"></div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="form-group" v-if="type !== 'INTERNATIONAL'">
-                                <label for="">Prix Unitaire TTC :</label>
+                            <div class="form-group">
+                                <label for="">Prix d'achat Unitaire TTC :</label>
                                 <input type="number" class="form-control" v-model="product.price_unit_ttc"
                                        :name="'prix_u_ttc'+k"
                                        v-validate="{ min_value: product.sell_price , required:true}">
@@ -143,7 +150,10 @@
                         },
                         global_cost: 0,
                         sell_price: 0,
-                        remark: ''
+                        remark: '',
+                        // NATIONAL
+                        price_unit_ht: 0,
+                        price_unit_ttc: 0,
                     }
                 ],
                 prods: Array([]),
@@ -170,6 +180,31 @@
             }
         },
         methods: {
+            reset() {
+                this.productsCalculator = [{
+                    product_id: null,
+                    qte: '',
+                    product_devis: 0,
+                    cost: {
+                        transitaire: 0,
+                        transport: 0,
+                        magazinage: 0,
+                        douane: 0,
+                        manutension: 0,
+                        fret: 0,
+                        autres: 0,
+                        surestaries: 0,
+                    },
+                    global_cost: 0,
+                    sell_price: '',
+                    remark: '',
+                    // NATIONAL
+                    price_unit_ht: 0,
+                    price_unit_ttc: 0,
+                }]
+
+
+            },
             add() {
                 // this.prods.push([]);
                 this.productsCalculator.push(
@@ -189,7 +224,10 @@
                         },
                         global_cost: 0,
                         sell_price: '',
-                        remark: ''
+                        remark: '',
+                        // NATIONAL
+                        price_unit_ht: 0,
+                        price_unit_ttc: 0,
                     }
                 );
             },
@@ -215,9 +253,26 @@
                 return (Number(chargeArrivalType) * Number(productDevise)) / Number(totalDevis)
             },
             sendProduct() {
-                axios.post('/api/arrivals/products', this.productsCalculator)
-                    .then(({data}) => console.log(data))
-                    .catch(err => console.log(err))
+
+                let products = _.cloneDeep(this.productsCalculator)
+                const filterProduct = []
+
+                _.forEach(products, (p) => {
+                    filterProduct.push({
+                        product_id: p.product_id,
+                        qte_facture: Number(p.qte),
+                        fret_douane: p.cost.douane,
+                        price_unit_ht: Number(p.price_unit_ht),
+                        price_unit_ttc: (this.type === "NATIONAL") ? Number(p.price_unit_ttc) : Number(p.sell_price),
+                        price_devise: p.product_devis,
+                        remark: p.remark,
+                    })
+                })
+
+                return filterProduct
+                // axios.post('/api/arrivals', this.productsCalculator)
+                //     .then(({data}) => console.log(data))
+                //     .catch(err => console.log(err))
             },
             onSearch(search, id) {
                 // let SelectedIds = this.arrayRemove(this.getProductsSelectedId(), null);
@@ -256,7 +311,8 @@
                 // this.calculerCtRevient(this.arrival);
                 return this.$validator.validateAll().then((result) => {
                     if (result)
-                        this.$emit('getProducts', this.productsCalculator);
+                        this.$emit('getProducts', this.sendProduct());
+
                     return result;
                 });
             },

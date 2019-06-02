@@ -6,22 +6,17 @@
         </tab-content>
         <tab-content title="Ajout des produits" :before-change="producsPass">
             <!--            <arrival-form-products ref="formProduct" "@getProducts="getProducts" :type="ArrivalData.type" :arrival="ArrivalData"/>-->
-            <arrival-form-products ref="formProduct" :arrival="ArrivalsData" @getProducts="getProducts"/>
+            <arrival-form-products ref="formProduct" :arrival="ArrivalsData" @getProducts="getProducts"
+                                   :type="ArrivalsData.type"/>
         </tab-content>
         <tab-content title="Résultat">
-            <h3 class="text-center text-uppercase text-secondary">Bien Enregister</h3>
+            <h3 class="text-center text-uppercase text-secondary">Confirmation</h3>
             <hr/>
             <div class="row justify-content-center">
                 <div class="col-3">
-                    <button class="btn btn btn-outline-warning" @click="saveArrivals">Valider l'arrivage</button>
-                    <button class="btn btn btn-outline-success">Ajouter Nouveau Arrivage</button>
-                    <button class="btn btn btn-outline-primary">Lister les arrivages</button>
+                    <button class="btn btn btn-outline-success" @click="saveArrivals">Valider l'arrivage</button>
+                    <button class="btn btn btn-outline-secondary" @click="goToArrivalList()">Annuler</button>
                 </div>
-            </div>
-            <div class="row">
-                <code>
-                    {{ArrivalsData | JSON}}
-                </code>
             </div>
         </tab-content>
     </form-wizard>
@@ -48,6 +43,7 @@
         },
         methods: {
             entetePass() {
+                this.$refs.formProduct.reset();
                 return this.$refs.entete.validateBeforeSubmit();
             },
             producsPass() {
@@ -61,19 +57,18 @@
             getProducts(products) {
                 this.ArrivalsData['products'] = products;
             },
-            arrayRemove(arr, value) {
-                return arr.filter(function (ele) {
-                    return ele != value;
-                });
+            goToArrivalList() {
+                this.$router.push({name: 'list_arrivals'})
             },
             saveArrivals() {
                 let arrivals = _.cloneDeep(this.ArrivalsData)
                 let products = _.cloneDeep(arrivals.products)
-                _.pull(arrivals, 'products')
+                arrivals = _.omit(arrivals, ['products'])
 
                 axios.post('/api/arrivals', {arrivals, products})
                     .then(({data}) => {
                         console.log(data)
+                        this.$router.push({name: 'list_arrivals'})
                     })
             }
         }

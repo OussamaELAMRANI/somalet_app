@@ -39,10 +39,29 @@ class ArrivalController extends Controller
      */
     public function store(Request $req)
     {
-        $r = $req->all();
+        $arrivals = $req->input('arrivals');
+        $prods = $req->input('products');
+
+        // Add New Arrival in 1st
+        $filterRequest = $arrivals;
+        $filterRequest['date_facture'] = null;
+        $filterRequest['user_id'] = 1; // todo Add User ID from Request
+
+        $exist = Arrival::where('n_facture', $filterRequest['n_facture'])->first();
+
+        if (!$exist) {
+            $res = Arrival::create($filterRequest);
+            $res->saveItems($prods, DB::getPdo()->lastInsertId());
+            return response()->json(['data' => $res, 'message' => "Added success"], 201);
+        }
+
+        return response()->json("error");
+
+        // Add its products
+
+
 //        $user_info = $req->user();
-        $arr = $r['arrivals'];
-        $prods = $r['products'];
+
 //        return response()->json($arr,200);
 //        $arr['date_facture'] = null;
 //        $arr['user_id'] = 1; //todo Add User ID from Request
