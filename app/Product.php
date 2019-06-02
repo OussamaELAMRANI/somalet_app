@@ -35,8 +35,18 @@ class Product extends Model
     {
         return $this->hasMany(Pointure::class, 'product_id');
     }
-    function larrival()
+//    function larrival()
+//    {
+//        return $this->hasMany(LArrival::class, 'product_id');
+//    }
+
+    /**
+     * Haves a Pivot table Order_items
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function arrival()
     {
-        return $this->hasMany(LArrival::class, 'product_id');
+        return $this->belongsToMany(Arrival::class, 'l_arrivals', 'product_id', 'arrival_id');
     }
+
 }
