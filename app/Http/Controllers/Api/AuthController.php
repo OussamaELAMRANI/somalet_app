@@ -96,4 +96,36 @@ class AuthController extends Controller
     {
         return response()->json(User::all(), 200);
     }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $id)
+    {
+        $v = $id::destroy($id->id);
+        return response()->json(['message' => 'bien supprimé'], 201);
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return response()->json(User::findOrFail($id));
+    }
+    /**
+     * update user
+     * @param SignUpClientRequest $req
+     * @return string message
+     */
+    public function update(User $id,Request $req)
+    {
+        $credentials = \request(['username', 'first_name', 'last_name', 'password','is_active']);
+        User::update($credentials);
+        return response()->json(['message' => 'Cet utilisateur a ete bien modifier !'], 201);
+    }
 }

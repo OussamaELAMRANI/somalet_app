@@ -13,12 +13,13 @@ class ArrivalController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json(Arrival::filter($request)->last(), 200);
+
     }
 
     /**

@@ -8,7 +8,7 @@ export default [
         component: Products,
         redirect: '/product/product-list',
         meta: {
-            title: 'Produits', name: 'allProducts', icon: 'fa fa-briefcase', roles: 'guest'
+            title: 'Produits', name: 'allProducts', icon: 'fa fa-cube', roles: 'guest'
         },
         children: [
             {

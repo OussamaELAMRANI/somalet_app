@@ -9,6 +9,7 @@ import Providers from './provider'
 import Products from './products'
 import arrivals from './arrivals'
 import Users from './users'
+import Receptions from './receptions'
 
 // import NotFound from './../pages/NotFound'
 
@@ -53,6 +54,7 @@ export const asyncRoutes = [
             ...Providers,
             ...Products,
             ...arrivals,
+            ...Receptions,
 
         ],
     },

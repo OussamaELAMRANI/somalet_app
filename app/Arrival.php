@@ -2,14 +2,27 @@
 
 namespace App;
 
+use App\Services\Filters\Arrivals\ArrivalFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 
 class Arrival extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
-    protected $primaryKey = 'n_facture';
+//    protected $primaryKey = 'n_facture';
+
+
+    public function scopeFilter(Builder $builder, Request $req, array $filters = [])
+    {
+        return (new ArrivalFilter($req))->add($filters)->filter($builder);
+    }
+    public function scopeLast(Builder $builder)
+    {
+        return $builder->orderBy('id','desc')->get();
+    }
 
     function provider()
     {

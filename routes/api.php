@@ -19,6 +19,8 @@ Route::prefix('auth')->group(function () {
     Route::post('sign-up', 'Api\AuthController@signUp');
     Route::post('login', 'Api\AuthController@logIn');
     Route::get('allUsers', 'Api\AuthController@allUsers');
+    Route::delete('user/{id}/delete', 'Api\AuthController@destroy');
+    Route::post('user/{id}', 'Api\AuthController@update');
 
 
     // User Should be connected !

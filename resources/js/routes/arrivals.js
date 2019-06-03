@@ -9,7 +9,7 @@ export default [
         component: Arrivals,
         redirect: 'arrivals/arrivals-list',
         meta: {
-            title: 'Arrivage', name: 'all_arrivals', icon: 'fa fa-briefcase', roles: 'guest'
+            title: 'Arrivage', name: 'all_arrivals', icon: 'fa fa-tasks', roles: 'guest'
         },
         children: [
             {

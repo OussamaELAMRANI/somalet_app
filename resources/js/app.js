@@ -17,7 +17,7 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import VueSelect from 'vue-cool-select'
 import VueDialog from 'vue2-dialog'
 import 'vue2-dialog/dist/VueDialog.css'
-
+import ToggleSwitch from 'vuejs-toggle-switch'
 /**
  * Add Plugins
  */
@@ -33,6 +33,7 @@ Vue.use(VueNotification, {
 });
 Vue.use(VueFormWizard);
 Vue.use(VueDialog)
+Vue.use(ToggleSwitch)
 
 Vue.use(VueSelect, {
     theme: 'bootstrap' // or 'material-design'

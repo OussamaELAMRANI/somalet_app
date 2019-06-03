@@ -1,13 +1,14 @@
+import UsersList from '../pages/admin/UsersList'
 import Users from '../pages/admin/Users'
 
 export default [
     {
-        name: 'allUsers',
-        path: 'user',
+        name: 'all_users',
+        path: 'users',
         component: Users,
-        redirect: '/users',
+        redirect: 'users-list',
         meta: {
-            title: 'Utilisateur', name: 'allUsers', icon: 'fa fa-briefcase', roles: 'guest'
+            title: 'Utilisateurs', name: 'all_users', icon: 'fa fa-users', roles: 'guest'
         },
         children: [
             // {
@@ -35,12 +36,37 @@ export default [
             //         title: 'delete Produit', name: 'deleteUser', icon: 'fa fa-gor', roles: 'guest'
             //     },
             // },
+            // {
+            //     name: 'updateUser',
+            //     hidden: true,
+            //     path: ':id/update',
+            //     component: () => import('@/pages/Products/NewProduct'),
+            //     meta: {
+            //         title: 'Modifier Produit', name: 'updateProduct', icon: 'fa fa-gor', roles: 'guest'
+            //     },
+            // },
             {
-                name: 'listUsers',
-                path: 'users',
-                component: Users,
+                name: 'UserNew',
+                path: 'new-user',
+                component: () => import('@/pages/admin/UserNew'),
                 meta: {
-                    title: 'Liste des utilisateur', name: 'listUsers', icon: 'fa fa-gor', roles: 'guest'
+                    title: 'Nouveau Utilisateur', name: 'UserNew', icon: 'fa fa-user', roles: 'guest'
+                },
+            },
+            {
+                name: 'list_users',
+                path: 'users-list',
+                component: UsersList,
+                meta: {
+                    title: 'Liste des utilisateur', name: 'list_users', icon: 'fa fa-gor', roles: 'guest'
+                },
+            },
+            {
+                name: 'deleteUser',
+                hidden: true,
+                path: ':id/delete',
+                meta: {
+                    title: 'supprimer utilisateur', name: 'deleteUser', icon: 'fa fa-gor', roles: 'guest'
                 },
             },
         ]
