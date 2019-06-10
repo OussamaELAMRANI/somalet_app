@@ -25,6 +25,8 @@ class CreateProductsTable extends Migration
             $table->float('price_sell')->default(0);
             $table->double('alertQte')->default(0);
             $table->unsignedBigInteger('unit_id'); //todo creation de l'unite
+            //metre / rouleau ou piece par box
+            $table->double('rapport')->default(0);
 //            todo add marchandise + fabrication type
             $table->enum('type',['MATIERE_PREMIERE','PRODUIT_FINI'])->default('MATIERE_PREMIERE');
             $table->unsignedBigInteger('user_id')->nullable();

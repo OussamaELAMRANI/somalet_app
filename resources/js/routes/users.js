@@ -46,6 +46,14 @@ export default [
             //     },
             // },
             {
+                name: 'Test',
+                path: 'test',
+                component: () => import('@/pages/admin/test'),
+                meta: {
+                    title: 'Test', name: 'Test', icon: 'fa fa-user', roles: 'guest'
+                },
+            },
+            {
                 name: 'UserNew',
                 path: 'new-user',
                 component: () => import('@/pages/admin/UserNew'),

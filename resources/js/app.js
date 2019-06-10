@@ -18,12 +18,15 @@ import VueSelect from 'vue-cool-select'
 import VueDialog from 'vue2-dialog'
 import 'vue2-dialog/dist/VueDialog.css'
 import ToggleSwitch from 'vuejs-toggle-switch'
+import Breabcrumbs from 'vue-2-breadcrumbs';
 /**
  * Add Plugins
  */
 
 // Add Validation Inputs
 import fr from 'vee-validate/dist/locale/fr';
+
+Vue.use(Breabcrumbs);
 
 Vue.use(VeeValidate);
 Validator.localize('fr', fr);

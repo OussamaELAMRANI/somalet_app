@@ -1,13 +1,14 @@
 <template>
     <div id="arrivals_list">
         <div class="row">
+            <h4 class="text-uppercase m-3"> Liste des arrivages</h4>
+            <div class="dropdown-divider"></div>
+            <router-link :to="{name:'new_arrival'}" class="btn btn-outline-success float-right m-3">
+                <i class="fa fa-plus"></i>
+                Nouveau arrivage
+            </router-link>
             <div class="col-9 m-0 pr-0">
-                <h4 class="text-uppercase m-3"> Liste des arrivages</h4>
-                <div class="dropdown-divider"></div>
-                <router-link :to="{name:'new_arrival'}" class="btn btn-outline-success float-right m-3">
-                    <i class="fa fa-plus"></i>
-                    Nouveau arrivage
-                </router-link>
+
                 <table class="table segment bg-success text-white">
                     <thead>
                     <tr>

@@ -68,62 +68,64 @@
         </div>
 
 
-        <table class="table table-hover table-striped" v-if="users">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Login</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Prenom</th>
-                <th scope="col">Type</th>
-                <th scope="col">Active</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-if="searchUser === null">
-                <td colspan="6">
-                    <div class="row justify-content-center">
-                        <div class="col-2">
-                            <loading :animation-duration="6000" :size="40" color="#ff1d5e"/>
+        <div class="card">
+            <table class="table table-hover table-striped" v-if="users">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prenom</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Active</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-if="searchUser === null">
+                    <td colspan="6">
+                        <div class="row justify-content-center">
+                            <div class="col-2">
+                                <loading :animation-duration="6000" :size="40" color="#ff1d5e"/>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-            <tr v-else-if="searchUser.length === 0">
-                <td colspan="10">
-                    <h6 class="text-center text-secondary m-5">Pas d'Utilisateur dans ce cas (Vide...) </h6>
-                </td>
-            </tr>
-            <tr v-else v-for="(p,index) in searchUser">
-                <th scope="row">{{index+1}}</th>
-                <td>{{p.username}}</td>
-                <td>{{p.first_name}}</td>
-                <td>{{p.last_name}}</td>
-                <td>{{p.type_user}}</td>
-                <td>
-                    <button disabled class="btn btn-success" v-if="p.is_active === 1">activé</button>
-                    <button disabled class="btn btn-danger" v-if="p.is_active === 0">desactivé</button>
-                </td>
-                <td>
-                    <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
-                            @click="show(p.id)">
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                    </button>
-<!--                    <button  class="btn btn-sm btn-success"-->
-<!--                             data-toggle="modal" data-target="#exampleModal"-->
-<!--                             @click="redirect(p.id)">-->
-<!--                        <i class="fa fa-edit" aria-hidden="true"></i>-->
-<!--                    </button>-->
-                    <button class="btn btn-sm btn-danger"
-                            @click="getElementIdToDelete(p.id)"
-                            data-target="#bitch" data-toggle="modal">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    </td>
+                </tr>
+                <tr v-else-if="searchUser.length === 0">
+                    <td colspan="10">
+                        <h6 class="text-center text-secondary m-5">Pas d'Utilisateur dans ce cas (Vide...) </h6>
+                    </td>
+                </tr>
+                <tr v-else v-for="(p,index) in searchUser">
+                    <th scope="row">{{index+1}}</th>
+                    <td>{{p.username}}</td>
+                    <td>{{p.first_name}}</td>
+                    <td>{{p.last_name}}</td>
+                    <td>{{p.type_user}}</td>
+                    <td>
+                        <button disabled class="btn btn-success" v-if="p.is_active === 1">activé</button>
+                        <button disabled class="btn btn-danger" v-if="p.is_active === 0">desactivé</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
+                                @click="show(p.id)">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                        </button>
+                        <!--                    <button  class="btn btn-sm btn-success"-->
+                        <!--                             data-toggle="modal" data-target="#exampleModal"-->
+                        <!--                             @click="redirect(p.id)">-->
+                        <!--                        <i class="fa fa-edit" aria-hidden="true"></i>-->
+                        <!--                    </button>-->
+                        <button class="btn btn-sm btn-danger"
+                                @click="getElementIdToDelete(p.id)"
+                                data-target="#bitch" data-toggle="modal">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 

@@ -41,6 +41,7 @@
         "sass": "^1.20.1",
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17",
+        "vue-2-breadcrumbs": "^0.5.0",
         "vue-chartjs": "^3.4.2",
         "vue-cool-select": "^2.10.2",
         "vue-date-pick": "^1.1.0",

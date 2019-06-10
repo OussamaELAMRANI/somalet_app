@@ -75,8 +75,13 @@
                 <div class="col">
                     <div class="form-group">
                         <label for="">Prix fournisseur :</label>
-                        <input :disabled="newArr.type==='INTERNATIONAL'" class="form-control" name="prix_fournisseur"
-                               type="number" v-model="newArr.price_provider" v-validate="'required'"/>
+                        <div class="input-group">
+                            <input :disabled="newArr.type==='INTERNATIONAL'" class="form-control" name="prix_fournisseur"
+                                   type="number" v-model="newArr.price_provider" v-validate="'required'"/>
+                            <div class="input-group-append">
+                                <div class="input-group-text">DH</div>
+                            </div>
+                        </div>
                         <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('prix_fournisseur')"></i>
                         <span class="help text-danger" v-show="errors.has('prix_fournisseur')">{{ messageErr }}</span>
                     </div>

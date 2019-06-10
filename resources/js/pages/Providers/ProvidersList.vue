@@ -71,7 +71,7 @@
         </div>
 
         <table class="table table-hover table-striped" v-if="providers">
-            <thead>
+            <thead class="thead-dark text-center table-bordered">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Societe</th>
@@ -81,7 +81,7 @@
                 <th scope="col">Action</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="table-bordered table-striped text-center table-hover">
             <tr v-if="searchProviders === null">
                 <td colspan="6">
                     <div class="row justify-content-center">

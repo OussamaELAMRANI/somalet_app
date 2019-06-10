@@ -1,70 +1,86 @@
 <template>
-    <div id="UserNew" class="segment">
-        <h2 class="mb-4">Nouveau utilisateur : </h2>
-        <form @submit.prevent="register">
+    <div id="UserNew">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Login</label>
-                        <input class="form-control" name="username" type="text" v-model="username"
-                               v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('username')"></i>
-                        <span class="help text-danger" v-show="errors.has('username')">{{ errors.first('username') }}</span>
+                <div class="col-sm-12">
+                    <div class='card'>
+                        <div class="card-header">
+                            <div>
+                                <strong>Gestion des Utilisateurs </strong>
+                                <small>: Nouveau utilisateur</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form @submit.prevent="register">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Login</label>
+                                            <input class="form-control" name="username" type="text" v-model="username"
+                                                   v-validate="'required'"/>
+                                            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('username')"></i>
+                                            <span class="help text-danger" v-show="errors.has('username')">{{ errors.first('username') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Prenom</label>
+                                            <input class="form-control" name="lName" type="text" v-model="lName"
+                                                   v-validate="'required'"/>
+                                            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('lName')"></i>
+                                            <span class="help text-danger" v-show="errors.has('lName')">{{ errors.first('lName') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Nom</label>
+                                            <input class="form-control" name="fName" type="text" v-model="fName"
+                                                   v-validate="'required'"/>
+                                            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('fName')"></i>
+                                            <span class="help text-danger" v-show="errors.has('fName')">{{ errors.first('fName') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Mot de passe</label>
+                                            <input class="form-control" name="passwd" type="password" placeholder="Mot de passe ..."
+                                                   v-model="password" ref="password"
+                                                   v-validate="'required'"/>
+                                            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('passwd')"></i>
+                                            <span class="help text-danger" v-show="errors.has('passwd')">{{ errors.first('passwd') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Confirmation du mot de passe</label>
+                                            <input class="form-control" name="passwd2" type="password" placeholder="confirmez votre Mot de passe ..."
+                                                   v-model="password2" ref="password"
+                                                   v-validate="'required|confirmed:password'" />
+                                            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('passwd2')"></i>
+                                            <span class="help text-danger" v-show="errors.has('passwd2')">{{ errors.first('passwd2') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <button class="btn btn btn-outline-success" type="submit">Enregistrer</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Prenom</label>
-                        <input class="form-control" name="lName" type="text" v-model="lName"
-                               v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('lName')"></i>
-                        <span class="help text-danger" v-show="errors.has('lName')">{{ errors.first('lName') }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Nom</label>
-                        <input class="form-control" name="fName" type="text" v-model="fName"
-                               v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('fName')"></i>
-                        <span class="help text-danger" v-show="errors.has('fName')">{{ errors.first('fName') }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>mot de passe</label>
-                        <input class="form-control" name="passwd" type="password" placeholder="Mot de passe ..."
-                               v-model="password" ref="password"
-                               v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('passwd')"></i>
-                        <span class="help text-danger" v-show="errors.has('passwd')">{{ errors.first('passwd') }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label>Confirmation du mot de passe</label>
-                        <input class="form-control" name="passwd2" type="password" placeholder="confirmer votre Mot de passe ..."
-                               v-model="password2" ref="password"
-                               v-validate="'required|confirmed:password'" />
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('passwd2')"></i>
-                        <span class="help text-danger" v-show="errors.has('passwd2')">{{ errors.first('passwd2') }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <button class="btn btn btn-outline-success" type="submit">Enregistrer</button>
-                </div>
-            </div>
-        </form>
+        </div>
+
     </div>
 </template>
 

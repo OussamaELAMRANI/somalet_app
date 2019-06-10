@@ -25,6 +25,10 @@ class Product extends Model
     {
         return $this->belongsTo(Provider::class);
     }
+    function subcategory()
+    {
+        return $this->belongsTo(SubCategory::class);
+    }
 
     function user()
     {

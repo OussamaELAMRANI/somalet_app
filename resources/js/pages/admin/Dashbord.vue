@@ -1,11 +1,14 @@
 <template>
     <div id="dashbord">
         <NavBar/>
-        <div class="left">
+<!--        <div class="left">-->
+<!--            -->
+<!--        </div>-->
+        <main class="main">
             <left-bar/>
-        </div>
-        <main class="container">
-            <router-view/>
+            <div class="container-fluid">
+                <router-view/>
+            </div>
         </main>
     </div>
 </template>
@@ -26,5 +29,8 @@
     }
 </script>
 
-<style lang="scss">
+<style>
+    .main{
+        margin-left: 50px;
+    }
 </style>

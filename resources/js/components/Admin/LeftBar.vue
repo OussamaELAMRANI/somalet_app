@@ -1,6 +1,6 @@
 <template>
     <!--    <sidebar-menu :menu="menu"/>-->
-    <sidebar-menu :menu="routes" :collapsed="true" @collapse="onCollapse" @itemClick="onItemClick" width="250px"/>
+    <sidebar-menu :menu="routes" :collapsed="true" @collapse="onCollapse" @itemClick="onItemClick" width="240px"/>
 
 </template>
 
@@ -50,7 +50,8 @@
                                         })
                                 })
                                 r2.push({
-                                    href: child.path,
+                                    // href: child.path,
+                                    //todo add dashbord href
                                     title: child.meta.title,
                                     icon: child.meta.icon,
                                     child: children

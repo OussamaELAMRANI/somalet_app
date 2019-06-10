@@ -63,7 +63,13 @@
                             </select></div>
                             <div class="col" v-if="newUnity"><label for="name">Nouvelle Unite</label><input
                                 class="form-control " type="text" id="new-unity" placeholder="Unite ..." v-model="unity"
-                                v-on:keyup.enter="addUnity"/></div>
+                                v-on:keyup.enter="addUnity"/>
+                            </div>
+                            <div class="col" v-if="hasRapport">
+                                <label for="rapport">{{ labelRapport }}</label>
+                                <input class="form-control " type="text" id="rapport" :placeholder="labelRapport"
+                                       v-model="rapport"/>
+                            </div>
                         </div>
                         <div class="dropdown-divider m-3"></div>
                         <div class="row">
@@ -79,7 +85,22 @@
                                 <option v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']" :selected="(t === type)">
                                     {{t}}
                                 </option>
-                            </select></div>
+                            </select>
+                            </div>
+                            <div class="col-12"><label for="inputState">Selectionnez la categorie</label>
+                                <select
+                                    class="form-control" id="category" v-on:change="getCategory">
+                                    <option selected="selected" disabled="disabled">Selectionnez...</option>
+                                    <template v-for="t in categories">
+                                        <optgroup :label="t.category_name">
+                                            <option v-for="sub in t.sub_categories" :id="'subcategory_'+sub.id"
+                                                    :selected="(sub.id == subcategory_id)">
+                                                {{sub.sub_category}}
+                                            </option>
+                                        </optgroup>
+                                    </template>
+                                </select>
+                            </div>
                             <div class="col">
                                 <button class="btn btn-success float-right m-4" @click="insert"><i
                                     class="fa fa-save"></i>Enregister
@@ -101,7 +122,7 @@
         name: "NewProduct",
         data() {
             return {
-                img_url:null,
+                img_url: null,
                 provider: null,
                 name: '',
                 refr: '',
@@ -116,8 +137,14 @@
                 type: '',
                 alertQte: 0,
                 id: 0,
-                img:'',
-                isNew: true
+                img: '',
+                isNew: true,
+                categories: null,
+                subcategory_id: null,
+                newSubCategory: false,
+                hasRapport: false,
+                rapport: null,
+                labelRapport: "Rapport"
             }
         },
         methods: {
@@ -146,8 +173,23 @@
                     this.color = parseInt(id[1])
                 }
             },
+            setRapport(val){
+                if (val === "Mètre") {
+                    this.labelRapport = "Mètre/Rouleau";
+                    this.hasRapport = true;
+                } else if (val === "Kg (rouleau)") {
+                    this.labelRapport = "Kg/Rouleau";
+                    this.hasRapport = true;
+                } else if (val === "Box") {
+                    this.labelRapport = "Pièce/Box";
+                    this.hasRapport = true;
+                } else {
+                    this.hasRapport = false;
+                    this.rapport = 0;
+                }
+            },
             getUnity(ev) {
-                const val = ev.target.value
+                let val = ev.target.value
                 let id = ev.target.options[ev.target.options.selectedIndex].id
                 id = id.split('_')
                 if (val === 'NOUVEAU ++') {
@@ -157,10 +199,23 @@
                     this.newUnity = false
                     this.unity = parseInt(id[1])
                 }
+                this.setRapport(val);
             },
             getType(ev) {
                 let val = ev.target.options[ev.target.options.selectedIndex].value
                 this.type = val
+            },
+            getCategory(ev) {
+                let val = ev.target.options[ev.target.options.selectedIndex].value
+                let id = ev.target.options[ev.target.options.selectedIndex].id
+                id = id.split('_')
+                if (val === 'NOUVEAU ++') {
+                    this.subcategory_id = null
+                    this.newSubCategory = true
+                } else {
+                    this.newSubCategory = false
+                    this.subcategory_id = parseInt(id[1])
+                }
             },
             addColor() {
                 const _this = this
@@ -211,7 +266,8 @@
                 formData.append('type', this.type)
                 formData.append('provider_id', this.provider.id)
                 formData.append('alertQte', this.alertQte)
-
+                formData.append('subcategory_id', this.subcategory_id)
+                formData.append('rapport', this.rapport)
 
                 axios.post('/api/products', formData)
                     .then(res => {
@@ -228,6 +284,9 @@
             })
             axios.get('/api/unities').then(res => {
                 this.unities = res.data
+            })
+            axios.get('/api/categories').then(res => {
+                this.categories = res.data
             })
             //pour determiner si l'etat de la vue en mode : Ajout ou modification
             //si id == null => Ajout
@@ -251,7 +310,10 @@
                         this.type = data.type
                         this.alertQte = data.alertQte
                         this.id = data.id
+                        this.rapport = data.rapport
+                        this.setRapport(data.unit.name)
                         this.img = data.img
+                        this.subcategory_id = data.subcategory.id
                         this.img_url = `${process.env.MIX_APP_URL}/storage/${this.img}`
                         // this.$refs.portraits.file = data.img
                     })

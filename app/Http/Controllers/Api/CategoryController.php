@@ -31,7 +31,17 @@ class CategoryController extends Controller
         $data = Category::create(\request(['category_name']));
         return response()->json($data, 201);
     }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function storeMany(Request $request)
+    {
+//        $data = $request->only('')
+//        $data = Category::create(\request(['category_name']));
+//        return response()->json($data, 201);
+    }
     /**
      * Display the specified resource.
      *

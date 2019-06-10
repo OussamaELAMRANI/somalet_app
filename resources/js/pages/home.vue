@@ -1,31 +1,9 @@
 <template>
     <div id="home">
-
         <main class="container">
             <div class="row">
 
             </div>
-<!--            <div class="row">-->
-<!--                <div class="col">-->
-<!--                    &lt;!&ndash;                    <kalendar :configuration="calendar_settings" :appointments="appointments"/>&ndash;&gt;-->
-<!--                    <Calendar :startDate="new Date()" :dateData="data" class="segment">-->
-<!--                        <div slot="header-left">-->
-<!--                            <div class="btn-group">-->
-<!--                                <Button class="btn btn-sm btn-outline-primary">month</Button>-->
-<!--                                <Button class="btn btn-sm btn-outline-primary">week</Button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--                        <div :class="['calendar-item', { 'is-otherMonth': !isCurMonth }]" slot-scope="item">-->
-<!--                            <div :class="['calendar-item-date']">-->
-<!--                                {{item.date.date}}-->
-<!--                            </div>-->
-<!--                            <div class="calendar-item-name">{{item.data.title}}</div>-->
-<!--                        </div>-->
-<!--                    </Calendar>-->
-<!--                </div>-->
-<!--            </div>-->
-
             <div class="row">
                 <div class="col-8 segment">
                     <GChart

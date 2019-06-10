@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = Product::with(['unit', 'color', 'provider'])->orderBy('updated_at', 'desc')->get();
+        $data = Product::with(['unit', 'color', 'provider','subcategory'])->orderBy('updated_at', 'desc')->get();
         return response()->json($data);
     }
 
@@ -51,7 +51,9 @@ class ProductController extends Controller
                 'description' => $req->input('description'),
                 'remark' => $req->input('remark'),
                 'alertQte' => $req->input('alertQte'),
+                'rapport' => $req->input('rapport'),
                 'provider_id' => $req->input('provider_id'),
+                'subcategory_id' => $req->input('subcategory_id'),
                 'img' => $portrait_url,
             ]);
         } else {
@@ -64,6 +66,8 @@ class ProductController extends Controller
                 'description' => $req->input('description'),
                 'remark' => $req->input('remark'),
                 'provider_id' => $req->input('provider_id'),
+                'subcategory_id' => $req->input('subcategory_id'),
+                'rapport' => $req->input('rapport'),
                 'img' => $portrait_url,
             ]);
         }
@@ -79,7 +83,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return \response()->json(Product::findOrFail($id)->load('provider', 'unit', 'color'));
+        return \response()->json(Product::findOrFail($id)->load('provider', 'unit', 'color','subcategory'));
     }
 
 
