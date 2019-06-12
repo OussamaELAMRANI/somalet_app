@@ -7,7 +7,7 @@
                 </h5>
             </template>
             <template slot="btn">
-                <button class="btn btn-danger" @click="supp()"  data-dismiss="modal">Supprimer</button>
+                <button class="btn btn-danger" @click="supp()" data-dismiss="modal">Supprimer</button>
             </template>
         </alert-modal>
         <!-- Modal -->
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <h3 class="text-lg-center text-secondary m-5">Liste des Produits</h3>
+        <h3 class="text-lg-center text-secondary m-4">Liste des Produits</h3>
         <div class="dropdown-divider"></div>
 
         <div class="row justify-content-around ">
@@ -68,56 +68,27 @@
             </div>
         </div>
 
-
-        <table class="table table-hover table-striped" v-if="products">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">image</th>
-                <th scope="col">Reference</th>
-                <th scope="col">Nom de Produit</th>
-                <th scope="col">Description</th>
-                <th scope="col">Remaques</th>
-                <th scope="col">Couleur</th>
-                <th scope="col">Unite</th>
-                <th scope="col">Fournisseur</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-if="searchProduct === null">
-                <td colspan="6">
-                    <div class="row justify-content-center">
-                        <div class="col-2">
-                            <loading :animation-duration="6000" :size="40" color="#ff1d5e"/>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr v-else-if="searchProduct.length === 0">
-                <td colspan="10">
-                    <h6 class="text-center text-secondary m-5">Pas de Produit dans cette cas (Vide...) </h6>
-                </td>
-            </tr>
-            <tr v-else v-for="(p,index) in searchProduct">
+        <table-layout
+            :head-table="['#','image','Reference',	'Nom de Produit','Couleur',	'Unite','Fournisseur','Actions']"
+            empty-text="Pas de Produit dans ce cas (Vide...)"
+            :data="tableDate">
+            <tr v-for="(p,index) in products.data">
                 <th scope="row">{{index+1}}</th>
-                <!--                <td><img :src="'/storage/'+p.img" alt="image produit" height="60px"></td>-->
-                <td><img :src="host+''+p.img" alt="image produit" height="60px"></td>
+<!--                <td><img :src="host+''+p.img" alt="image produit" height="60px"></td>-->
+                <td><img :src="p.img" alt="image produit" height="60px"></td>
                 <td>{{p.reference}}</td>
                 <td>{{p.name}}</td>
-                <td>{{p.description}}</td>
-                <td>{{p.remark}}</td>
                 <td>{{p.color.name}}</td>
                 <td>{{p.unit.name}}</td>
                 <td>{{p.provider.steName}}</td>
-                <td>
+                <td style="width: 130px">
                     <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
                             @click="show(p.id)">
                         <i class="fa fa-list" aria-hidden="true"></i>
                     </button>
-                    <button  class="btn btn-sm btn-success"
-                                 data-toggle="modal" data-target="#exampleModal"
-                                 @click="redirect(p.id)">
+                    <button class="btn btn-sm btn-primary"
+                            data-toggle="modal" data-target="#exampleModal"
+                            @click="redirect(p.id)">
                         <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>
                     <button class="btn btn-sm btn-danger"
@@ -127,8 +98,10 @@
                     </button>
                 </td>
             </tr>
-            </tbody>
-        </table>
+
+        </table-layout>
+        <pagination :data="products" align="center" @pagination-change-page="filter"></pagination>
+
     </div>
 </template>
 
@@ -137,55 +110,47 @@
     import {SelfBuildingSquareSpinner} from 'epic-spinners'
     import AlertModal from "@/components/Modals/AlertModal";
     import ShowProduct from "./showProduct";
+    import TableLayout from "@/components/layouts/TableLayout";
 
     export default {
         name: "ProductsList",
         data() {
             return {
-                host:`${process.env.MIX_APP_URL}/storage/`,
-                ElementIdToDelete:null,
-                products: null,
+                host: `${process.env.MIX_APP_URL}/storage/`,
+                ElementIdToDelete: null,
+                products: {},
                 searchProduct: null,
                 searchTxt: '',
                 opt: 'reference',
-                product: {}
+                product: {},
+                tableDate: null
             }
         },
         mounted() {
-            axios.get('/api/products')
-                .then(res => {
-                    const data = res.data
-                    this.products = data
-                    this.searchProduct = data
-                })
-                .catch(err => console.log(err.response))
+            this.filter()
         },
         methods: {
-            getElementIdToDelete(id){
+            getElementIdToDelete(id) {
                 this.ElementIdToDelete = id;
             },
-            supp(){
+            supp() {
                 let id = this.ElementIdToDelete;
                 axios.delete(`/api/products/${id}/delete`)
                     .then(res => {
-                        // this.$notification.error('produit bien supprimer')
-                        // this.$router.push({name:'listProduct',params:{id}});
                         this.getProducts();
                     })
                     .catch(err => {
-                        // this.$notification.error("Ce produit n'existe pas !")
-                        // this.$notification.error('impossible de supprimer ce produit')
-                        // this.$router.push('/404')
+                        this.$notification.error("Ce produit n'existe pas !")
                     })
             },
             show(id) {
                 // console.log(id)
-                const val = this.products
+                const val = this.products.data
                 this.product = _.find(val, o => {
                     return o.id == id
                 });
             },
-            getProducts(){
+            getProducts() {
                 this.products = null;
                 axios.get('/api/products')
                     .then(res => {
@@ -195,21 +160,17 @@
                     })
                     .catch(err => console.log(err.response))
             },
-            redirect(id){
-                this.$router.push({name:'updateProduct',params:{id}});
+            redirect(id) {
+                this.$router.push({name: 'updateProduct', params: {id}});
             },
-            filter() {
-                const ste = this.searchTxt
-                const val = this.products
-
-                if (this.opt === 'reference')
-                    this.searchProduct = _.filter(val, o => {
-                        return _.startsWith(_.toUpper(o.reference), _.toUpper(ste))
-                    });
-                else
-                    this.searchProduct = _.filter(val, o => {
-                        return _.startsWith(_.toUpper(o.name), _.toUpper(ste))
-                    });
+            filter(page = 1) {
+                axios.get(`/api/products?page=${page}`)
+                    .then(res => {
+                        const data = res.data
+                        this.products = data
+                        this.tableDate = data.total
+                    })
+                    .catch(err => console.log(err.response))
             },
             EmptyText() {
                 this.searchTxt = ''
@@ -223,7 +184,8 @@
             // }
         },
         components: {
-            AlertModal,ShowProduct,
+            TableLayout,
+            AlertModal, ShowProduct,
             'loading': SelfBuildingSquareSpinner
         }
     }

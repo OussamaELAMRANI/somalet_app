@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 abstract class FilterAbstract
 {
     protected $req;
-    protected $filters = [];
+    protected $filters = []; // [filter_name => ClassFilter::class]
 
     public function __construct(Request $request)
     {
@@ -20,14 +20,15 @@ abstract class FilterAbstract
     public function filter(Builder $builder)
     {
         foreach ($this->getFilters() as $filter => $value) {
+//            if ($filter != 'search')
             ($this->resolveFilter($filter)->filter($builder, $value));
         }
-//        die();
         return $builder;
     }
 
     public function add($customFilter)
     {
+//        ['search' => $customFilter]
         $this->filters = array_merge($this->filters, $customFilter);
         return $this;
     }
@@ -39,6 +40,7 @@ abstract class FilterAbstract
 
     public function filterQuery($filter)
     {
+//        return array_merge(array_filter($this->req->only(array_keys($filter))), ['search' => $this->req->value]);;
         return array_filter($this->req->only(array_keys($filter)));
     }
 

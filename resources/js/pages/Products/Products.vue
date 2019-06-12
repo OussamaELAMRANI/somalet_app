@@ -1,5 +1,5 @@
 <template lang="pug">
-    #Products
+    #Products.card
         h2.text-info.m-4.text-lg-center Gestion des Produits
         .dropdown-divider
         .row.d-flex.justify-content-center
@@ -31,5 +31,7 @@
 </script>
 
 <style scoped>
-
+    #Products{
+        min-height: 100vh;
+    }
 </style>

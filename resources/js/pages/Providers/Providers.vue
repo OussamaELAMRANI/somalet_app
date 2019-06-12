@@ -9,7 +9,7 @@
                     <StepBox title="Nouveau Fournisseur" image="add.svg" @step="goTo" to="newProvider"
                              v-if="getUrl === 'listProvider'"></StepBox>
                     <StepBox title="Liste Fournisseurs" image="list.svg" @step="goTo" to="listProvider"
-                             v-else="v-else"></StepBox>
+                             v-else></StepBox>
                 </div>
             </div>
             <div id="change-providers-content"></div>
@@ -39,5 +39,8 @@
 </script>
 
 <style scoped>
+    #all-providers {
+        min-height: 100vh;
+    }
 
 </style>

@@ -1,29 +1,34 @@
 <?php
 
 
-namespace App\Services\Filters\Arrivals;
+namespace App\Services\Filters\Providers;
 
 
 use App\Services\Filters\IFilter;
 use Illuminate\Database\Eloquent\Builder;
 
-class TypesFilter implements IFilter
+class RelationsFilter implements IFilter
 {
+
+    /**
+     * @overrid
+     * @param Builder $builder
+     * @param string $value
+     * @return Builder
+     */
     public function filter(Builder $builder, string $value): Builder
     {
         $relation = explode(',', $value);
         $relations = $this->ResolveFilterValue($relation);
         if (is_null($relations))
             return $builder;
-        return $builder->whereIn('type', $relations);
+        return $builder->with($relations);
     }
 
     public function mapping(): array
     {
         return [
-            'international' => 'INTERNATIONAL',
-            'national' => 'NATIONAL',
-            'all' => ['NATIONAL', 'INTERNATIONAL'],
+            'product' => 'products',
         ];
     }
 
@@ -31,12 +36,8 @@ class TypesFilter implements IFilter
     {
         $res = array();
         foreach ($keys as $key) {
-            if ($key == 'all')
-                $res = array_merge(data_get($this->mapping(), $key), $res);
-            else
-                $res[] = data_get($this->mapping(), $key);
+            $res[] = data_get($this->mapping(), $key);
         }
         return array_filter($res);
     }
-
 }

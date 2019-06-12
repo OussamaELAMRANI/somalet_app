@@ -19,6 +19,10 @@ import VueDialog from 'vue2-dialog'
 import 'vue2-dialog/dist/VueDialog.css'
 import ToggleSwitch from 'vuejs-toggle-switch'
 import Breabcrumbs from 'vue-2-breadcrumbs';
+
+Vue.component('pagination', require('laravel-vue-pagination'));
+
+
 /**
  * Add Plugins
  */

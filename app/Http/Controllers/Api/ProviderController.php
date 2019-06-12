@@ -17,9 +17,9 @@ class ProviderController extends Controller
         if ($req->query('fields')) {
             $fields = $req->query('fields');
             $fields = explode(',', $fields);
-            $all = Provider::orderBy('id', 'DESC')->get($fields);
+            $all = Provider::orderBy('id', 'DESC')->paginate(10, $fields);
         } else
-            $all = Provider::with('products')->orderBy('id', 'DESC')->get();
+            $all = Provider::with('products')->orderBy('id', 'DESC')->paginate(10);
         return response()->json($all);
     }
 
@@ -33,16 +33,16 @@ class ProviderController extends Controller
     {
         $message = null;
         $filterRequest = $this->filterStoreRequest($req);
-        if($filterRequest['id'] === 0){
+        if ($filterRequest['id'] === 0) {
             $newProvider = Provider::create($filterRequest);
             $message = "fournisseur bien ajouter : {$newProvider->firstName}";
-        }else{
+        } else {
             $existe = Provider::find($filterRequest['id']);
             $data = $existe;
-            if($existe){
+            if ($existe) {
                 $existe->update($filterRequest);
                 $message = "fournisseur bien modifier : {$data->firstName}";
-            }else{
+            } else {
                 return response()->json(['message' => 'impossible de modifier ce fournisseur'], 201);
             }
         }
@@ -60,7 +60,7 @@ class ProviderController extends Controller
         $personal = $in->input('personal');
         $professional = $in->input('professional');
         $contact = $in->input('contact');
-        $data = array_merge($personal, $professional, $contact,['id' =>$in->input('id')]);
+        $data = array_merge($personal, $professional, $contact, ['id' => $in->input('id')]);
         return $data;
     }
 
@@ -79,5 +79,11 @@ class ProviderController extends Controller
     {
         $v = $id::destroy($id->id);
         return response()->json(['message' => 'bien supprimé'], 201);
+    }
+
+    public function search(Request $req, $searchValue = null)
+    {
+        return response()->json(Provider::filter($req)->paginate(20), 200);
+
     }
 }

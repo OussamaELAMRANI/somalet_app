@@ -35,6 +35,9 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('providers')->group(function () {
 
+//    Route::get('search', 'Api\ProviderController@search');
+    Route::get('search/{searchValue?}', 'Api\ProviderController@search');
+
     Route::get('', 'Api\ProviderController@index');
     Route::post('', 'Api\ProviderController@store');
     Route::get('{id}', 'Api\ProviderController@show');

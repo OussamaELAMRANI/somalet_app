@@ -7,7 +7,7 @@
                 </h5>
             </template>
             <template slot="btn">
-                <button class="btn btn-danger" @click="supp()"  data-dismiss="modal">Supprimer</button>
+                <button class="btn btn-danger" @click="supp()" data-dismiss="modal">Supprimer</button>
             </template>
         </alert-modal>
         <!-- Modal -->
@@ -45,18 +45,18 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text text-primary" id="inputGroup-sizing-sm">Filter Par :</span>
                             <div class="input-group-text bg-warning">
-                                <input type="radio" name="opt-filter" value="firstName" v-model="opt"
+                                <input type="radio" name="opt-filter" value="name" v-model="opt"
                                        v-on:change="EmptyText">
                                 <span class="ml-1">Nom</span>
                             </div>
                             <div class="input-group-text bg-success text-white">
-                                <input type="radio" name="opt-filter" value="steName" v-model="opt"
+                                <input type="radio" name="opt-filter" value="ste" v-model="opt"
                                        v-on:change="EmptyText">
                                 <span class="ml-1">Societe</span>
                             </div>
                         </div>
 
-                        <input type="text" class="form-control" v-model="searchTxt" @input="filter"
+                        <input type="text" class="form-control" v-model="searchTxt" v-on:keyup.enter="filter"
                                placeholder="Recherche par Societe"
                                autofocus>
                         <div class="input-group-append">
@@ -70,33 +70,10 @@
             </div>
         </div>
 
-        <table class="table table-hover table-striped" v-if="providers">
-            <thead class="thead-dark text-center table-bordered">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Societe</th>
-                <th scope="col">TVA</th>
-                <th scope="col">Numero Siret</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Action</th>
-            </tr>
-            </thead>
-            <tbody class="table-bordered table-striped text-center table-hover">
-            <tr v-if="searchProviders === null">
-                <td colspan="6">
-                    <div class="row justify-content-center">
-                        <div class="col-2">
-                            <loading :animation-duration="6000" :size="40" color="#ff1d5e"/>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr v-else-if="searchProviders.length === 0">
-                <td colspan="6">
-                    <h6 class="text-center text-secondary m-5">Pas de fournisseur dans cette cas (Vide...) </h6>
-                </td>
-            </tr>
-            <tr v-else v-for="(p,index) in searchProviders">
+        <table-layout :head-table="['#','Societe','TVA','Numero Siret','Nom','Actions']" :data="dataTable"
+                      empty-text="Pas de fournisseur dans ce cas (Vide...)">
+
+            <tr v-for="(p,index) in providers.data" :id="p.id">
                 <th scope="row">{{index}}</th>
                 <td>{{p.steName}}</td>
                 <td>{{p.numTva}}</td>
@@ -107,7 +84,7 @@
                             @click="show(p.id)">
                         <i class="fa fa-list" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal"
                             @click="redirect(p.id)">
                         <i class="fa fa-edit" aria-hidden="true"></i>
                     </button>
@@ -118,95 +95,103 @@
                     </button>
                 </td>
             </tr>
-            </tbody>
-        </table>
+        </table-layout>
+        <pagination :data="providers" align="center" @pagination-change-page="filter"></pagination>
+
     </div>
 
 
 </template>
 
 <script>
-    import {SelfBuildingSquareSpinner} from 'epic-spinners'
     import ShowProvider from "./showProvider";
     import AlertModal from "@/components/Modals/AlertModal";
+    import TableLayout from "@/components/layouts/TableLayout";
+    // import pagination from "laravel-vue-pagination";
 
     export default {
         name: "ProvidersList",
         data() {
             return {
-                ElementIdToDelete:null,
-                providers: null,
+                ElementIdToDelete: null,
+                providers: {},
                 searchProviders: null,
                 searchTxt: '',
-                opt: 'steName',
-                provider: {}
+                opt: 'ste',
+                provider: {},
+                dataTable:null
             }
         },
         mounted() {
-            this.getProviders();
+            this.filter();
         },
+
         methods: {
-            getElementIdToDelete(id){
+            getElementIdToDelete(id) {
                 this.ElementIdToDelete = id;
             },
-            getProviders(){
-                this.providers = null;
-                axios.get('/api/providers')
-                    .then(res => {
-                        const data = res.data
-                        this.providers = data
-                        this.searchProviders = data
-                    })
-                    .catch(err => console.log(err.response))
-            },
-            supp(){
+            supp() {
                 let id = this.ElementIdToDelete;
                 axios.delete(`/api/providers/${id}/delete`)
                     .then(res => {
                         // this.$notification.error('produit bien supprimer')
-                        this.$router.push({name:'listProvider',params:{id}});
-                        this.getProviders();
+                        // this.$router.push({name: 'listProvider', params: {id}});
+                        // this.getProviders();
+                        document.getElementById(this.ElementIdToDelete).remove()
                     })
                     .catch(err => {
-                        // this.$notification.error("Ce produit n'existe pas !")
-                        // this.$notification.error('impossible de supprimer ce produit')
+                        this.$notification.error("Ce produit n'existe pas !")
+                        this.$notification.error('impossible de supprimer ce produit')
                         // this.$router.push('/404')
                     })
             },
-            redirect(id){
-                this.$router.push({name:'updateProvider',params:{id}});
+            redirect(id) {
+                this.$router.push({name: 'updateProvider', params: {id}});
             },
-            filter() {
-                const ste = this.searchTxt
-                const val = this.providers
+            filter(page = 1) {
+                const by = this.opt
 
-                if (this.opt === 'steName')
-                    this.searchProviders = _.filter(val, o => {
-                        return _.startsWith(_.toUpper(o.steName), _.toUpper(ste))
-                    });
-                else
-                    this.searchProviders = _.filter(val, o => {
-                        return _.startsWith(_.toUpper(o.firstName), _.toUpper(ste))
-                    });
+                axios.get(`/api/providers/search/${this.searchTxt}`,
+                    {
+                        params: {
+                            by,
+                            page,
+                        }
+                    })
+                    .then(res => {
+                        const data = res.data
+                        this.providers = data
+                        this.dataTable= data.total
+                    })
+                    .catch(err => console.log(err.response))
             },
             EmptyText() {
                 this.searchTxt = ''
+                this.filter();
             },
             show(id) {
                 console.log(id)
-                const val = this.providers
+                const val = this.providers.data
                 this.provider = _.find(val, o => {
                     return o.id == id
                 });
-            }
+            },
         },
         components: {
+            TableLayout,
             ShowProvider, AlertModal,
-            'loading': SelfBuildingSquareSpinner
         }
     }
 </script>
 
-<style scoped>
+<style>
+    .pagination > li > a,
+    .pagination > li > span {
+        border: 1px solid #595c4f;
+    }
 
+    .pagination > li.active > a {
+        background-color: #595c4f !important;
+        color: #fff;
+    }
 </style>

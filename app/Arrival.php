@@ -19,6 +19,7 @@ class Arrival extends Model
     {
         return (new ArrivalFilter($req))->add($filters)->filter($builder);
     }
+
     public function scopeLast(Builder $builder)
     {
         return $builder->orderBy('id','desc')->get();

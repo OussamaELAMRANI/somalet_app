@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = Product::with(['unit', 'color', 'provider','subcategory'])->orderBy('updated_at', 'desc')->get();
+        $data = Product::with(['unit', 'color', 'provider','subcategory'])->orderBy('updated_at', 'desc')->paginate(10);
         return response()->json($data);
     }
 

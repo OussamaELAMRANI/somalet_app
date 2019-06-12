@@ -1,8 +1,10 @@
 <template lang="pug">
-    .step-box(:class="classe" @click="sendIt")
-        img(:src="'/storage/boxes/'+image" )
+    .row.step-box(:class="classe" @click="sendIt")
+        .col-4
+            img(:src="'/storage/boxes/'+image" )
         .dropdown-divider
-        h5 {{title}}
+        .col-8.mt-2
+            h5 {{title}}
 
 </template>
 
@@ -21,10 +23,10 @@
                 type: String,
                 default: 'normal-box'
             },
-            to:{}
+            to: {}
         },
-        methods:{
-            sendIt(){
+        methods: {
+            sendIt() {
                 this.$emit('step', this.to)
             }
         }
@@ -40,18 +42,19 @@
         padding: 1em 1em;
         border-radius: .28571429rem;
         border: 1px solid rgba(34, 36, 38, .15);
-        height: 150px;
-        width: 150px;
+        height: 80px;
+        width: 250px;
         text-align: center;
         cursor: pointer;
+        border-top: rebeccapurple 2px solid;
     }
 
     img {
-        height: 80px;
+        height: 50px;
     }
 
     h5 {
-        font-size: 1em;
+        font-size: 1.1em;
     }
 
     .active-box {
