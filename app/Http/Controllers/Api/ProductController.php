@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\ProductRequest;
 use App\Product;
+use App\Provider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = Product::with(['unit', 'color', 'provider','subcategory'])->orderBy('updated_at', 'desc')->paginate(10);
+        $data = Product::with(['unit', 'color', 'provider', 'subcategory'])->orderBy('updated_at', 'desc')->paginate(10);
         return response()->json($data);
     }
 
@@ -83,7 +84,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return \response()->json(Product::findOrFail($id)->load('provider', 'unit', 'color','subcategory'));
+        return \response()->json(Product::findOrFail($id)->load('provider', 'unit', 'color', 'subcategory'));
     }
 
 
@@ -109,5 +110,15 @@ class ProductController extends Controller
     {
         $v = $id::destroy($id->id);
         return response()->json(['message' => 'bien supprimé'], 201);
+    }
+
+    /**
+     * @param Request $req
+     * @param string $searchValue
+     */
+    public function search(Request $req)
+    {
+        return response()->json(Product::filter($req)->paginate(20), 200);
+
     }
 }

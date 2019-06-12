@@ -28,7 +28,8 @@ class RelationsFilter implements IFilter
     public function mapping(): array
     {
         return [
-            'product' => 'products',
+            'color' => 'color',
+            'unit' => 'unit',
         ];
     }
 

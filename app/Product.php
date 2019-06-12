@@ -2,14 +2,22 @@
 
 namespace App;
 
+use App\Services\Filters\Products\ProductFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 
 class Product extends Model
 {
     use SoftDeletes;
 
     protected $guarded = [];
+
+    public function scopeFilter(Builder $builder, Request $req, array $filters = [])
+    {
+        return (new ProductFilter($req))->add($filters)->filter($builder);
+    }
 
     function unit()
     {

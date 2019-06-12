@@ -16,20 +16,20 @@ class SearchFilter implements IFilter
 
 
         if (is_null($searchBy))
-            $searchBy = 'steName';
+            $searchBy = 'reference';
 
         if (is_null($searchValue))
             return $builder;
 
 
-        return $builder->where("{$searchBy}", 'LIKE', "%{$searchValue}%");
+        return $builder->where("products.{$searchBy}", 'LIKE', "%{$searchValue}%");
     }
 
     public function mapping(): array
     {
         return [
-            'ste' => 'steName',
-            'name' => 'firstName',
+            'ref' => 'reference',
+            'name' => 'name',
         ];
     }
 
