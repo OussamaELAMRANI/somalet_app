@@ -2,7 +2,7 @@
     <div class="container" id="new-product">
         <transition name="bounce">
             <search-provider @provider="getProvider" v-if="provider === null"></search-provider>
-            <div v-else="v-else">
+            <div v-else>
                 <button class="btn btn-secondary btn-sm mb-5" @click="emptyProvider"><i class="fas fa-arrow-left"></i>Selection
                     un autre fournisseur
                 </button>

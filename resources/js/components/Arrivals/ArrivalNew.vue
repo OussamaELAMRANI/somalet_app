@@ -76,7 +76,8 @@
                     <div class="form-group">
                         <label for="">Prix fournisseur :</label>
                         <div class="input-group">
-                            <input :disabled="newArr.type==='INTERNATIONAL'" class="form-control" name="prix_fournisseur"
+                            <input :disabled="newArr.type==='INTERNATIONAL'" class="form-control"
+                                   name="prix_fournisseur"
                                    type="number" v-model="newArr.price_provider" v-validate="'required'"/>
                             <div class="input-group-append">
                                 <div class="input-group-text">DH</div>
@@ -284,7 +285,6 @@
             </div>
 
         </form>
-
     </div>
 </template>
 
@@ -483,6 +483,32 @@
                 const {data} = res
                 this.providers = data
             }).catch(err => console.log(err))
+
+            if (this.$route.name === 'update_arrival') {
+
+                axios.get(`/api/arrivals/${this.$route.params.id}`, {
+                    params: {with: 'product,user'}
+                })
+                    .then(({data}) => {
+                        console.log(data.product)
+                        this.$emit('getProduct', data.product)
+                        _.forEach(this.newArr, (v, k) => {
+                            this.newArr[k] = data[k]
+                            // console.log(k + ":" + data[k])
+                        })
+                        if (data['type'] === 'INTERNATIONAL') {
+                            _.forEach(this.inter, (V, K) => {
+                                this.inter[K] = data[K]
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        this.$notification.error('Cette Modification a perdu !!');
+                        console.log(err.response);
+                        this.$router.push({name: 'notFound'})
+                    })
+            }
+
         },
         methods: {
             customFormatter(date) {
@@ -510,7 +536,7 @@
                 //     data[key] = value
                 // });
                 // return data;
-                return {...this.newArr, ...this.inter, products:[]}
+                return {...this.newArr, ...this.inter, products: []}
             },
             validateBeforeSubmit() {
                 const data = this.inputsToFormData()

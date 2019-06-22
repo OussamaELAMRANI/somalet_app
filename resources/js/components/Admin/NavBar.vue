@@ -62,7 +62,7 @@
                 this.logOut()
                     .then(() => {
                         this.$router.push('/login')
-                    })
+                    }).catch(err=>console.log(err))
             },
             ...mapActions({logOut: 'logout'}),
         },

@@ -1,5 +1,8 @@
 <template>
     <div id="arrival-form-products" class="segment">
+        <code>
+            {{pproduct}}
+        </code>
         <form @submit.prevent="sendProduct">
             <h3 class="text-uppercase text-center text-primary mb-3">Ajout des produits</h3>
             <div class="dropdown-divider"></div>
@@ -127,7 +130,8 @@
             type: {
                 default: 'INTERNATIONAL'
             },
-            arrival: {}
+            arrival: {},
+            pproduct: {}
         },
         data() {
             return {
@@ -162,6 +166,11 @@
                 noData: false,
                 // selectedProductsId: [],
                 arrivals: _.cloneDeep(this.arrival)
+            }
+        },
+        mounted() {
+            if (this.$route.name === 'update_arrival') {
+                console.log(this.pproduct)
             }
         },
         watch: {

@@ -7,7 +7,7 @@
         <main class="main">
             <left-bar/>
             <div class="container-fluid">
-                <router-view/>
+                <router-view :key="$route.path"/>
             </div>
         </main>
     </div>

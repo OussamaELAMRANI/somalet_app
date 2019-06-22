@@ -19,6 +19,11 @@ class Provider extends Model
         return (new ProviderFilter($req))->add($filters)->filter($builder);
     }
 
+    public function scopeDesc(Builder $builder)
+    {
+        return $builder->orderBy('id', 'desc');
+    }
+
     function products()
     {
         return $this->hasMany(Product::class, 'provider_id');

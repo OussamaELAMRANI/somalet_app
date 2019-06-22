@@ -63,7 +63,7 @@
             login() {
                 this.signIn(this.credentials)
                     .then(() => {
-                        this.$router.push('/dashboard')
+                        this.$router.push('/login')
                     })
                     .catch(err => {
                         console.log(err)

@@ -21,6 +21,15 @@ export default [
                 },
             },
             {
+                name: 'update_arrival',
+                path: ':id/update',
+                component: NewArrival,
+                hidden:true,
+                meta: {
+                    title: 'Modifier arrivage', name: 'update_arrival', icon: 'fa fa-briefcase', roles: 'guest'
+                },
+            },
+            {
                 name: 'list_arrivals',
                 path: 'arrivals-list',
                 component: ArrivalsList,

@@ -67,6 +67,7 @@ Route::prefix('search')->group(function () {
         return response()->json($result);
     });
 });
+
 Route::prefix('colors')->group(function () {
     Route::get('', 'Api\ColorController@index');
     Route::post('', 'Api\ColorController@store');
@@ -86,6 +87,7 @@ Route::prefix('products')->group(function () {
     Route::post('', 'Api\ProductController@store');
     Route::delete('{id}/delete', 'Api\ProductController@destroy');
 });
+
 Route::prefix('arrivals')->group(function () {
 //    Route::group(['middleware' => 'auth:api'], function () {
     Route::get('', 'Api\ArrivalController@index');

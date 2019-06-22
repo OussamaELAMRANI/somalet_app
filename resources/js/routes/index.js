@@ -27,6 +27,7 @@ export const constantRoutes = [
     {
         path: '/404',
         hidden: true,
+        name: 'notFound',
         component: () => import('@/pages/NotFound'),
     },
 ];
@@ -35,6 +36,7 @@ export const asyncRoutes = [
     {
         path: '/dashboard',
         redirect: '/dashboard/home',
+        name: 'dashboard',
         component: () => import("@/pages/admin/Dashbord"),
         meta: {
             title: 'dashboard', icon: 'fa fa-cogs', roles: 'guest'

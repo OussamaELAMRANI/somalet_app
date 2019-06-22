@@ -22,7 +22,7 @@ class RelationsFilter implements IFilter
         return [
             'provider' => 'provider',
             'user' => 'user',
-//            'product' => 'product', TODO Product PIVOT
+            'product' => 'product',
         ];
     }
     public function ResolveFilterValue($keys)

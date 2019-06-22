@@ -12,15 +12,9 @@ class ProviderController extends Controller
      * Get all providers !
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $req)
+    public function index()
     {
-        if ($req->query('fields')) {
-            $fields = $req->query('fields');
-            $fields = explode(',', $fields);
-            $all = Provider::orderBy('id', 'DESC')->paginate(10, $fields);
-        } else
-            $all = Provider::with('products')->orderBy('id', 'DESC')->paginate(10);
-        return response()->json($all);
+        return response()->json(Provider::desc()->get(),200);
     }
 
     /**
@@ -77,13 +71,12 @@ class ProviderController extends Controller
 
     public function destroy(Provider $id)
     {
-        $v = $id::destroy($id->id);
+        $id::destroy($id->id);
         return response()->json(['message' => 'bien supprimé'], 201);
     }
 
     public function search(Request $req, $searchValue = null)
     {
         return response()->json(Provider::filter($req)->paginate(20), 200);
-
     }
 }

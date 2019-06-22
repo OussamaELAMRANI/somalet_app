@@ -13,23 +13,13 @@ class ArrivalController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         return response()->json(Arrival::filter($request)->last(), 200);
 
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -119,12 +109,13 @@ class ArrivalController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Arrival $arrival
+     * @param Request $request
+     * @param \App\Arrival $arrivalId
      * @return \Illuminate\Http\Response
      */
-    public function show(Arrival $arrival)
+    public function show(Request $request, $arrivalId)
     {
-        //
+        return response()->json(Arrival::filter($request)->find($arrivalId), 200);
     }
 
     /**

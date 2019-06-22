@@ -7,9 +7,10 @@
                 <i class="fa fa-plus"></i>
                 Nouveau arrivage
             </router-link>
+
             <div class="col-9 m-0 pr-0">
 
-                <table class="table segment bg-success text-white">
+                <table class="table bg-success text-white" id="head-nav">
                     <thead>
                     <tr>
                         <th scope="col">N Facture</th>
@@ -36,14 +37,21 @@
                         <h6 class="text-center text-secondary m-5">Pas de résultat dans ce cas (Vide...) </h6>
                     </div>
 
-                    <div v-else class="row segment align-items-center" v-for="(c,index) in searchArrivals" :key="index"
+                    <div v-else class="row segment align-items-center justify-content-center"
+                         v-for="(c,index) in searchArrivals" :key="index"
                          :id="c.id">
                         <div class="col-1">{{c.n_facture}}</div>
                         <div class="col-1">{{c.n_dossier}}</div>
                         <div class="col-2">{{c.date_facture}}</div>
-                        <div class="col-2">{{c.type}}</div>
+                        <div class="col-2">
+                            <span class="badge badge-warning">{{c.type}}</span>
+                        </div>
                         <div class="col-2">{{c.price_devise}} DH</div>
-                        <div class="col-2">Etat</div>
+                        <div class="col-2">
+                            <span class="badge badge-primary">
+                            En Attent
+                            </span>
+                        </div>
                         <div class="col-1">{{c.user.username}}</div>
                         <div class="col-1">
                             <button class="btn btn-sm btn-success rounded-circle" data-toggle="modal"
@@ -59,28 +67,51 @@
                                 <i class="fa fa-pen" aria-hidden="true"></i>
                             </button>
                         </div>
-                        <div class="row segment justify-content-center">
-                            <table class="table segment bg-primary text-white">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Produit</th>
-                                    <th scope="col">Qte</th>
-                                    <th scope="col">Prix UT</th>
-                                    <th scope="col">Prix TTC</th>
-                                    <th scope="col">Fret douane</th>
-                                    <th scope="col">ETAT de reception</th>
-                                    <th scope="col-2">Remaque</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
+                        <template v-if="c.product.length >0">
+                            <div class="col-1">
+                                <button class="btn rounded-circle btn-sm btn-dark" data-toggle="collapse"
+                                        :data-target="'#collapse_'+c.id" aria-expanded="false"
+                                        :aria-controls="'collapse_'+c.id">
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class=" col-12 dropdown-divider"></div>
+                            <div class="col-12 mt-2 justify-content-center collapse" :id="'collapse_'+c.id">
+                                <table class="table table-hover table-striped">
+                                    <thead class="thead-dark text-center table-bordered">
+                                    <tr>
+                                        <th scope="col">Produit</th>
+                                        <th scope="col">Qte</th>
+                                        <th scope="col">Prix UT</th>
+                                        <th scope="col">Prix TTC</th>
+                                        <th scope="col">Fret douane</th>
+                                        <th scope="col">ETAT de reception</th>
+                                        <th scope="col-2">Remaque</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="p in c.product">
+                                        <td>{{p.name.slice(0,20)}}</td>
+                                        <td>{{p.pivot.qte_facture}}</td>
+                                        <td>{{p.pivot.price_unit_ht}}</td>
+                                        <td>{{p.pivot.price_devise}}</td>
+                                        <td>{{p.pivot.fret_douane}}</td>
+                                        <td>{{(p.pivot.date_reception) === null ? 'en Attent' : 'Receptionner'}}</td>
+                                        <td>{{p.pivot.remark}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </template>
+
+
                     </div>
 
                 </div>
 
-
             </div>
-
+            <!--  FILTER -->
             <div class="col-3 m-0">
                 <form @submit.prevent="filterArrival">
 
@@ -118,7 +149,6 @@
                                         calendar-button-icon="fa fa-calendar"/>
                         </div>
                         <div class="dropdown-divider"></div>
-
                         <button class="btn btn-outline-light container-fluid" @click="filterArrival">
                             <i class="fa fa-filter"></i>
                             Filter
@@ -127,6 +157,7 @@
                 </form>
 
             </div>
+
         </div>
     </div>
 </template>
@@ -154,15 +185,25 @@
             }
         },
         mounted() {
-            axios.get('/api/arrivals', {params: {with: 'user,provider'}})
+            axios.get('/api/arrivals', {params: {with: 'user,provider,product'}})
                 .then(res => {
                     const {data} = res
                     this.arrivals = data
                     this.searchArrivals = data
                 })
                 .catch(err => console.log(err.response))
+
+            document.addEventListener('scroll', this.fixNav)
         },
         methods: {
+            fixNav() {
+                const scoX = window.scrollY
+                const nav = document.getElementById('head-nav');
+                if (scoX >= 200)
+                    nav.classList.add('head-nav__fix')
+                else
+                    nav.classList.remove('head-nav__fix')
+            },
             changeType(ev) {
                 let val = ev.target.options[ev.target.options.selectedIndex].value
                 console.log(val)
@@ -195,8 +236,13 @@
             getIdToDelete(a) {
 
             },
-            toUpdate(a) {
+            toUpdate(id) {
+                this.$router.push(
+                    {
+                        name: 'update_arrival',
+                        params: {id}
 
+                    })
             },
         },
         components: {
@@ -206,8 +252,20 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .bg-filter {
         background: #9c57f8
+    }
+
+    #head-nav {
+        background: #9c57f8;
+    }
+    .head-nav__fix {
+        box-shadow: 0 2px 4px rgba(156, 87, 248, 0.5);
+        max-width: 72%;
+        top: 0;
+        z-index: 100;
+        background: #9c5;
+        position: fixed;
     }
 </style>
