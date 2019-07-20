@@ -13,7 +13,7 @@
             a.list-group-item.list-group-item-action.text-white.bg-secondary.text-center.text-uppercase
                 strong {{ providers.length === 0 ? "No Fournisseur existe !" : "listes des fournisseur"}}
             a.list-group-item.list-group-item-action( v-for="p in providers", @click="addCheck" :id="p.id" ) {{p.steName}}
-
+            router-link.list-group-item.text-success.text-center(v-if="providers.length === 0" :to="{name:'newProvider'}") Ajouter nouveau fournisseur (Clic ici) !
 
 </template>
 

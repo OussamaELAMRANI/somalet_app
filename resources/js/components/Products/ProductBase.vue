@@ -26,7 +26,7 @@
                         select-unity(@sendUnity="getUnity")
 
                         .row
-                            .col
+                            .col-6
                                 label(for='stockAlerte') Alert quantit&eacute; minimum
                                 input#stockAlerte.form-control(type='Number' placeholder='stockAlerte ...' v-model='product.alertQte')
                             .dropdown-divider
@@ -38,6 +38,7 @@
                                     option(v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']" :selected='(t === type)')
                                         | {{t}}
                             // sub category
+                        select-category(@sendSubCategory="getSubCategory")
                         .row
                             .col
                                 label(for='desc') Description
@@ -48,9 +49,10 @@
                             .dropdown-divider
 
                         .row
-                            button.btn.btn-success(@click='insert')
-                                i.fa.fa-save
-                                | Enregister
+                            .col
+                                button.btn.btn-success(@click='insert')
+                                    i.fa.fa-save
+                                    | Enregister
 
 </template>
 
@@ -60,6 +62,7 @@
     import SelectedColors from "@/components/Colors/SelectedColors";
     import Color from "@/components/Colors/Colors";
     import SelectUnity from "@/components/layouts/SelectUnity";
+    import SelectCategory from "@/components/layouts/SelectCategory";
 
     export default {
         name: "ProductBase",
@@ -75,6 +78,7 @@
                     remark: '',
                     unit_id: '',
                     provider_id: '',
+                    subcategory_id: '',
                 },
                 newColors: {},
                 colorsId: []
@@ -96,6 +100,9 @@
             getUnity(val) {
                 this.product.unit_id = val
             },
+            getSubCategory(val) {
+                this.product.subcategory_id = val
+            },
             insert() {
                 const colors = _.map(this.colorsId, 'id');
                 const product = this.product;
@@ -104,9 +111,10 @@
                     .then(({data}) => {
                         console.log(data)
                     })
+                    .catch(err => console.log(err.response))
             }
         },
-        components: {SelectUnity, Color, SelectedColors, DynamicForm, SearchProvider},
+        components: {SelectCategory, SelectUnity, Color, SelectedColors, DynamicForm, SearchProvider},
     }
 </script>
 

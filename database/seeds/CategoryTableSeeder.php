@@ -88,7 +88,7 @@ class CategoryTableSeeder extends Seeder
                     if(array_key_exists($cle,$subCatg))
 //                        dd($subCatg[$cle+1]);
                         foreach ($subCatg[$cle] as $val) {
-                            factory(App\SubCategory::class)->create(["sub_category" => $val, "category_id" => $c->id]);
+                            factory(App\SubCategory::class)->create(["sub_category" => trim($val), "category_id" => $c->id]);
                         }
                 });
         }

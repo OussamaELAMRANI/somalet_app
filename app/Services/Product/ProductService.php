@@ -5,6 +5,7 @@ namespace App\Services\Product;
 
 use App\Color;
 use App\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProductService
@@ -26,18 +27,15 @@ class ProductService
     {
         $colors = $this->getColorsById($this->req->input('colors'));
         $product = $this->req->input('product');
+        $now = Carbon::now()->toDateTimeString();
 
-
-        $products = array_map(function ($color) use ($product) {
+        $products = array_map(function ($color) use ($product, $now) {
             $product['name'] = $product['name'] . "/" . $color['name'];
-            return array_merge($product, ['color_id' => $color['id']]);
+            return array_merge($product, ['color_id' => $color['id'], 'created_at' => $now, 'updated_at' => $now]);
         }, $colors->toArray());
 
-        return $this->sendResponse($products, 201);
-
-        $newProds = Product::createMany($products);
-
-        return $this->sendResponse($newProds, 201);
+        Product::insert($products);
+        return $this->sendResponse(['message' => "Products successfully added"], 201);
     }
 
 

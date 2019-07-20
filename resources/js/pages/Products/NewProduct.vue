@@ -212,18 +212,6 @@
                 let val = ev.target.options[ev.target.options.selectedIndex].value
                 this.type = val
             },
-            getCategory(ev) {
-                let val = ev.target.options[ev.target.options.selectedIndex].value
-                let id = ev.target.options[ev.target.options.selectedIndex].id
-                id = id.split('_')
-                if (val === 'NOUVEAU ++') {
-                    this.subcategory_id = null
-                    this.newSubCategory = true
-                } else {
-                    this.newSubCategory = false
-                    this.subcategory_id = parseInt(id[1])
-                }
-            },
             addColor() {
                 const _this = this
                 axios.post('/api/colors',
