@@ -4,6 +4,7 @@
 namespace App\Services\Product;
 
 use App\Color;
+use App\Product;
 use Illuminate\Http\Request;
 
 class ProductService
@@ -17,15 +18,26 @@ class ProductService
 
     private function getColorsById(array $ids)
     {
-        $colors = Color::whereIn('id', $ids);
+        $colors = Color::whereIn('id', $ids)->get();
         return $colors;
     }
 
     public function addProducts()
     {
-        $colors = $this->req->input('colors');
+        $colors = $this->getColorsById($this->req->input('colors'));
+        $product = $this->req->input('product');
 
-        return $this->sendResponse($colors);
+
+        $products = array_map(function ($color) use ($product) {
+            $product['name'] = $product['name'] . "/" . $color['name'];
+            return array_merge($product, ['color_id' => $color['id']]);
+        }, $colors->toArray());
+
+        return $this->sendResponse($products, 201);
+
+        $newProds = Product::createMany($products);
+
+        return $this->sendResponse($newProds, 201);
     }
 
 

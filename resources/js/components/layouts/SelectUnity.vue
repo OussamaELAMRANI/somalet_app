@@ -4,7 +4,7 @@
             label(for='unity') Selectionnez l&apos;unit&eacute;
             select#unity.form-control(v-on:change='getUnity')
                 option(selected='selected' disabled='disabled') Selectionnez...
-                option(@click="isNewUnity=true") NOUVEAU ++
+                option NOUVEAU ++
                 option(v-for=' c in unities' :id="'unity_'+c.id" :selected='(c.id == unity)')
                     | {{ c.name }}
         .col(v-if='isNewUnity')
@@ -25,7 +25,7 @@
                 isNewUnity: false,
                 hasRapport: true,
                 unity: '',
-                rapport: '',
+                // rapport: '',
                 unities: ''
             }
         },
@@ -36,12 +36,13 @@
                 id = id.split('_')
                 if (val === 'NOUVEAU ++') {
                     this.unity = null
-                    this.newUnity = true
+                    this.isNewUnity = true
                 } else {
-                    this.newUnity = false
+                    this.isNewUnity = false
                     this.unity = parseInt(id[1])
+                    this.$emit('sendUnity', this.unity)
                 }
-                this.setRapport(val);
+                // this.setRapport(val);
             },
             addUnity() {
                 const _this = this
@@ -52,7 +53,7 @@
                 ).then(function (response) {
                     _this.unities = []
                     _this.unities = response.data.unities
-                    _this.newUnity = false;
+                    _this.isNewUnity = false;
                     _this.unity = ''
                 })
                     .catch(function (error) {

@@ -11,7 +11,7 @@
                         .row
                             .col
                                 label(for='reference') Réference du produit
-                                input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.ref' :disabled='id!==0')
+                                input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.reference' :disabled='id!==0')
                             .col
                                 label(for='name') Nom du Produit
                                 input#name.form-control(type='text' placeholder='SIRET ...' v-model='product.name')
@@ -21,37 +21,30 @@
                             .col
                                 selected-colors(:new-color='newColors' @giveColors='getAllColors')
                             .col
-                                color(@getcolors='getColors')
+                                color(@getColors='getColors')
 
-                        //select-unity()
+                        select-unity(@sendUnity="getUnity")
 
                         .row
                             .col
                                 label(for='stockAlerte') Alert quantit&eacute; minimum
                                 input#stockAlerte.form-control(type='Number' placeholder='stockAlerte ...' v-model='product.alertQte')
                             .dropdown-divider
-                        //.row
-                            .col-12
+                        .row
+                            //.col-12
                                 label(for='type') Selectionnez le Type du produit
                                 select#type.form-control(v-on:change='getType')
                                     option(selected='selected' disabled='disabled') Selectionnez...
                                     option(v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']" :selected='(t === type)')
                                         | {{t}}
-                            .col-12
-                                label(for='category') Selectionnez la categorie
-                                select#category.form-control(v-on:change='getCategory')
-                                    option(selected='selected' disabled='disabled') Selectionnez...
-                                    template(v-for='t in categories')
-                                        optgroup(:label='t.category_name')
-                                            option(v-for='sub in t.sub_categories' :id="'subcategory_'+sub.id" :selected='(sub.id == subcategory_id)')
-                                                | {{sub.sub_category}}
+                            // sub category
                         .row
                             .col
                                 label(for='desc') Description
-                                textarea#desc.form-control(placeholder='Description du produit  ...' v-model='product.desc')
+                                textarea#desc.form-control(placeholder='Description du produit  ...' v-model='product.description')
                             .col
-                                label(for='note') Remarque
-                                textarea#note.form-control(placeholder='Remarque ...' v-model='product.note')
+                                label(for='remark') Remarque
+                                textarea#remark.form-control(placeholder='Remarque ...' v-model='product.remark')
                             .dropdown-divider
 
                         .row
@@ -75,11 +68,13 @@
                 provider: null,
                 id: 0,
                 product: {
-                    ref: '',
+                    reference: '',
                     name: '',
                     alertQte: 0,
-                    desc: '',
-                    note: '',
+                    description: '',
+                    remark: '',
+                    unit_id: '',
+                    provider_id: '',
                 },
                 newColors: {},
                 colorsId: []
@@ -88,6 +83,7 @@
         methods: {
             getProvider(provider) {
                 this.provider = provider
+                this.product.provider_id = provider.id
             },
             getColors(data, hasColor) {
                 if (!hasColor)
@@ -97,10 +93,14 @@
             getAllColors(data) {
                 this.colorsId = data
             },
+            getUnity(val) {
+                this.product.unit_id = val
+            },
             insert() {
                 const colors = _.map(this.colorsId, 'id');
+                const product = this.product;
 
-                axios.post('/api/products/new', {colors})
+                axios.post('/api/products/new', {colors, product})
                     .then(({data}) => {
                         console.log(data)
                     })
