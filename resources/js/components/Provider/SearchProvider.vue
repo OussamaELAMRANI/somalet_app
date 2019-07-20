@@ -2,7 +2,7 @@
     #search-provider
         h5.text-success.mb-1 donnez le fournisseur de ce nouveau produit
         .dropdown-divider
-        form
+        form.mb-3
             .input-group.m3
                 input.form-control(v-model="searchTxt" @input="filter" placeholder="Recherche par Societe" autofocus)
                 .input-group-append
@@ -10,8 +10,7 @@
                         i( class="fa fa-search" aria-hidden="true")
                         strong Suivant
         .list-group.list-group-flush(v-if="providers")
-
-            a.list-group-item.list-group-item-action.disabled.bg-light
+            a.list-group-item.list-group-item-action.text-white.bg-secondary.text-center.text-uppercase
                 strong {{ providers.length === 0 ? "No Fournisseur existe !" : "listes des fournisseur"}}
             a.list-group-item.list-group-item-action( v-for="p in providers", @click="addCheck" :id="p.id" ) {{p.steName}}
 
@@ -63,5 +62,9 @@
 </script>
 
 <style scoped>
-
+    .list-group {
+        height: 70vh;
+        overflow: auto;
+        margin-bottom: 70px;
+    }
 </style>

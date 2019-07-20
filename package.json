@@ -44,6 +44,7 @@
         "vue": "^2.5.17",
         "vue-2-breadcrumbs": "^0.5.0",
         "vue-chartjs": "^3.4.2",
+        "vue-color": "^2.7.0",
         "vue-cool-select": "^2.10.2",
         "vue-date-pick": "^1.1.0",
         "vue-form-wizard": "^0.8.4",
@@ -53,6 +54,7 @@
         "vue-route": "^1.5.1",
         "vue-router": "^3.0.6",
         "vue-sidebar-menu": "^3.9.0",
+        "vue-status-indicator": "^1.1.1",
         "vue-template-compiler": "^2.6.10",
         "vue2-dialog": "^1.1.0",
         "vue2-event-calendar": "^0.4.4",
@@ -63,6 +65,7 @@
         "webpack-cli": "^3.3.3"
     },
     "dependencies": {
+        "@radial-color-picker/vue-color-picker": "^2.3.0",
         "acorn": "^6.1.1",
         "ag-grid-community": "^20.2.0",
         "ag-grid-vue": "^20.2.0",

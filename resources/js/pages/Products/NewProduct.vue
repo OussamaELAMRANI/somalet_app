@@ -1,122 +1,126 @@
 <template>
     <div class="container" id="new-product">
-        <transition name="bounce">
-            <search-provider @provider="getProvider" v-if="provider === null"></search-provider>
-            <div v-else>
-                <button class="btn btn-secondary btn-sm mb-5" @click="emptyProvider"><i class="fas fa-arrow-left"></i>Selection
-                    un autre fournisseur
-                </button>
-                <h5 class="text-success mb-1">Nouveau produit du Fournissuer :<strong class="text-dark">"
-                    {{provider.steName}} "</strong></h5>
-                <div class="dropdown-divider"></div>
-                <div class="row">
-                    <div class="col">
-                        <picture-input id="art-portrait" width="200" height="200" margin="16" accept="image/*" size="10"
-                                       ref="portraits" buttonClass="btn btn-sm btn-info" :prefill="img_url"
-                                       :customStrings="{upload: '&lt;h1&gt;Bummer!&lt;/h1&gt;', drag: 'Ajouter une image du Portrait ...'}"></picture-input>
-                        <div class="dropdown-divider"></div>
-                    </div>
-                </div>
-                <form @submit.prevent="">
-                    <div class="form-group segment">
-                        <div class="row">
-                            <div class="col"><label for="reference">Reference du produit</label><input
-                                class="form-control " type="text" id="reference" placeholder="Ref ..." v-model="refr"
-                                :disabled="id!==0"/></div>
-                            <div class="col"><label for="name">Nom du Produit</label><input class="form-control "
-                                                                                            type="text" id="name"
-                                                                                            placeholder="SIRET ..."
-                                                                                            v-model="name"/></div>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col"><label for="desc">Description</label><textarea class="form-control "
-                                                                                            id="desc"
-                                                                                            placeholder="Description du produit  ..."
-                                                                                            v-model="desc"></textarea>
-                            </div>
-                            <div class="col"><label for="note">Remarque</label><textarea class="form-control " id="note"
-                                                                                         placeholder="Remarque ..."
-                                                                                         v-model="note"></textarea>
-                            </div>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col"><label for="inputState">Selectionnez une couleur</label><select
-                                class="form-control" id="inputState" v-on:change="getColor">
-                                <option selected="selected" disabled="disabled">Selectionnez...</option>
-                                <option>NOUVEAU ++</option>
-                                <option v-for=" c in colors" :id="'color_'+c.id" :selected="(c.id == color)">{{ c.name
-                                    }}
-                                </option>
-                            </select></div>
-                            <div class="col" v-if="newColor === true"><label for="name">Nouvelle Couleur</label><input
-                                class="form-control " type="text" id="new-color" placeholder="Couleur ..."
-                                v-model="color" v-on:keyup.enter="addColor"/></div>
-                            <div class="col"><label for="inputState">Selectionnez l'unité</label><select
-                                class="form-control" id="unity" v-on:change="getUnity">
-                                <option selected="selected" disabled="disabled">Selectionnez...</option>
-                                <option>NOUVEAU ++</option>
-                                <option v-for=" c in unities" :id="'unity_'+c.id" :selected="(c.id == unity)">{{ c.name
-                                    }}
-                                </option>
-                            </select></div>
-                            <div class="col" v-if="newUnity"><label for="name">Nouvelle Unite</label><input
-                                class="form-control " type="text" id="new-unity" placeholder="Unite ..." v-model="unity"
-                                v-on:keyup.enter="addUnity"/>
-                            </div>
-                            <div class="col" v-if="hasRapport">
-                                <label for="rapport">{{ labelRapport }}</label>
-                                <input class="form-control " type="text" id="rapport" :placeholder="labelRapport"
-                                       v-model="rapport"/>
-                            </div>
-                        </div>
-                        <div class="dropdown-divider m-3"></div>
-                        <div class="row">
-                            <div class="col"><label for="stockAlerte">Alert quantité minimum</label><input
-                                class="form-control " type="Number" id="stockAlerte" placeholder="stockAlerte ..."
-                                v-model="alertQte"/></div>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12"><label for="inputState">Selectionnez le Type du produit</label><select
-                                class="form-control" id="type" v-on:change="getType">
-                                <option selected="selected" disabled="disabled">Selectionnez...</option>
-                                <option v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']" :selected="(t === type)">
-                                    {{t}}
-                                </option>
-                            </select>
-                            </div>
-                            <div class="col-12"><label for="inputState">Selectionnez la categorie</label>
-                                <select
-                                    class="form-control" id="category" v-on:change="getCategory">
-                                    <option selected="selected" disabled="disabled">Selectionnez...</option>
-                                    <template v-for="t in categories">
-                                        <optgroup :label="t.category_name">
-                                            <option v-for="sub in t.sub_categories" :id="'subcategory_'+sub.id"
-                                                    :selected="(sub.id == subcategory_id)">
-                                                {{sub.sub_category}}
-                                            </option>
-                                        </optgroup>
-                                    </template>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <button class="btn btn-success float-right m-4" @click="insert"><i
-                                    class="fa fa-save"></i>Enregister
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </transition>
+        <product-base/>
+        <!--        <transition name="bounce">-->
+        <!--            <search-provider @provider="getProvider" v-if="provider === null"/>-->
+        <!--            <div v-else>-->
+        <!--                <button class="btn btn-secondary btn-sm mb-5" @click="emptyProvider"><i class="fas fa-arrow-left"></i>Selection-->
+        <!--                    un autre fournisseur-->
+        <!--                </button>-->
+        <!--                <h5 class="text-success mb-1">Nouveau produit du Fournissuer :<strong class="text-dark">"-->
+        <!--                    {{provider.steName}} "</strong></h5>-->
+        <!--                <div class="dropdown-divider"></div>-->
+        <!--                <div class="row">-->
+        <!--                    <div class="col">-->
+        <!--                        <picture-input id="art-portrait" width="200" height="200" margin="16" accept="image/*" size="10"-->
+        <!--                                       ref="portraits" buttonClass="btn btn-sm btn-info" :prefill="img_url"-->
+        <!--                                       :customStrings="{upload: 'uploaded', drag: 'Ajouter une image du Portrait ...'}"/>-->
+        <!--                        <div class="dropdown-divider"></div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+
+<!--                        <form @submit.prevent="">-->
+<!--                            <div class="form-group segment">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col"><label for="reference">Reference du produit</label><input-->
+<!--                                        class="form-control " type="text" id="reference" placeholder="Ref ..." v-model="refr"-->
+<!--                                        :disabled="id!==0"/></div>-->
+<!--                                    <div class="col"><label for="name">Nom du Produit</label>-->
+<!--                                        <input class="form-control " type="text" id="name" placeholder="SIRET ..." v-model="name"/></div>-->
+<!--                                    <div class="dropdown-divider"></div>-->
+<!--                                </div>-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col"><label for="desc">Description</label>-->
+<!--                                        <textarea class="form-control "-->
+<!--                                                  id="desc"-->
+<!--                                                  placeholder="Description du produit  ..."-->
+<!--                                                  v-model="desc"></textarea>-->
+<!--                                    </div>-->
+<!--                                    <div class="col"><label for="note">Remarque</label>-->
+<!--                                        <textarea class="form-control " id="note"-->
+<!--                                               placeholder="Remarque ..."-->
+<!--                                               v-model="note"></textarea>-->
+<!--                                    </div>-->
+<!--                                    <div class="dropdown-divider"></div>-->
+<!--                                </div>-->
+<!--                                <div class="row align-items-center">-->
+<!--                                    <div class="col">-->
+<!--                                        <selected-colors :new-color="newColors" @giveColors="getAllColors"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="col">-->
+<!--                                        <colors @getColors="getColors"/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="row">-->
+<!--&lt;!&ndash;&ndash;&gt;-->
+<!--                                    <div class="col">-->
+<!--                                        <label for="">Selectionnez l'unité</label><select-->
+<!--                                        class="form-control" id="unity" v-on:change="getUnity">-->
+<!--                                        <option selected="selected" disabled="disabled">Selectionnez...</option>-->
+<!--                                        <option>NOUVEAU ++</option>-->
+<!--                                        <option v-for=" c in unities" :id="'unity_'+c.id" :selected="(c.id == unity)">{{ c.name-->
+<!--        &lt;!&ndash;                                    }}&ndash;&gt;-->
+<!--                                        </option>-->
+<!--                                    </select></div>-->
+<!--                                    <div class="col" v-if="newUnity"><label for="name">Nouvelle Unite</label><input-->
+<!--                                        class="form-control " type="text" id="new-unity" placeholder="Unite ..." v-model="unity"-->
+<!--                                        v-on:keyup.enter="addUnity"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="col" v-if="hasRapport">-->
+<!--                                        <label for="rapport">{{ labelRapport }}</label>-->
+<!--                                        <input class="form-control " type="text" id="rapport" :placeholder="labelRapport"-->
+<!--                                               v-model="rapport"/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="dropdown-divider m-3"></div>-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col"><label for="stockAlerte">Alert quantité minimum</label><input-->
+<!--                                        class="form-control " type="Number" id="stockAlerte" placeholder="stockAlerte ..."-->
+<!--                                        v-model="alertQte"/></div>-->
+<!--                                    <div class="dropdown-divider"></div>-->
+<!--                                </div>-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-12"><label for="inputState">Selectionnez le Type du produit</label><select-->
+<!--                                        class="form-control" id="type" v-on:change="getType">-->
+<!--                                        <option selected="selected" disabled="disabled">Selectionnez...</option>-->
+<!--                                        <option v-for=" t in ['MATIERE_PREMIERE','PRODUIT_FINI']" :selected="(t === type)">-->
+<!--                                            {{t}}-->
+<!--                                        </option>-->
+<!--                                    </select>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-12"><label for="inputState">Selectionnez la categorie</label>-->
+<!--                                        <select-->
+<!--                                            class="form-control" id="category" v-on:change="getCategory">-->
+<!--                                            <option selected="selected" disabled="disabled">Selectionnez...</option>-->
+<!--                                            <template v-for="t in categories">-->
+<!--                                                <optgroup :label="t.category_name">-->
+<!--                                                    <option v-for="sub in t.sub_categories" :id="'subcategory_'+sub.id"-->
+<!--                                                            :selected="(sub.id == subcategory_id)">-->
+<!--                                                        {{sub.sub_category}}-->
+<!--                                                    </option>-->
+<!--                                                </optgroup>-->
+<!--                                            </template>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                    <div class="col">-->
+<!--                                        <button class="btn btn-success float-right m-4" @click="insert"><i-->
+<!--                                            class="fa fa-save"></i>Enregister-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </form>-->
+        <!--            </div>-->
+        <!--        </transition>-->
     </div>
 </template>
 
 <script>
     import SearchProvider from "../../components/Provider/SearchProvider";
     import PictureInput from "vue-picture-input";
+    import Colors from "@/components/Colors/Colors";
+    import SelectedColors from "@/components/Colors/SelectedColors";
+    import ProductBase from "@/components/Products/ProductBase";
 
     export default {
         name: "NewProduct",
@@ -144,7 +148,10 @@
                 newSubCategory: false,
                 hasRapport: false,
                 rapport: null,
-                labelRapport: "Rapport"
+                labelRapport: "Rapport",
+                newColors: {},
+                colorsId: []
+
             }
         },
         methods: {
@@ -173,7 +180,7 @@
                     this.color = parseInt(id[1])
                 }
             },
-            setRapport(val){
+            setRapport(val) {
                 if (val === "Mètre") {
                     this.labelRapport = "Mètre/Rouleau";
                     this.hasRapport = true;
@@ -252,6 +259,7 @@
             insert() {
                 const formData = new FormData()
                 const images = this.$refs.portraits
+                const colors = this.colorsId
 
                 formData.append('img', images.file)
 
@@ -269,22 +277,35 @@
                 formData.append('subcategory_id', this.subcategory_id)
                 formData.append('rapport', this.rapport)
 
+                for (let i = 0; i < colors.length; i++) {
+                    console.log(colors[i])
+                    formData.append('colors[]', colors[i])
+                }
+
                 axios.post('/api/products', formData)
                     .then(res => {
                         console.log(res.data)
-                        this.$router.push({name: 'listProducts'})
+                        // this.$router.push({name: 'listProducts'})
                     })
                     .catch(err => console.log(err.response))
             },
 
+            getColors(data, hasColor) {
+                if (!hasColor)
+                    this.newColors = data.colors
+            },
+
+            getAllColors(data) {
+                this.colorsId = data
+            }
         },
         mounted() {
             axios.get('/api/colors').then(res => {
                 this.colors = res.data
             })
-            axios.get('/api/unities').then(res => {
-                this.unities = res.data
-            })
+            // axios.get('/api/unities').then(res => {
+            //     this.unities = res.data
+            // })
             axios.get('/api/categories').then(res => {
                 this.categories = res.data
             })
@@ -328,31 +349,19 @@
                 this.isNew = true
                 this.id = 0
             }
-        },
+        }
+        ,
         destroyed() {
             console.log('is destoryed')
-        },
+        }
+        ,
         components: {
+            ProductBase,
+            SelectedColors,
+            Colors,
             PictureInput, SearchProvider
         }
     }
+
 </script>
 
-<style scoped>
-    .bounce-enter-active {
-        animation: bounce-in .5s;
-    }
-
-    .bounce-leave-active {
-        animation: bounce-in .5s reverse;
-    }
-
-    @keyframes bounce-in {
-        0% {
-            transform: scale(.4);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
-</style>

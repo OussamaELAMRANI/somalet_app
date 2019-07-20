@@ -81,10 +81,10 @@ Route::prefix('unities')->group(function () {
 Route::prefix('products')->group(function () {
 
     Route::get('search/{searchValue?}', 'Api\ProductController@search');
+    Route::post('new', 'Api\ProductController@newProducts');
 
     Route::get('', 'Api\ProductController@index');
     Route::get('{id}', 'Api\ProductController@show');
-    Route::post('', 'Api\ProductController@store');
     Route::delete('{id}/delete', 'Api\ProductController@destroy');
 });
 

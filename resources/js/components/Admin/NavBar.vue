@@ -64,7 +64,7 @@
                         this.$router.push('/login')
                     }).catch(err=>console.log(err))
             },
-            ...mapActions({logOut: 'logout'}),
+            ...mapActions({logOut: 'userStore/logout'}),
         },
         computed: {
             user() {

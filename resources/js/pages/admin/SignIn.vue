@@ -62,8 +62,8 @@
         methods: {
             login() {
                 this.signIn(this.credentials)
-                    .then(() => {
-                        this.$router.push('/login')
+                    .then((res) => {
+                        this.$router.go('/')
                     })
                     .catch(err => {
                         console.log(err)

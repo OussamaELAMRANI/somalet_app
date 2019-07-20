@@ -22,20 +22,24 @@ class ColorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $req
      * @return \Illuminate\Http\Response
      */
     public function store(Request $req)
     {
-        Color::firstOrCreate(['name' => request('name')]);
+        $color = Color::where(['name' => $req->input('name')])->first();
 
-        return response()->json(['message' => "couleur bien ajoutée", 'colors' => Color::all()], 201);
+        if ($color)
+            return response()->json(['hasColor' => true, 'colors' => $color], 201);
+
+        $newColor = Color::create($req->only('name', 'color'));
+        return response()->json(['message' => "Couleur a été bien ajoutée", 'hasColor' => false, 'colors' => $newColor], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -46,7 +50,7 @@ class ColorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -57,8 +61,8 @@ class ColorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -69,7 +73,7 @@ class ColorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
