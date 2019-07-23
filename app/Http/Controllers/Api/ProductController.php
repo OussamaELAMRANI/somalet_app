@@ -33,7 +33,8 @@ class ProductController extends Controller
     }
 
 
-    public function newProducts(){
+    public function newProducts()
+    {
         return $this->service->addProducts();
     }
 
@@ -101,21 +102,10 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return \response()->json(Product::findOrFail($id)->load('provider', 'unit', 'color', 'subcategory'));
+        return $this->service->getProduct($id);
+//        return response()->json(Product::findOrFail($id)->load('provider', 'unit', 'color', 'subcategory'));
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.

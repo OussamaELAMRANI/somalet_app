@@ -79,9 +79,11 @@ const actions = {
     userInfos({commit, state}) {
         const token = `Bearer ${state.token}`;
 
+        axios.defaults.headers.common['Authorization'] = token;
+
         return axios.get('/api/auth/user', {
             headers: {
-                'Authorization': token,
+                // 'Authorization': token,
             }
         })
             .then(res => {

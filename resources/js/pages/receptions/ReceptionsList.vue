@@ -112,7 +112,7 @@
             </div>
             <!--            FILTER ========== -->
             <div class="col-3 m-0">
-                <div class="filter__fix">
+                <div class="">
                     <form @submit.prevent="filterArrival">
 
                         <div class="segment bg-filter text-white bg-puple__light">
@@ -264,6 +264,6 @@
         top: 0;
         z-index: 100;
         /*background: #9c5;*/
-        position: fixed;
+        /*position: fixed;*/
     }
 </style>

@@ -5,7 +5,7 @@
             input.form-control(type='text' placeholder='Nouveau couleur ...' v-model='name')
             p Selectionnez une couleur
             .dropdown-divider
-            slider(v-model='color')
+            Chrome(v-model='color')
             .dropdown-divider
             button.btn.btn-success.float-right(@click="addColor") Ajouter
 </template>
@@ -13,12 +13,12 @@
 <script>
     import ColorPicker from '@radial-color-picker/vue-color-picker';
     import StatusIndicator from 'vue-status-indicator'
-    import {Slider} from 'vue-color'
+    import {Chrome} from 'vue-color'
 
     export default {
         name: "Colors",
         components: {
-            Slider, ColorPicker, StatusIndicator
+            Chrome, ColorPicker, StatusIndicator
         },
         data() {
             return {

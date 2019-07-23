@@ -32,6 +32,7 @@
                 </div>
             </div>
         </div>
+
         <h3 class="text-lg-center text-secondary m-4">Liste des Produits</h3>
         <div class="dropdown-divider"></div>
 
@@ -74,11 +75,14 @@
             :data="tableDate">
             <tr v-for="(p,index) in products.data">
                 <th scope="row">{{index+1}}</th>
-<!--                <td><img :src="host+''+p.img" alt="image produit" height="60px"></td>-->
-                <td><img :src="p.img" alt="image produit" height="60px"></td>
+                <td><img :src="getImage(p.img)" alt="image produit" height="60px"></td>
+                <!--                <td><img :src="p.img" alt="image produit" height="60px"></td>-->
                 <td>{{p.reference}}</td>
                 <td>{{p.name}}</td>
-                <td>{{p.color.name}}</td>
+                <td class="d-flex">
+                    <span class="rounded-circle" :style="{backgroundColor: p.color.color}"></span>
+                    {{p.color.name}}
+                </td>
                 <td>{{p.unit.name}}</td>
                 <td>{{p.provider.steName}}</td>
                 <td style="width: 130px">
@@ -116,7 +120,7 @@
         name: "ProductsList",
         data() {
             return {
-                host: `${process.env.MIX_APP_URL}/storage/`,
+                // host: `${process.env.MIX_APP_URL}/storage/`,
                 ElementIdToDelete: null,
                 products: {},
                 searchProduct: null,
@@ -130,6 +134,9 @@
             this.filter()
         },
         methods: {
+            getImage(img) {
+                return `/storage/${img}`
+            },
             getElementIdToDelete(id) {
                 this.ElementIdToDelete = id;
             },
@@ -192,5 +199,11 @@
 </script>
 
 <style scoped>
+    .rounded-circle {
+        height: 20px;
+        width: 20px;
+        box-shadow: 0 1px 1px 0 rgba(60, 64, 67, .08), 0 1px 3px 1px rgba(60, 64, 67, .16);
+        margin: 0 6px;
+    }
 
 </style>

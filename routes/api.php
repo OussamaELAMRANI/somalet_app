@@ -92,13 +92,17 @@ Route::prefix('arrivals')->group(function () {
 //    Route::group(['middleware' => 'auth:api'], function () {
     Route::get('', 'Api\ArrivalController@index');
     Route::get('{id}', 'Api\ArrivalController@show');
-    Route::post('', 'Api\ArrivalController@store');
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('', 'Api\ArrivalController@store');
+
+    });
 
     Route::post('products', 'Api\ArrivalController@products');
 //        Route::post('', 'Api\ArrivalController@user');
 //    });
     Route::get('users', 'Api\AuthController@allUsers');
 });
+
 Route::prefix('dashboard')->group(function () {
     Route::get('users', 'Api\AuthController@allUsers');
 });

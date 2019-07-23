@@ -19,7 +19,8 @@
         props: ['img', 'title', 'subtitle', 'link'],
         methods: {
             getImage(img) {
-                return `${process.env.MIX_APP_URL}/storage/${img}`
+                return `/storage/${img}`
+                // return `${process.env.MIX_APP_URL}/storage/${img}`
             }
         },
     }

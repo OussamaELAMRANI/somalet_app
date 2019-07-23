@@ -3,17 +3,8 @@
         <h3 class="text-center text-uppercase text-secondary m-5 ar">Dashboard</h3>
         <hr>
         <div class="row">
-            <div class="col">
-                <Box img="boxes/add.svg" title="Ajuter"/>
-            </div>
-            <div class="col">
-                <Box img="boxes/add.svg" title="Ajuter"/>
-            </div>
-            <div class="col">
-                <Box img="boxes/add.svg" title="Ajuter"/>
-            </div>
-            <div class="col">
-                <Box img="boxes/add.svg" title="Ajuter"/>
+            <div class="col-4">
+                <Box img="boxes/add.svg" title="Ajouter"/>
             </div>
         </div>
 

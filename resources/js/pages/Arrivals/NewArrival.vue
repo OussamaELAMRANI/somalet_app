@@ -102,6 +102,7 @@
                         console.log(data)
                         this.$router.push({name: 'list_arrivals'})
                     })
+                    .catch(err => console.log(err.response))
             }
         }
     }

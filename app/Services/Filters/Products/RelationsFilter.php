@@ -30,6 +30,8 @@ class RelationsFilter implements IFilter
         return [
             'color' => 'color',
             'unit' => 'unit',
+            'provider' => 'provider',
+            'category' => 'subcategory',
         ];
     }
 

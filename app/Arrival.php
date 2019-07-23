@@ -12,6 +12,7 @@ class Arrival extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
+
 //    protected $primaryKey = 'n_facture';
 
 
@@ -67,14 +68,14 @@ class Arrival extends Model
      * @param $userId
      * @return double Total
      */
-    public function saveItems(array $items, $arrival_id)
+    public function saveItems(array $items, $arrival_id = 0)
     {
         // Fill array with IDs
-        $arrival_id = array_fill(0, count($items), $arrival_id);
+//        $arrival_id = array_fill(0, count($items), $arrival_id);
 
-        $orderItem = array_map(function ($itm, $id) {
-            return array_merge($itm, ['arrival_id' => $id]);
-        }, $items, $arrival_id);
+        $orderItem = array_map(function ($itm) {
+            return array_merge($itm, ['arrival_id' => $this->id]);
+        }, $items);
 
         $this->product()->attach($orderItem);
 

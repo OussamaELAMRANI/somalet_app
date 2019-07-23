@@ -581,6 +581,24 @@
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
 
+"@radial-color-picker/color-wheel@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@radial-color-picker/color-wheel/-/color-wheel-2.2.0.tgz#a8f2456f141e91307d39433d4cd545b410059348"
+  integrity sha512-RBRg/4aebvEiTIe1YUBUq1IncaCPGGRk1L6AJtmJgymjQn7BAiceGQ2l3eC2vrXgubk+eYt+Ih5OoJeR41PosA==
+
+"@radial-color-picker/rotator@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@radial-color-picker/rotator/-/rotator-2.1.0.tgz#67b3e3f29fafa61ad449e6d6d08ae0bb248fe87a"
+  integrity sha512-uJvegbpmpFL7hZL9wTDKtHBcO5ZhUmGs5cRJcZZ7FrQLYiVxMpqbKPy6xBg2MUW6gkzIH5Z0M74hNzFrC/uYYg==
+
+"@radial-color-picker/vue-color-picker@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@radial-color-picker/vue-color-picker/-/vue-color-picker-2.3.0.tgz#51cd67203e2454933a70774294361a5cf2c35b14"
+  integrity sha512-4z9OW7m7osCofBZQIHoVw/UV51pGZe4PQPTi0u89irmLNW43BhxF//nPnPJNDLQtINeCk5RzEXzmy0f1dteowA==
+  dependencies:
+    "@radial-color-picker/color-wheel" "2.2.0"
+    "@radial-color-picker/rotator" "2.1.0"
+
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   version "7.0.6"
   resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-7.0.6.tgz#a7cfaaeee96e90c4c54da0e580aaff3f4cffacac"
@@ -1550,6 +1568,11 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+clamp@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/clamp/-/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
+  integrity sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ=
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -3729,6 +3752,13 @@ laravel-mix@^4.0.7:
     webpack-notifier "^1.5.1"
     yargs "^12.0.5"
 
+laravel-vue-pagination@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/laravel-vue-pagination/-/laravel-vue-pagination-2.3.0.tgz#092e0abb2e942a756bd6f0ef9af295662f034a2c"
+  integrity sha512-Uzh2AufTkhayQJZiQSA8Ws0BCzrAroAu0RHt0eRaSI6buujlZ30JEEZmOOGmzW3Ri7pu9l/IPoM+5Sh3iyAvxQ==
+  dependencies:
+    vue "^2.6.7"
+
 last-call-webpack-plugin@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/last-call-webpack-plugin/-/last-call-webpack-plugin-3.0.0.tgz#9742df0e10e3cf46e5c0381c2de90d3a7a2d7555"
@@ -3884,6 +3914,11 @@ lodash.tail@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.tail/-/lodash.tail-4.1.1.tgz#d2333a36d9e7717c8ad2f7cacafec7c32b444664"
 
+lodash.throttle@^4.0.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -3955,6 +3990,11 @@ map-visit@^1.0.0:
   resolved "https://registry.yarnpkg.com/map-visit/-/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
   dependencies:
     object-visit "^1.0.0"
+
+material-colors@^1.0.0:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/material-colors/-/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
+  integrity sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==
 
 md5.js@^1.3.4:
   version "1.3.5"
@@ -6229,6 +6269,11 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
 
+tinycolor2@^1.1.2:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
+  integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
+
 to-array@0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/to-array/-/to-array-0.1.4.tgz#17e6c11f73dd4f3d74cda7a4ff3238e9ad9bf890"
@@ -6505,6 +6550,16 @@ vue-class-component@^6.2.0:
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-6.3.2.tgz#e6037e84d1df2af3bde4f455e50ca1b9eec02be6"
 
+vue-color@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/vue-color/-/vue-color-2.7.0.tgz#31e898370a5786fd6c3007388cb7242db6ba6988"
+  integrity sha512-fak9oPRL3BsYtakTGmWIS2yNRppRYNlMgGGq78CMH34ipU8fLgi/bT9JiSPcscpdTNLGracuOFuZ8OFeml+SQQ==
+  dependencies:
+    clamp "^1.0.1"
+    lodash.throttle "^4.0.0"
+    material-colors "^1.0.0"
+    tinycolor2 "^1.1.2"
+
 vue-cool-select@^2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/vue-cool-select/-/vue-cool-select-2.10.2.tgz#6e3534a6957b0a044b6cdf73d6f68454262146a7"
@@ -6522,6 +6577,7 @@ vue-form-wizard@^0.8.4:
 vue-google-charts@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/vue-google-charts/-/vue-google-charts-0.3.2.tgz#fd78c9487c25327da27e0613d78c9d9724ac4c21"
+  integrity sha512-pyNLJvjY1ZTAI91ppqGth9YaA7TA7wuotn33f7PIYkwJ4jmUbm2ZBSEkc2QaGKv8jLHkTg+gYDOmvWDTc9pAvQ==
   dependencies:
     debounce "^1.1.0"
 
@@ -6577,6 +6633,13 @@ vue-sidebar-menu@^3.9.0:
   dependencies:
     vue "^2.5.21"
 
+vue-status-indicator@^1.1.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/vue-status-indicator/-/vue-status-indicator-1.2.1.tgz#bb50148c8680264b5a7f800ffb394ea525557b4c"
+  integrity sha512-SjkM+u+atOqwGXBzAFBia42l+5vH5mPMVo8U+6jbUc8Fjpu4cEsE7J9sSoK0lBHyVrZPfE799Kbz/CDaY3+diw==
+  dependencies:
+    vue "^2.6.10"
+
 vue-style-loader@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"
@@ -6609,7 +6672,7 @@ vue2-event-calendar@^0.4.4:
     moment "^2.22.2"
     vue "^2.5.13"
 
-vue@^2.5.13, vue@^2.5.16, vue@^2.5.17, vue@^2.5.21, vue@^2.6.6:
+vue@^2.5.13, vue@^2.5.16, vue@^2.5.17, vue@^2.5.21, vue@^2.6.10, vue@^2.6.6, vue@^2.6.7:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
 

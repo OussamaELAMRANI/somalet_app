@@ -12,7 +12,7 @@
                         <div class="form-group">
                             <label>Produit :</label>
                             <cool-select :items="prods[k]" @search="onSearch($event,k)" :loading="loading"
-                                         item-text="reference" item-value="id" :name="'produit'+k"
+                                         item-text="name" item-value="id" :name="'produit'+k"
                                          v-model="product.product_id" v-validate="'required'" :ref="k">
                                 <template slot="item" slot-scope="{ item:p }">
                                     <div class="row">
@@ -46,6 +46,14 @@
                             <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('qte'+k)"></i>
                         </div>
                     </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Rapport de quantité:</label>
+                            <input type="number" :name="'rqte'+k" class="form-control" v-model="product.rapport_qte">
+                            <!--                            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('rqte'+k)"></i>-->
+                        </div>
+                    </div>
+
                     <template v-if="type === 'INTERNATIONAL'">
                         <!--    Devis Price for each Product-->
                         <div class="col">
@@ -60,7 +68,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label>Prix de Douane :</label>
-                                <input type="number" class="form-control" v-model="product.cost.douane"
+                                <input type="number" class="form-control" v-model="product.douane"
                                        :name="'douane'+k" v-validate="'required'"/>
                                 <i class="fa fa-exclamation-triangle text-danger"
                                    v-show="errors.has('douane'+k)"></i>
@@ -139,14 +147,16 @@
 
                 productsCalculator: [
                     {
-                        product_id: null,
+                        product_id: 0,
                         qte: '',
+                        rapport_qte: null,
                         product_devis: 0,
+                        douane: 0,
                         cost: {
                             transitaire: 0,
                             transport: 0,
                             magazinage: 0,
-                            douane: 0,
+                            // douane: 10,
                             manutension: 0,
                             fret: 0,
                             autres: 0,
@@ -182,8 +192,12 @@
                         _.forEach(p.cost, (v, k) => {
                             p.cost[k] = this.singleCost(this.arrival[k], p.product_devis, this.arrival['price_devise'])
                         })
-                        p.global_cost = _.sum(_.values(p.cost)) + (p.product_devis * Number(this.arrival['cours_change']))
-                        p.sell_price = (p.global_cost / p.qte).toFixed(2)
+                        p.global_cost = _.sum(_.values(p.cost)) + (p.product_devis * Number(this.arrival['cours_change'])) + Number(p.douane)
+
+                        if (p.rapport_qte === null || p.rapport_qte === '')
+                            p.sell_price = (p.global_cost / p.qte).toFixed(2)
+                        else
+                            p.sell_price = (p.global_cost / (p.qte * p.rapport_qte)).toFixed(2)
                     })
                 }
             }
@@ -191,14 +205,16 @@
         methods: {
             reset() {
                 this.productsCalculator = [{
-                    product_id: null,
-                    qte: '',
+                    product_id: 0,
+                    qte: 1,
+                    rapport_qte: null,
                     product_devis: 0,
+                    douane: 0,
                     cost: {
                         transitaire: 0,
                         transport: 0,
                         magazinage: 0,
-                        douane: 0,
+                        // douane: 10,
                         manutension: 0,
                         fret: 0,
                         autres: 0,
@@ -215,17 +231,19 @@
 
             },
             add() {
-                // this.prods.push([]);
+                this.prods.push([]);
                 this.productsCalculator.push(
                     {
-                        product_id: null,
-                        qte: '',
+                        product_id: 0,
+                        qte: 1,
+                        rapport_qte: null,
                         product_devis: 0,
+                        douane: 0,
                         cost: {
                             transitaire: 0,
                             transport: 0,
                             magazinage: 0,
-                            douane: 0,
+                            // douane: 10,
                             manutension: 0,
                             fret: 0,
                             autres: 0,
@@ -246,7 +264,7 @@
             },
             getImg(img) {
                 try {
-                    return `${process.env.MIX_APP_URL}/storage/${img}`;
+                    return `/storage/${img}`;
                 } catch (e) {
                     // return require("../assets/undefined.svg");
                 }
@@ -270,7 +288,8 @@
                     filterProduct.push({
                         product_id: p.product_id,
                         qte_facture: Number(p.qte),
-                        fret_douane: p.cost.douane,
+                        rapport_qte: (p.rapport_qte !== null) ? Number(p.rapport_qte) : null,
+                        fret_douane: p.douane,
                         price_unit_ht: Number(p.price_unit_ht),
                         price_unit_ttc: (this.type === "NATIONAL") ? Number(p.price_unit_ttc) : Number(p.sell_price),
                         price_devise: p.product_devis,
@@ -285,14 +304,14 @@
             },
             onSearch(search, id) {
                 // let SelectedIds = this.arrayRemove(this.getProductsSelectedId(), null);
-                console.log(search)
+                // console.log(search)
 
                 let rejectId = ""
 
-                _.forEach(this.productsCalculator, p => {
-                    if (p.product_id)
-                        rejectId += p.product_id + ","
-                })
+                // _.forEach(this.productsCalculator, p => {
+                //     if (p.product_id)
+                //         rejectId += p.product_id + ","
+                // })
 
                 const lettersLimit = 2;
                 this.noData = false;

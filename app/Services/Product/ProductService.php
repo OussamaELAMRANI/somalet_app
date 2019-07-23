@@ -7,6 +7,7 @@ use App\Color;
 use App\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
@@ -17,25 +18,45 @@ class ProductService
         $this->req = $request;
     }
 
-    private function getColorsById(array $ids)
-    {
-        $colors = Color::whereIn('id', $ids)->get();
-        return $colors;
-    }
+//    private function getColorsById(array $ids)
+//    {
+//        $colors = Color::whereIn('id', $ids)->get();
+//        return $colors;
+//    }
 
     public function addProducts()
     {
-        $colors = $this->getColorsById($this->req->input('colors'));
-        $product = $this->req->input('product');
-        $now = Carbon::now()->toDateTimeString();
+        $portrait_url = '';
+        $now = Carbon::now();
+        $colors = json_decode($this->req->input('colors'), true);
+        $product = json_decode($this->req->input('product'), true);
 
-        $products = array_map(function ($color) use ($product, $now) {
+        if ($this->req->has('img') && $this->req->file('img')) {
+            try {
+                $year = $now->year;
+                $month = $now->month;
+                $portrait_url = Storage::disk('public')->putFile("products/{$year}/{$month}", $this->req->file('img'));
+            } catch (\Exception $e) {
+                return response(['error' => $e->getMessage()]);
+            }
+        }
+
+        $products = array_map(function ($color) use ($product, $now, $portrait_url) {
             $product['name'] = $product['name'] . "/" . $color['name'];
-            return array_merge($product, ['color_id' => $color['id'], 'created_at' => $now, 'updated_at' => $now]);
-        }, $colors->toArray());
+            return array_merge($product, ['img' => $portrait_url, 'color_id' => $color['id'], 'created_at' => $now->toDateTimeString(), 'updated_at' => $now->toDateTimeString()]);
+        }, $colors);
 
         Product::insert($products);
         return $this->sendResponse(['message' => "Products successfully added"], 201);
+    }
+
+
+    public function getProduct($id)
+    {
+//        return response()->json(Product::->paginate(20), 200);
+
+        return response()->json(Product::filter($this->req)->findOrFail($id), 200);
+//            >load('provider', 'unit', 'color', 'subcategory'));
     }
 
 

@@ -16,7 +16,10 @@ class CreateLArrivalsTable extends Migration
         Schema::create('l_arrivals', function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('arrival_id');
+
             $table->integer('qte_facture');
+            // qte rapport pour les produit [rouleau/ piece/ box]...
+            $table->integer('rapport_qte')->nullable();
             $table->float('fret_douane')->nullable();
             $table->float('price_unit_ht');
             $table->float('price_unit_ttc');
@@ -32,16 +35,17 @@ class CreateLArrivalsTable extends Migration
                 ->on('products')
                 ->onUpdate('cascade');
 
-            $table->foreign('arrival_id')
-                ->references('id')
-                ->on('arrivals')
-                ->onUpdate('cascade');
-            $table->primary(['product_id','arrival_id']);
+//            $table->foreign('arrival_id')
+//                ->references('id')
+//                ->on('arrivals')
+//                ->onUpdate('cascade');
+//            $table->primary(['product_id','arrival_id']);
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade');
+
             $table->timestamps();
             $table->softDeletes();
         });

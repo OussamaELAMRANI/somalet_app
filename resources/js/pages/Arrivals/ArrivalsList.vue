@@ -46,7 +46,7 @@
                         <div class="col-2">
                             <span class="badge badge-warning">{{c.type}}</span>
                         </div>
-                        <div class="col-2">{{c.price_devise}} DH</div>
+                        <div class="col-2">{{c.price_provider}} DH</div>
                         <div class="col-2">
                             <span class="badge badge-primary">
                             En Attent

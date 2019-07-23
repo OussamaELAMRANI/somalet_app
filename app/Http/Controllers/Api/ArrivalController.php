@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Arrival;
 use App\Http\Controllers\Controller;
+use App\Services\Arrivals\ArrivalService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,42 +12,22 @@ use Illuminate\Support\Facades\DB;
 
 class ArrivalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        return response()->json(Arrival::filter($request)->last(), 200);
+    private $service;
 
+    public function __construct(ArrivalService $arrivalService)
+    {
+        $this->service = $arrivalService;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $req)
+    public function index()
     {
-        $arrivals = $req->input('arrivals');
-        $prods = $req->input('products');
+        return $this->service->getAllArrivals();
+    }
 
-        // Add New Arrival in 1st
-        $filterRequest = $arrivals;
-        $filterRequest['date_facture'] = null;
-        $filterRequest['user_id'] = 1; // todo Add User ID from Request
+    public function store()
+    {
+        return $this->service->addArrival();
 
-        $exist = Arrival::where('n_facture', $filterRequest['n_facture'])->first();
-
-        if (!$exist) {
-            $res = Arrival::create($filterRequest);
-            $res->saveItems($prods, DB::getPdo()->lastInsertId());
-            return response()->json(['data' => $res, 'message' => "Added success"], 201);
-        }
-
-        return response()->json("error");
 
         // Add its products
 

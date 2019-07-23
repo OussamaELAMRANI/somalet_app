@@ -40,7 +40,7 @@
                 } else {
                     this.isNewUnity = false
                     this.unity = parseInt(id[1])
-                    this.$emit('sendUnity', this.unity)
+                    this.$emit('sendUnity', this.unity, val)
                 }
                 // this.setRapport(val);
             },
