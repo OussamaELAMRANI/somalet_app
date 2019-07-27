@@ -6,6 +6,7 @@ Vue.use(Router);
 
 // import adminRoutes from './Admin'
 import Providers from './provider'
+import client from './client'
 import Products from './products'
 import arrivals from './arrivals'
 import Users from './users'
@@ -54,6 +55,7 @@ export const asyncRoutes = [
             },
             ...Users,
             ...Providers,
+            ...client,
             ...Products,
             ...arrivals,
             ...Receptions,
