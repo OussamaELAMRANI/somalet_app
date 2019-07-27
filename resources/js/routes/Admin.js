@@ -2,6 +2,7 @@ import SignUp from '../pages/admin/SignUp'
 import LogIn from '../pages/admin/LogIn'
 import dashboard from './../pages/admin/Dashbord'
 import provider from './provider'
+import client from './client'
 import products from './products.js'
 import Home from './../pages/home'
 import arrivals from './arrivals'
@@ -52,6 +53,7 @@ export default [
                 },
             },
             ...provider,
+            ...client,
             ...products,
             ...arrivals
         ],

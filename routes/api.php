@@ -44,6 +44,16 @@ Route::prefix('providers')->group(function () {
     Route::delete('{id}/delete', 'Api\ProviderController@destroy');
 
 });
+Route::prefix('clients')->group(function () {
+
+    Route::get('search/{searchValue?}', 'Api\ClientController@search');
+
+    Route::get('', 'Api\ClientController@index');
+    Route::post('', 'Api\ClientController@store');
+    Route::get('{id}', 'Api\ClientController@show');
+    Route::delete('{id}/delete', 'Api\ClientController@destroy');
+
+});
 //Categories
 Route::prefix('categories')->group(function () {
 

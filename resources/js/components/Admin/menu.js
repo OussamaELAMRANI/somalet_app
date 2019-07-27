@@ -45,6 +45,19 @@ const menu = (user_type) => {
                     title: 'Fournisseurs',
                 }
             ]
+        },{ // item with child
+            title: 'Client',
+            icon: 'fa fa-briefcase',
+            child: [
+                {
+                    href: '/dashboard/client/new-client',
+                    title: 'Nouveau',
+                },
+                {
+                    href: '/dashboard/client/client-list',
+                    title: 'Clients',
+                }
+            ]
         },
         { // item with child
             title: 'Produits',

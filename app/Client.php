@@ -2,13 +2,14 @@
 
 namespace App;
 
-use App\Services\Filters\Providers\ClientFilter;
+//use App\Services\Filters\Providers\ProviderFilter;
+use App\Services\Filters\Clients\ClientFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
-class Provider extends Model
+class Client extends Model
 {
     use SoftDeletes;
     // this param means all the col in Provider table are fillable
@@ -24,13 +25,13 @@ class Provider extends Model
         return $builder->orderBy('id', 'desc');
     }
 
-    function products()
-    {
-        return $this->hasMany(Product::class, 'provider_id');
-    }
-
-    function arrivals()
-    {
-        return $this->hasMany(Arrival::class, 'provider_id');
-    }
+//    function commande()
+//    {
+//        return $this->hasMany(Commande::class, 'client_id');
+//    }
+//
+//    function factures()
+//    {
+//        return $this->hasMany(Facture::class, 'client_id');
+//    }
 }
