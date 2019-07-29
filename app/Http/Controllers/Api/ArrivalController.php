@@ -12,130 +12,50 @@ use Illuminate\Support\Facades\DB;
 
 class ArrivalController extends Controller
 {
-    private $service;
+   private $service;
 
-    public function __construct(ArrivalService $arrivalService)
-    {
-        $this->service = $arrivalService;
-    }
+   public function __construct(ArrivalService $arrivalService)
+   {
+      $this->service = $arrivalService;
+   }
 
-    public function index()
-    {
-        return $this->service->getAllArrivals();
-    }
+   public function index()
+   {
+      return $this->service->getAllArrivals();
+   }
 
-    public function store()
-    {
-        return $this->service->addArrival();
-
-
-        // Add its products
+   public function store()
+   {
+      return $this->service->addArrival();
+   }
 
 
-//        $user_info = $req->user();
-
-//        return response()->json($arr,200);
-//        $arr['date_facture'] = null;
-//        $arr['user_id'] = 1; //todo Add User ID from Request
-//        $filterRequest = [];
-//        foreach ($arr as $k => $v) {
-//            $filterRequest[$k] = $v;
-//        }
-//        TODO PIVO
-
-//        $newArr = Arrival::create(request($filterRequest));
-//        return response()->json($filterRequest, 200);
-
-//        $newArr->products()->createMany($prods);
-//        return response()->json('ok',200);
+   public function show(Request $request, $arrivalId)
+   {
+      return response()->json(Arrival::filter($request)->find($arrivalId), 200);
+   }
 
 
-//        return response()->json([$req, 'user' => $user_info]);
+   public function update()
+   {
+      return $this->service->updateArrival();
+   }
 
-        $n_facture = $arr['n_facture'];
-        $existe = Arrival::where('n_facture', $n_facture)->first();
-//        $filterRequest = $req->all();
-        $filterRequest = $arr;
+   public function state(Request $request, Arrival $arr)
+   {
+      $arr = $arr->update(['state' => $request->input('state')]);
+      return response()->json($arr);
+   }
 
-//        if ($req->input('type') === 'INTERNATIONAL') {
-//            $filterRequest = request(['n_dossier', 'n_facture', 'price_devise', 'cours_change', 'date_facture',
-//                'type', 'price_provider', 'provider_id', 'user_id',
-//                'transitaire', 'transitaire_tva', 'transitaire_ttc', 'transport', 'transport_tva', 'transport_ttc',
-//                ' magazinage', 'magazinage_tva', 'magazinage_ttc', 'surestaries', 'surestaries_tva', 'surestaries_ttc'
-//                , 'manutension', 'manutension_tva', 'manutension_ttc', 'fret', 'fret_tva', 'fret_ttc', 'autres',
-//                'autres_tva', 'autres_ttc', 'cout_revient', 'cout_revient_tva', 'cout_revient_ttc'
-//            ]);
-//        }
-//        else {
-//            $filterRequest = request(['n_dossier', 'n_facture', 'price_devise', 'cours_change', 'date_facture', 'type', 'price_provider', 'provider_id', 'user_id']);
-//        }
 
-        $filterRequest['date_facture'] = null;
-        $filterRequest['user_id'] = 1; //todo Add User ID from Request
+   public function destroy(Arrival $arrival)
+   {
+      //
+   }
 
-        if (!$existe) {
-            $res = Arrival::create($filterRequest);
-            $msg = ['message' => "Arrivage bien ajoutee"
-                , 'id' => DB::getPdo()->lastInsertId()
-            ];
-        } else {
-            $existe->update($filterRequest);
-            $msg = ['message' => "Arrivage bien modifier"
-                , 'id' => $existe->id
-            ];
-        }
-        return response()->json($msg, 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Request $request
-     * @param \App\Arrival $arrivalId
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, $arrivalId)
-    {
-        return response()->json(Arrival::filter($request)->find($arrivalId), 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Arrival $arrival
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Arrival $arrival)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Arrival $arrival
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Arrival $arrival)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Arrival $arrival
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Arrival $arrival)
-    {
-        //
-    }
-
-    public function products(Request $req)
-    {
-        return response()->json($req);
-    }
+   public function products(Request $req)
+   {
+      return response()->json($req);
+   }
 
 }

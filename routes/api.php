@@ -16,32 +16,32 @@ use Illuminate\Http\Request;
 // url: /api/auth/
 Route::prefix('auth')->group(function () {
 
-    Route::post('sign-up', 'Api\AuthController@signUp');
-    Route::post('login', 'Api\AuthController@logIn');
-    Route::get('allUsers', 'Api\AuthController@allUsers');
-    Route::delete('user/{id}/delete', 'Api\AuthController@destroy');
-    Route::post('user/{id}', 'Api\AuthController@update');
+   Route::post('sign-up', 'Api\AuthController@signUp');
+   Route::post('login', 'Api\AuthController@logIn');
+   Route::get('allUsers', 'Api\AuthController@allUsers');
+   Route::delete('user/{id}/delete', 'Api\AuthController@destroy');
+   Route::post('user/{id}', 'Api\AuthController@update');
 
 
-    // User Should be connected !
-    Route::group(['middleware' => 'auth:api'], function () {
+   // User Should be connected !
+   Route::group(['middleware' => 'auth:api'], function () {
 
-        Route::get('/logout', 'Api\AuthController@logout');
-        Route::get('/user', 'Api\AuthController@user');
+      Route::get('/logout', 'Api\AuthController@logout');
+      Route::get('/user', 'Api\AuthController@user');
 
-    });
+   });
 
 });
 
 Route::prefix('providers')->group(function () {
 
 //    Route::get('search', 'Api\ProviderController@search');
-    Route::get('search/{searchValue?}', 'Api\ProviderController@search');
+   Route::get('search/{searchValue?}', 'Api\ProviderController@search');
 
-    Route::get('', 'Api\ProviderController@index');
-    Route::post('', 'Api\ProviderController@store');
-    Route::get('{id}', 'Api\ProviderController@show');
-    Route::delete('{id}/delete', 'Api\ProviderController@destroy');
+   Route::get('', 'Api\ProviderController@index');
+   Route::post('', 'Api\ProviderController@store');
+   Route::get('{id}', 'Api\ProviderController@show');
+   Route::delete('{id}/delete', 'Api\ProviderController@destroy');
 
 });
 Route::prefix('clients')->group(function () {
@@ -57,62 +57,69 @@ Route::prefix('clients')->group(function () {
 //Categories
 Route::prefix('categories')->group(function () {
 
-    Route::get('', 'Api\CategoryController@index');
-    Route::get('{id}', 'Api\CategoryController@show');
-    Route::post('', 'Api\CategoryController@store');
+   Route::get('', 'Api\CategoryController@index');
+   Route::get('{id}', 'Api\CategoryController@show');
+   Route::post('', 'Api\CategoryController@store');
 
 });
 
 Route::prefix('search')->group(function () {
-    Route::get('', function (Request $req) {
-        $query = $req->query('provider');
-        $result = \App\Provider::where('steName', 'like', "%{$query}%")->get();
-        return response()->json($result);
-    });
-    Route::get('products', function (Request $req) {
-        $query = $req->query('products');
-        $rejectId = explode(',', $req->query('reject'));
+   Route::get('', function (Request $req) {
+      $query = $req->query('provider');
+      $result = \App\Provider::where('steName', 'like', "%{$query}%")->get();
+      return response()->json($result);
+   });
+   Route::get('products', function (Request $req) {
+      $query = $req->query('products');
+//        $rejectId = explode(',', $req->query('reject'));
 //        $rejectId = $req->query('reject');
-        $result = \App\Product::where('reference', 'like', "%{$query}%")->whereNotIn('id', $rejectId)->get();
-        return response()->json($result);
-    });
+      $result = App\Product::where('name', 'like', "%{$query}%")->get();
+      return response()->json($result);
+   });
 });
 
 Route::prefix('colors')->group(function () {
-    Route::get('', 'Api\ColorController@index');
-    Route::post('', 'Api\ColorController@store');
+   Route::get('', 'Api\ColorController@index');
+   Route::post('', 'Api\ColorController@store');
 });
 
 Route::prefix('unities')->group(function () {
-    Route::get('', 'Api\UnityController@index');
-    Route::post('', 'Api\UnityController@store');
+   Route::get('', 'Api\UnityController@index');
+   Route::post('', 'Api\UnityController@store');
 });
 
 Route::prefix('products')->group(function () {
 
-    Route::get('search/{searchValue?}', 'Api\ProductController@search');
-    Route::post('new', 'Api\ProductController@newProducts');
+   Route::get('search/{searchValue?}', 'Api\ProductController@search');
+   Route::post('new', 'Api\ProductController@newProducts');
 
-    Route::get('', 'Api\ProductController@index');
-    Route::get('{id}', 'Api\ProductController@show');
-    Route::delete('{id}/delete', 'Api\ProductController@destroy');
+   Route::get('', 'Api\ProductController@index');
+   Route::get('{id}', 'Api\ProductController@show');
+   Route::delete('{id}/delete', 'Api\ProductController@destroy');
 });
 
 Route::prefix('arrivals')->group(function () {
 //    Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('', 'Api\ArrivalController@index');
-    Route::get('{id}', 'Api\ArrivalController@show');
-    Route::group(['middleware' => 'auth:api'], function () {
-        Route::post('', 'Api\ArrivalController@store');
+   Route::get('', 'Api\ArrivalController@index');
+   Route::get('{id}', 'Api\ArrivalController@show');
+   Route::group(['middleware' => 'auth:api'], function () {
+      Route::post('', 'Api\ArrivalController@store');
+      Route::put('', 'Api\ArrivalController@update');
+      Route::put('state/{arr}', 'Api\ArrivalController@state');
 
-    });
+   });
 
-    Route::post('products', 'Api\ArrivalController@products');
+   Route::post('products', 'Api\ArrivalController@products');
 //        Route::post('', 'Api\ArrivalController@user');
 //    });
-    Route::get('users', 'Api\AuthController@allUsers');
+   Route::get('users', 'Api\AuthController@allUsers');
+});
+
+Route::prefix('receptions')->group(function () {
+   Route::get('', 'ReceptionController@index');
+
 });
 
 Route::prefix('dashboard')->group(function () {
-    Route::get('users', 'Api\AuthController@allUsers');
+   Route::get('users', 'Api\AuthController@allUsers');
 });

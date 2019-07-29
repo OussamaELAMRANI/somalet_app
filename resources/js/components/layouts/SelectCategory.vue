@@ -1,6 +1,5 @@
 <template lang="pug">
-    .row
-        .col-12
+    .col
             label(for='category') Selectionnez la categorie
             select#category.form-control(v-on:change='getCategory')
                 option(selected='selected' disabled='disabled') Selectionnez...

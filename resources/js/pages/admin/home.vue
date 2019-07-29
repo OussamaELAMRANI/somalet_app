@@ -1,6 +1,6 @@
 <template>
     <div id="home">
-        <h3 class="text-center text-uppercase text-secondary m-5 ar">Dashboard</h3>
+        <h3 class="text-center text-uppercase text-secondary m-5 ar">Tableau de Bord</h3>
         <hr>
         <div class="row">
             <div class="col-4">

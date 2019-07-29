@@ -4,7 +4,8 @@
             h2.header Informations Professionelles
             .dropdown-divider
             label(for="ste") Nom de la societe
-            input( type="text" class="form-control " id="ste" aria-describedby="emailHelp" placeholder="Societe ..." v-model="steName" autofocus)
+            input( type="text" class="form-control " id="ste" aria-describedby="emailHelp" placeholder="Societé ..." v-model="steName" autofocus name='society' v-validate="'required'")
+            small.text-danger(v-show="errors.has('society')") Vous devez saisir le nom de la societé !
             .row
                 .col
                     label(for="numTva") Numero TVA
@@ -25,20 +26,28 @@
                 steName: '',
                 numTva: '',
                 nSiret: '',
-                id:null,
+                id: null,
             }
         },
         methods: {
             sendToProvider() {
-                this.$emit('update', {
-                    professional: {
-                        steName: this.steName,
-                        numTva: this.numTva,
-                        nSiret: this.nSiret,
+                return this.$validator.validateAll().then((result) => {
+                    if (result){
+                        // this.$emit('getProducts', this.sendProduct());
+                        this.$emit('update', {
+                            professional: {
+                                steName: this.steName,
+                                numTva: this.numTva,
+                                nSiret: this.nSiret,
+                            }
+                        })
                     }
-                })
+
+                    return result;
+                });
+
             },
-            setProfessional(p){
+            setProfessional(p) {
                 this.steName = p.steName;
                 this.numTva = p.numTva;
                 this.nSiret = p.nSiret;

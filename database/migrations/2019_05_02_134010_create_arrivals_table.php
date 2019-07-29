@@ -22,6 +22,9 @@ class CreateArrivalsTable extends Migration
             $table->double('taux_marge')->nullable();
             $table->date('date_facture')->nullable();
             $table->enum('type',['INTERNE','NATIONAL','INTERNATIONAL'])->default('INTERNATIONAL');
+
+            $table->enum('state',['ATTENTE','VUE','RECEPTION','VALID'])->default('ATTENTE');
+
             $table->double('price_provider')->nullable(); //en dh
             $table->double('transitaire')->nullable();
             $table->double('transitaire_tva')->nullable();

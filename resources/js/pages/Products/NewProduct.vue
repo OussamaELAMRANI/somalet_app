@@ -5,71 +5,16 @@
 </template>
 
 <script>
-    import SearchProvider from "../../components/Provider/SearchProvider";
-    import PictureInput from "vue-picture-input";
-    import Colors from "@/components/Colors/Colors";
-    import SelectedColors from "@/components/Colors/SelectedColors";
     import ProductBase from "@/components/Products/ProductBase";
 
     export default {
         name: "NewProduct",
-        data() {
-            return {
-                img_url: null,
-                provider: null,
-                name: '',
-                refr: '',
-                desc: '',
-                note: '',
-                color: '',
-                colors: '',
-                unity: '',
-                unities: '',
-                newUnity: false,
-                newColor: false,
-                type: '',
-                alertQte: 0,
-                id: 0,
-                img: '',
-                isNew: true,
-                categories: null,
-                subcategory_id: null,
-                newSubCategory: false,
-                hasRapport: false,
-                rapport: null,
-                labelRapport: "Rapport",
-                newColors: {},
-                colorsId: []
-
-            }
-        },
         methods: {
             getImg(img) {
                 try {
                     return `${process.env.MIX_APP_URL}/storage/${img}`;
                 } catch (e) {
                     // return require("../assets/undefined.svg");
-                }
-            },
-            getProvider(p) {
-                this.provider = p
-            },
-            emptyProvider() {
-                this.provider = null
-            },
-            setRapport(val) {
-                if (val === "Mètre") {
-                    this.labelRapport = "Mètre/Rouleau";
-                    this.hasRapport = true;
-                } else if (val === "Kg (rouleau)") {
-                    this.labelRapport = "Kg/Rouleau";
-                    this.hasRapport = true;
-                } else if (val === "Box") {
-                    this.labelRapport = "Pièce/Box";
-                    this.hasRapport = true;
-                } else {
-                    this.hasRapport = false;
-                    this.rapport = 0;
                 }
             },
 
@@ -105,7 +50,6 @@
                     })
                     .catch(err => console.log(err.response))
             },
-
         },
         mounted() {
             //pour determiner si l'etat de la vue en mode : Ajout ou modification
@@ -149,12 +93,7 @@
                 this.id = 0
             }
         },
-        components: {
-            ProductBase,
-            SelectedColors,
-            Colors,
-            PictureInput, SearchProvider
-        }
+        components: {ProductBase,}
     }
 
 </script>

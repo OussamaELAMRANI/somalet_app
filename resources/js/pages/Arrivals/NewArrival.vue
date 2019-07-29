@@ -5,7 +5,7 @@
         </template>
         <template v-else>
             <form-wizard title="Gestion d'arrivages" subtitle="Nouveau arrivage" :nextButtonText="'Suivant'"
-                         back-button-text="Précedant" class="segment">
+                         back-button-text="Précedant" class="">
                 <tab-content title="Entete de la facture" :before-change="entetePass">
 
                     <arrival-new ref="entete" @getCharge="getCharge" @getProduct="getProduct"/>

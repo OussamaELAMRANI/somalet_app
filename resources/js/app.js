@@ -18,7 +18,8 @@ import VueSelect from 'vue-cool-select'
 import VueDialog from 'vue2-dialog'
 import 'vue2-dialog/dist/VueDialog.css'
 import ToggleSwitch from 'vuejs-toggle-switch'
-import Breabcrumbs from 'vue-2-breadcrumbs';
+// import on your project (less then 1KB gziped)
+import vueSmoothScroll from 'vue-scrollto'
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 
@@ -30,12 +31,17 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 // Add Validation Inputs
 import fr from 'vee-validate/dist/locale/fr';
 
-Vue.use(Breabcrumbs);
+// Vue.use(Breabcrumbs);
 
 Vue.use(VeeValidate);
 Validator.localize('fr', fr);
 
 Vue.use(VueNotification, {
+    error: {
+        background: "white",
+        color: "red"
+    },
+    showCloseIcn: true,
     timer: 20
 });
 Vue.use(VueFormWizard);
@@ -44,6 +50,19 @@ Vue.use(ToggleSwitch)
 
 Vue.use(VueSelect, {
     theme: 'bootstrap' // or 'material-design'
+})
+Vue.use(vueSmoothScroll, {
+    container: "body",
+    duration: 500,
+    easing: "ease",
+    offset: 0,
+    force: true,
+    cancelable: true,
+    onStart: false,
+    onDone: false,
+    onCancel: false,
+    x: false,
+    y: true
 })
 
 new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

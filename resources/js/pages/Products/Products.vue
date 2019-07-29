@@ -1,8 +1,7 @@
 <template lang="pug">
-    #Products.card
-        h2.text-info.m-4.text-lg-center Gestion des Produits
-        .dropdown-divider
-        .row.d-flex.justify-content-center
+    #Products
+        big-title(title="Gestion des Produits")
+        //.row.d-flex.justify-content-center
             //.col-3
             //    StepBox(title="Retour", image='back.svg' @step="goTo" to="listProducts" )
             .col-3.d-flex.justify-content-center
@@ -13,6 +12,7 @@
 
 <script>
     import StepBox from "../../components/Steps/StepBox";
+    import BigTitle from "@/components/layouts/BigTitle";
 
     export default {
         name: "Products",
@@ -26,7 +26,7 @@
                 return this.$route.name
             }
         },
-        components: {StepBox}
+        components: {BigTitle, StepBox}
     }
 </script>
 

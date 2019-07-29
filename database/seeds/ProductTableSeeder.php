@@ -16,9 +16,10 @@ class ProductTableSeeder extends Seeder
 //        $color = factory(App\Color::class)->create();
 //        $unit = factory(App\Unit::class)->create();
         factory(App\Provider::class, 10)->create()->each(function ($c) {
-            $color = factory(App\Color::class)->create();
+//            $color = factory(App\Color::class)->create();
             $unit = factory(App\Unit::class)->create();
-            $c->products()->saveMany(factory(App\Product::class, 10)->make(['color_id'=>$color->id,'unit_id'=>$unit->id]));
+//            $c->products()->saveMany(factory(App\Product::class, 10)->make(['color_id'=>$color->id,'unit_id'=>$unit->id]));
+            $c->products()->saveMany(factory(App\Product::class, 10)->make(['unit_id' => $unit->id]));
         });
     }
 }

@@ -1,11 +1,6 @@
 <template>
     <div id="new-provider" class="container">
-
-        <h3 class="text-success mt-4 text-lg-center">
-            Fournisseur
-        </h3>
-        <div class="dropdown-divider"></div>
-
+        <big-title title="Fournisseur"/>
         <div class="row d-flex justify-content-center">
             <div class="col-3 justify-content-center">
                 <StepBox image="presentation.svg" classe="active-box"
@@ -23,28 +18,18 @@
             </div>
         </div>
 
-        <!--<transition name="bounce">-->
+        <ProfessionalForm class="segment " v-show="box === 0" @update="getProvider" ref="ProfessionalForm"/>
+        <PersonalForm class="segment " v-show="box === 1" @update="getProvider" ref="PersonalForm"/>
+        <ContactForm class="segment" v-show="box === 2" @update="getProvider" ref="ContactForm"/>
 
-        <ProfessionalForm class="segment " v-show="box === 0" @update="getProvider" ref="ProfessionalForm" >
-            <button class="btn btn-info" @click="checkStep(1)" type="button">Suivant</button>
-        </ProfessionalForm>
-
-        <PersonalForm class="segment " v-show="box === 1" @update="getProvider" ref="PersonalForm">
-            <button class="btn btn-info" @click="checkStep(0)"  type="button">precedant</button>
-            <button class="btn btn-info" @click="checkStep(2)" type="button">Suivant</button>
-
-        </PersonalForm>
-        <ContactForm class="segment" v-show="box === 2" @update="getProvider" ref="ContactForm">
-            <button class="btn btn-info" @click="checkStep(1)"  type="button">precedant</button>
-        </ContactForm>
         <!--</transition>-->
         <divider class="float-right">
             <button type="button" class="btn btn-outline-success" @click="submitProvider">VALIDER</button>
         </divider>
 
-<!--        <p><code>-->
-<!--            {{provider}}-->
-<!--        </code></p>-->
+        <!--        <p><code>-->
+        <!--            {{provider}}-->
+        <!--        </code></p>-->
     </div>
 </template>
 
@@ -54,6 +39,7 @@
     import ContactForm from "../../components/Provider/ContactForm";
     import Divider from "../../components/Divider";
     import StepBox from "../../components/Steps/StepBox";
+    import BigTitle from "@/components/layouts/BigTitle";
 
     export default {
         name: "NewProvider",
@@ -64,9 +50,9 @@
                     professional: {},
                     personal: {},
                     contact: {},
-                    id:0,
+                    id: 0,
                 },
-                isNew:true
+                isNew: true
             }
         },
         methods: {
@@ -78,17 +64,25 @@
                 this.box = step
             },
             submitProvider() {
-                axios.post('/api/providers', this.provider)
-                    .then(res => {
-                        console.log(res.data)
-                        this.$router.push({name: 'listProvider'})
+
+                this.$refs.ProfessionalForm.sendToProvider()
+                    .then(isValid => {
+                        if (isValid) {
+                            axios.post('/api/providers', this.provider)
+                                .then(res => {
+                                    console.log(res.data)
+                                    this.$router.push({name: 'listProvider'})
+                                })
+                                .catch(err => this.$notification.error(err))
+                        } else
+                            this.$notification.error('Nom de la Societé est obligatoire !')
                     })
-                    .catch(err => this.$notification.error(err))
+
             }
         },
-        mounted(){
+        mounted() {
             const id = this.$route.params['id']
-            if(this.$route.params['id'] !== undefined) {
+            if (this.$route.params['id'] !== undefined) {
                 this.isNew = false
                 this.provider.id = id
                 axios.get(`/api/providers/${id}`)
@@ -106,7 +100,7 @@
                             skype: data.skype,
                             icp: data.icp,
                         }
-                        this.provider.personal ={
+                        this.provider.personal = {
                             firstName: data.firstName,
                             lastName: data.lastName,
                             address: data.address,
@@ -123,18 +117,18 @@
                         this.$notification.error(err)
                         this.$router.push('/404')
                     })
-                }
-                else {
-                    this.provider = {
-                        professional: {},
-                        personal: {},
-                        contact: {},
-                        id:0
-                    };
-                    this.isNew = true
-                }
+            } else {
+                this.provider = {
+                    professional: {},
+                    personal: {},
+                    contact: {},
+                    id: 0
+                };
+                this.isNew = true
+            }
         },
         components: {
+            BigTitle,
             StepBox,
             Divider,
             ContactForm,

@@ -1,8 +1,8 @@
 <template lang="pug">
     #search-provider
-        h5.text-success.mb-1 donnez le fournisseur de ce nouveau produit
+        h5.text-secondary.mb-1 Donnez le fournisseur de ce produit
         .dropdown-divider
-        form.mb-3
+        form.mb-3(@submit.prevent="")
             .input-group.m3
                 input.form-control(v-model="searchTxt" @input="filter" placeholder="Recherche par Societe" autofocus)
                 .input-group-append
