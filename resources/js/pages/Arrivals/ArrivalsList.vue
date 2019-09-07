@@ -85,7 +85,7 @@
                               <th scope="col">Qte de rapport</th>
                               <th scope="col">Quantité Total</th>
                               <th scope="col">Qte Receptionné</th>
-                              <th scope="col">Prix Unt TTC</th>
+                              <th scope="col">Prix Unt HT</th>
                               <th scope="col">Fret douane</th>
                               <!--                                        <th scope="col">ETAT de reception</th>-->
                               <th scope="col-2">Remaque</th>
@@ -109,7 +109,7 @@
                                  :style="{backgroundColor: (p.pivot.qte_reception >= (p.pivot.qte_facture * p.pivot.rapport_qte))? '#80ff8e' :'#ff9b15'}">
                                  {{p.pivot.qte_reception}}
                               </td>
-                              <td>{{p.pivot.price_devise}}</td>
+                              <td>{{p.pivot.price_unit_ht}} <span class="badge">DH</span></td>
                               <td>{{p.pivot.fret_douane}}</td>
                               <td>{{p.pivot.remark}}</td>
                            </tr>

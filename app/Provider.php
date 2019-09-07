@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Services\Filters\Providers\ClientFilter;
+use App\Services\Filters\Providers\ProviderFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,7 +16,7 @@ class Provider extends Model
 
     public function scopeFilter(Builder $builder, Request $req, array $filters = [])
     {
-        return (new ClientFilter($req))->add($filters)->filter($builder);
+        return (new ProviderFilter($req))->add($filters)->filter($builder);
     }
 
     public function scopeDesc(Builder $builder)

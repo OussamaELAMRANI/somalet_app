@@ -353,11 +353,13 @@
             let x = parseFloat(v) * parseFloat(this.inter.cours_change);
             if (!isNaN(x))
                this.newArr.price_provider = this.round(x, 2);
+            this.calculeCoutRevient();
          },
          'inter.cours_change': function (v) {
             let x = parseFloat(v) * parseFloat(this.inter.price_devise);
             if (!isNaN(x))
                this.newArr.price_provider = this.round(x, 2);
+            this.calculeCoutRevient();
          },
          //----------------Transitaire-----------------------
          'inter.transitaire': function (v) {

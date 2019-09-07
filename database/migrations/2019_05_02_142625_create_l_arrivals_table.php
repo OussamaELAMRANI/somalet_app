@@ -17,12 +17,15 @@ class CreateLArrivalsTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('arrival_id');
 
-            $table->integer('qte_facture');
+            $table->double('qte_facture');
             // qte rapport pour les produit [rouleau/ piece/ box]...
-            $table->integer('rapport_qte')->nullable();
+            $table->double('rapport_qte')->nullable();
             $table->float('fret_douane')->nullable();
             $table->float('price_unit_ht');
             $table->float('price_unit_ttc');
+
+            $table->double('sell_price')->nullable();
+
             $table->float('price_devise')->nullable();
             $table->string('remark')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();

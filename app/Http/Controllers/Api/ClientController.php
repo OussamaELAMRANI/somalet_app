@@ -8,23 +8,18 @@ use App\Http\Controllers\Controller;
 
 class ClientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return response()->json(Client::desc()->get(),200);
-    }  //
+    }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   /**
+    *
+    * @param Request $req
+    * @return \Illuminate\Http\JsonResponse
+    */
     public function store(Request $req)
     {
         $message = null;

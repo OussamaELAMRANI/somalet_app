@@ -112,7 +112,7 @@
    import ProductType from "@/components/Products/ProductType";
 
    export default {
-      name: "ProductBase",
+         name: "ProductBase",
       data() {
          return {
             provider: null,

@@ -10,7 +10,7 @@
                      <label>Produit :</label>
                      <cool-select :items="prods[k]" @search="onSearch($event,k)" :loading="loading"
                                   item-text="name" item-value="id" :name="'produit'+k"
-                                  v-model="product.product_id" v-validate="'required'" :ref="'__'+k">
+                                     v-model="product.product_id" v-validate="'required'" :ref="'__'+k">
                         <template slot="item" slot-scope="{ item:p }">
                            <div class="d-flex">
                               <div>
@@ -285,8 +285,8 @@
                   qte_facture: Number(p.qte),
                   rapport_qte: (p.rapport_qte !== null) ? Number(p.rapport_qte) : null,
                   fret_douane: p.douane,
-                  price_unit_ht: Number(p.price_unit_ht),
-                  price_unit_ttc: (this.type === "NATIONAL") ? Number(p.price_unit_ttc) : Number(p.sell_price),
+                  price_unit_ht: (this.type === "NATIONAL") ? Number(p.price_unit_ht) : Number(p.sell_price),
+                  price_unit_ttc: Number(p.price_unit_ttc),
                   price_devise: p.product_devis,
                   remark: p.remark,
                })

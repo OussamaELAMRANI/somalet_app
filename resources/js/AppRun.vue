@@ -11,6 +11,9 @@
     }
 </script>
 
-<style scoped>
-
+<style>
+   input[name='date_picker']{
+      width: 100%;
+      border: 0;
+   }
 </style>

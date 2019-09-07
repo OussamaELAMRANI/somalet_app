@@ -46,12 +46,12 @@ Route::prefix('providers')->group(function () {
 });
 Route::prefix('clients')->group(function () {
 
-    Route::get('search/{searchValue?}', 'Api\ClientController@search');
+   Route::get('search/{searchValue?}', 'Api\ClientController@search');
 
-    Route::get('', 'Api\ClientController@index');
-    Route::post('', 'Api\ClientController@store');
-    Route::get('{id}', 'Api\ClientController@show');
-    Route::delete('{id}/delete', 'Api\ClientController@destroy');
+   Route::get('', 'Api\ClientController@index');
+   Route::post('', 'Api\ClientController@store');
+   Route::get('{id}', 'Api\ClientController@show');
+   Route::delete('{id}/delete', 'Api\ClientController@destroy');
 
 });
 //Categories
@@ -117,6 +117,30 @@ Route::prefix('arrivals')->group(function () {
 
 Route::prefix('receptions')->group(function () {
    Route::get('', 'ReceptionController@index');
+   Route::get('no-valid', 'ReceptionController@getNoValidArrivals');
+   Route::get('inventories/{product?}', 'ReceptionController@getInventories');
+
+   Route::get('search/{product?}', 'ReceptionController@searchOrder');
+
+   Route::post('validate', 'ReceptionController@getNoValidArrivals');
+   Route::put('validate/{arr}', 'ReceptionController@validateArrival');
+
+});
+
+Route::prefix('orders')->group(function () {
+
+   Route::get('', 'Api\OrderController@index');
+   Route::get('{id}', 'Api\OrderController@show');
+   Route::post('', 'Api\OrderController@store');
+
+
+});
+
+Route::prefix('payments')->group(function () {
+
+   Route::post('{cmd}', 'Api\PaymentController@store');
+   Route::get('checkout', 'Api\PaymentController@checkout');
+   Route::get('cheques', 'Api\PaymentController@cheques');
 
 });
 

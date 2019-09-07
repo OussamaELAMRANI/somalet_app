@@ -1,22 +1,22 @@
 <template lang="pug">
    router-link(:to="{name:link} || '#'")
       .segment.box(:class="isActive? 'active-box':''")
-         .row.align-items-end
-            .col-12
+         .row.align-items-start
+            .col-8
                img(:src="getImage(img)", alt="img" height="60px")
+            .col-4(v-if="hasState")
+               span.badge.badge-primary.mr-1 NEW {{hasState.danger}}
+               span.badge.badge-success ADD {{hasState.success}}
             .col-12.text-center.ar
-               h6.mt-2 {{title}}
+               h6.mt-2(:class="h") {{title}}
                p.text-secondary {{subtitle}}
-         .row(v-if="hasState")
-            .col.text-right
-               span.badge.badge-primary.mr-1 0
-               span.badge.badge-success 0
+
 </template>
 
 <script>
    export default {
       name: "Box",
-      props: ['img', 'title', 'subtitle', 'link', 'isActive','hasState','size'],
+      props: ['img', 'title', 'subtitle', 'link', 'isActive', 'hasState', 'size', 'h'],
       methods: {
          getImage(img) {
             return `/storage/${img}`
@@ -31,7 +31,7 @@
       height: 160px;
    }
 
-    .box:hover:not(.active-box) {
+   .box:hover:not(.active-box) {
       cursor: pointer;
       background: #eef4fa;
    }

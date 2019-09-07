@@ -1,8 +1,9 @@
 import './bootstrap'
 
 import Vue from 'vue'
+import moment from 'moment'
 
-import vueRouter from 'vue-router'
+// import vueRouter from 'vue-router'
 import App from './AppRun'
 
 import router from '@/routes'
@@ -37,32 +38,42 @@ Vue.use(VeeValidate);
 Validator.localize('fr', fr);
 
 Vue.use(VueNotification, {
-    error: {
-        background: "white",
-        color: "red"
-    },
-    showCloseIcn: true,
-    timer: 20
+   error: {
+      background: "white",
+      color: "red"
+   },
+   showCloseIcn: true,
+   timer: 20
 });
 Vue.use(VueFormWizard);
 Vue.use(VueDialog)
 Vue.use(ToggleSwitch)
 
 Vue.use(VueSelect, {
-    theme: 'bootstrap' // or 'material-design'
+   theme: 'bootstrap' // or 'material-design'
 })
 Vue.use(vueSmoothScroll, {
-    container: "body",
-    duration: 500,
-    easing: "ease",
-    offset: 0,
-    force: true,
-    cancelable: true,
-    onStart: false,
-    onDone: false,
-    onCancel: false,
-    x: false,
-    y: true
+   container: "body",
+   duration: 500,
+   easing: "ease",
+   offset: 0,
+   force: true,
+   cancelable: true,
+   onStart: false,
+   onDone: false,
+   onCancel: false,
+   x: false,
+   y: true
 })
+
+/**
+ * Global Filtering | pipeline truck
+ */
+Vue.filter('humane_date', function (date) {
+   if (date !== null)
+      return moment(date).format('DD-MM-YYYY');
+   return null
+})
+
 
 new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

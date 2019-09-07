@@ -6,10 +6,10 @@ export default [
     {
         name: 'allClients',
         path: 'client',
-        redirect: '/client/client-list',
+        redirect: 'client/client-list',
         component: Clients,
         meta: {
-            title: 'Client', name: 'allClients', icon: 'fa fa-briefcase', roles: 'guest'
+            title: 'Client', name: 'allClients', icon: 'fa fa-user', roles: 'guest'
         },
         children: [
             {
@@ -42,7 +42,7 @@ export default [
                 path: 'client-list',
                 component: ClientsList,
                 meta: {
-                    title: 'Liste des client', name: 'listClient', icon: 'fa fa-gor', roles: 'guest'
+                    title: 'Liste des clients', name: 'listClient', icon: 'fa fa-gor', roles: 'guest'
                 },
             },
         ]
