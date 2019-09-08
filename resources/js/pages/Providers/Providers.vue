@@ -1,5 +1,6 @@
 <template>
     <div class="card" id="all-providers">
+       <bread-crumb/>
         <h2 class="text-info mt-4 text-lg-center">Page Fournisseurs</h2>
         <div class="dropdown-divider"></div>
         <!-- 2 Boxes (Back, [New, List])-->
@@ -21,6 +22,7 @@
 
 <script>
     import StepBox from "../../components/Steps/StepBox";
+    import BreadCrumb from "@/components/layouts/BreadCrumb";
 
     export default {
         name: "Providers",
@@ -34,7 +36,7 @@
                 return this.$route.name
             }
         },
-        components: {StepBox}
+        components: {BreadCrumb, StepBox}
     }
 </script>
 

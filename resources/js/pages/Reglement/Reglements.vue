@@ -1,5 +1,6 @@
 <template lang="pug">
    #reglement
+      BreadCrumb
       .row.justify-content-center.align-items-center
          .col-3
             box(img='boxes/money-bag.svg' title='CAISSE' h='h4' size='70px' subtitle='Consulter la caisee maintenant' link='caisse' )
@@ -17,6 +18,7 @@
 <script>
    import Box from "@/components/utils/Box";
    import TableLayout from "@/components/layouts/TableLayout";
+   import BreadCrumb from "@/components/layouts/BreadCrumb";
 
    export default {
       name: "Reglements",
@@ -25,7 +27,7 @@
             items: ['#', 'Commande', 'Montant']
          }
       },
-      components: {TableLayout, Box}
+      components: {BreadCrumb, TableLayout, Box}
    }
 </script>
 

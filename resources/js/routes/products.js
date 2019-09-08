@@ -6,7 +6,7 @@ export default [
         name: 'allProducts',
         path: 'product',
         component: Products,
-        redirect: '/product/product-list',
+        redirect: 'product/product-list',
         meta: {
             title: 'Produits', name: 'allProducts', icon: 'fa fa-cube', roles: 'guest'
         },

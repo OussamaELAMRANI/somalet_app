@@ -6,7 +6,7 @@ export default [
     {
         name: 'allProviders',
         path: 'provider',
-        redirect: '/provider/provider-list',
+        redirect: 'provider/provider-list',
         component: Providers,
         meta: {
             title: 'Fournisseurs', name: 'allProviders', icon: 'fa fa-briefcase', roles: 'guest'

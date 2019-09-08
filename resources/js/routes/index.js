@@ -15,6 +15,7 @@ import Stock from './stock'
 import order from './orders'
 import billings from './billings'
 import reglements from './reglements'
+import settings from './settings'
 
 // import NotFound from './../pages/NotFound'
 
@@ -44,7 +45,7 @@ export const asyncRoutes = [
       name: 'dashboard',
       component: () => import("@/pages/admin/Dashbord"),
       meta: {
-         title: 'dashboard', icon: 'fa fa-cogs', roles: 'guest'
+         title: 'Tableau de Bord', icon: 'fa fa-cogs', roles: 'guest'
       },
 
       children: [
@@ -67,6 +68,7 @@ export const asyncRoutes = [
          ...order,
          ...billings,
          ...reglements,
+         ...settings,
 
       ],
    },

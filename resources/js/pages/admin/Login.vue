@@ -4,11 +4,11 @@
             <div class="container-login100">
                 <div class="wrap-login100">
                     <div class="login100-pic">
-                        <img src="/storage/boxes/login.png" alt="IMG">
+                        <img src="/storage/boxes/logo.png" alt="IMG" id="logo_img">
                     </div>
                     <div class="login100-form validate-form">
 					<span class="login100-form-title">
-						Éspace des Membres - MOLSAT
+						 Societé MOLSAT
 					</span>
 
                         <transition name="logIn">
@@ -118,7 +118,7 @@
             width: 100%;
             height: 50px;
             border-radius: 25px;
-            background: #57b846;
+            background: #FA9D59;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -170,7 +170,7 @@
             align-items: center;
             padding: 15px;
             background: #9053c7;
-            background: linear-gradient(-135deg, #c850c0, #4158d0);
+            background: linear-gradient(-135deg, #F99B5B, #494684);
         }
 
         .wrap-login100 {
@@ -236,7 +236,7 @@
         width: 100%;
         height: 100%;
         box-shadow: 0px 0px 0px 0px;
-        color: rgba(87, 184, 70, 0.8);
+        color: #FA9D59;
     }
 
     .input100:focus + .focus-input100 {
@@ -284,7 +284,7 @@
     }
 
     .input100:focus + .focus-input100 + .symbol-input100 {
-        color: #57b846;
+        color: #FA9D59;
         padding-left: 28px;
     }
 
@@ -418,5 +418,8 @@
             /*transform: scale(1);*/
             opacity: 1;
         }
+    }
+    #logo_img{
+       height: 140px;
     }
 </style>

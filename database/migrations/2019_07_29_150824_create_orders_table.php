@@ -18,6 +18,9 @@ class CreateOrdersTable extends Migration
          $table->string('cmd_number');
          $table->date('date_cmd');
          $table->unsignedBigInteger('client_id');
+         // [IN] => In Command, [OUT] => Delivered
+         // OUT => By Magazinier And Can (Stock--)
+         $table->enum('status',['IN','OUT'])->default('IN');
 
          $table->foreign('client_id')
             ->references('id')

@@ -1,14 +1,16 @@
 <template lang="pug">
    #stock
-      big-title(title="STOCK", h='h1')
+      bread-crumb
+      big-title(title="STOCK", :classes="['text-uppercase','h2']")
       router-view
 </template>
 
 <script>
    import BigTitle from "@/components/layouts/BigTitle";
+   import BreadCrumb from "@/components/layouts/BreadCrumb";
    export default {
       name: "Stocks",
-      components: {BigTitle}
+      components: {BreadCrumb, BigTitle}
    }
 </script>
 

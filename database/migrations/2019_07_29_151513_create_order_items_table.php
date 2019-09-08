@@ -20,7 +20,9 @@ class CreateOrderItemsTable extends Migration
 
          $table->integer('qte');
          $table->double('discount');
-         $table->double('qte_price');
+         // $table->double('qte_price');
+         // To Make Trace in DB, Because the [price, Discount] are Variables
+         $table->double('price');
 
          $table->foreign('cmd_id')
             ->references('id')->on('orders')

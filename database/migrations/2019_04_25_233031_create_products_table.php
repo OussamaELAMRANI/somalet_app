@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
          $table->text('description')->nullable();
          $table->text('remark')->nullable();
          $table->string('img')->nullable();
-         $table->float('price_sell')->default(0);
+//         $table->float('price_sell')->default(0);
          $table->double('alertQte')->default(0);
          $table->unsignedBigInteger('unit_id');
          //metre / rouleau ou piece par box

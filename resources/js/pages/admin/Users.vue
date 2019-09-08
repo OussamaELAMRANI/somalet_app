@@ -1,13 +1,15 @@
 <template>
     <div id="users">
-        <!--  MENU -->
+        <BreadCrumb/>
         <router-view/>
     </div>
 </template>
 
 <script>
+    import BreadCrumb from "@/components/layouts/BreadCrumb";
     export default {
-        name: "Users"
+        name: "Users",
+       components: {BreadCrumb}
     }
 </script>
 

@@ -21,15 +21,15 @@ export default [
             },
             hidden: true,
          },
-         {
-            name: 'detailPayment',
-            path: ':cmd/detail',
-            component: () => import('@/pages/Orders/DetailOrder'),
-            hidden: true,
-            meta: {
-               title: "Detail d'une Commande", name: 'detailPayment', icon: 'fa fa-gor', roles: 'guest',
-            },
-         },
+         // {
+         //    name: 'detailPayment',
+         //    path: ':cmd/detail',
+         //    component: () => import('@/pages/Orders/DetailOrder'),
+         //    hidden: true,
+         //    meta: {
+         //       title: "Detail d'une Commande", name: 'detailPayment', icon: 'fa fa-gor', roles: 'guest',
+         //    },
+         // },
 
          {
             name: 'listBilling',

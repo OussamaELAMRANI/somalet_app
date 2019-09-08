@@ -3,6 +3,7 @@ export default [
       name: 'reglements',
       path: 'reglements',
       component: () => import('@/pages/Reglement/Reglements'),
+      redirect:'reglements/caisse',
       meta: {
          title: 'Réglements', name: 'reglements', icon: 'fa fa-cash-register', roles: 'guest'
       },
@@ -28,6 +29,7 @@ export default [
             name: 'banks',
             path: 'banks',
             component: () => import('@/pages/Reglement/Banks'),
+            redirect:'banks/molsat',
             meta: {
                title: "Banque", name: 'banks', icon: 'fa fa-gor', roles: 'guest'
             },
@@ -37,7 +39,7 @@ export default [
                   path: 'molsat',
                   component: () => import('@/pages/Reglement/banks/BankMolsat'),
                   meta: {
-                     title: "bank_molsat", name: 'bank_molsat', icon: 'fa fa-gor', roles: 'guest'
+                     title: "MOLSAT", name: 'bank_molsat', icon: 'fa fa-gor', roles: 'guest'
                   },
                },
                {
@@ -45,7 +47,7 @@ export default [
                   path: 'if',
                   component: () => import('@/pages/Reglement/banks/BankIf'),
                   meta: {
-                     title: "bank_if", name: 'bank_if', icon: 'fa fa-gor', roles: 'guest'
+                     title: "IF", name: 'bank_if', icon: 'fa fa-gor', roles: 'guest'
                   },
                },
             ]

@@ -13,7 +13,6 @@ class CreateProvidersTable extends Migration
      */
     public function up()
     {
-//        todo add Type:[Intern,Externe]
         Schema::create('providers', function (Blueprint $table) {
             $table->bigIncrements('id');
 
@@ -33,6 +32,8 @@ class CreateProvidersTable extends Migration
             $table->text('email')->nullable();
             $table->text('skype')->nullable();
             $table->text('icp')->nullable();
+            // Provider [Outside, Inside] country
+            $table->enum('type',['EXT','ENT'])->default('ENT');
 
             $table->timestamps();
             $table->softDeletes();

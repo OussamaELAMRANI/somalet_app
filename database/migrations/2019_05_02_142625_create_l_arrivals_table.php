@@ -16,7 +16,7 @@ class CreateLArrivalsTable extends Migration
         Schema::create('l_arrivals', function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('arrival_id');
-
+            // Possible add Same Product In Diffrent [Rapport, Qte]
             $table->double('qte_facture');
             // qte rapport pour les produit [rouleau/ piece/ box]...
             $table->double('rapport_qte')->nullable();
