@@ -9,7 +9,7 @@ export default [
         redirect: 'client/client-list',
         component: Clients,
         meta: {
-            title: 'Client', name: 'allClients', icon: 'fa fa-user', roles: 'guest'
+            title: 'Clients', name: 'allClients', icon: 'fa fa-user', roles: 'guest'
         },
         children: [
             {
@@ -27,6 +27,14 @@ export default [
                 component: () => import('@/pages/Clients/NewClient'),
                 meta: {
                     title: 'Modifier Client', name: 'updateClient', icon: 'fa fa-gor', roles: 'guest'
+                },
+            },{
+                name: 'detailClient',
+                hidden: true,
+                path: ':id/detail',
+                component: () => import('@/pages/Clients/ClientDetail'),
+                meta: {
+                    title: 'Detail Client', name: 'updateClient', icon: 'fa fa-gor', roles: 'guest'
                 },
             },
             {

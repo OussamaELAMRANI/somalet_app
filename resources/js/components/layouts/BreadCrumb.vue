@@ -19,7 +19,7 @@
       },
       mounted() {
          // _.forEach(this.$route, routes => {
-         console.log(this.$route.matched)
+         // console.log(this.$route.matched)
          this.routes = this.$route.matched
          // })
       },

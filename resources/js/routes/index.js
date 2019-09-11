@@ -29,6 +29,9 @@ export const constantRoutes = [
       path: '/login',
       component: () => import("@/pages/admin/Login"),
       hidden: true,
+      meta: {
+         title: 'Societé MOLSAT'
+      }
    },
    {
       path: '/404',
@@ -55,7 +58,7 @@ export const asyncRoutes = [
             component: () => import('@/pages/admin/home'),
             hidden: true,
             meta: {
-               title: 'dashboard_home', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Molsat Application', icon: 'fa fa-gor', roles: 'guest'
             },
          },
          ...Users,

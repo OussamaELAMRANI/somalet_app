@@ -66,7 +66,7 @@ class ProviderController extends Controller
      */
     public function show($id)
     {
-        return \response()->json(Provider::findOrFail($id));
+        return response()->json(Provider::with('products','products.color','products.unit')->findOrFail($id));
     }
 
     public function destroy(Provider $id)

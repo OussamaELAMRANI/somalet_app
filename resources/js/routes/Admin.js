@@ -22,7 +22,7 @@ export default [
         path: '/login',
         component: LogIn,
         meta: {
-            forVisitor: true
+            forVisitor: true, title:'Bienvenue au MOLSAT'
         }
     },
     {

@@ -90,14 +90,20 @@ class ReceptionController extends Controller
          if (!is_null($client_id)) {
             foreach ($p['clients'] as $client) {
 
-               if ($client_id == $client['id'])
+               if ($client_id == $client['id']){
                   $a[$p['name']]['discount'] = $client['pivot']['discount'];
+               }
 
-               else
+               else{
                   $a[$p['name']]['discount'] = 0;
+               }
 
             }
+
          }
+         else
+            $a[$p['name']]['discount'] = 0;
+
          $n = 0;
       }
 
