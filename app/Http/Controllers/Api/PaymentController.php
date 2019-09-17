@@ -11,7 +11,7 @@ class PaymentController extends Controller
 
    public function __construct(PayementService $payementService)
    {
-       $this->service = $payementService;
+      $this->service = $payementService;
    }
 
    public function store($cmd)
@@ -29,4 +29,8 @@ class PaymentController extends Controller
       return $this->service->getCheques();
    }
 
+   public function getPayments()
+   {
+      return $this->service->getPayments();
+   }
 }

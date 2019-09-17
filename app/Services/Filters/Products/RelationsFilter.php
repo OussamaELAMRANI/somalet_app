@@ -32,6 +32,7 @@ class RelationsFilter implements IFilter
             'unit' => 'unit',
             'provider' => 'provider',
             'category' => 'subcategory',
+            'arrivals' => 'arrivals',
         ];
     }
 

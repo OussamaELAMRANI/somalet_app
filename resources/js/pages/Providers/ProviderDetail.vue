@@ -1,23 +1,22 @@
 <template lang="pug">
    #provider_detail.container
       h3 Detail Fournisseur
-         span.text-primary {{': '+detail.steName}}
+         span.text-primary {{': ' + getDetail.steName}}
       hr
-      .row(v-if="detail != null")
-      table-layout(:head-table="infosHeader", :data="detail" )
+      //table-layout(:head-table="infosHeader", :data="getDetail" )
          tr
             td {{1}}
-            td {{detail.steName}}
-            td {{detail.numTva}}
-            td {{detail.firstName}} {{detail.lastName}}
+            td {{(detail == null) ? null : detail.steName}}
+            td {{(detail == null) ? null : detail.numTva}}
+            td {{(detail == null) ? null : detail.firstName}} {{(detail==null) ? null : detail.lastName}}
 
-      table-layout(:head-table="porductsHeader", theme="bg-success text-white" empty-text="Sans Produits" :data="detail.products")
-         tr(v-for=" (p,i) in detail.products")
+      table-layout(:head-table="porductsHeader", theme="bg-success text-white" empty-text="Sans Produits" :data="getProducts")
+         tr(v-for="( p,i ) in products" )
             td {{i+1}}
             td
                img(:src="'/storage/'+p.img" height="90")
             td {{p.reference}}
-            td {{p.name}}
+            td 11
             td {{(p.color.name) === null ? 'SANS': p.color.name}}
             td {{p.unit.name}}
 
@@ -31,24 +30,38 @@
       components: {TableLayout},
       data() {
          return {
-            detail: null,
+            detail: {},
             infosHeader: ['#', 'Sociéte', 'TVA', 'Nom Prénom'],
-            porductsHeader: ['#', 'image', 'Reference', 'Designation', 'Couleurs', 'Unité']
+            porductsHeader: ['#', 'image', 'Reference', 'Designation', 'Couleurs', 'Unité'],
+            products: {}
          }
       },
-      mounted() {
+      created() {
          const id = this.$route.params.id
          console.log(id)
 
          axios.get(`/api/providers/${id}`)
             .then(({data}) => {
+               const {products} = data
+               console.log('------ PRODUCTS -----')
+               console.log(products)
+               console.log('------ PRODUCTS -----')
                this.detail = data
-               console.log(data)
+               this.products = products;
+               // console.log(data)
             })
             .catch(err => {
                console.log(err.response)
                this.$router.push('/404')
             })
+      },
+      computed: {
+         getProducts() {
+            return this.products;
+         },
+         getDetail() {
+            return this.detail;
+         }
       }
    }
 </script>

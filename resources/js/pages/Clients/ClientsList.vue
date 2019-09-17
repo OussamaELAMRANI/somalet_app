@@ -33,6 +33,10 @@
          </div>
       </div>
 
+      <router-link :to="{name:'newClient'}" class="btn btn-success btn-sm">
+         <i class="fa fa-plus mx-2"></i>
+         Nouveau Client
+      </router-link>
 
       <h3 class="text-lg-center text-secondary m-5">Liste des clients</h3>
       <div class="dropdown-divider"></div>
@@ -42,20 +46,6 @@
          <div class="col-8">
             <form @submit.prevent="">
                <div class="input-group m-3">
-                  <!--                        <div class="input-group-prepend">-->
-                  <!--                            <span class="input-group-text text-primary" id="inputGroup-sizing-sm">Filter Par :</span>-->
-                  <!--                            <div class="input-group-text bg-warning">-->
-                  <!--                                <input type="radio" name="opt-filter" value="name" v-model="opt"-->
-                  <!--                                       v-on:change="EmptyText">-->
-                  <!--                                <span class="ml-1">Nom</span>-->
-                  <!--                            </div>-->
-                  <!--                            <div class="input-group-text bg-success text-white">-->
-                  <!--                                <input type="radio" name="opt-filter" value="ste" v-model="opt"-->
-                  <!--                                       v-on:change="EmptyText">-->
-                  <!--                                <span class="ml-1">Nom</span>-->
-                  <!--                            </div>-->
-                  <!--                        </div>-->
-
                   <input type="text" class="form-control" v-model="searchTxt" v-on:keyup.enter="filter"
                          placeholder="Recherche par Nom complet"
                          autofocus>
@@ -66,7 +56,6 @@
                   </div>
                </div>
             </form>
-
          </div>
       </div>
 
@@ -74,7 +63,7 @@
                     empty-text="Pas de client dans ce cas (Vide...)">
 
          <tr v-for="(p,index) in clients.data" :id="p.id">
-            <th scope="row">{{index}}</th>
+            <th scope="row">{{index+1}}</th>
             <td>{{p.firstName}} {{p.lastName}}</td>
             <td>{{p.numTva}}</td>
             <td>{{p.nSiret}}</td>

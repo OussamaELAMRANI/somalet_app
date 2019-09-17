@@ -16,7 +16,9 @@
                   .col-4
                      .form-group
                         label(for="delivery") Numéro de Livraison
-                        input(class='form-control' type='text', placeholder='Numero de Facture ...' id='delivery' v-model='header_order.cmd_number')
+                        input(class='form-control' type='text', placeholder='Numero de Facture ...' id='delivery' name="cmd_number"
+                           v-validate="'required'" v-model='header_order.cmd_number')
+                        span.help.text-danger(v-show="errors.has('cmd_number')") Vous devez Saisire le numéro de la livraison
                   .col-4
                      .form-group
                         label Date de la Facture :
@@ -135,7 +137,7 @@
             })
          },
          addOrder() {
-            const order = this.header_order
+            const {cmd_number, date_cmd} = this.header_order
             const products = this.commands.map(p => {
                return {
                   'product_id': p.product_id,
@@ -144,11 +146,20 @@
                }
             })
 
-            axios.post('/api/orders', {order, products})
+            axios.post('/api/orders', {date_cmd, cmd_number, products})
                .then(({data}) => {
                   console.log(data)
                })
-               .catch(err => console.log(err.response))
+               .catch(err => {
+                  const {cmd_number, date_cmd} = err.response.data.errors
+
+                  if (cmd_number !== undefined)
+                     this.$notification.error(cmd_number[0])
+                  if (date_cmd !== undefined)
+                     this.$notification.error(date_cmd[0])
+
+                  console.log(err.response)
+               })
          }
       },
       watch: {

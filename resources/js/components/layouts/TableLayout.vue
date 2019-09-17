@@ -17,7 +17,7 @@
          </td>
       </tr>
 
-      <tr v-else-if="data.length === 0">
+      <tr v-else-if="data.length === 0 || data === {}">
          <td :colspan="headTable.length">
             <h6 class="text-center text-secondary m-5">{{emptyText}}</h6>
          </td>

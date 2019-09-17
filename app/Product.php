@@ -62,7 +62,7 @@ class Product extends Model
     * Haves a Pivot table Order_items
     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
     */
-   public function arrival()
+   public function arrivals()
    {
       return $this->belongsToMany(Arrival::class, 'l_arrivals')
          ->withPivot(['qte_facture', 'rapport_qte', 'fret_douane', 'price_unit_ht', 'price_unit_ttc',

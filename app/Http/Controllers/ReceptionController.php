@@ -5,10 +5,18 @@ namespace App\Http\Controllers;
 use App\Arrival;
 //use App\Reception;
 use App\Product;
+use App\Services\Stock\InventoryService;
 use Illuminate\Http\Request;
 
 class ReceptionController extends Controller
 {
+   private $inventory;
+
+   public function __construct(InventoryService $inventory)
+   {
+      $this->inventory = $inventory;
+   }
+
    /**
     * Display a listing of the resource.
     *
@@ -43,7 +51,7 @@ class ReceptionController extends Controller
 
    private function filterStock(Request $req)
    {
-      $allProduct = Product::with('arrival', 'unit', 'color', 'user', 'clients')->get();
+      $allProduct = Product::with('arrivals', 'unit', 'color', 'user', 'clients')->get();
       $validProducts = $this->getQte($allProduct->toArray(), $req->input('client_id'));
       return $validProducts;
    }
@@ -64,7 +72,7 @@ class ReceptionController extends Controller
          $vente = 0;
          $crHT = 0;
          $n = 0;
-         foreach ($p['arrival'] as $arr) {
+         foreach ($p['arrivals'] as $arr) {
 
             if ($arr['state'] == 'VALID') {
                $n++;
@@ -76,7 +84,7 @@ class ReceptionController extends Controller
                $a[$p['name']] = [
                   'product_id' => $p['id'],
                   'QTE' => $qteF,
-                  'qte_rapport' => $qteR ,
+                  'qte_rapport' => $qteR,
                   'qte_total' => ($qteR * $qteF),
                   'reference' => $p['reference'],
                   'prix' => 1, 'ht' => 1,
@@ -90,18 +98,15 @@ class ReceptionController extends Controller
          if (!is_null($client_id)) {
             foreach ($p['clients'] as $client) {
 
-               if ($client_id == $client['id']){
+               if ($client_id == $client['id']) {
                   $a[$p['name']]['discount'] = $client['pivot']['discount'];
-               }
-
-               else{
+               } else {
                   $a[$p['name']]['discount'] = 0;
                }
 
             }
 
-         }
-         else
+         } else
             $a[$p['name']]['discount'] = 0;
 
          $n = 0;
@@ -128,4 +133,8 @@ class ReceptionController extends Controller
       return response()->json($validProducts, 200);
    }
 
+   public function getDetailStock()
+   {
+      return $this->inventory->getDetailStock();
+   }
 }

@@ -5,6 +5,7 @@ namespace App\Services\Commands;
 
 
 use App\Arrival;
+use App\Http\Requests\Orders\CommandRequest;
 use App\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,10 +19,10 @@ class CommandService
       $this->req = $request;
    }
 
-   public function addCommand()
+   public function addCommand(Request $req)
    {
-      $order = $this->req->input('order');
-      $products = $this->req->input('products');
+      $order = $req->input('order');
+      $products = $req->input('products');
 
       // Add Order 1st
       $order['date_cmd'] = Carbon::parse($order['date_cmd'])->toDate();

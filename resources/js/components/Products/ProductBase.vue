@@ -198,6 +198,49 @@
          }
 
       },
+      mounted() {
+         //pour determiner si l'etat de la vue en mode : Ajout ou modification
+         //si id == null => Ajout
+         //si id != null => Modification
+         const id = this.$route.params.id
+
+         if (this.$route.params['id'] !== undefined) {
+            this.isNew = false
+            this.id = id
+            axios.get(`/api/products/${id}`)
+               .then(res => {
+                  const data = res.data
+                  this.provider = data.provider
+                  this.name = data.name
+                  this.refr = data.reference
+                  this.desc = data.description
+                  this.note = data.remark
+                  this.color = data.color.id
+                  // this.colors = data.colors
+                  this.unity = data.unit.id
+                  // this.unities = data.unities
+                  this.type = data.type
+                  this.alertQte = data.alertQte
+                  this.id = data.id
+                  this.rapport = data.rapport
+                  this.setRapport(data.unit.name)
+                  this.img = data.img
+                  this.subcategory_id = data.subcategory.id
+                  this.img_url = `${process.env.MIX_APP_URL}/storage/${this.img}`
+                  // this.$refs.portraits.file = data.img
+               })
+               .catch(err => {
+                  // this.$notification.error("Ce produit n'existe pas !")
+                  this.$notification.error(err)
+                  // this.$router.push('/404')
+               })
+
+         } else {
+            this.provider = null;
+            this.isNew = true
+            this.id = 0
+         }
+      },
       components: {
          ProductType,
          BigTitle,

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Orders\CommandRequest;
 use App\Services\Commands\CommandService;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -14,9 +16,9 @@ class OrderController extends Controller
       $this->service = $commandService;
    }
 
-   public function store()
+   public function store(CommandRequest $request)
    {
-      return $this->service->addCommand();
+      return $this->service->addCommand($request);
    }
 
    public function index()

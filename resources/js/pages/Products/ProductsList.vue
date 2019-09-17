@@ -1,5 +1,13 @@
 <template>
    <div id="products_list" class="container">
+      <router-link :to="{name:'newProduct'}" class="btn-sm btn-success btn text-capitalize">
+         <i class="fa fa-plus mx-1"></i>
+         Ajouter nouveau produit
+      </router-link>
+
+      <combo-box key="i"/>
+
+
       <alert-modal title="Supperession d'un Produit" id="bitch">
          <template slot="content">
             <h5 class="text-uppercase text-danger text-center">
@@ -78,10 +86,10 @@
             <!--                <td><img :src="p.img" alt="image produit" height="60px"></td>-->
             <td>{{p.reference}}</td>
             <td>{{p.name}}</td>
-            <td :class="(p.color)?'d-flex b-0 m-0':'' ">
+            <td :class="(p.color)?'row justify-content-center b-0 m-0':'' ">
                <template v-if="p.color">
-                  <span class="rounded-circle" :style="{backgroundColor: p.color.color}"></span>
-                  {{p.color.name}}
+                  <div class="col-2 rounded-circle" :style="{backgroundColor: p.color.color}"></div>
+                  <div class="col">{{p.color.name}}</div>
                </template>
                <template v-else>
                   SANS COULEUR
@@ -92,12 +100,11 @@
             <td style="width: 130px">
                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
                        @click="show(p.id)">
-                  <i class="fa fa-list" aria-hidden="true"></i>
+                  <i class="fa fa-eye" aria-hidden="true"></i>
                </button>
                <button class="btn btn-sm btn-primary"
-                       data-toggle="modal" data-target="#exampleModal"
                        @click="redirect(p.id)">
-                  <i class="fa fa-edit" aria-hidden="true"></i>
+                  <i class="fa fa-list" aria-hidden="true"></i>
                </button>
                <button class="btn btn-sm btn-danger"
                        @click="getElementIdToDelete(p.id)"
@@ -121,6 +128,7 @@
    import TableLayout from "@/components/layouts/TableLayout";
    import ModalDetail from "@/components/Modals/ModalDetail";
    import BigTitle from "@/components/layouts/BigTitle";
+   import ComboBox from "@/components/layouts/ComboBox";
 
    export default {
       name: "ProductsList",
@@ -186,7 +194,7 @@
                .catch(err => console.log(err.response))
          },
          redirect(id) {
-            this.$router.push({name: 'updateProduct', params: {id}});
+            this.$router.push({name: 'detailProduct', params: {id}});
          },
          filter(page = 1) {
             axios.get(`/api/products?page=${page}`)
@@ -209,6 +217,7 @@
          // }
       },
       components: {
+         ComboBox,
          BigTitle,
          ModalDetail,
          TableLayout,
@@ -220,7 +229,7 @@
 
 <style scoped>
    .rounded-circle {
-      height: 20px;
+      height: 30px;
       width: 20px;
       box-shadow: 0 1px 1px 0 rgba(60, 64, 67, .08), 0 1px 3px 1px rgba(60, 64, 67, .16);
       margin: 0 6px;

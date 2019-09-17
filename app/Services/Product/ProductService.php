@@ -68,4 +68,11 @@ class ProductService
    {
       return response()->json($message, $status);
    }
+
+   public function getDistinctProductByName()
+   {
+      $dist = Product::all()->groupBy('reference');
+
+      return $dist;
+   }
 }

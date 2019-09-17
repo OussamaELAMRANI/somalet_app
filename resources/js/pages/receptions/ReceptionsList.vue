@@ -43,7 +43,7 @@
                         {{c.type}}
                      </small>
                   </div>
-                  <div class="col-2">{{c.price_devise}} DH</div>
+                  <div class="col-2">{{c.price_provider}} DH</div>
                   <div class="col-1">
                             <span class="badge-danger badge">
                                {{c.state}}
@@ -110,12 +110,8 @@
 
                   </template>
 
-
                </div>
-
             </div>
-
-
          </div>
          <!--            FILTER ========== -->
          <div class="col-3 m-0">
@@ -245,6 +241,7 @@
             axios.put('/api/arrivals', {arrival_id, products})
                .then(({data}) => {
                   console.log(data)
+                  this.$router.push('/')
                })
          },
          updateState(id) {
@@ -252,7 +249,7 @@
                .then(({data}) => {
                   console.log(data)
                   _.forEach(this.searchArrivals, (arr) => {
-                     if(arr.id === id)
+                     if (arr.id === id)
                         arr.state = 'VUE'
                   })
                })

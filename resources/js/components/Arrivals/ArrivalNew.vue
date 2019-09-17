@@ -1,6 +1,6 @@
 <template>
-   <div id="arrival_form">
-      <form ref="entete" class="container">
+   <div id="arrival_form" class="segment">
+      <form ref="entete" class=" container">
          <big-title title="Entête Facture"/>
          <div class="row" v-if="providers.length === 0">
             <div class="col">
@@ -24,6 +24,7 @@
                             v-validate="'required'"/>
                      <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_facture')"></i>
                      <span class="help text-danger" v-show="errors.has('n_facture')">{{ messageErr }}</span>
+                     <span class="help text-danger">{{ error.facture }}</span>
                   </div>
                </div>
                <div class="col">
@@ -82,14 +83,14 @@
                   </div>
                </div>
             </div>
-<!--            <div class="row">-->
-<!--               <div class="col">-->
-<!--                  <div class="form-grouptype">-->
-<!--                     <i class="fa fa-exclamation-triangle text-danger" v-show="formErrors != null"></i>-->
-<!--                     <span class="help text-danger" v-show="formErrors != null">{{ formErrors }}</span>-->
-<!--                  </div>-->
-<!--               </div>-->
-<!--            </div>-->
+            <!--            <div class="row">-->
+            <!--               <div class="col">-->
+            <!--                  <div class="form-grouptype">-->
+            <!--                     <i class="fa fa-exclamation-triangle text-danger" v-show="formErrors != null"></i>-->
+            <!--                     <span class="help text-danger" v-show="formErrors != null">{{ formErrors }}</span>-->
+            <!--                  </div>-->
+            <!--               </div>-->
+            <!--            </div>-->
 
             <!--  name="chargesForm"  =================================== INTERNATIONALISATION CASE =================================== -->
             <div v-show="newArr.type=='INTERNATIONAL'" ref="chargesForm">
@@ -342,6 +343,9 @@
             providers: [],
             formErrors: '',
             messageErr: 'La remplissement de ce champs est obligatoire !',
+            error: {
+               facture: null
+            }
          }
       },
       watch: {
@@ -514,57 +518,20 @@
             return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
          },
          inputsToFormData() {
-            // const formData = new FormData()
-            // const newArrival = _.cloneDeep(this.newArr)
-            //
-            // for (let [k, v] of Object.entries(newArrival)) {
-            //     formData.append(k, v)
-            // }
-            //
-            // if (this.newArr.type === this.types[0]) {
-            //     const inter = _.cloneDeep(this.inter)
-            //     for (let [k, v] of Object.entries(inter)) {
-            //         if (v)
-            //             formData.append(k, v)
-            //     }
-            // }
-            // formData.forEach((value, key) => {
-            //     data[key] = value
-            // });
-            // return data;
             return {...this.newArr, ...this.inter, products: []}
          },
          validateBeforeSubmit() {
-            const data = this.inputsToFormData()
-            // console.log(data)
-            // this.$emit('getArrivalId', 0);
-            this.$emit('getCharge', data);
 
-            return true;
+            return this.$validator.validateAll()
+               .then((result) => {
+                     if (result) {
+                        const data = this.inputsToFormData()
+                        this.$emit('getCharge', data);
+                     }
+                     return result
+                  }
+               );
 
-            return this.$validator.validateAll().then((result) => {
-               if (result) {
-                  this.$emit('getArrivalId', data.id);
-                  this.$emit('getCharge', this.inputsToFormData());
-
-                  // formData.append('user_id', this.user_id)
-                  // return axios.post('/api/arrivals', formData)
-                  //     .then(res => {
-                  //         const {data} = res
-                  //         _this.$emit('getArrivalId', data.id);
-                  //         // _this.$emit('getArrivalId', formData);
-                  //         _this.$emit('getCharge', formData);
-                  //         return true
-                  //     })
-                  //     .catch(err => {
-                  //         this.formErrors = "Impossible d'ajouter cet enregistrement, contactez votre administrateur ";
-                  //         console.log(err)
-                  //         return false;
-                  //     });
-                  return true;
-               }
-               return false;
-            });
          },
          calculeCoutRevient() {
             this.inter.cout_revient = Number(this.inter.transitaire) + Number(this.inter.transport) +

@@ -6,7 +6,7 @@
          <tr>
             <th>Reference</th>
             <th>Designation</th>
-            <th>Qte par </th>
+            <th>Qte par</th>
             <th>Qte Total</th>
             <th>Unité</th>
             <th>CR HT</th>
@@ -14,15 +14,15 @@
          </tr>
          </thead>
          <tbody class="segment">
-         <tr v-for="(inv , k) in inventories">
-            <td>{{inv.reference}}</td>
-            <td>{{inv.name}}</td>
-            <td>{{inv.QTE}}</td>
-            <td>{{inv.qte_total}}</td>
-            <td><strong>{{inv.unity}}</strong></td>
-            <td>{{inv.ht}} <span class="badge">DH</span></td>
-            <td>{{inv.prix}} <span class="badge">DH</span></td>
-         </tr>
+            <tr v-for="(inv , k) in inventories">
+               <td>{{inv.reference}}</td>
+               <td>{{inv.name}}</td>
+               <td>{{inv.QTE}}</td>
+               <td>{{inv.qte_total}}</td>
+               <td><strong>{{inv.unity}}</strong></td>
+               <td>{{inv.ht}} <span class="badge">DH</span></td>
+               <td>{{inv.prix}} <span class="badge">DH</span></td>
+            </tr>
          </tbody>
       </table>
    </div>

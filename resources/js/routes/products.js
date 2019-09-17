@@ -28,6 +28,15 @@ export default [
                     title: 'Modifier Produit', name: 'updateProduct', icon: 'fa fa-gor', roles: 'guest'
                 },
             },
+           {
+                name: 'detailProduct',
+                hidden: true,
+                path: ':id/detail',
+                component: () => import('@/pages/Products/DetailProduct'),
+                meta: {
+                    title: 'Détail Produit', name: 'detailProduct', icon: 'fa fa-gor', roles: 'guest'
+                },
+            },
             {
                 name: 'deleteProduct',
                 hidden: true,

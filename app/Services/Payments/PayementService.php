@@ -83,15 +83,21 @@ class PayementService
    // Caisse is payement has Bank=null, and Type = ESP
    public function getCheckout()
    {
-      $checkout = Payment::where('in_bank', null)->where('type', 'ESP')->with('order','order.client')->get();
+      $checkout = Payment::where('in_bank', null)->where('type', 'ESP')->with('order', 'order.client')->get();
       return response()->json($checkout, 201);
    }
 
- // PortFeuille is payement has Bank=null, and Type = [EFF,CHQ]
+   // PortFeuille is payement has Bank=null, and Type = [EFF,CHQ]
    public function getCheques()
    {
-      $checkout = Payment::where('in_bank', null)->whereIn('type', ['EFF','CHQ'])->with('order','order.client')->get();
+      $checkout = Payment::where('in_bank', null)->whereIn('type', ['EFF', 'CHQ'])->with('order', 'order.client')->get();
       return response()->json($checkout, 201);
    }
 
+
+   public function getPayments()
+   {
+      $payments = Payment::with('')->get();
+      return response()->json($payments, 200);
+   }
 }

@@ -89,6 +89,7 @@ Route::prefix('unities')->group(function () {
 });
 
 Route::prefix('products')->group(function () {
+   Route::get('distinct', 'Api\ProductController@distinctProductByName');
 
    Route::get('search/{searchValue?}', 'Api\ProductController@search');
    Route::post('new', 'Api\ProductController@newProducts');
@@ -96,11 +97,15 @@ Route::prefix('products')->group(function () {
    Route::get('', 'Api\ProductController@index');
    Route::get('{id}', 'Api\ProductController@show');
    Route::delete('{id}/delete', 'Api\ProductController@destroy');
+
+
 });
 
 Route::prefix('arrivals')->group(function () {
 //    Route::group(['middleware' => 'auth:api'], function () {
    Route::get('', 'Api\ArrivalController@index');
+   Route::get('facture', 'Api\ArrivalController@getArrivalByFactureNumber');
+
    Route::get('{id}', 'Api\ArrivalController@show');
    Route::group(['middleware' => 'auth:api'], function () {
       Route::post('', 'Api\ArrivalController@store');
@@ -139,6 +144,8 @@ Route::prefix('orders')->group(function () {
 Route::prefix('payments')->group(function () {
 
    Route::post('{cmd}', 'Api\PaymentController@store');
+
+   Route::get('', 'Api\PaymentController@getPayments');
    Route::get('checkout', 'Api\PaymentController@checkout');
    Route::get('cheques', 'Api\PaymentController@cheques');
 
@@ -146,4 +153,8 @@ Route::prefix('payments')->group(function () {
 
 Route::prefix('dashboard')->group(function () {
    Route::get('users', 'Api\AuthController@allUsers');
+});
+
+Route::prefix('inventories')->group(function () {
+   Route::get('detail', 'ReceptionController@getDetailStock');
 });

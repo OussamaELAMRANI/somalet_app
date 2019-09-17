@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\category;
+namespace App\Http\Requests\Orders;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryRequest extends FormRequest
+class CommandRequest extends FormRequest
 {
    /**
     * Determine if the user is authorized to make this request.
@@ -24,15 +24,17 @@ class CategoryRequest extends FormRequest
    public function rules()
    {
       return [
-         'category_name' => 'required|string|unique:categories'
+         'cmd_number' => 'required|string|unique:orders',
+         'date_cmd' => 'required|date',
       ];
    }
 
    public function messages()
    {
+      $msg = 'de cette commande !';
       return [
-         'category_name.required' => 'Vous douvez inserer le nom de la caterorie',
-         'category_name.unique' => 'Cette caterorie a deja existe !!'
+         'cmd_number.required' => "Vous devez saisir le numéro {$msg}",
+         'date_cmd.required' => "Vous devez saisir la date {$msg}",
       ];
    }
 }

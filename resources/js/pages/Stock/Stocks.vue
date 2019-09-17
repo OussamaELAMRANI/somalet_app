@@ -1,4 +1,4 @@
-<template lang="pug">
+   <template lang="pug">
    #stock
       bread-crumb
       big-title(title="STOCK", :classes="['text-uppercase','h2']")

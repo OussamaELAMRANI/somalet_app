@@ -1,5 +1,5 @@
 <template>
-   <div id="arrivals_list">
+   <div id="arrivals_list" class="my-5">
       <div class="row">
          <h4 class="text-uppercase m-3"> Liste des arrivages</h4>
          <div class="dropdown-divider"></div>

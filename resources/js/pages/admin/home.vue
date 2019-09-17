@@ -13,33 +13,6 @@
          </div>
       </div>
       <hr>
-      <div class="row justify-content-center">
-
-         <div class="col-3">
-            <Box img="boxes/providers.svg" title="FOURNISSEURS" h="h4"
-                 size="70px" subtitle="Gérer les fournisseurs" link="allProviders" :hasState="{}"/>
-         </div>
-         <div class="col-3">
-            <Box img="boxes/shoes.svg" title="PRODUIT" h="h4"
-                 size="70px" subtitle="Liste des produits" link="listProducts" :hasState="{}"/>
-         </div>
-         <div class="col-3">
-            <Box img="boxes/cutomers.svg" title="CLIENTS" h="h4"
-                 size="70px" subtitle="Nos clients" link="allClients" :hasState="{}"/>
-         </div>
-      </div>
-      <hr>
-      <div class="row  justify-content-center">
-         <div class="col-3">
-            <Box img="boxes/money.svg" title="PAIÉMENT" h="h4"
-                 size="70px" subtitle="Gérer les paiéments des commandes" link="allBillings" :hasState="{}"/>
-         </div>
-         <div class="col-3">
-            <Box img="boxes/profits.svg" title="RÉGLEMENT" h="h4"
-                 size="70px" subtitle="Gérer les Banques/ Caisse ..." link="reglements" :hasState="{}"/>
-         </div>
-      </div>
-      <hr>
       <div class="row">
          <div class="col-3">
             <Box img="boxes/stock.svg" title="STOCK" h="h4"
@@ -54,6 +27,31 @@
             <Box img="boxes/bill.svg" title="COMMANCDE" h="h4"
                  size="70px" subtitle="Liste des commandes" link="allOrders" :hasState="{}"/>
          </div>
+         <div class="col-3">
+            <Box img="boxes/money.svg" title="PAIÉMENT" h="h4"
+                 size="70px" subtitle="Gérer les paiéments des commandes" link="reglements" :hasState="{}"/>
+         </div>
+      </div>
+      <hr>
+      <div class="row justify-content-start">
+
+         <div class="col-3">
+            <Box img="boxes/providers.svg" title="FOURNISSEURS" h="h4"
+                 size="70px" subtitle="Gérer les fournisseurs" link="allProviders" :hasState="{}"/>
+         </div>
+         <div class="col-3">
+            <Box img="boxes/shoes.svg" title="PRODUIT" h="h4"
+                 size="70px" subtitle="Liste des produits" link="listProducts" :hasState="{}"/>
+         </div>
+         <div class="col-3">
+            <Box img="boxes/cutomers.svg" title="CLIENTS" h="h4"
+                 size="70px" subtitle="Nos clients" link="allClients" :hasState="{}"/>
+         </div>
+         <!--         <div class="col-3">-->
+         <!--            <Box img="boxes/money.svg" title="" h="h4"-->
+         <!--                 size="70px" subtitle="Gérer les paiéments des commandes" link="allBillings" :hasState="{}"/>-->
+         <!--         </div>-->
+
       </div>
 
    </div>

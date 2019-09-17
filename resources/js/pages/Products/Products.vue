@@ -1,7 +1,6 @@
 <template lang="pug">
    #Products
       bread-crumb
-      big-title(title="Gestion des Produits" position="text-left")
       router-view(:key="$route.path")
 </template>
 

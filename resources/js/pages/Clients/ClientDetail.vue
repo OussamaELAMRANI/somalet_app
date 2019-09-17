@@ -29,12 +29,17 @@
       .row.justify-content-center.align-items-center
          .col-3
             .form-group
-               label Reference
-               input.form-control(type="text")
+               label Désignation
+               cool-select(:items='products'  name='ref' placeholder="Désignation" v-model='newDiscount.name'
+                  v-validate="'required'")
+                  template(slot='item' slot-scope='{ item:p }')
+                     p {{ p.lastName }}
+                        strong {{ ' '+ p.firstName }}
+               span.help.text-danger(v-show="errors.has('client')") Vous devez selectionner le client
          .col-6
             .form-group
                label Reference
-               input.form-control(type="text")
+               input.form-control(type="text" placeholder="Montant en DH ..." v-model="newDiscount.discount")
          .col-3
             button.btn-success.btn
                i.fa.fa-plus
@@ -64,16 +69,22 @@
 <script>
    import TableLayout from "@/components/layouts/TableLayout";
    import SelfBuildingSquareSpinner from "epic-spinners/src/components/lib/SelfBuildingSquareSpinner";
+   import {CoolSelect} from 'vue-cool-select'
 
    export default {
       name: "ClientDetail",
-      components: {SelfBuildingSquareSpinner, TableLayout},
+      components: {SelfBuildingSquareSpinner, TableLayout, CoolSelect},
       data() {
          return {
             client: null,
             hItems: ['Nom Prénom', 'TVA', 'SIRET', 'Adresse'],
             hRemise: ['Produit', 'Remise en (DH) ', 'Actions'],
             discount: [],
+            products: [],
+            newDiscount: {
+               discount: null,
+               name: null,
+            }
          }
       },
       created() {
@@ -87,6 +98,7 @@
             .catch(({response}) => {
                console.log(response)
             })
+         this.getDiscounting()
       },
       methods: {
          modifyDiscount(reference) {
@@ -95,6 +107,15 @@
          deleteDiscount(reference) {
             this.discount = _.filter(this.discount, d => d['reference'] !== reference)
          },
+         getDiscounting(){
+            axios.get(`/api/products/distinct`)
+               .then(({data}) => {
+                  this.products = data
+               })
+               .catch(({response}) => {
+                  console.log(response)
+               })
+         }
       },
       computed: {}
    }
