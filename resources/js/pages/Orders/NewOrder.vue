@@ -25,34 +25,52 @@
                         datepicker.form-control(:format='customFormatter' :language='fr' :monday-first='true'
                            calendar-button-icon='fa fa-user' name='date_picker' v-model='dateCmd')
          .dropdown-divider.mb-5
-         form.row(@submit.prevent="" v-if="header_order.client_id != null").justify-content-start.align-items-center
-            .col-2
-               cool-select(:items='prods' @search='onSearch' :loading='loading'
-                  item-text='name' name='produit' v-model='selected_order' v-validate="'required'" )
-                  //item-value='id'
-                  template(slot='item' slot-scope='{ item:p }')
-                     .d-flex
-                        div
-                           p {{ p.name }} - {{ p.reference }}
-                  template(slot='no-data') {{ noData ? "Aucun produit trouvée" :"Chercher par nom de produit" }}
-            .col-2
-               label Qte de Stock
-               p.text-dark.font-weight-bolder.text-success
-               | {{selected_order == null  ? 0 :  selected_order.QTE +' x '+ selected_order.qte_rapport +' = '+ selected_order.qte_total }}
-            .col-2
-               .form-group
-                  label Qte commande
-                  input(class='form-control'  type='number' v-model='order.qte')
-            .col-2
-               label Prix de Vente
-               p.text-dark.font-weight-bolder.text-success {{selected_order == null  ? 0 : selected_order.prix}}
-            .col-2
-               label Remise
-               p.text-dark.font-weight-bolder.text-success {{selected_order == null  ? 0 : selected_order.discount}}
-            .col-2
-               label
-               button.btn.btn-outline-primary(@click="getOrders") Ajouter
-         .dropdown-divider.mb-5
+         form(@submit.prevent="" v-if="header_order.client_id != null")
+            .row.justify-content-center.my-4
+               .col-8
+                  label Rechercher par désignation de produit
+                  cool-select(:items='prods' @search='onSearch' :loading='loading'
+                     item-text='name' name='produit' v-model='putOrder' v-validate="'required'" )
+                     //item-value='id'
+                     template(slot='item' slot-scope='{ item:p }')
+                        .d-flex
+                           div
+                              p {{ p.name }} - {{ p.reference }}
+                     template(slot='no-data') {{ noData ? "Aucun produit trouvée" :"Chercher par nom de produit" }}
+            .row.justify-content-center.my-4
+               .col-12
+                  table-layout(:head-table="['Reference','Designation','Prix','Remise']", theme="text-white bg-success", data="selected_order")
+                     tr
+                        td {{(selected_order) == null ? null : selected_order.reference}}
+                        td {{(selected_order) == null ? null : selected_order.name}}
+                        td {{(selected_order) == null ? null : selected_order.price | fixed_two}}
+                        //td {{(selected_order) == null ? null : selected_order.ht | fixed_two}}
+                        td {{(selected_order) == null ? null : selected_order.discount}}
+
+                  .row.justify-content-center
+                     .col-8
+                        p.lead Quantité en détail
+                        table.table.table-hover.table-striped.text-center()
+                           thead.bg-success.text-white
+                              tr
+                                 th Qunatité
+                                 th Rapport
+                                 th
+                                 th Ajouter
+                           tbody.segment(v-if="selected_order.QTE_TOTAL !== null")
+                              tr(v-for="(v,k) in selected_order.QTE_TOTAL" )
+                                 td {{v}}
+                                 td {{k}}
+                                 td
+                                 td
+                                    input.form-control(type='number' placeholder='Quantite ...' aria-label='' v-model='qte[k]')
+                           tfoot.segment
+                              tr.text-right
+                                 td(colspan="4")
+                                    button.btn.btn-sm.btn-outline-primary(@click="getOrders" v-if="qte.length > 0") {{'Inserer '}}
+                                       i.fa.fa-chevron-down
+
+         hr
          order-table(:orders="commands")
          button(@click="addOrder" class='btn btn-success float-right') Ajouter la commande
 </template>
@@ -64,10 +82,11 @@
    import moment from 'moment'
    import Datepicker from 'vuejs-datepicker';
    import {fr} from 'vuejs-datepicker/dist/locale'
+   import TableLayout from "@/components/layouts/TableLayout";
 
    export default {
       name: "NewOrder",
-      components: {OrderTable, BigTitle, CoolSelect, Datepicker},
+      components: {TableLayout, OrderTable, BigTitle, CoolSelect, Datepicker},
       mounted() {
          axios.get('/api/clients')
             .then(({data}) => {
@@ -90,23 +109,34 @@
                // produit: '',
                qte: null,
             },
+            qte: [],
             commands: [],
             clients: [],
             loading: false,
             noData: false,
             prods: Array(),
-            selected_order: null
+            selected_order: {
+               reference: "",
+               name: "",
+               price: "",
+               discount: "",
+               QTE: {},
+               QTE_TOTAL: {}
+            },
+            putOrder: {}
          }
       },
       methods: {
          getOrders() {
-            const orders = _.cloneDeep(this.order)
-            const products = _.cloneDeep(this.selected_order)
-            const command = {...products, ...orders}
+            // const orders = _.cloneDeep(this.order)
+            const qte = {'qte_cmd': {...this.qte}}
+            const products = this.putOrder
+            const command = {...products, ...qte}
             console.log(command)
-            if (orders.product !== '' && orders.qte !== '')
-               this.commands.unshift(command)
-            this.order = {produit: '', qte: ''}
+            // if (orders.product !== '' && orders.qte !== '')
+            this.commands.unshift(command)
+            this.qte = []
+            this.prods = []
 
          },
          customFormatter(date) {
@@ -166,6 +196,9 @@
          dateCmd: function (d) {
             this.header_order.date_cmd = moment(d).format('DD/MM/YYYY');
          },
+         putOrder: function (o) {
+            this.selected_order = {...o}
+         }
       },
 
    }

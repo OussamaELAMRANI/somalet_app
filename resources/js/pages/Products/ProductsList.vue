@@ -5,9 +5,6 @@
          Ajouter nouveau produit
       </router-link>
 
-      <combo-box key="i"/>
-
-
       <alert-modal title="Supperession d'un Produit" id="bitch">
          <template slot="content">
             <h5 class="text-uppercase text-danger text-center">
@@ -44,25 +41,24 @@
       <h3 class="text-lg-center text-secondary m-4">Liste des Produits</h3>
       <div class="dropdown-divider"></div>
 
-      <div class="row justify-content-around ">
-         <h5 class="text-uppercase text-secondary m-3"> Parametre de rechercher </h5>
-         <div class="col-8">
+      <div class="row justify-content-end">
+         <div class="col-12">
+            <h5 class="text-uppercase text-secondary m-3"> Parametre de rechercher </h5>
+         </div>
+         <div class="col-10">
             <form @submit.prevent="">
-               <div class="input-group m-3">
+               <div class="input-group my-3">
                   <div class="input-group-prepend">
                      <span class="input-group-text text-primary" id="inputGroup-sizing-sm">Filter Par :</span>
-                     <div class="input-group-text bg-warning">
-                        <input type="radio" name="opt-filter" value="reference" v-model="opt"
-                               v-on:change="EmptyText">
-                        <span class="ml-1">Reference</span>
-                     </div>
-                     <div class="input-group-text bg-success text-white">
-                        <input type="radio" name="opt-filter" value="name" v-model="opt"
-                               v-on:change="EmptyText">
-                        <span class="ml-1">Nom produit</span>
-                     </div>
                   </div>
-
+                  <select class="custom-select " id="inputGroupSelect01" v-model="filterBy">
+                     <option selected disabled>Filter Par ...</option>
+                     <option value="reference">Réference</option>
+                     <option value="name">Désignation</option>
+                     <option value="provider">Fournisseur</option>
+                     <option value="color">Couleur</option>
+                     <option value="unit">Unité</option>
+                  </select>
                   <input type="text" class="form-control" v-model="searchTxt" @input="filter"
                          placeholder="Recherche ..." autofocus>
                   <div class="input-group-append">
@@ -72,10 +68,9 @@
                   </div>
                </div>
             </form>
-
          </div>
       </div>
-
+      <hr>
       <table-layout
          :head-table="['#','image','Reference',	'Nom de Produit','Couleur',	'Unite','Fournisseur','Actions']"
          empty-text="Pas de Produit dans ce cas (Vide...)"
@@ -135,6 +130,7 @@
       data() {
          return {
             // host: `${process.env.MIX_APP_URL}/storage/`,
+            filterBy: 'reference',
             ElementIdToDelete: null,
             products: {},
             searchProduct: null,
@@ -197,7 +193,9 @@
             this.$router.push({name: 'detailProduct', params: {id}});
          },
          filter(page = 1) {
-            axios.get(`/api/products?page=${page}`)
+            const by = this.filterBy
+            const search = this.searchTxt
+            axios.get(`/api/products/search/${search}?by=${by}&with=unit,color,provider&page=${page}`)
                .then(res => {
                   const data = res.data
                   this.products = data

@@ -19,13 +19,15 @@ class InventoryService
 
    public function getDetailStock()
    {
-      $allProducts = Product::with('color', 'arrivals')
+      $allProducts = Product::with('color', 'arrivals', 'clients')
          ->get()->groupBy('reference');
-      $getQte = $this->getFilterQte($allProducts->toArray());
-      return response()->json($getQte, Response::HTTP_OK);
+      $client_id = $this->req->get('client_id');
+      $getQte = $this->getFilterQte($allProducts->toArray(), $client_id);
+//      return response()->json($allProducts, Response::HTTP_OK);
+      return $getQte;
    }
 
-   private function getFilterQte($products_group)
+   private function getFilterQte($products_group, $client_id = null)
    {
       $qte = [];
       $result = [];
@@ -42,7 +44,9 @@ class InventoryService
                'price' => [],
                'ht' => [],
                'QTE' => [],
+               'discount' => 0,
             ];
+
             foreach ($p['arrivals'] as $arr) {
                if ($arr['state'] == 'VALID') {
                   $sell[] = ($arr['pivot']['sell_price']) ?? 0;
@@ -64,6 +68,13 @@ class InventoryService
 
             $result[$p['name']]['QTE_TOTAL'] = $aa;
 
+
+            if (!is_null($client_id)) {
+               foreach ($p['clients'] as $client) {
+                  if ($client_id == $client['id'])
+                     $result[$p['name']]['discount'] = $client['pivot']['discount'];
+               }
+            }
          }
       }
       return $result;

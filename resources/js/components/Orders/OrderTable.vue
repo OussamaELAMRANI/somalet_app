@@ -9,35 +9,47 @@
             <th>Remise</th>
             <th>Prix</th>
             <th>Prix de vente</th>
-            <th>Montant</th>
+<!--            <th>Montant</th>-->
             <th>Action</th>
          </tr>
          </thead>
          <tbody>
-         <tr v-for="(order, i) in orders">
-            <td>{{order.reference}}</td>
-            <td>{{order.name}}</td>
-            <td>{{order.qte}}</td>
-            <td>{{order.discount}}</td>
-            <td>{{order.prix}}</td>
-            <td>{{order.prix - order.discount | twoFixed}}</td>
-            <td>{{(order.prix - order.discount)*order.qte*order.qte_rapport | twoFixed}}</td>
-            <td>
-               <button class="btn btn-danger btn-sm rounded-circle">
-                  <i class="fa fa-minus"></i>
-               </button>
+         <tr v-if="orders.length === 0" class="segment">
+            <td colspan="7">
+               <h4 class="text-center text-uppercase font-italic"> Pas de produit !</h4>
             </td>
          </tr>
+         <template v-for="(order, i) in orders" v-else>
+            <tr v-for="(v,k) in order.qte_cmd ">
+               <td>{{order.reference}}</td>
+               <td>{{order.name}}</td>
+               <td>{{v * k}}</td>
+               <td>{{order.discount}}</td>
+               <td>{{order.price}}</td>
+               <td>{{(order.price - order.discount) * (v * k) | fixed_two}}</td>
+<!--               <td>-->
+<!--                  <code>-->
+<!--                     {{order.qte_cmd}}-->
+<!--                  </code>-->
+<!--               </td>-->
+               <td>
+                  <button class="btn btn-danger btn-sm rounded-circle">
+                     <i class="fa fa-minus"></i>
+                  </button>
+               </td>
+            </tr>
+         </template>
+
          </tbody>
-         <tfoot class="segment">
-         <tr>
-            <td colspan="6" class="">
-               <span class="badge font-weight-bolder badge-success badge-pill">{{orders.length}} Produit (s)</span>
-            </td>
-            <td class="text-primary font-weight-bolder">{{total | twoFixed}} DH</td>
-            <td colspan="5" class="text-primary font-weight-bolder"> TOTAL</td>
-         </tr>
-         </tfoot>
+         <!--         <tfoot class="segment">-->
+         <!--         <tr>-->
+         <!--            <td colspan="6" class="">-->
+         <!--               <span class="badge font-weight-bolder badge-success badge-pill">{{orders.length}} Produit (s)</span>-->
+         <!--            </td>-->
+         <!--            <td class="text-primary font-weight-bolder">{{total | twoFixed}} DH</td>-->
+         <!--            <td colspan="5" class="text-primary font-weight-bolder"> TOTAL</td>-->
+         <!--         </tr>-->
+         <!--         </tfoot>-->
       </table>
    </div>
 </template>
@@ -46,7 +58,9 @@
    export default {
       name: "OrderTable",
       props: {
-         orders: {}
+         orders: {
+            default:{}
+         }
       },
       data() {
          return {

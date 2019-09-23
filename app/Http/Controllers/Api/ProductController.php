@@ -103,7 +103,6 @@ class ProductController extends Controller
    public function show($id)
    {
       return $this->service->getProduct($id);
-//        return response()->json(Product::findOrFail($id)->load('provider', 'unit', 'color', 'subcategory'));
    }
 
 
@@ -122,10 +121,11 @@ class ProductController extends Controller
    /**
     * @param Request $req
     * @param string $searchValue
+    * @return Response
     */
    public function search(Request $req)
    {
-      return response()->json(Product::filter($req)->paginate(20), 200);
+      return response()->json(Product::filter($req)->paginate(100), Response::HTTP_OK);
 
    }
 

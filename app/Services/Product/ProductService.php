@@ -55,11 +55,10 @@ class ProductService
    }
 
 
-   public function getProduct($id)
+   public function getProduct($ref)
    {
-//        return response()->json(Product::->paginate(20), 200);
 
-      return response()->json(Product::filter($this->req)->findOrFail($id), 200);
+      return response()->json(Product::where('reference', $ref)->filter($this->req)->get(), 200);
 //            >load('provider', 'unit', 'color', 'subcategory'));
    }
 

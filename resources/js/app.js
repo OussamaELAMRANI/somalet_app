@@ -74,6 +74,11 @@ Vue.filter('humane_date', function (date) {
       return moment(date).format('DD-MM-YYYY');
    return null
 })
+Vue.filter('fixed_two', function (n) {
+   if (n !== null)
+      return Number(n).toFixed(2);
+   return null
+})
 
 
 new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

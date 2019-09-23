@@ -25,12 +25,11 @@
             // this.loadIt();
             // this.userInfos();
         }
-
     }
 </script>
 
 <style>
     .main{
-        margin-left: 50px;
+        margin-left: 220px;
     }
 </style>

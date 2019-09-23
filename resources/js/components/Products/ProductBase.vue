@@ -30,7 +30,7 @@
                         small.text-danger(v-show="errors.has('reference')") Vous devez saisir la réference !
                      .col-4
                         label(for='name') Nom du Produit
-                        input#name.form-control(type='text' placeholder='SIRET ...' v-model='product.name')
+                        input#name.form-control(type='text' placeholder='SIRET ...' v-model='product.name' )
                   .dropdown-divider
                   select-unity(@sendUnity="getUnity")
                   .dropdown-divider
@@ -112,7 +112,7 @@
    import ProductType from "@/components/Products/ProductType";
 
    export default {
-         name: "ProductBase",
+      name: "ProductBase",
       data() {
          return {
             provider: null,
@@ -282,5 +282,11 @@
 
    canvas.picture-preview {
       z-index: 2 !important;
+   }
+
+   .color_circle {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
    }
 </style>

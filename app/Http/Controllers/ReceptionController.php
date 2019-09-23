@@ -92,6 +92,7 @@ class ReceptionController extends Controller
                   'unity' => $p['unit']['name']];
             }
          }
+
          $a[$p['name']]['prix'] = ($n != 0) ? ($vente / $n) : 0;
          $a[$p['name']]['ht'] = ($n != 0) ? ($crHT / $n) : 0;
 
@@ -136,5 +137,24 @@ class ReceptionController extends Controller
    public function getDetailStock()
    {
       return $this->inventory->getDetailStock();
+   }
+
+   public function searchProductToOrder($product = '')
+   {
+      $validProducts = [];
+      $pattern = "/{$product}/i";
+      $products = $this->getDetailStock();
+
+      $keys = array_keys($products);
+      $result = preg_grep($pattern, $keys);
+
+      if (is_null($result)) {
+         return response()->json([], 200);
+      } else {
+         foreach ($result as $name) {
+            $validProducts[] = $products[$name];
+         }
+      }
+      return response()->json($validProducts, 200);
    }
 }
