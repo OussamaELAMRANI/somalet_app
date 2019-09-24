@@ -102,7 +102,8 @@ class ProductController extends Controller
     */
    public function show($id)
    {
-      return $this->service->getProduct($id);
+//      return $this->service->getProduct($id);
+      return $this->service->getProductById($id);
    }
 
 

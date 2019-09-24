@@ -30,6 +30,11 @@ class ArrivalController extends Controller
       return $this->service->addArrival();
    }
 
+   public function newContainer()
+   {
+      return $this->service->addContainer();
+   }
+
 
    public function show(Request $request, $arrivalId)
    {

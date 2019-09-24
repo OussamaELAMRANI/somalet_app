@@ -74,4 +74,9 @@ class ProductService
 
       return $dist;
    }
+
+   public function getProductById($id)
+   {
+      return response()->json(Product::filter($this->req)->findOrFail($id), 200);
+   }
 }

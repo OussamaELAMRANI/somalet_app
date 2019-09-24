@@ -95,7 +95,9 @@ Route::prefix('products')->group(function () {
    Route::post('new', 'Api\ProductController@newProducts');
 
    Route::get('', 'Api\ProductController@index');
+
    Route::get('{id}', 'Api\ProductController@show');
+
    Route::delete('{id}/delete', 'Api\ProductController@destroy');
 
 
@@ -107,6 +109,7 @@ Route::prefix('arrivals')->group(function () {
    Route::get('facture', 'Api\ArrivalController@getArrivalByFactureNumber');
 
    Route::get('{id}', 'Api\ArrivalController@show');
+
    Route::group(['middleware' => 'auth:api'], function () {
       Route::post('', 'Api\ArrivalController@store');
       Route::put('', 'Api\ArrivalController@update');
@@ -118,6 +121,15 @@ Route::prefix('arrivals')->group(function () {
 //        Route::post('', 'Api\ArrivalController@user');
 //    });
    Route::get('users', 'Api\AuthController@allUsers');
+});
+
+Route::prefix('containers')->group(function () {
+
+   Route::group(['middleware' => 'auth:api'], function () {
+
+      Route::post('', 'Api\ArrivalController@newContainer');
+   });
+
 });
 
 Route::prefix('receptions')->group(function () {

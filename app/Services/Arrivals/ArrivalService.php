@@ -7,7 +7,6 @@ namespace App\Services\Arrivals;
 use App\Arrival;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ArrivalService
 {
@@ -54,6 +53,31 @@ class ArrivalService
       if (!$exist) {
          $res = Arrival::create($filterRequest);
          $res->saveItems($prods);
+         return response()->json(['data' => $res, 'message' => "Added success"], 201);
+      }
+
+      return response()->json("Already Exist (Change the arrivals NFacture )", 406); // Not Acceptable [STATUE]
+   }
+
+   public function addContainer()
+   {
+      $container = $this->req->input('container');
+      $products = $this->req->input('products');
+
+
+      // N_facture is Unique
+      $container['date_facture'] = Carbon::parse($container['date_facture'])->toDateString();
+      $shiffle = str_shuffle("i want to show that which slots are available and which is not available");
+      $slot = substr($shiffle, 0, 6);
+      $slot = str_replace(" ", '.', $slot);
+      $container['n_facture'] = $container['n_dossier'] . "_{$slot}_" . Carbon::parse($container['date_facture'])->toDateString();
+      $container['user_id'] = $this->req->user()->id;
+
+      $exist = Arrival::where('n_facture', $container['n_facture'])->first();
+
+      if (!$exist) {
+         $res = Arrival::create($container);
+         $res->saveItems($products);
          return response()->json(['data' => $res, 'message' => "Added success"], 201);
       }
 

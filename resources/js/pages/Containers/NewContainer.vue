@@ -1,0 +1,195 @@
+<template>
+   <div id="new-container">
+      <big-title title="Ajouter un nouveau contenaire" position="text-left" classes="text-secondary my-4"/>
+      <div class="row justify-content-center segment text-center">
+         <div class="col-3">
+            <label>Fournisseur : </label>
+            <cool-select :items="providers" item-text="steName" item-value="id" name="provider"
+                         v-model="container.provider_id" v-validate="'required'"/>
+            <!--            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('provider')"></i>-->
+            <!--            <span class="help text-danger" v-show="errors.has('provider')">{{ messageErr }}</span>-->
+         </div>
+         <div class="col-3">
+            <div class="form-group">
+               <label for="">Numéro de Contenaire</label>
+               <input type="text" class="form-control" v-model="container.n_dossier">
+            </div>
+         </div>
+         <div class="col-3">
+            <div class="form-group">
+               <label>Date de la Facture :</label>
+               <datepicker :language="fr" :monday-first="true"
+                           class="form-control" name="date_picker" v-model="container.date_facture"/>
+            </div>
+         </div>
+      </div>
+
+      <div class="form-inline mb-5 row justify-content-center segment">
+         <div class="form-group mx-3">
+            <label>Produit :</label>
+            <cool-select :items="products" @search="onSearch" :loading="loading" ref="cool"
+                         item-text="name" item-value="id" :name="'produit'"
+                         v-model="products_items.product_id" v-validate="'required'">
+               <template slot="item" slot-scope="{ item:p }">
+                  <div class="d-flex">
+                     <div>
+                        <p>{{ p.name }} - {{ p.reference }}</p>
+                     </div>
+                  </div>
+               </template>
+               <template slot="no-data">
+                  {{ noData ? "Aucun produit trouvée" :
+                  "Chercher par nom de produit" }}
+               </template>
+            </cool-select>
+         </div>
+         <div class="form-group mx-3">
+            <label>Quantité :</label>
+            <input type="number" class="form-control" v-model="products_items.qte_facture">
+         </div>
+         <div class="form-group mx-3">
+            <label>Rouleaux (Rapport) :</label>
+            <input type="number" class="form-control" v-model="products_items.rapport_qte">
+         </div>
+         <button class="btn btn-outline-primary" @click="push_item">
+            <i class="fa fa-plus"></i> Ajouter
+         </button>
+      </div>
+      <hr>
+      <div class="row justify-content-center">
+         <div class="col-8">
+            <table class="table text-center table-hover table-striped">
+               <thead class="bg-primary text-white">
+               <tr>
+                  <th>#</th>
+                  <th>Produit</th>
+                  <th>Quantité</th>
+                  <th>Rapport de quantité</th>
+                  <th>Supprimer</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr v-for="(p, i) in selected_items">
+                  <td>{{i+1}}</td>
+                  <td>{{p.product_id}}</td>
+                  <td>{{p.qte_facture}}</td>
+                  <td>{{p.rapport_qte}}</td>
+                  <td>
+                     <button class="btn btn-outline-danger btn-sm" @click="deleteItem(p.product_id,p.rapport_qte)"><i
+                        class="fa fa-trash"></i></button>
+                  </td>
+               </tr>
+               </tbody>
+            </table>
+         </div>
+         <button class="btn btn-success" @click="addContainer">Ajouter Arrivage</button>
+      </div>
+   </div>
+</template>
+
+<script>
+    import BigTitle from "@/components/layouts/BigTitle";
+    import {CoolSelect} from 'vue-cool-select'
+    import Datepicker from 'vuejs-datepicker';
+    import {fr} from 'vuejs-datepicker/dist/locale'
+    import moment from 'moment'
+
+    export default {
+        name: "NewContainer",
+        data() {
+            return {
+                fr,
+                container: {
+                    provider_id: '',
+                    n_dossier: '',
+                    n_facture: '',
+                    date_facture: ''
+                },
+                products_items: {product_id: 0, qte_facture: 0, rapport_qte: 0, price_unit_ht: 0, price_unit_ttc: 0},
+                products: [],
+                providers: [],
+                loading: false,
+                noData: false,
+                selected_items: []
+            }
+        },
+        mounted() {
+            axios.get('/api/providers')
+                .then(({data}) => {
+                    // console.log(data)
+                    this.providers = data
+                })
+                .catch(error => console.log(error.response))
+        },
+        methods: {
+            onSearch(search) {
+                const lettersLimit = 2;
+                this.noData = false;
+
+                if (search.length < lettersLimit) {
+                    this.products = [];
+                    this.loading = false;
+                    return;
+                }
+                this.loading = true;
+
+                axios.get(`/api/products/search/${search}`, {params: {by: 'name'}})
+                    .then(({data}) => {
+                        console.log(data.data)
+                        this.products = data.data;
+                        if (data.length === 0)
+                            this.noData = true
+
+                        this.loading = false;
+                    })
+            },
+            push_item() {
+                const product = _.cloneDeep(this.products_items)
+                if (product.product_id !== 0 || product.qte_facture !== 0 && product.rapport_qte !== 0) {
+                    this.selected_items.unshift(product)
+                    this.products_items = {
+                        ...{
+                            product_id: 0,
+                            qte_facture: 0,
+                            rapport_qte: 0,
+                            price_unit_ht: 0,
+                            price_unit_ttc: 0
+                        }
+                    }
+                }
+            },
+            deleteItem(id, rapport) {
+                this.selected_items = this.selected_items.filter(i => {
+                    return (id != i.product_id || rapport != i.rapport_qte)
+                })
+            },
+            addContainer() {
+                const container = this.container
+                const products = this.selected_items
+                container.date_facture = moment(container.date_facture).toDate();
+                axios.post('/api/containers', {container, products})
+                    .then(({data}) => {
+                        console.log(data)
+                        this.$router.push({name:'list_container'})
+                    })
+                    .catch(error => console.log(error.response))
+            }
+        },
+        watch: {
+            'products_items.qte_facture': function (q) {
+                this.products_items.qte_facture = Number(q)
+            },
+            'products_items.rapport_qte': function (q) {
+                this.products_items.rapport_qte = Number(q)
+            },
+            // 'container.date_facture': function (d) {
+            //     this.container.date_facture = moment(d).toDate();
+            // }
+        },
+        components: {BigTitle, CoolSelect, Datepicker}
+    }
+</script>
+
+<style scoped>
+
+</style>

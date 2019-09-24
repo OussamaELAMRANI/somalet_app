@@ -16,6 +16,7 @@ import order from './orders'
 import billings from './billings'
 import reglements from './reglements'
 import settings from './settings'
+import containers from './containers'
 
 // import NotFound from './../pages/NotFound'
 
@@ -37,6 +38,9 @@ export const constantRoutes = [
       path: '/404',
       hidden: true,
       name: 'notFound',
+      meta: {
+         title: 'Erreur | Cette page n\'éxiste pas !'
+      },
       component: () => import('@/pages/NotFound'),
    },
 ];
@@ -65,7 +69,8 @@ export const asyncRoutes = [
          ...Providers,
          ...client,
          ...Products,
-         ...arrivals,
+         // ...arrivals,
+         ...containers,
          ...Receptions,
          ...Stock,
          ...order,

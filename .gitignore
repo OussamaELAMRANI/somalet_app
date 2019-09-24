@@ -13,3 +13,6 @@ yarn-error.log
 .idea/*
 
 .idea/
+resources/js/images/
+*~
+.DS_Store

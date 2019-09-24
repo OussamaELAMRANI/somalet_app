@@ -1,4 +1,4 @@
-<template>
+   <template>
     <div id="arrival_core">
         <template v-if="isLoading">
             <loading-page/>
