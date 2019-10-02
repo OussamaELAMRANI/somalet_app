@@ -20,17 +20,18 @@ class CreateLArrivalsTable extends Migration
             $table->double('qte_facture');
             // qte rapport pour les produit [rouleau/ piece/ box]...
             $table->double('rapport_qte')->nullable();
-            $table->float('fret_douane')->nullable();
+//            $table->float('fret_douane')->nullable();
             $table->float('price_unit_ht');
-            $table->float('price_unit_ttc');
+//            $table->float('price_unit_ttc');
 
             $table->double('sell_price')->nullable();
 
-            $table->float('price_devise')->nullable();
+//            $table->float('price_devise')->nullable();
             $table->string('remark')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->date('date_reception')->nullable();
             $table->integer('qte_reception')->nullable();
+            $table->integer('qte_rapport_reception')->nullable();
             $table->string('remark_reception')->nullable();
 
             $table->foreign('product_id')

@@ -1,73 +1,47 @@
 <template>
-   <div class="container">
+   <div class="">
       <big-title title="Liste Contenaires"/>
-      <div class="row">
-
-      </div>
-      <div class="row justify-content-center" >
-         <div class="col-10 my-2">
-            <template v-for=" (c,j) in containers">
-               <div class="tbl-header ">
-                  <table class="table">
-                     <thead class="bg-dark text-white text-center">
-                     <tr>
-                        <th>#</th>
-                        <th>Numero de contenaire</th>
-                        <th>Date De contenaire</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                     </tr>
-                     </thead>
-                     <tbody class=" text-center">
-                     <tr class="">
-                        <td>1</td>
-                        <td>{{c.n_dossier}}</td>
-                        <td>{{c.date_facture | humane_date}}</td>
-                        <td class="text-info">{{c.state}}</td>
-                        <td class="text-info">
-                           <button class="btn btn-danger btn-sm rounded-circle"><i class="fa fa-trash"></i></button>
-                           <button class="btn btn-info btn-sm rounded-circle"><i class="fa fa-pen"></i></button>
-                        </td>
-                     </tr>
-                     <tr class="segment">
-                        <th>Numéro</th>
-                        <th>Produit</th>
-                        <th>Quantite de rapport</th>
-                        <th>Quantite</th>
-                        <th>
-                           <button class="btn rounded-circle btn-sm btn-dark" data-toggle="collapse"
-                                   :data-target="'#collapse_'+c.id" aria-expanded="false"
-                                   :aria-controls="'collapse_'+c.id">
-                              <i class="fa fa-chevron-down"></i>
-                           </button>
-                        </th>
-                     </tr>
-                     </tbody>
-                  </table>
-               </div>
-               <div class="tbl-content collapse" :id="'collapse_'+c.id">
-                  <table class="table text-center table-hover table-striped segment">
-                     <tbody class="">
-                     <tr v-for="(p,i) in c.product">
-                        <td><span class="font-weight-bolder">{{i+1}}</span></td>
-                        <td>{{p.name}}</td>
-                        <td>{{p.pivot.qte_facture}}</td>
-                        <td>{{p.pivot.rapport_qte}}</td>
-                        <td>
-                           <!--                        <button class="btn btn-link" @click="getDetail(p.id,j)">Détail</button>-->
-                        </td>
-                     </tr>
-                     </tbody>
-                  </table>
-               </div>
-            </template>
+      <div class="row justify-content-center">
+         <div class="col-9 my-2">
+            <table class="table table-striped table-hover">
+               <thead class="bg-primary small text-white text-center">
+               <tr>
+                  <th>#</th>
+                  <th>Numero de contenaire</th>
+                  <th>Date De contenaire</th>
+                  <th>Status</th>
+                  <th>Action</th>
+               </tr>
+               </thead>
+               <tbody class="text-center">
+               <tr class="" v-for=" (c,j) in containers">
+                  <td>{{j+1}}</td>
+                  <td>{{c.n_dossier}}</td>
+                  <td>{{c.date_facture | humane_date}}</td>
+                  <td :class="(c.state != 'ATTENTE')? 'text-success font-weight-bolder':'text-primary'">{{c.state}}</td>
+                  <td class="text-info">
+                     <button class="btn btn-outline-danger btn-sm rounded-circle shadow"><i class="fa fa-trash my-1"></i></button>
+                     <button class="btn btn-outline-secondary btn-sm rounded-circle shadow"><i class="fa fa-pen my-1"></i></button>
+                     <button class="btn btn-primary btn-sm rounded-circle text-white shadow"><i class="fa fa-list my-1"></i></button>
+                  </td>
+               </tr>
+               </tbody>
+            </table>
          </div>
-         <div class="col segment filter">
-            <big-title title="FILTER"/>
-            <p>Add filter here !</p>
+         <div class="col mx-2 segment filter shadow">
+            <h5 class="text-primary">Filter par:</h5>
+            <hr>
+            <div class="form-group">
+               <label for="">Contenaire</label>
+               <input type="text" class="form-control rounded-pill" placeholder="Numéro du contenaire ...">
+            </div>
+            <div class="form-group">
+               <label for="">Date d'enter</label>
+               <input type="text" class="form-control rounded-pill" placeholder="Par Date ...">
+            </div>
+            <hr>
+            <button class="btn btn-outline-primary btn-block rounded-pill">Filter</button>
          </div>
-
-
       </div>
    </div>
 </template>
@@ -108,7 +82,9 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+   $purple: #9561e2;
+
    table {
       width: 100%;
       table-layout: fixed;
@@ -123,9 +99,11 @@
 
    .segment {
       margin: 0;
-      border-bottom: 2px solid black;
+      border-bottom: 2px solid $purple;
    }
-   .filter{
-      max-height: 400px;
+
+   .filter {
+      max-height: 700px;
+      overflow: auto;
    }
 </style>

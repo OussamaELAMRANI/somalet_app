@@ -23,6 +23,7 @@ class RelationsFilter implements IFilter
             'provider' => 'provider',
             'user' => 'user',
             'product' => 'product',
+            'unit' => 'product.unit',
         ];
     }
     public function ResolveFilterValue($keys)

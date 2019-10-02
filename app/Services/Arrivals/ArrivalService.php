@@ -7,8 +7,9 @@ namespace App\Services\Arrivals;
 use App\Arrival;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class ArrivalService
+class    ArrivalService
 {
    private $req;
 
@@ -32,10 +33,25 @@ class ArrivalService
          $arr->product()->updateExistingPivot($p['id'],
             [
                'qte_reception' => $p['pivot']['qte_reception'],
-               'remark_reception' => $p['pivot']['remark_reception'],
+               'qte_rapport_reception' => $p['pivot']['qte_rapport_reception'],
+               'date_reception' => Carbon::today()->toDateString(),
             ]);
       $arr->update(['state' => 'RECEPTION']);
       return response()->json($arr->product()->get());
+   }
+
+   public function validateReception($arrival_id)
+   {
+      $arr = Arrival::with('product')->findOrFail($arrival_id);
+      foreach ($arr['product'] as $p)
+         $arr->product()->updateExistingPivot($p['id'],
+            [
+               'qte_reception' => $p['pivot']['qte_facture'],
+               'qte_rapport_reception' => $p['pivot']['rapport_qte'],
+               'date_reception' => Carbon::today()->toDateString(),
+            ]);
+      $arr->update(['state' => 'RECEPTION']);
+      return response()->json(['message' => 'Reception Done !'], Response::HTTP_OK);
    }
 
    public function addArrival()
@@ -48,15 +64,15 @@ class ArrivalService
       $filterRequest['date_facture'] = Carbon::parse($filterRequest['date_facture'])->toDate();
       $filterRequest['user_id'] = $this->req->user()->id;
 
-      $exist = Arrival::where('n_facture', $filterRequest['n_facture'])->first();
+      $exist = Arrival::where('n_dossier', $filterRequest['n_dossier'])->first();
 
       if (!$exist) {
          $res = Arrival::create($filterRequest);
          $res->saveItems($prods);
-         return response()->json(['data' => $res, 'message' => "Added success"], 201);
+         return response()->json(['data' => $res, 'message' => "Added success"], Response::HTTP_CREATED);
       }
 
-      return response()->json("Already Exist (Change the arrivals NFacture )", 406); // Not Acceptable [STATUE]
+      return response()->json("Already Exist (Change the arrivals Container Number) !", Response::HTTP_NOT_ACCEPTABLE); //  [406]
    }
 
    public function addContainer()
@@ -67,20 +83,21 @@ class ArrivalService
 
       // N_facture is Unique
       $container['date_facture'] = Carbon::parse($container['date_facture'])->toDateString();
-      $shiffle = str_shuffle("i want to show that which slots are available and which is not available");
-      $slot = substr($shiffle, 0, 6);
-      $slot = str_replace(" ", '.', $slot);
-      $container['n_facture'] = $container['n_dossier'] . "_{$slot}_" . Carbon::parse($container['date_facture'])->toDateString();
+//      $shiffle = str_shuffle("i want to show that which slots are available and which is not available");
+//      $slot = substr($shiffle, 0, 6);
+//      $slot = str_replace(" ", '.', $slot);
+//      $container['n_facture'] = $container['n_dossier'] . "_{$slot}_" . Carbon::parse($container['date_facture'])->toDateString();
       $container['user_id'] = $this->req->user()->id;
 
-      $exist = Arrival::where('n_facture', $container['n_facture'])->first();
+      $exist = Arrival::where('n_dossier', $container['n_dossier'])->first();
 
       if (!$exist) {
          $res = Arrival::create($container);
          $res->saveItems($products);
-         return response()->json(['data' => $res, 'message' => "Added success"], 201);
+         return response()->json(['data' => $res, 'message' => "Added success"], Response::HTTP_CREATED);
       }
 
-      return response()->json("Already Exist (Change the arrivals NFacture )", 406); // Not Acceptable [STATUE]
+      return response()->json("Already Exist (Change the arrivals NFacture )", Response::HTTP_NOT_ACCEPTABLE); // Not Acceptable [STATUE]
    }
+
 }

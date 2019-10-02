@@ -1,9 +1,9 @@
 <template>
    <div id="products_list" class="container">
-      <router-link :to="{name:'newProduct'}" class="btn-sm btn-success btn text-capitalize">
-         <i class="fa fa-plus mx-1"></i>
-         Ajouter nouveau produit
-      </router-link>
+<!--      <router-link :to="{name:'newProduct'}" class="btn-sm btn-success btn text-capitalize">-->
+<!--         <i class="fa fa-plus mx-1"></i>-->
+<!--         Ajouter nouveau produit-->
+<!--      </router-link>-->
 
       <alert-modal title="Supperession d'un Produit" id="bitch">
          <template slot="content">
@@ -41,9 +41,14 @@
       <h3 class="text-lg-center text-secondary m-4">Liste des Produits</h3>
       <div class="dropdown-divider"></div>
 
-      <div class="row justify-content-end">
+      <div class="row justify-content-end align-middle">
          <div class="col-12">
-            <h5 class="text-uppercase text-secondary m-3"> Parametre de rechercher </h5>
+            <h5 class="text-uppercase text-secondary m-3"> Paramétre de rechercher </h5>
+         </div>
+         <div class="col-2 mt-3">
+            <router-link :to="{name:'newProduct'}" class="btn btn-outline-success  text-center rounded-pill">
+               <i class="fa fa-plus mx-1"></i> Ajouter Produit
+            </router-link>
          </div>
          <div class="col-10">
             <form @submit.prevent="">

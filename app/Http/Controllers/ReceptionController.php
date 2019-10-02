@@ -24,7 +24,7 @@ class ReceptionController extends Controller
     */
    public function index()
    {
-      return Arrival::WhereNotIn('state', ['RECEPTION', 'VALID'])->with('product', 'provider', 'user')->get();
+      return Arrival::WhereNotIn('state', ['VALID'])->with('product', 'provider', 'user')->get();
    }
 
    public function getNoValidArrivals()
@@ -44,9 +44,14 @@ class ReceptionController extends Controller
             ['price_unit_ttc' => $p['pivot']['price_unit_ttc']]
          );
 
-      $arr->update(['state' => 'VALID', 'taux_marge' => $marge]);
+      $arr->update(['state' => 'VALID']); //
 
       return response()->json($arr);
+   }
+
+   public function validContainer($arrival_id)
+   {
+      return $this->inventory->validContainer($arrival_id);
    }
 
    private function filterStock(Request $req)
@@ -156,5 +161,10 @@ class ReceptionController extends Controller
          }
       }
       return response()->json($validProducts, 200);
+   }
+
+   public function notYetValid()
+   {
+      return $this->inventory->notYetValid();
    }
 }

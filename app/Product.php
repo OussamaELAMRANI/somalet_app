@@ -65,8 +65,8 @@ class Product extends Model
    public function arrivals()
    {
       return $this->belongsToMany(Arrival::class, 'l_arrivals')
-         ->withPivot(['qte_facture', 'rapport_qte', 'fret_douane', 'price_unit_ht', 'price_unit_ttc',
-            'sell_price', 'price_devise', 'remark', 'date_reception', 'qte_reception', 'remark_reception']);
+         ->withPivot(['qte_facture', 'rapport_qte', 'price_unit_ht', 'sell_price', 'remark',
+            'date_reception', 'qte_reception','qte_rapport_reception', 'remark_reception']);
    }
 
    public function orders()

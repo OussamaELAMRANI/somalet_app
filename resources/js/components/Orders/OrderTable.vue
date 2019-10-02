@@ -91,7 +91,7 @@
       },
       filters: {
          twoFixed: function (value) {
-            if (!value) return ''
+            if (!value) return null
             value = Number(value)
             return value.toFixed(2)
          }

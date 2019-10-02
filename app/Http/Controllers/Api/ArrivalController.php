@@ -47,10 +47,21 @@ class ArrivalController extends Controller
       return $this->service->updateArrival();
    }
 
+   public function validateReception($arrival)
+   {
+      return $this->service->validateReception($arrival);
+   }
+
    public function state(Request $request, Arrival $arr)
    {
-      $arr = $arr->update(['state' => $request->input('state')]);
-      return response()->json($arr);
+
+      if ($arr['state'] == 'VUE' || $arr['state'] == 'ATTENTE') {
+         $arr = $arr->update(['state' => $request->input('state')]);
+         return response()->json($arr,Response::HTTP_OK);
+      }
+
+      return response()->json(['message'=>'It\'s already see it !'],Response::HTTP_BAD_REQUEST);
+
    }
 
 

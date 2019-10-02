@@ -1,7 +1,7 @@
 <template>
-    <div id="somalet">
-        <router-view/>
-    </div>
+   <div id="somalet">
+      <router-view/>
+   </div>
 
 </template>
 
@@ -11,9 +11,15 @@
     }
 </script>
 
-<style>
-   input[name='date_picker']{
+<style lang="scss">
+   input[name='date_picker'] {
       width: 100%;
       border: 0;
+   }
+
+   .vdp-datepicker {
+      input {
+         border: 0 !important;
+      }
    }
 </style>

@@ -21,6 +21,15 @@ export default [
             },
          },
          {
+            name: 'validStock',
+            path: ':id/valid',
+            component: () => import('@/pages/Stock/ValidContainer'),
+            meta: {
+               title: "Valide Contenaire", name: 'validStock', icon: 'fa fa-gor', roles: 'guest'
+            },
+            hidden: true
+         },
+         {
             name: 'inventories',
             path: 'inventories',
             component: Inventories,

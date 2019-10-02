@@ -58,8 +58,8 @@ class Arrival extends Model
    public function product()
    {
       return $this->belongsToMany(Product::class, 'l_arrivals')
-         ->withPivot(['qte_facture', 'rapport_qte', 'fret_douane', 'price_unit_ht', 'price_unit_ttc',
-            'sell_price', 'price_devise', 'remark', 'date_reception', 'qte_reception', 'remark_reception']);
+         ->withPivot(['qte_facture', 'rapport_qte', 'price_unit_ht', 'sell_price', 'remark',
+            'date_reception', 'qte_reception','qte_rapport_reception', 'remark_reception']);
    }
 
    /**
@@ -75,6 +75,7 @@ class Arrival extends Model
 //        $arrival_id = array_fill(0, count($items), $arrival_id);
 
       $orderItem = array_map(function ($itm) {
+         unset($itm['name']);
          return array_merge($itm, ['arrival_id' => $this->id]);
       }, $items);
 

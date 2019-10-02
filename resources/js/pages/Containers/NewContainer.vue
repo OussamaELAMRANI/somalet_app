@@ -13,6 +13,7 @@
             <div class="form-group">
                <label for="">Numéro de Contenaire</label>
                <input type="text" class="form-control" v-model="container.n_dossier">
+               <small class="text-danger" v-if="error">Ce Contenaire est déjà éxiste !</small>
             </div>
          </div>
          <div class="col-3">
@@ -71,7 +72,7 @@
                <tbody>
                <tr v-for="(p, i) in selected_items">
                   <td>{{i+1}}</td>
-                  <td>{{p.product_id}}</td>
+                  <td>{{p.name}}</td>
                   <td>{{p.qte_facture}}</td>
                   <td>{{p.rapport_qte}}</td>
                   <td>
@@ -99,13 +100,21 @@
         data() {
             return {
                 fr,
+                error:null,
                 container: {
                     provider_id: '',
                     n_dossier: '',
-                    n_facture: '',
+                    // n_facture: '',
                     date_facture: ''
                 },
-                products_items: {product_id: 0, qte_facture: 0, rapport_qte: 0, price_unit_ht: 0, price_unit_ttc: 0},
+                products_items: {
+                    // name: '',
+                    product_id: 0,
+                    qte_facture: 0,
+                    rapport_qte: 0,
+                    price_unit_ht: 0,
+                    // price_unit_ttc: 0
+                },
                 products: [],
                 providers: [],
                 loading: false,
@@ -135,7 +144,7 @@
 
                 axios.get(`/api/products/search/${search}`, {params: {by: 'name'}})
                     .then(({data}) => {
-                        console.log(data.data)
+                        // console.log(data.data)
                         this.products = data.data;
                         if (data.length === 0)
                             this.noData = true
@@ -144,8 +153,13 @@
                     })
             },
             push_item() {
-                const product = _.cloneDeep(this.products_items)
+                let product = _.cloneDeep(this.products_items)
+                const productName = _.filter(this.products, (p) => {
+                    return p.id === product.product_id
+                })
+                const name = {name:productName[0].name}
                 if (product.product_id !== 0 || product.qte_facture !== 0 && product.rapport_qte !== 0) {
+                    product = {...name, ...product}
                     this.selected_items.unshift(product)
                     this.products_items = {
                         ...{
@@ -153,7 +167,7 @@
                             qte_facture: 0,
                             rapport_qte: 0,
                             price_unit_ht: 0,
-                            price_unit_ttc: 0
+                            // price_unit_ttc: 0
                         }
                     }
                 }
@@ -170,9 +184,12 @@
                 axios.post('/api/containers', {container, products})
                     .then(({data}) => {
                         console.log(data)
-                        this.$router.push({name:'list_container'})
+                        this.$router.push({name: 'list_container'})
                     })
-                    .catch(error => console.log(error.response))
+                    .catch(error =>{
+                        console.log(error.response)
+                        this.error = error.response.data
+                    })
             }
         },
         watch: {

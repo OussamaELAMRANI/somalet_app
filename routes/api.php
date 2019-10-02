@@ -113,6 +113,7 @@ Route::prefix('arrivals')->group(function () {
    Route::group(['middleware' => 'auth:api'], function () {
       Route::post('', 'Api\ArrivalController@store');
       Route::put('', 'Api\ArrivalController@update');
+      Route::put('{arrival_id}/valid-reception', 'Api\ArrivalController@validateReception');
       Route::put('state/{arr}', 'Api\ArrivalController@state');
 
    });
@@ -168,5 +169,9 @@ Route::prefix('dashboard')->group(function () {
 });
 
 Route::prefix('inventories')->group(function () {
+
    Route::get('detail', 'ReceptionController@getDetailStock');
+   Route::patch('{id}/validate', 'ReceptionController@validContainer');
+   Route::get('no-valid', 'ReceptionController@notYetValid');
+
 });

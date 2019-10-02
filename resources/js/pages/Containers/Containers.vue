@@ -1,5 +1,5 @@
 <template>
-   <div id="containers" class="container">
+   <div id="containers" class="">
       <bread-crumb/>
       <router-view/>
    </div>

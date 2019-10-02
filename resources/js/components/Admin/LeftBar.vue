@@ -1,6 +1,6 @@
 <template>
    <!--    <sidebar-menu :menu="menu"/>-->
-   <sidebar-menu :menu="routes" :collapsed="false" @collapse="onCollapse" @itemClick="onItemClick" width="240px"/>
+   <sidebar-menu :menu="routes" :collapsed="false" @collapse="onCollapse" @itemClick="onItemClick" width="200px"/>
 
 </template>
 
