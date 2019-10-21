@@ -37,6 +37,14 @@ export default [
                title: "Stock réel", name: 'inventories', icon: 'fa fa-gor', roles: 'guest'
             },
          },
+         {
+            name: 'histories',
+            path: 'histories',
+            component: ()=> import('@/pages/Stock/ValidContainersHistory'),
+            meta: {
+               title: "Historiques", name: 'histories', icon: 'fa fa-gor', roles: 'guest'
+            },
+         },
       ]
    },
 ]

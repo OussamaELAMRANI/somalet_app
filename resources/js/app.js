@@ -2,6 +2,7 @@ import './bootstrap'
 
 import Vue from 'vue'
 import moment from 'moment'
+import VueHtmlToPaper from 'vue-html-to-paper';
 
 // import vueRouter from 'vue-router'
 import App from './AppRun'
@@ -65,6 +66,22 @@ Vue.use(vueSmoothScroll, {
    x: false,
    y: true
 })
+
+
+const printerOptions = {
+   name: '_blank',
+   specs: [
+      'fullscreen=yes',
+      'titlebar=yes',
+      'scrollbars=yes'
+   ],
+   styles: [
+      'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+      'https://unpkg.com/kidlat-css/css/kidlat.css'
+   ]
+}
+
+Vue.use(VueHtmlToPaper, printerOptions);
 
 /**
  * Global Filtering | pipeline truck

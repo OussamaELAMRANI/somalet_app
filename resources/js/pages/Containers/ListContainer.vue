@@ -83,7 +83,7 @@
 </script>
 
 <style lang="scss" scoped>
-   $purple: #9561e2;
+   $orange: #ff9f42;
 
    table {
       width: 100%;
@@ -99,7 +99,7 @@
 
    .segment {
       margin: 0;
-      border-bottom: 2px solid $purple;
+      border-bottom: 2px solid $orange;
    }
 
    .filter {

@@ -66,13 +66,13 @@ class Product extends Model
    {
       return $this->belongsToMany(Arrival::class, 'l_arrivals')
          ->withPivot(['qte_facture', 'rapport_qte', 'price_unit_ht', 'sell_price', 'remark',
-            'date_reception', 'qte_reception','qte_rapport_reception', 'remark_reception']);
+            'date_reception', 'qte_reception', 'qte_rapport_reception', 'remark_reception']);
    }
 
    public function orders()
    {
       return $this->belongsToMany(Order::class, 'order_items',
          'product_id', 'cmd_id')
-         ->withPivot(['qte', 'qte_price']);
+         ->withPivot(['qte', 'qte_rapport', 'discount', 'price']);
    }
 }

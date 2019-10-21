@@ -225,7 +225,7 @@
                             if (arr.id === arrival_id)
                                 arr.state = 'RECEPTION'
                         })
-                        this.$notification.success("La receptions des qunatité a été bien faite 👏")
+                        this.$notification.success("La receptions des quantité a été bien faite 👏")
                     })
             },
             validAllReceptions(arrival_id, index) {
@@ -261,19 +261,8 @@
 
 <style lang="scss" scoped>
    $purpley: #2fbacb;
-   $purple: #9561E2;
+   $purple: #ff9f42;
 
-   .bg-puple {
-      background: $purpley;
-   }
-
-   .bg-puple__dark {
-      background: darken($purpley, 10%);
-   }
-
-   .bg-puple__light {
-      background: darken($purpley, 10%);
-   }
 
 
    .filter__fix {

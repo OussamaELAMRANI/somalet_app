@@ -47,6 +47,10 @@ Route::prefix('providers')->group(function () {
 Route::prefix('clients')->group(function () {
 
    Route::get('search/{searchValue?}', 'Api\ClientController@search');
+   Route::get('{id}/movements', 'Api\ClientController@getMovements');
+   Route::get('{id}/sold', 'Api\ClientController@getClientSold');
+
+   Route::post('{client}/discount', 'Api\ClientController@storeDiscount');
 
    Route::get('', 'Api\ClientController@index');
    Route::post('', 'Api\ClientController@store');
@@ -148,6 +152,7 @@ Route::prefix('receptions')->group(function () {
 Route::prefix('orders')->group(function () {
 
    Route::get('', 'Api\OrderController@index');
+   Route::get('cmd_number', 'Api\OrderController@getLastOrderNumber');
    Route::get('{id}', 'Api\OrderController@show');
    Route::post('', 'Api\OrderController@store');
 
@@ -171,7 +176,15 @@ Route::prefix('dashboard')->group(function () {
 Route::prefix('inventories')->group(function () {
 
    Route::get('detail', 'ReceptionController@getDetailStock');
+   Route::get('search/{search_ref?}', 'ReceptionController@search');
    Route::patch('{id}/validate', 'ReceptionController@validContainer');
+   Route::patch('{id}/validate-all', 'ReceptionController@validAllInContainer');
    Route::get('no-valid', 'ReceptionController@notYetValid');
+   Route::get('valid-history', 'ReceptionController@validContainersHistory');
 
+});
+
+Route::prefix('banks')->group(function () {
+   Route::get('', 'Api\BankController@index');
+   Route::get('{name}', 'Api\BankController@show');
 });

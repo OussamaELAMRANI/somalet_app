@@ -5,8 +5,8 @@
       .row.justify-content-center
          form.segment.col-10(@submit.prevent="")
             .form-group
-               h5.text-primary Livraison N:
-                  strong {{' '+$route.params.cmd}}
+               h5.text-primary CLIENT :
+                  strong {{' '+client.nom}} ({{client.id}})
                hr
                .row.justify-content-center
                   .col-4
@@ -16,7 +16,7 @@
                   .col-4
                      label Montant
                      .input-group
-                        input.form-control(type='text' v-model="payment.amount")
+                        input.form-control(type='text' v-model.number="payment.amount")
                         .input-group-append
                            span.input-group-text DH
                .row.justify-content-center.my-5
@@ -30,6 +30,15 @@
                            label Date d'échéance :
                            datepicker.form-control(:language='fr' :monday-first='true' format="dd/MM/yyyy" @selected="getDeadline"
                               calendar-button-icon='fa fa-user' name='date_picker' v-model='date_deadline')
+                     .col-4
+                        .form-group
+                           label Numéro
+                           input.form-control(type="text" placeholder="Numero de CHQ/EFF", v-model="payment.chq_number")
+                     .col-4
+                        .form-group
+                           label Désignation
+                           input.form-control(type="text" placeholder="Banque, remarque ...", v-model="payment.designation")
+               hr
                .row.justify-content-end
                   .col-3
                      button.btn.btn-primary(@click="checkout") Ajouter ce paiément
@@ -38,61 +47,78 @@
 </template>
 
 <script>
-   import moment from 'moment'
-   import PaymentType from "@/components/Payments/PaymentType";
-   import Datepicker from 'vuejs-datepicker';
-   import {fr} from 'vuejs-datepicker/dist/locale'
+    import moment from 'moment'
+    import PaymentType from "@/components/Payments/PaymentType";
+    import Datepicker from 'vuejs-datepicker';
+    import {fr} from 'vuejs-datepicker/dist/locale'
 
-   export default {
-      name: "NewPayment",
-      components: {Datepicker, PaymentType},
-      data() {
-         return {
-            fr,
-            payment: {
-               payed_at:  moment(new Date()).format('YYYY-MM-DD'),
-               date_deadline: moment(new Date()).format('YYYY-MM-DD'),
-               amount: '',
-               type: 'ESP',
+    export default {
+        name: "NewPayment",
+        components: {Datepicker, PaymentType},
+        data() {
+            return {
+                fr,
+                payment: {
+                    payed_at: moment(new Date()).format('YYYY-MM-DD'),
+                    date_deadline: moment(new Date()).format('YYYY-MM-DD'),
+                    amount: 0,
+                    type: 'ESP',
+                    chq_number: '',
+                    designation: '',
+                },
+                payed_at: moment().toDate(),
+                date_deadline: moment().toDate(),
+                types: [
+                    {id: 'CHQ', h: 'h5', title: "Chéque", isActive: false, img: 'boxes/cheque.svg'},
+                    {id: 'ESP', h: 'h5', title: "Espace", isActive: true, img: 'boxes/bills.svg'},
+                    {id: 'EFF', h: 'h5', title: "Effet", isActive: false, img: 'boxes/effet.svg'},
+                ],
+                client: []
+            }
+        },
+        mounted() {
+            const id = this.$route.params.cmd;
+            axios.get(`/api/clients/${id}`)
+                .then(({data}) => {
+                    this.client = data;
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.$router.push('/404')
+                    this.$notification.error(error.response.data);
+
+                })
+        },
+        methods: {
+            getDate(d) {
+                this.payment.payed_at = moment(d).format('YYYY-MM-DD')
+                console.log(moment(d).format('DD/MM/YYYY'))
             },
-            payed_at:  moment().toDate(),
-            date_deadline: moment().toDate(),
-            types: [
-               {id: 'CHQ', h: 'h5', title: "Chéque", isActive: false, img: 'boxes/cheque.svg'},
-               {id: 'ESP', h: 'h5', title: "Espace", isActive: true, img: 'boxes/bills.svg'},
-               {id: 'EFF', h: 'h5', title: "Effet", isActive: false, img: 'boxes/effet.svg'},
-            ],
-         }
-      },
-      methods: {
-         getDate(d){
-            this.payment.payed_at = moment(d).format('YYYY-MM-DD')
-            console.log(moment(d).format('DD/MM/YYYY'))
-         },
-         getDeadline(d){
-            this.payment.date_deadline = moment(d).format('YYYY-MM-DD')
-         },
-         getType(type) {
-            this.payment.type = type
-         },
-         checkout() {
-            const cmd = this.$route.params.cmd;
-            const payment = this.payment
-            axios.post(`/api/payments/${cmd}`, {payment})
-               .then(({data}) => {
-                  console.log(data)
-                  this.$notification.success('Paiément a été bien ajouté !');
-                  if(this.payment.type == 'ESP')
-                     this.$router.push({name:'caisse'})
-                  else
-                     this.$router.push({name:'portfeuille'})
-               })
-               .catch(err => {
-                  console.log(err.response)
-               })
-         }
-      }
-   }
+            getDeadline(d) {
+                this.payment.date_deadline = moment(d).format('YYYY-MM-DD')
+            },
+            getType(type) {
+                this.payment.type = type
+            },
+            checkout() {
+                const cmd = this.$route.params.cmd;
+                const payment = this.payment
+                axios.post(`/api/payments/${cmd}`, {payment})
+                    .then(({data}) => {
+                        console.log(data)
+                        this.$notification.success('Paiément a été bien ajouté !');
+
+                        // if(this.payment.type == 'ESP')
+                           this.$router.push({name:'caisse'})
+                        // else
+                        //    this.$router.push({name:'portfeuille'})
+                    })
+                    .catch(err => {
+                        console.log(err.response)
+                    })
+            }
+        },
+    }
 </script>
 
 <style scoped>
@@ -101,11 +127,13 @@
       opacity: 0;
       transform: rotateY(50deg);
    }
+
    .deadline-enter-to,
    .deadline-leave {
       opacity: 1;
       transform: rotateY(0deg);
    }
+
    .deadline-enter-active,
    .deadline-leave-active {
       transition: opacity, transform 200ms ease-out;

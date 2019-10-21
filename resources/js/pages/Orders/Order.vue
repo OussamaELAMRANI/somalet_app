@@ -1,7 +1,7 @@
 <template lang="pug">
    #orders
       bread-crumb
-      big-title(title="Commandes" :classes="['text-uppercase','h2']")
+      //big-title(title="Commandes" :classes="['text-uppercase','h2']")
       router-view
 </template>
 

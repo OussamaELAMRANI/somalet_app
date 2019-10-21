@@ -5,7 +5,7 @@
          .col-10
             //stock-table(:headTable="tabHeader" )
             table.table.text-center
-               thead.bg-success.text-white
+               thead.bg-primary.text-white
                   tr
                      th Numéro du Contenaire
                      th Date
@@ -19,7 +19,7 @@
                      td {{a.provider.steName}}
                      td(:class="(a.state) === 'RECEPTION'? 'text-success' : (a.state) === 'VUE'? 'text-primary' :'text-secondary' ") {{a.state}}
                      td
-                        router-link.btn.btn-sm.shadow(:to="{name:'validStock',params:{id:a.id}}" :class="(a.state) === 'RECEPTION'? 'btn-success':  (a.state) === 'VUE'? 'btn-primary' : 'btn-outline-secondary' " ) Verifier
+                        router-link.btn.btn-sm.shadow(:to="{name:'validStock',params:{id:a.id}}" :class="(a.state) === 'RECEPTION'? 'btn-primary':  (a.state) === 'VUE'? 'btn-success' : 'btn-outline-secondary' " ) Verifier
 </template>
 
 <script>
@@ -44,9 +44,11 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+   $orange: #ff9f42;
+
    .segment {
       margin: 0;
-      border-bottom: 2px solid green;
+      border-bottom: 2px solid $orange;
    }
 </style>

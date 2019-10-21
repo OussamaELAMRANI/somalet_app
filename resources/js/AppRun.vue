@@ -20,6 +20,7 @@
    .vdp-datepicker {
       input {
          border: 0 !important;
+         width: 100%;
       }
    }
 </style>

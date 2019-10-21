@@ -11,7 +11,7 @@
                     label(for="lastName") Prenom
                     input( type="text" class="form-control " id="lastName" aria-describedby="emailHelp" placeholder="Prenom du client ici ..."
                         v-model="lastName")
-            .row
+            //.row
                 .col
                     label(for="numTva") Numero TVA
                     input( type="text" class="form-control " id="numTva" aria-describedby="emailHelp" placeholder="TVA ..." v-model="numTva")
@@ -30,8 +30,8 @@
             return {
                 firstName: '',
                 lastName: '',
-                numTva: '',
-                nSiret: '',
+                // numTva: '',
+                // nSiret: '',
                 id:null,
             }
         },
@@ -41,8 +41,8 @@
                     professional: {
                         firstName: this.firstName,
                         lastName: this.lastName,
-                        numTva: this.numTva,
-                        nSiret: this.nSiret,
+                        // numTva: this.numTva,
+                        // nSiret: this.nSiret,
                     }
                 })
             },

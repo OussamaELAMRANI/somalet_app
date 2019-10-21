@@ -20,12 +20,29 @@ class InventoryService
 
    public function getDetailStock()
    {
-      $allProducts = Product::with('color', 'arrivals', 'clients', 'unit')
+      $allProducts = Product::with('color', 'arrivals', 'clients', 'unit', 'orders')
          ->get()->groupBy('reference');
       $client_id = $this->req->get('client_id');
       $getQte = $this->getFilterQte($allProducts->toArray(), $client_id);
 //      return response()->json($allProducts, Response::HTTP_OK);
       return $getQte;
+   }
+
+   public function searchByRef($ref = '')
+   {
+      $validProducts = [];
+      $pattern = "/{$ref}/i";
+      $products = $this->getDetailStock();
+      $keys = array_keys($products);
+      $result = preg_grep($pattern, $keys);
+      if (is_null($result)) {
+         return response()->json([], 200);
+      } else {
+         foreach ($result as $name) {
+            $validProducts[] = $products[$name];
+         }
+      }
+      return response()->json($validProducts, 200);
    }
 
    private function getFilterQte($products_group, $client_id = null)
@@ -40,10 +57,11 @@ class InventoryService
          foreach ($g as $p) {
 
             $qte = [];
+            $qte_order = [];
             $sell = [];
             $crHT = [];
 
-            $result[$p['id']] = [
+            $result[$p['name']] = [
                'product_id' => $p['id'],
                'reference' => $p['reference'],
                'name' => $p['name'],
@@ -51,9 +69,11 @@ class InventoryService
                'price' => [],
                'ht' => [],
                'QTE' => [],
+               'orders_qte' => [],
                'discount' => 0,
             ];
 
+            // O(n)
             foreach ($p['arrivals'] as $arr) {
                if ($arr['state'] == 'VALID') {
 
@@ -61,27 +81,49 @@ class InventoryService
                   $crHT [] = ($arr['pivot']['price_unit_ht']) ?? 0;
 
                   $qte[$arr['pivot']['qte_rapport_reception']][] = $arr['pivot']['qte_reception'];
-                  $result[$p['id']]["QTE"] = $qte;
+                  $result[$p['name']]["QTE"] = $qte;
 
                }
             }
+
+            // O(n)
+            foreach ($p['orders'] as $order) {
+
+               if (is_null($order['deleted_at'])) {
+
+                  $qte_order[$order['pivot']['qte_rapport']][] = $order['pivot']['qte'];
+                  $result[$p['name']]["orders_qte"] = $qte_order;
+
+               }
+            }
+
             if (count($sell) != 0)
-               $result[$p['id']]['price'] = array_sum($sell) / count($sell);
+               $result[$p['name']]['price'] = array_sum($sell) / count($sell);
             if (count($crHT) != 0)
-               $result[$p['id']]['ht'] = array_sum($crHT) / count($crHT);
+               $result[$p['name']]['ht'] = array_sum($crHT) / count($crHT);
             // Filter Quantity for each rapport Qte
 
-            $aa = array_map(function ($q) {
-               return array_sum(($q));
-            }, $result[$p['id']]['QTE']);
 
-            $result[$p['id']]['QTE_TOTAL'] = $aa;
+            $totalQte = [];
+
+            foreach (array_keys($result[$p['name']]['QTE']) as $key) {
+               $order_qte_total = 0;
+               $qte_total = array_sum($result[$p['name']]['QTE'][$key]);
+
+               if (array_key_exists($key, $result[$p['name']]['orders_qte']))
+                  $order_qte_total = array_sum($result[$p['name']]['orders_qte'][$key]);
+
+               $totalQte [$key] = $qte_total - $order_qte_total;
+            }
+
+
+            $result[$p['name']]['QTE_TOTAL'] = $totalQte;
 
 
             if (!is_null($client_id)) {
                foreach ($p['clients'] as $client) {
                   if ($client_id == $client['id'])
-                     $result[$p['id']]['discount'] = $client['pivot']['discount'];
+                     $result[$p['name']]['discount'] = $client['pivot']['discount'];
                }
             }
          }
@@ -97,23 +139,40 @@ class InventoryService
       $arr = Arrival::find($arrival_id);
 
       foreach ($products as $p) {
-         // TODO: Here if $product_id is duplicated ==> All Updated will have the same values !
-         $arr->product()->updateExistingPivot(
+         $arr->product()->wherePivot('rapport_qte', $p['pivot']['rapport_qte'])->updateExistingPivot(
             $p['id'], [
             'sell_price' => $p['pivot']['sell_price'],
             'price_unit_ht' => $p['pivot']['price_unit_ht'],
-//            'price_unit_ttc' => $p['pivot']['price_unit_ht'],
-            'qte_reception' => $p['pivot']['qte_reception'],
-            'qte_rapport_reception' => $p['pivot']['qte_rapport_reception'],
+            'qte_validation' => $p['pivot']['qte_validation'],
+            'qte_rapport_validation' => $p['pivot']['qte_rapport_validation'],
          ]);
          $arr->update(['state' => 'VALID']);
       }
 
-      $arr->update(['state' => 'VALID']); // 'taux_marge' => 1 {REMOVED}
+      $arr->update(['state' => 'VALID']);
 
       return response()->json($arr->with('product')->get());
    }
 
+   public function validAllContainer($arrival_id)
+   {
+      $products = $this->req->input('products'); // [id, sell_price]
+      $arr = Arrival::find($arrival_id);
+
+      foreach ($products as $p) {
+         $arr->product()->wherePivot('rapport_qte', $p['pivot']['rapport_qte'])->updateExistingPivot(
+            $p['id'], [
+            'sell_price' => $p['pivot']['sell_price'],
+            'price_unit_ht' => $p['pivot']['price_unit_ht'],
+            'qte_validation' => $p['pivot']['qte_reception'],
+            'qte_rapport_validation' => $p['pivot']['qte_rapport_reception'],
+         ]);
+         $arr->update(['state' => 'VALID']);
+      }
+      $arr->update(['state' => 'VALID']);
+
+      return response()->json($arr->with('product')->get());
+   }
 
    public function notYetValid()
    {

@@ -44,7 +44,7 @@ class ArrivalController extends Controller
 
    public function update()
    {
-      return $this->service->updateArrival();
+      return $this->service->updateArrivalToReceptions();
    }
 
    public function validateReception($arrival)

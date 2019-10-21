@@ -10,7 +10,7 @@
             .row
                 .col
                     label(for="cp") Code postal
-                    input( type="text" class="form-control" id="cp" aria-describedby="emailHelp" placeholder="Code postal ..." v-model="cp")
+                    input( type="number" class="form-control" id="cp" aria-describedby="emailHelp" placeholder="Code postal ..." v-model="cp")
                 .col
                     label(for="city") Ville
                     input( type="text" class="form-control" id="city" aria-describedby="emailHelp" placeholder="Ville ..." v-model="city")

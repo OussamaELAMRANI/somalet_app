@@ -1,22 +1,16 @@
 <template lang="pug">
    #if_bank
-      h2.text-primary IF
-      table-layout(theme="bg-primary text-white", :head-table="ifItems")
+      BanKBase(bank="if")
+
+
 </template>
 
 <script>
-    import TableLayout from "@/components/layouts/TableLayout";
+    import BanKBase from "@/pages/Reglement/banks/BanKBase";
+
     export default {
         name: "BankIf",
-       data(){
-         return{
-            ifItems:['#','commandes', 'Montant']
-         }
-       },
-       components: {TableLayout}
+
+        components: {BanKBase}
     }
 </script>
-
-<style scoped>
-
-</style>

@@ -7,6 +7,7 @@ use App\Arrival;
 use App\Product;
 use App\Services\Stock\InventoryService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReceptionController extends Controller
 {
@@ -52,6 +53,11 @@ class ReceptionController extends Controller
    public function validContainer($arrival_id)
    {
       return $this->inventory->validContainer($arrival_id);
+   }
+
+   public function validAllInContainer($arrival_id)
+   {
+      return $this->inventory->validAllContainer($arrival_id);
    }
 
    private function filterStock(Request $req)
@@ -163,8 +169,22 @@ class ReceptionController extends Controller
       return response()->json($validProducts, 200);
    }
 
+
+   public function search($search_ref = '')
+   {
+      return $this->inventory->searchByRef($search_ref);
+   }
+
    public function notYetValid()
    {
       return $this->inventory->notYetValid();
    }
+
+   public function validContainersHistory()
+   {
+      $v_arrival = Arrival::where('state', 'VALID')->get();
+
+      return response()->json($v_arrival, Response::HTTP_OK);
+   }
+
 }

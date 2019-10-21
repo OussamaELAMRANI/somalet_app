@@ -25,12 +25,19 @@ class Client extends Model
       return $builder->orderBy('id', 'desc');
    }
 
-//    function commande()
-//    {
-//        return $this->hasMany(Commande::class, 'client_id');
-//    }
+   function commands()
+   {
+      return $this->hasMany(Order::class, 'client_id');
+   }
+
+   function payments()
+   {
+      return $this->hasMany(Payment::class, 'client_id');
+   }
 
    /**
+    * DISCOUNTING
+    *
     * Haves a Pivot table {order_items}
     */
    public function products()

@@ -32,59 +32,72 @@
             </div>
          </div>
       </div>
-
       <router-link :to="{name:'newClient'}" class="btn btn-success btn-sm">
          <i class="fa fa-plus mx-2"></i>
          Nouveau Client
       </router-link>
+      <h3 class="text-lg-center text-secondary">Liste des clients</h3>
+      <hr>
+      <div class="row">
+         <div class="col-9">
+            <table-layout :head-table="['#','ID','Nom','Prénom','Actions']" :data="dataTable"
+                          empty-text="Pas de client dans ce cas (Vide...)" theme="bg-primary text-white small">
 
-      <h3 class="text-lg-center text-secondary m-5">Liste des clients</h3>
-      <div class="dropdown-divider"></div>
-
-      <div class="row justify-content-around ">
-         <h5 class="text-uppercase text-secondary m-3"> Parametre de rechercher </h5>
-         <div class="col-8">
+               <tr v-for="(p,index) in clients.data" :id="p.id">
+                  <th scope="row">{{index+1}}</th>
+                  <td>{{p.id}}</td>
+                  <td>{{p.lastName}}</td>
+                  <td>{{p.firstName}} </td>
+                  <td>
+                     <button class="btn btn-sm btn-outline-info rounded-pill shadow" data-toggle="modal"
+                             data-target="#exampleModal"
+                             @click="redirect(p.id)">
+                        <i class="fa fa-edit my-1" aria-hidden="true"></i>
+                     </button>
+                     <button class="btn btn-sm btn-outline-danger rounded-pill shadow"
+                             @click="getElementIdToDelete(p.id)"
+                             data-target="#bitch" data-toggle="modal">
+                        <i class="fa fa-trash " aria-hidden="true"></i>
+                     </button>
+                     <router-link :to="{name:'detailClient', params:{id:p.id}}"
+                                  class="btn-outline-primary btn btn-sm rounded-pill shadow">
+                        <i class="fa fa-list my-1" aria-hidden="true"></i>
+                     </router-link>
+                     <router-link :to="{name:'movementClient', params:{id:p.id}}"
+                                  class="btn-outline-secondary btn btn-sm rounded-pill shadow">
+                        <i class="fa fa-cash-register my-1" aria-hidden="true"></i>
+                     </router-link>
+                     <router-link :to="{name:'newPayment', params:{cmd:p.id}}"
+                                  class="btn-outline-success btn btn-sm rounded-pill shadow">
+                        <i class="fa fa-money-bill-alt my-1" aria-hidden="true"></i>
+                     </router-link>
+                  </td>
+               </tr>
+            </table-layout>
+            <pagination :data="clients" align="center" @pagination-change-page="filter"></pagination>
+         </div>
+         <div class="col mt-0 segment">
+            <h5 class="text-uppercase text-secondary">Filter par: </h5>
+            <hr>
             <form @submit.prevent="">
-               <div class="input-group m-3">
-                  <input type="text" class="form-control" v-model="searchTxt" v-on:keyup.enter="filter"
+               <div class="form-group   my-2">
+                  <label for="">ID</label>
+                  <input type="text" class="form-control rounded-pill" v-model="searchTxt" v-on:keyup.enter="filter"
+                         placeholder="Recherche ID ..."
+                         autofocus>
+               </div>
+               <div class="form-group  my-1">
+                  <label for="">NOM ou Prénom</label>
+                  <input type="text" class="form-control rounded-pill" v-model="searchTxt" v-on:keyup.enter="filter"
                          placeholder="Recherche par Nom complet"
                          autofocus>
-                  <div class="input-group-append">
-                     <button class="btn btn-outline-success " type="button" id="button-addon2">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                     </button>
-                  </div>
                </div>
+               <hr>
+               <button class="rounded-pill btn btn-outline-primary btn-block">FILTER</button>
             </form>
          </div>
       </div>
 
-      <table-layout :head-table="['#','Nom Complet','TVA','Numero Siret','Actions']" :data="dataTable"
-                    empty-text="Pas de client dans ce cas (Vide...)">
-
-         <tr v-for="(p,index) in clients.data" :id="p.id">
-            <th scope="row">{{index+1}}</th>
-            <td>{{p.firstName}} {{p.lastName}}</td>
-            <td>{{p.numTva}}</td>
-            <td>{{p.nSiret}}</td>
-            <td>
-               <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
-                       @click="show(p.id)">
-                  <i class="fa fa-list" aria-hidden="true"></i>
-               </button>
-               <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#exampleModal"
-                       @click="redirect(p.id)">
-                  <i class="fa fa-edit" aria-hidden="true"></i>
-               </button>
-               <button class="btn btn-sm btn-danger"
-                       @click="getElementIdToDelete(p.id)"
-                       data-target="#bitch" data-toggle="modal">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-               </button>
-            </td>
-         </tr>
-      </table-layout>
-      <pagination :data="clients" align="center" @pagination-change-page="filter"></pagination>
 
    </div>
 
@@ -92,86 +105,86 @@
 </template>
 
 <script>
-   import ShowClient from "./showClient";
-   import AlertModal from "@/components/Modals/AlertModal";
-   import TableLayout from "@/components/layouts/TableLayout";
-   // import pagination from "laravel-vue-pagination";
+    import ShowClient from "./showClient";
+    import AlertModal from "@/components/Modals/AlertModal";
+    import TableLayout from "@/components/layouts/TableLayout";
+    // import pagination from "laravel-vue-pagination";
 
-   export default {
-      name: "ClientsList",
-      data() {
-         return {
-            ElementIdToDelete: null,
-            clients: {},
-            searchClients: null,
-            searchTxt: '',
-            opt: 'ste',
-            client: {},
-            dataTable: null
-         }
-      },
-      mounted() {
-         this.filter();
-      },
-
-      methods: {
-         getElementIdToDelete(id) {
-            this.ElementIdToDelete = id;
-         },
-         supp() {
-            let id = this.ElementIdToDelete;
-            axios.delete(`/api/clients/${id}/delete`)
-               .then(res => {
-                  // this.$notification.error('produit bien supprimer')
-                  // this.$router.push({name: 'listClient', params: {id}});
-                  // this.getClients();
-                  document.getElementById(this.ElementIdToDelete).remove()
-               })
-               .catch(err => {
-                  this.$notification.error("Ce produit n'existe pas !")
-                  this.$notification.error('impossible de supprimer ce produit')
-                  // this.$router.push('/404')
-               })
-         },
-         redirect(id) {
-            this.$router.push({name: 'updateClient', params: {id}});
-         },
-         filter(page = 1) {
-            // const by = this.opt
-            const by = 'nom';
-
-            axios.get(`/api/clients/search/${this.searchTxt}`,
-               {
-                  params: {
-                     by,
-                     page,
-                  }
-               })
-               .then(res => {
-                  const data = res.data
-                  this.clients = data
-                  this.dataTable = data.total
-               })
-               .catch(err => console.log(err.response))
-         },
-         EmptyText() {
-            this.searchTxt = ''
+    export default {
+        name: "ClientsList",
+        data() {
+            return {
+                ElementIdToDelete: null,
+                clients: {},
+                searchClients: null,
+                searchTxt: '',
+                opt: 'ste',
+                client: {},
+                dataTable: null
+            }
+        },
+        mounted() {
             this.filter();
-         },
-         show(id) {
-            this.$router.push({name: 'detailClient', params: {id}})
-            // console.log(id)
-            // const val = this.clients.data
-            // this.client = _.find(val, o => {
-            //     return o.id == id
-            // });
-         },
-      },
-      components: {
-         TableLayout,
-         ShowClient, AlertModal,
-      }
-   }
+        },
+
+        methods: {
+            getElementIdToDelete(id) {
+                this.ElementIdToDelete = id;
+            },
+            supp() {
+                let id = this.ElementIdToDelete;
+                axios.delete(`/api/clients/${id}/delete`)
+                    .then(res => {
+                        // this.$notification.error('produit bien supprimer')
+                        // this.$router.push({name: 'listClient', params: {id}});
+                        // this.getClients();
+                        document.getElementById(this.ElementIdToDelete).remove()
+                    })
+                    .catch(err => {
+                        this.$notification.error("Ce produit n'existe pas !")
+                        this.$notification.error('impossible de supprimer ce produit')
+                        // this.$router.push('/404')
+                    })
+            },
+            redirect(id) {
+                this.$router.push({name: 'updateClient', params: {id}});
+            },
+            filter(page = 1) {
+                // const by = this.opt
+                const by = 'nom';
+
+                axios.get(`/api/clients/search/${this.searchTxt}`,
+                    {
+                        params: {
+                            by,
+                            page,
+                        }
+                    })
+                    .then(res => {
+                        const data = res.data
+                        this.clients = data
+                        this.dataTable = data.total
+                    })
+                    .catch(err => console.log(err.response))
+            },
+            EmptyText() {
+                this.searchTxt = ''
+                this.filter();
+            },
+            show(id) {
+                this.$router.push({name: 'detailClient', params: {id}})
+                // console.log(id)
+                // const val = this.clients.data
+                // this.client = _.find(val, o => {
+                //     return o.id == id
+                // });
+            },
+        },
+        components: {
+            TableLayout,
+            ShowClient, AlertModal,
+        }
+    }
 </script>
 
 <style>

@@ -18,7 +18,8 @@ class CreateOrderItemsTable extends Migration
          $table->unsignedBigInteger('cmd_id');
          $table->unsignedBigInteger('product_id');
 
-         $table->integer('qte');
+         $table->double('qte');
+         $table->double('qte_rapport');
          $table->double('discount'); // Take Trace to Old Discount
          // $table->double('qte_price');
          // To Make Trace in DB, Because the [price, Discount] are Variables

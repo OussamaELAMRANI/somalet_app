@@ -23,19 +23,21 @@ class    ArrivalService
       return response()->json(Arrival::filter($this->req)->last(), 200);
    }
 
-   public function updateArrival()
+   public function updateArrivalToReceptions()
    {
       $id = $this->req->input('arrival_id');
       $prds = $this->req->input('products');
 
       $arr = Arrival::findOrFail($id);
-      foreach ($prds as $p)
-         $arr->product()->updateExistingPivot($p['id'],
+      foreach ($prds as $p) {
+         $arr->product()->wherePivot('rapport_qte', $p['pivot']['rapport_qte'])->updateExistingPivot($p['id'],
             [
                'qte_reception' => $p['pivot']['qte_reception'],
                'qte_rapport_reception' => $p['pivot']['qte_rapport_reception'],
                'date_reception' => Carbon::today()->toDateString(),
             ]);
+      }
+
       $arr->update(['state' => 'RECEPTION']);
       return response()->json($arr->product()->get());
    }
@@ -44,7 +46,7 @@ class    ArrivalService
    {
       $arr = Arrival::with('product')->findOrFail($arrival_id);
       foreach ($arr['product'] as $p)
-         $arr->product()->updateExistingPivot($p['id'],
+         $arr->product()->wherePivot('rapport_qte', $p['pivot']['rapport_qte'])->updateExistingPivot($p['id'],
             [
                'qte_reception' => $p['pivot']['qte_facture'],
                'qte_rapport_reception' => $p['pivot']['rapport_qte'],

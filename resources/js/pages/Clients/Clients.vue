@@ -2,7 +2,7 @@
     <div class="" id="all-clients">
          <bread-crumb/>
 <!--        <h2 class="text-info mt-4 text-lg-center">Nos Clients</h2>-->
-        <div class="dropdown-divider"></div>
+<!--        <div class="dropdown-divider"></div>-->
         <!-- 2 Boxes (Back, [New, List])-->
         <div class="card-body col-11 align-self-center">
             <div class="row">

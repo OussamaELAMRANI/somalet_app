@@ -14,3 +14,25 @@
     border-radius: .28571429rem;
     border: 1px solid rgba(34, 36, 38, .15);
 }
+
+/* width */
+::-webkit-scrollbar {
+   width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+   box-shadow: inset 0 0 5px grey;
+   border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+   background: $orange;
+   border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+   background: darken($orange,10);
+}

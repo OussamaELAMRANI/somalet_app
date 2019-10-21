@@ -11,6 +11,8 @@ export default [
       meta: {
          title: 'Payéments', name: 'allBillings', icon: 'fa fa-money-bill', roles: 'guest'
       },
+      hidden: true,
+
       children: [
          {
             name: 'newPayment',
@@ -31,14 +33,14 @@ export default [
          //    },
          // },
 
-         {
-            name: 'listBilling',
-            path: 'billings-list',
-            component: () => import('@/pages/Billings/BillingsList'),
-            meta: {
-               title: "Payéments", name: 'listOrder', icon: 'fa fa-gor', roles: 'guest'
-            },
-         },
+         // {
+         //    name: 'listBilling',
+         //    path: 'billings-list',
+         //    component: () => import('@/pages/Billings/BillingsList'),
+         //    meta: {
+         //       title: "Payéments", name: 'listOrder', icon: 'fa fa-gor', roles: 'guest'
+         //    },
+         // },
       ]
    },
 ]

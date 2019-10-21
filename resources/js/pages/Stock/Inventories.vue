@@ -16,16 +16,34 @@
                </tr>
                </thead>
                <tbody class="segment">
-               <tr v-for="(inv , k) in inventories" v-if="inv.QTE.length != 0">
+               <tr v-if="isLoading">
+                  <td colspan="6" class="p-0">
+                     <div class="row justify-content-center bg-white">
+                        <div class="col-2">
+                           <half-circle-spinner color="#f83896" :size="40"/>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+               <tr v-if="searchIventories.length == 0">
+                  <td colspan="6">
+                     <h5 class="text-uppercase text-center text-secondary">0 Produits</h5>
+                  </td>
+               </tr>
+               <tr v-for="(inv , k) in searchIventories" v-if="inv.QTE.length != 0">
                   <template>
                      <td class="align-middle">{{inv.reference}}</td>
                      <td class="align-middle">{{inv.name}}</td>
-<!--                     <td>{{inv.QTE.length}}</td>-->
+                     <!--                     <td>{{inv.QTE.length}}</td>-->
                      <td>
                         <ul class="list-group  list-group-horizontal" v-for="(v,k) in inv.QTE_TOTAL">
+
                            <li class="list-group-item  m-1 p-0 w-50 ">{{v}}</li>
-                           <li class="list-group-item  my-1 p-0 bg-warning"></li>
+                           <li class="list-group-item  my-1 p-0 bg-success"></li>
                            <li class="list-group-item  m-1 p-0 w-50 bg-success text-white">{{k}}</li>
+                           <li class="list-group-item  my-1 p-0 bg-warning"></li>
+                           <li class="list-group-item  my-1 p-0 bg-warning"></li>
+                           <li class="list-group-item  m-1 p-0 w-50 bg-primary text-white">{{k*v}}</li>
                         </ul>
                      </td>
                      <td class="text-uppercase text-primary font-weight-light align-middle">{{inv.unity}}</td>
@@ -42,14 +60,15 @@
                <hr>
                <div class="form-group">
                   <label for="">Produit</label>
-                  <input type="text" class="form-control rounded-pill" placeholder="Désignation ...">
+                  <input type="text" class="form-control rounded-pill" placeholder="Désignation ..."
+                         @input="getInventoriesByRef" v-model="reference">
                </div>
-               <div class="form-group">
-                  <label for="">Prix</label>
-                  <input type="text" class="form-control rounded-pill" placeholder="Prix de vente ...">
-               </div>
+               <!--               <div class="form-group">-->
+               <!--                  <label for="">Prix</label>-->
+               <!--                  <input type="text" class="form-control rounded-pill" placeholder="Prix de vente ...">-->
+               <!--               </div>-->
                <hr>
-               <button class="btn btn-outline-primary btn-block rounded-pill">Filter</button>
+               <!--               <button class="btn btn-outline-primary btn-block rounded-pill">Filter</button>-->
             </div>
          </div>
 
@@ -59,28 +78,50 @@
 
 <script>
     import BigTitle from "@/components/layouts/BigTitle";
+    import {HalfCircleSpinner} from 'epic-spinners'
 
     export default {
         name: "Inventories",
-        components: {BigTitle},
+        components: {BigTitle, HalfCircleSpinner},
         data() {
             return {
-                inventories: []
+                reference: '',
+                isLoading: false,
+                inventories: [],
+                searchIventories: []
             }
         },
         mounted() {
             axios.get('/api/inventories/detail')
                 .then(({data}) => {
                     this.inventories = data
+                    this.searchIventories = data
                 })
+        },
+        methods: {
+            getInventoriesByRef() {
+                const ref = this.reference;
+                axios.get(`/api/inventories/search/${ref}`)
+                    .then(({data}) => {
+                        this.searchIventories = data;
+                        this.isLoading = false
+                    })
+                    .catch(error => console.log(error.response))
+            }
+        },
+        watch: {
+            reference: function (ref) {
+                this.isLoading = true
+            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-   $purple: #9561E2;
+   $orange: #ff9f42;
+
    .segment {
       margin: 0;
-      border-bottom: 2px solid $purple;
+      border-bottom: 2px solid $orange;
    }
 </style>

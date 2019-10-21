@@ -30,8 +30,13 @@ class CreateLArrivalsTable extends Migration
             $table->string('remark')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->date('date_reception')->nullable();
-            $table->integer('qte_reception')->nullable();
-            $table->integer('qte_rapport_reception')->nullable();
+
+            $table->double('qte_reception')->nullable();
+            $table->double('qte_rapport_reception')->nullable();
+
+             $table->double('qte_validation')->nullable();
+            $table->double('qte_rapport_validation')->nullable();
+
             $table->string('remark_reception')->nullable();
 
             $table->foreign('product_id')

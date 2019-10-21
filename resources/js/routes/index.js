@@ -65,6 +65,15 @@ export const asyncRoutes = [
                title: 'Molsat Application', icon: 'fa fa-gor', roles: 'guest'
             },
          },
+         {
+            path: '/printer',
+            name: 'printer',
+            component: () => import("@/pages/Printer/Printer"),
+            hidden: true,
+            meta: {
+               title: 'Imprimer maintenant', name: 'printer', icon: 'fa fa-print', roles: 'guest'
+            }
+         },
          ...Users,
          ...Providers,
          ...client,

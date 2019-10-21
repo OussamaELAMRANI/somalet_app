@@ -2,14 +2,13 @@
    #money-bag
       h2.text-secondary.text-uppercase Caisse
       hr
-      table-layout(:head-table="items", :data="checkout", empty-text="Pas d'agent $ !")
+      table-layout(:head-table="items", :data="checkout", empty-text="Pas d'agent $ !", theme="bg-primary small text-white")
          tr(v-for=" (p, i) in checkout")
             td {{i+1}}
             td {{p.payed_at | humane_date}}
-            td {{p.order.cmd_number}}
             td {{p.amount + ' DH'}}
-            td {{p.order.client.firstName +' '}}
-               strong {{p.order.client.lastName}}
+            td
+               router-link(:to="{name:'movementClient', params:{id:p.client.id}}") ({{p.client.id}}) {{p.client.nom }}
             td
                button.btn-outline-primary.btn.btn-sm
                   i.fa.fa-university
@@ -20,35 +19,35 @@
 </template>
 
 <script>
-   import TableLayout from "@/components/layouts/TableLayout";
+    import TableLayout from "@/components/layouts/TableLayout";
 
-   export default {
-      name: "Caisse",
-      data() {
-         return {
-            items: ['#', 'Date de payement', 'Commandes', 'Montant', 'Client', 'Action'],
-            checkout: null
-         }
-      },
-      mounted() {
-         this.getCheckout()
-      },
-      methods: {
-         getCheckout() {
-            axios.get('/api/payments/checkout')
-               .then(({data}) => {
-                  this.checkout = data
-               })
-               .catch(({response}) => console.log(response))
+    export default {
+        name: "Caisse",
+        data() {
+            return {
+                items: ['#', 'Date de payement', 'Montant', 'Client', 'Verser vers'],
+                checkout: null
+            }
+        },
+        mounted() {
+            this.getCheckout()
+        },
+        methods: {
+            getCheckout() {
+                axios.get('/api/payments/checkout')
+                    .then(({data}) => {
+                        this.checkout = data
+                    })
+                    .catch(({response}) => console.log(response))
 
-         }
-      },
-      components: {TableLayout}
-   }
+            }
+        },
+        components: {TableLayout}
+    }
 </script>
 
 <style scoped>
-   td button{
+   td button {
       margin-right: 4px;
    }
 </style>

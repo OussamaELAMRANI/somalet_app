@@ -2,12 +2,19 @@
 
 namespace App;
 
+use App\Services\Filters\Products\OrdersFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Order extends Model
 {
    protected $guarded = [];
+
+   public function scopeFilter(Builder $builder, Request $req, array $filters = [])
+   {
+      return (new OrdersFilter($req))->add($filters)->filter($builder);
+   }
 
    public function scopeLast(Builder $builder)
    {
@@ -19,10 +26,10 @@ class Order extends Model
       return $this->belongsTo(Client::class);
    }
 
-   function payments()
-   {
-      return $this->hasMany(Payment::class,'cmd_id');
-   }
+//   function payments()
+//   {
+//      return $this->hasMany(Payment::class,'cmd_id');
+//   }
 
 
    /**
@@ -32,7 +39,7 @@ class Order extends Model
    {
       return $this->belongsToMany(Product::class, 'order_items',
          'cmd_id', 'product_id')
-         ->withPivot(['qte', 'qte','discount']);
+         ->withPivot(['qte', 'qte_rapport','price','discount']);
    }
 
    /**

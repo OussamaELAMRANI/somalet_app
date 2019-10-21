@@ -71,6 +71,7 @@
         "ag-grid-community": "^20.2.0",
         "ag-grid-vue": "^20.2.0",
         "vee-validate": "^2.2.8",
+        "vue-html-to-paper": "^1.1.1",
         "vue-property-decorator": "^7.3.0",
         "webpack": "^4.32.2"
     }

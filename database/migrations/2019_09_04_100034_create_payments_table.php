@@ -26,21 +26,22 @@ class CreatePaymentsTable extends Migration
    {
       Schema::create('payments', function (Blueprint $table) {
          $table->bigIncrements('id');
-         $table->dateTime('payed_at')->useCurrent();
-         $table->dateTime('date_deadline')->nullable();
+         $table->date('payed_at')->useCurrent();
+         $table->date('date_deadline')->nullable();
          $table->double('amount');
          // En Caisse
          $table->integer('checkout_now')->default(0);
          $table->enum('type', ['ESP', 'CHQ', 'EFF']);
          $table->integer('done')->default(0); // [IMPAYE, PAYE]
 
-         $table->unsignedBigInteger('cmd_id');
+
+         $table->unsignedBigInteger('client_id');
          $table->unsignedBigInteger('adjust_by')->nullable()->unsigned();
          $table->unsignedBigInteger('in_bank')->nullable()->unsigned();
 
-         $table->foreign('cmd_id')
+         $table->foreign('client_id')
             ->references('id')
-            ->on('orders')
+            ->on('clients')
             ->onUpdate('cascade');
 
          $table->foreign('in_bank')

@@ -24,7 +24,7 @@ class CommandRequest extends FormRequest
    public function rules()
    {
       return [
-         'cmd_number' => 'required|string|unique:orders',
+         'cmd_number' => 'required|unique:orders',
          'date_cmd' => 'required|date',
       ];
    }

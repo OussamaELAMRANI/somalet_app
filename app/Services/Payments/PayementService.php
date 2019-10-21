@@ -22,7 +22,8 @@ class PayementService
    {
       $payment = 0;
       foreach ($product as $p) {
-         $payment += $p['pivot']['qte_price'];
+//         (p.pivot.price - p.pivot.discount) * p.pivot.qte * p.pivot.qte_rapport
+         $payment += ($p['pivot']['price'] - $p['pivot']['discount']) * $p['pivot']['qte'] * $p['pivot']['qte_rapport'];
       }
       return $payment;
    }
@@ -38,21 +39,22 @@ class PayementService
 
    private function availablePayment($cmd)
    {
-      $order = Order::where('cmd_number', $cmd)->with('payments', 'product')->first();
-      $amount = $this->getOrderPrice(collect($order)->get('product'));
-      $payment = $this->getOrderPayment(collect($order)->get('payments'));
+      //$order = Order::where('client_id', $cmd)->with('product')->first();
+      //$amount = $this->getOrderPrice(collect($order)->get('product'));
+//      $payment = $this->getOrderPayment(collect($order)->get('payments'));
 
-      $total = $payment - $amount;
-      if ($total == 0)
-         return 0;
+////      $total = $payment - $amount;
+//      if ($total == 0)
+//         return 0;
 
-      return $order->id;
+//      return $order->id;
    }
 
-   public function addPayment($cmd)
+   public function addPayment($client_id)
    {
-      $isAvailable = $this->availablePayment($cmd);
-      if ($isAvailable != 0) {
+//      $isAvailable = $this->availablePayment($cmd);
+//      if ($isAvailable != 0) {
+
          $payment = $this->req->input('payment');
 
          if ($payment['type'] == 'ESP')
@@ -61,36 +63,36 @@ class PayementService
          $payment['payed_at'] = Carbon::parse($payment['payed_at'])->toDateString();
          $payment['date_deadline'] = Carbon::parse($payment['date_deadline'])->toDateString();
 
-         $add_payement = array_merge(['cmd_id' => $isAvailable], $payment);
+         $add_payement = array_merge(['client_id' => $client_id], $payment);
 
          $payments = Payment::create($add_payement);
          return response()->json(['payment' => $payments, 'message' => 'Payment added successfully !'], 201);
-      }
+//      }
 
       // type => [payed_at, date_deadline, amount, checkout_now], done
 
-      return response()->json("Cannot add payment to this command !", 400);
+//      return response()->json("Cannot add payment to this command !", 400);
 
 
-      $add_payement = array_merge($cmd, $payment);
+//      $add_payement = array_merge($cmd, $payment);
 
-      $payments = Payment::create($add_payement);
+//      $payments = Payment::create($add_payement);
 
-      return response()->json(['data' => $payments, 'message' => "Added success"], 201);
+//      return response()->json(['data' => $payments, 'message' => "Added success"], 201);
 
    }
 
    // Caisse is payement has Bank=null, and Type = ESP
    public function getCheckout()
    {
-      $checkout = Payment::where('in_bank', null)->where('type', 'ESP')->with('order', 'order.client')->get();
+      $checkout = Payment::where('in_bank', null)->where('type', 'ESP')->with('client')->get();
       return response()->json($checkout, 201);
    }
 
    // PortFeuille is payement has Bank=null, and Type = [EFF,CHQ]
    public function getCheques()
    {
-      $checkout = Payment::where('in_bank', null)->whereIn('type', ['EFF', 'CHQ'])->with('order', 'order.client')->get();
+      $checkout = Payment::where('in_bank', null)->whereIn('type', ['EFF', 'CHQ'])->with('client')->get();
       return response()->json($checkout, 201);
    }
 

@@ -1,124 +1,146 @@
 <template lang="pug">
    #client_detail.container
-      .row(v-if="client===null")
-         div(class="col-2")
-            SelfBuildingSquareSpinner( :animation-duration="6000" :size="40" color="#ff1d5e")
-      table-layout(:head-table="hItems", :data="client" v-else)
-         tr
-            td {{client === null ? null: client.lastName}} {{client === null ? null: client.firstName}}
-            td {{client === null ? null: client.numTva}}
-            td {{client === null ? null: client.nSiret}}
-            td.font-italic {{client === null ? null: client.address}},  {{client === null ? null: client.city}} {{client === null ? null: client.country}}
+      .row
+         .col-12
+            .card
+               .card-header
+                  h4.text-uppercase
+                     | - Client:
+                     strong.text-primary
+                        | {{' '+client.nom}}
+                        | ({{client.id}})
+               .card-body
+                  .row
+                     .col-2
+                        h4.text-secondary.text-uppercase.text-right Remises
+                     .col
+                        hr
+                  .row
+                     .col-9
+                        table-layout(:head-table="hRemise", theme='bg-success text-white', :data="discounts")
+                           tr(v-for="(p,i) in discounts")
+                              td {{p.name}}
+                              td {{p.pivot.discount}}
+                              td
+                                 button.btn.btn-sm.btn-outline-danger.mx-1.rounded-pill.shadow(@click="deleteDiscount(p.id)")
+                                    i.fa.fa-trash
+                     .col-3.segment.shadow.mt-0
+                        .form-group
+                           label Désignation
+                           cool-select(:items='prods' @search='onSearch' :loading='loading'
+                              item-text='name' name='produit' v-model='newDiscount.product_id' item-value='product_id')
+                           template(slot='item' slot-scope='{ item:p }')
+                              .d-flex
+                                 div
+                                    p {{ p.name }} -
+                                       span.text-primary.font-weight-bolder {{ p.reference }}
+                           template(slot='no-data') {{ noData ? "Aucun produit trouvée" :"Chercher par nom de produit" }}
+                        .form-group
+                           label Reference
+                           input.form-control(type="text" placeholder="Montant en DH ..." v-model="newDiscount.discount")
+                        .form-group
+                           hr
+                           button.btn-outline-success.btn.btn-block.rounded-pill(@click="addDiscount") Ajouter une Remise
 
-      .row.justify-content-center
-         .col-3
-            p.text-primary.lead
-               i.fa.fa-voicemail
-               span {{client === null ? null: client.phone}}
-         .col-3
-            p.text-primary.lead
-               i.fa.fa-phone
-               | {{client === null ? null: client.cell}}
-         .col-4
-            p.text-primary.lead
-               i.fa.fa-envelope
-               | {{client === null ? null: client.email}}
-      hr
 
-      h4.text-secondary.text-uppercase Remises
-      .row.justify-content-center.align-items-center
-         .col-3
-            .form-group
-               label Désignation
-               cool-select(:items='products'  name='ref' placeholder="Désignation" v-model='newDiscount.name'
-                  v-validate="'required'")
-                  template(slot='item' slot-scope='{ item:p }')
-                     p {{ p.lastName }}
-                        strong {{ ' '+ p.firstName }}
-               span.help.text-danger(v-show="errors.has('client')") Vous devez selectionner le client
-         .col-6
-            .form-group
-               label Reference
-               input.form-control(type="text" placeholder="Montant en DH ..." v-model="newDiscount.discount")
-         .col-3
-            button.btn-success.btn
-               i.fa.fa-plus
-               | {{' Ajouter une Remise'}}
 
-      .row(v-if="discount===[]")
-         div(class="col-2")
-            SelfBuildingSquareSpinner( :animation-duration="6000" :size="40" color="#ff1d5e")
-      table-layout(:head-table="hRemise", theme='bg-success text-white', :data="client")
-         tr(v-for="(p,i) in discount")
-            td {{p.reference}}
-            td {{p.discount}}
-            td
-               button.btn.btn-sm.btn-primary.mx-1(@click="modifyDiscount(i)")
-                  i.fa.fa-pen
-               button.btn.btn-sm.btn-danger.mx-1(@click="deleteDiscount(i)")
-                  i.fa.fa-trash
-      h4.text-uppercase.text-primary Mouvements client
+      h4.text-uppercase.text-primary.my-2 Mouvements client
       hr
       .row.justify-content-center.text-center
          .col-4
-            button.btn.btn-primary
+            router-link.btn.btn-primary(:to="{name:'movementClient',params:{id: $route.params.id}}")
                i.fa.fa-list.mx-2
                |  Afficher les mouvements en detail
 </template>
 
 <script>
-   import TableLayout from "@/components/layouts/TableLayout";
-   import SelfBuildingSquareSpinner from "epic-spinners/src/components/lib/SelfBuildingSquareSpinner";
-   import {CoolSelect} from 'vue-cool-select'
+    import TableLayout from "@/components/layouts/TableLayout";
+    import SelfBuildingSquareSpinner from "epic-spinners/src/components/lib/SelfBuildingSquareSpinner";
+    import {CoolSelect} from 'vue-cool-select'
 
-   export default {
-      name: "ClientDetail",
-      components: {SelfBuildingSquareSpinner, TableLayout, CoolSelect},
-      data() {
-         return {
-            client: null,
-            hItems: ['Nom Prénom', 'TVA', 'SIRET', 'Adresse'],
-            hRemise: ['Produit', 'Remise en (DH) ', 'Actions'],
-            discount: [],
-            products: [],
-            newDiscount: {
-               discount: null,
-               name: null,
+    export default {
+        name: "ClientDetail",
+        components: {SelfBuildingSquareSpinner, TableLayout, CoolSelect},
+        data() {
+            return {
+                client: [],
+                hRemise: ['Produit', 'Remise en (DH) ', 'Supprimer'],
+                discounts: [],
+                products: [],
+                newDiscount: {
+                    discount: null,
+                    product_id: 0,
+
+                },
+                prods: Array(),
+                loading: false,
+                noData: false,
+                client_id: this.$route.params.id
             }
-         }
-      },
-      created() {
-         const id = this.$route.params.id
-         axios.get(`/api/clients/${id}`)
-            .then(({data}) => {
-               const {discounting} = data
-               this.client = data
-               this.discount = discounting
-            })
-            .catch(({response}) => {
-               console.log(response)
-            })
-         this.getDiscounting()
-      },
-      methods: {
-         modifyDiscount(reference) {
+        },
+        created() {
+            this.getDiscounting(this.client_id)
+        },
+        methods: {
+            postDiscount(id, product_id, discount) {
+                axios.post(`/api/clients/${id}/discount`, {product_id, discount})
+                    .then(({data}) => {
+                        console.log(data)
+                        this.getDiscounting(id)
+                        this.$notification.success("Remise a été bien ajouté ")
+                    })
+                    .catch((err) => {
+                        console.log(err.response)
+                    })
+            },
+            addDiscount() {
+                const id = this.client_id
+                const product_id = this.newDiscount.product_id;
+                const {discount} = this.newDiscount;
+                this.postDiscount(id, product_id, discount)
+            },
 
-         },
-         deleteDiscount(reference) {
-            this.discount = _.filter(this.discount, d => d['reference'] !== reference)
-         },
-         getDiscounting(){
-            axios.get(`/api/products/distinct`)
-               .then(({data}) => {
-                  this.products = data
-               })
-               .catch(({response}) => {
-                  console.log(response)
-               })
-         }
-      },
-      computed: {}
-   }
+            deleteDiscount(id) {
+                this.postDiscount(this.client_id, id, 0)
+            },
+            getDiscounting(id) {
+                axios.get(`/api/clients/${id}`)
+                    .then(({data}) => {
+                        const {products} = data
+                        this.client = data
+                        this.discounts = products
+                    })
+                    .catch(({response}) => {
+                        console.log(response)
+                    })
+            },
+            onSearch(search) {
+                // let rejectId = ""
+                const lettersLimit = 2;
+
+                this.noData = false;
+                if (search.length < lettersLimit) {
+                    this.prods = [];
+                    this.loading = false;
+                    return;
+                }
+                this.loading = true;
+
+                axios.get(`/api/receptions/search/${search}`, {
+                    params: {
+                        // client_id: this.$route.params.id
+                    }
+                }).then(({data}) => {
+                    this.prods = data;
+                    if (data.length === 0)
+                        this.noData = true
+
+                    this.loading = false;
+                })
+            },
+        },
+        computed: {}
+    }
 </script>
 
 <style scoped>

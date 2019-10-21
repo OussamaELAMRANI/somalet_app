@@ -5,7 +5,7 @@ export default [
       component: () => import('@/pages/Reglement/Reglements'),
       redirect:'reglements/caisse',
       meta: {
-         title: 'Réglements', name: 'reglements', icon: 'fa fa-cash-register', roles: 'guest'
+         title: 'Facturation', name: 'reglements', icon: 'fa fa-cash-register', roles: 'guest'
       },
       children: [
 
@@ -31,7 +31,7 @@ export default [
             component: () => import('@/pages/Reglement/Banks'),
             redirect:'banks/molsat',
             meta: {
-               title: "Banque", name: 'banks', icon: 'fa fa-gor', roles: 'guest'
+               title: "Banques", name: 'banks', icon: 'fa fa-gor', roles: 'guest'
             },
             children: [
                {

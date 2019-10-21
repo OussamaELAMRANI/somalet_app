@@ -8,8 +8,8 @@ class Payment extends Model
 {
    protected $guarded = [];
 
-   public function order()
+   public function client()
    {
-      return $this->belongsTo(Order::class,'cmd_id');
+      return $this->belongsTo(Client::class,'client_id');
    }
 }

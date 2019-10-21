@@ -9,7 +9,6 @@
             <th>Remise</th>
             <th>Prix</th>
             <th>Prix de vente</th>
-<!--            <th>Montant</th>-->
             <th>Action</th>
          </tr>
          </thead>
@@ -27,11 +26,6 @@
                <td>{{order.discount}}</td>
                <td>{{order.price}}</td>
                <td>{{(order.price - order.discount) * (v * k) | fixed_two}}</td>
-<!--               <td>-->
-<!--                  <code>-->
-<!--                     {{order.qte_cmd}}-->
-<!--                  </code>-->
-<!--               </td>-->
                <td>
                   <button class="btn btn-danger btn-sm rounded-circle">
                      <i class="fa fa-minus"></i>
@@ -41,15 +35,6 @@
          </template>
 
          </tbody>
-         <!--         <tfoot class="segment">-->
-         <!--         <tr>-->
-         <!--            <td colspan="6" class="">-->
-         <!--               <span class="badge font-weight-bolder badge-success badge-pill">{{orders.length}} Produit (s)</span>-->
-         <!--            </td>-->
-         <!--            <td class="text-primary font-weight-bolder">{{total | twoFixed}} DH</td>-->
-         <!--            <td colspan="5" class="text-primary font-weight-bolder"> TOTAL</td>-->
-         <!--         </tr>-->
-         <!--         </tfoot>-->
       </table>
    </div>
 </template>

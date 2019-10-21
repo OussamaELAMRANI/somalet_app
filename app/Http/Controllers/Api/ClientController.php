@@ -6,6 +6,7 @@ use App\Client;
 use App\Services\Clients\ClientService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ClientController extends Controller
 {
@@ -82,8 +83,28 @@ class ClientController extends Controller
       $professional = $in->input('professional');
       $contact = $in->input('contact');
       $data = array_merge($personal, $professional, $contact, ['id' => $in->input('id')]);
-      $data['nom'] = $data['lastName'] . $data['firstName'];
+      $data['nom'] = $data['lastName'] . ' ' . $data['firstName'];
       return $data;
    }
 
+
+   public function getMovements($id)
+   {
+      return $this->service->getMovementClient($id);
+   }
+
+   public function getClientSold($client)
+   {
+      return $this->service->getClientSold($client);
+   }
+
+   public function storeDiscount(Request $req, $client)
+   {
+      $client = Client::find($client);
+      $product_id = $req->get('product_id');
+      $discount = $req->get('discount');
+
+      $client->products()->syncWithoutDetaching([$product_id => ['discount' => $discount]]);
+      return response()->json(['message' => 'Is Added successfully'], Response::HTTP_OK);
+   }
 }

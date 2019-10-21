@@ -20,6 +20,7 @@
                th Produit
                th Quantité
                th Rapport
+               th Total
                th Unité
                th Prix Unitaire
                th Prix de Vente
@@ -28,14 +29,15 @@
                td {{p.name}}
                td
                   .input-group-sm.input-group
-                     input.form-control.form-control-sm(type="number" placeholder="Quantité ...", v-model.number="products[i].pivot.qte_reception")
+                     input.form-control.form-control-sm(type="number" placeholder="Quantité ...", v-model.number="products[i].pivot.qte_validation")
                      .input-group-prepend
                         span.input-group-text.bg-primary.text-white.font-weight-bolder {{p.pivot.qte_reception}}
                td
                   .input-group-sm.input-group
-                     input.form-control.form-control-sm(type="number" placeholder="Rapport ...", v-model.number="products[i].pivot.qte_rapport_reception")
+                     input.form-control.form-control-sm(type="number" placeholder="Rapport ...", v-model.number="products[i].pivot.qte_rapport_validation")
                      .input-group-prepend
                         span.input-group-text.bg-primary.text-white.font-weight-bolder {{p.pivot.qte_rapport_reception}}
+               td(class="text-primary") {{p.pivot.qte_rapport_reception * p.pivot.qte_reception}}
                td {{p.unit.name}}
                td
                   input.form-control.form-control-sm(type="number" placeholder="Modifier", v-model.number="products[i].pivot.price_unit_ht")
@@ -44,7 +46,8 @@
          tfoot
             tr
                td.text-right(colspan="6")
-                  button.btn.btn-outline-primary(@click="validContainer") Valider le Contenaire
+                  button.btn.btn-outline-primary.mx-1(@click="validContainer(false)") Valider le Contenaire
+                  button.btn.btn-outline-success.mx-1(@click="validContainer(true)") Valider tout
 
 </template>
 
@@ -75,10 +78,15 @@
                 })
         },
         methods: {
-            validContainer() {
+            validContainer(validAll) {
+                let URL = `/api/inventories/${arrival_id}/validate`
                 const arrival_id = this.$route.params.id
                 const products = this.products
-                axios.patch(`/api/inventories/${arrival_id}/validate`, {products})
+
+                if(validAll)
+                    URL = `/api/inventories/${arrival_id}/validate-all`
+
+                axios.patch(URL, {products})
                     .then(({data}) => {
                         console.log(data)
                         this.$notification.success("La validation a effectuée 👍")
