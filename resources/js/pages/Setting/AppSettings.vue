@@ -5,11 +5,14 @@
       hr
       .row.justify-content-center
          .col-3
-            box(img='boxes/pantone.svg' title='Couleurs' h='h4' size='70px' subtitle='Gérer les couleur' link='settingColors' :hasstate='null')
+            box(img='boxes/pantone.svg' title='Couleurs' h='h4' size='70px' subtitle='Gérer les couleur' link='settingColors' :hasState='null')
          .col-3
-            box(img='boxes/measuring-tape.svg' title='Unités' h='h4' size='70px' subtitle='Régler les unités' link='settingUnity' :hasstate='null')
+            box(img='boxes/measuring-tape.svg' title='Unités' h='h4' size='70px' subtitle='Régler les unités' link='settingUnity' :hasState='null')
          .col-3
-            box(img='boxes/networking.svg' title='Catégories' h='h4' size='70px' subtitle='Ajouter les catégories' link='settingCategory' :hasstate='null')
+            box(img='boxes/networking.svg' title='Catégories' h='h4' size='70px' subtitle='Ajouter les catégories' link='settingCategory' :hasState='null')
+
+         .col-3
+            box(img='boxes/money.svg' title='Paiéments' h='h4' size='70px' subtitle='Types de paiéments' link='settingPayments' :hasState='null')
       hr
       router-view
 </template>

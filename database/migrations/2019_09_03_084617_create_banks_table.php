@@ -17,7 +17,12 @@ class CreateBanksTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('company');
+            // Internal BANK [IF, MOLSAT]
+           // OUT for payment [chq] from X bank
+            $table->enum('type',['IN','OUT'])->default('OUT');
             $table->timestamps();
+           $table->softDeletes();
+
         });
     }
 

@@ -40,14 +40,21 @@
       <hr>
       <div class="row">
          <div class="col-9">
-            <table-layout :head-table="['#','ID','Nom','Prénom','Actions']" :data="dataTable"
+            <table-layout :head-table="['ID','Nom','Prénom','Actions']" :data="clients"
                           empty-text="Pas de client dans ce cas (Vide...)" theme="bg-primary text-white small">
-
-               <tr v-for="(p,index) in clients.data" :id="p.id">
-                  <th scope="row">{{index+1}}</th>
+               <tr>
+                  <td colspan="4" v-if="isloading">
+                     <div class="row justify-content-center bg-white">
+                        <div class="col-2">
+                           <half-circle-spinner color="#f83896" :size="40"/>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+               <tr v-for="(p) in clients" :id="p.id">
                   <td>{{p.id}}</td>
                   <td>{{p.lastName}}</td>
-                  <td>{{p.firstName}} </td>
+                  <td>{{p.firstName}}</td>
                   <td>
                      <button class="btn btn-sm btn-outline-info rounded-pill shadow" data-toggle="modal"
                              data-target="#exampleModal"
@@ -74,26 +81,26 @@
                   </td>
                </tr>
             </table-layout>
-            <pagination :data="clients" align="center" @pagination-change-page="filter"></pagination>
+            <!--            <pagination :data="clients" align="center" @pagination-change-page="filter"></pagination>-->
          </div>
          <div class="col mt-0 segment">
             <h5 class="text-uppercase text-secondary">Filter par: </h5>
             <hr>
             <form @submit.prevent="">
-               <div class="form-group   my-2">
-                  <label for="">ID</label>
-                  <input type="text" class="form-control rounded-pill" v-model="searchTxt" v-on:keyup.enter="filter"
-                         placeholder="Recherche ID ..."
-                         autofocus>
-               </div>
                <div class="form-group  my-1">
                   <label for="">NOM ou Prénom</label>
-                  <input type="text" class="form-control rounded-pill" v-model="searchTxt" v-on:keyup.enter="filter"
+                  <input type="text" class="form-control rounded-pill" v-model="searchTxt" v-on:keyup.enter="filter()"
                          placeholder="Recherche par Nom complet"
                          autofocus>
                </div>
-               <hr>
-               <button class="rounded-pill btn btn-outline-primary btn-block">FILTER</button>
+               <div class="form-group   my-2">
+                  <label for="">ID</label>
+                  <input type="text" class="form-control rounded-pill" v-model="searchId"
+                         v-on:keyup.enter="filter(1)"
+                         placeholder="Recherche ID ...">
+               </div>
+               <!--               <hr>-->
+               <!--               <button class="rounded-pill btn btn-outline-primary btn-block">FILTER</button>-->
             </form>
          </div>
       </div>
@@ -109,18 +116,22 @@
     import AlertModal from "@/components/Modals/AlertModal";
     import TableLayout from "@/components/layouts/TableLayout";
     // import pagination from "laravel-vue-pagination";
+    import {HalfCircleSpinner} from 'epic-spinners'
 
     export default {
         name: "ClientsList",
         data() {
             return {
                 ElementIdToDelete: null,
-                clients: {},
+                clients: [],
                 searchClients: null,
                 searchTxt: '',
+                searchId: '',
+                by: 'id',
                 opt: 'ste',
                 client: {},
-                dataTable: null
+                dataTable: null,
+                isloading: false
             }
         },
         mounted() {
@@ -149,21 +160,25 @@
             redirect(id) {
                 this.$router.push({name: 'updateClient', params: {id}});
             },
-            filter(page = 1) {
-                // const by = this.opt
-                const by = 'nom';
+            filter(arg = 0) {
+                this.isloading = true;
+                let quote = this.searchTxt;
+                let by = 'name';
 
-                axios.get(`/api/clients/search/${this.searchTxt}`,
+                if (arg == 1) {
+                    quote = this.searchId;
+                    by = 'id'
+                }
+
+                axios.get(`/api/clients/by`,
                     {
-                        params: {
-                            by,
-                            page,
-                        }
+                        params: {by, quote}
                     })
-                    .then(res => {
-                        const data = res.data
-                        this.clients = data
-                        this.dataTable = data.total
+                    .then(({data}) => {
+                        console.log(data)
+                        this.clients = data;
+                        this.isloading = false;
+
                     })
                     .catch(err => console.log(err.response))
             },
@@ -181,7 +196,7 @@
             },
         },
         components: {
-            TableLayout,
+            TableLayout, HalfCircleSpinner,
             ShowClient, AlertModal,
         }
     }

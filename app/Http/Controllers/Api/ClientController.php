@@ -107,4 +107,17 @@ class ClientController extends Controller
       $client->products()->syncWithoutDetaching([$product_id => ['discount' => $discount]]);
       return response()->json(['message' => 'Is Added successfully'], Response::HTTP_OK);
    }
+
+   public function getClientBy(Request $req)
+   {
+      $by = $req->get('by');
+      $search = $req->get('quote');
+
+
+      if ($by == 'id') {
+         return \response()->json(Client::where('id', $search)->get(), 200);
+      } else {
+         return \response()->json(Client::where('nom', 'like', "%{$search}%")->get(), 200);
+      }
+   }
 }

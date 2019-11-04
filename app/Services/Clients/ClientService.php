@@ -70,10 +70,12 @@ class ClientService
       // Filter By [Client_id, Date_from, to]
       $client = Client::find($id);
       $orders = $client->commands()->whereBetween('date_cmd', [$res[0], $res[1]])->with('product')->get()->groupBy('date_cmd')->toArray();
-      $payments = $client->payments()->whereBetween('payed_at', [$res[0], $res[1]])->get()->groupBy('payed_at')->toArray();
+      $payments = $client->payments()->whereBetween('payed_at', [$res[0], $res[1]])
+         ->join('payment_types AS t', 't.id', '=', 'payments.typed')
+         ->get()->groupBy('payed_at')->toArray();
 
-      $sold = $this->getClientSold($id);
-      $sold_today = $sold + ($this->getClientSold($id, $res[1]) - $this->getClientSold($id, $res[0]));
+      $sold = $this->getClientSold($id, $res[0]);
+      $sold_today = ($this->getClientSold($id, $res[1]) - $sold);
 
       $movements = [];
       foreach ($orders as $k => $v) {

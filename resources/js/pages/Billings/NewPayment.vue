@@ -8,39 +8,52 @@
                h5.text-primary CLIENT :
                   strong {{' '+client.nom}} ({{client.id}})
                hr
+               .row.justify-content-center.my-3
+                  .col-6
+                     .form-group
+                        label Mode de paiément
+                        select.form-control(v-model="payment.typed")
+                           option(:value="null" disabled) Selectionnez ici
+                           option(v-for="(t,i) in types" :value="t.id") {{t.type}}
                .row.justify-content-center
+                  .col-12
+                     hr
                   .col-4
-                     label Date de paiément
+                     label Date d'encaissement
                      datepicker.form-control(:language='fr' :monday-first='true' format="dd/MM/yyyy" @selected="getDate"
                         calendar-button-icon='fa fa-user' name='date_picker' v-model='payed_at' id="payed")
                   .col-4
                      label Montant
                      .input-group
-                        input.form-control(type='text' v-model.number="payment.amount")
+                        input.form-control(type='number' v-model.number="payment.amount")
                         .input-group-append
                            span.input-group-text DH
-               .row.justify-content-center.my-5
-                  .col-6
-                     p.text-primary.text-center.text-uppercase Mode de paiément
-                     payment-type(:types='types' @getType="getType")
-               transition(name="deadline")
-                  .row.justify-content-center(v-if="payment.type!='ESP'")
-                     .col-4
-                        .form-group
-                           label Date d'échéance :
-                           datepicker.form-control(:language='fr' :monday-first='true' format="dd/MM/yyyy" @selected="getDeadline"
-                              calendar-button-icon='fa fa-user' name='date_picker' v-model='date_deadline')
-                     .col-4
-                        .form-group
-                           label Numéro
-                           input.form-control(type="text" placeholder="Numero de CHQ/EFF", v-model="payment.chq_number")
-                     .col-4
-                        .form-group
-                           label Désignation
-                           input.form-control(type="text" placeholder="Banque, remarque ...", v-model="payment.designation")
+
+                     //payment-type(:types='types' @getType="getType")
+
+                  .col-4
+                     .form-group
+                        label Banque
+                        select.form-control(v-model="payment.from_bank")
+                           option(:value="null") Indifférent
+                           option(v-for="(t,i) in banks" :value="t.id") {{t.company}}
+                  .col-4
+                     .form-group
+                        label Date d'échéance :
+                        datepicker.form-control(:language='fr' :monday-first='true' format="dd/MM/yyyy" @selected="getDeadline"
+                           calendar-button-icon='fa fa-user' name='date_picker' v-model='date_deadline')
+                  .col-4
+                     .form-group
+                        label Numéro
+                        input.form-control(type="text" placeholder="Numero de CHQ/EFF", v-model="payment.chq_number")
+                  .col-4
+                     .form-group
+                        label Désignation
+                        input.form-control(type="text" placeholder="Remarque ...", v-model="payment.designation")
+
                hr
                .row.justify-content-end
-                  .col-3
+                  .col-3.text-right
                      button.btn.btn-primary(@click="checkout") Ajouter ce paiément
 
 
@@ -62,18 +75,16 @@
                     payed_at: moment(new Date()).format('YYYY-MM-DD'),
                     date_deadline: moment(new Date()).format('YYYY-MM-DD'),
                     amount: 0,
-                    type: 'ESP',
+                    typed: null,
+                    from_bank: null,
                     chq_number: '',
                     designation: '',
                 },
                 payed_at: moment().toDate(),
                 date_deadline: moment().toDate(),
-                types: [
-                    {id: 'CHQ', h: 'h5', title: "Chéque", isActive: false, img: 'boxes/cheque.svg'},
-                    {id: 'ESP', h: 'h5', title: "Espace", isActive: true, img: 'boxes/bills.svg'},
-                    {id: 'EFF', h: 'h5', title: "Effet", isActive: false, img: 'boxes/effet.svg'},
-                ],
-                client: []
+                types: [],
+                client: [],
+                banks: [],
             }
         },
         mounted() {
@@ -87,7 +98,17 @@
                     this.$router.push('/404')
                     this.$notification.error(error.response.data);
 
+                });
+            axios.get('/api/payments-type')
+                .then(({data}) => {
+                    this.types = data;
                 })
+                .catch(error => console.log(error));
+            axios.get('/api/banks/external')
+                .then(({data}) => {
+                    this.banks = data;
+                })
+                .catch(error => console.log(error))
         },
         methods: {
             getDate(d) {
@@ -109,7 +130,7 @@
                         this.$notification.success('Paiément a été bien ajouté !');
 
                         // if(this.payment.type == 'ESP')
-                           this.$router.push({name:'caisse'})
+                        this.$router.push({name: 'listClient'})
                         // else
                         //    this.$router.push({name:'portfeuille'})
                     })

@@ -46,11 +46,14 @@ Route::prefix('providers')->group(function () {
 });
 Route::prefix('clients')->group(function () {
 
+   Route::get('by', 'Api\ClientController@getClientBy');
+
    Route::get('search/{searchValue?}', 'Api\ClientController@search');
    Route::get('{id}/movements', 'Api\ClientController@getMovements');
    Route::get('{id}/sold', 'Api\ClientController@getClientSold');
 
    Route::post('{client}/discount', 'Api\ClientController@storeDiscount');
+
 
    Route::get('', 'Api\ClientController@index');
    Route::post('', 'Api\ClientController@store');
@@ -160,6 +163,15 @@ Route::prefix('orders')->group(function () {
 });
 
 Route::prefix('payments')->group(function () {
+   Route::put('transfer-to/{bank_id}', 'Api\PaymentController@transferToBank');
+
+   Route::post('transfer', 'Api\PaymentController@transfer');
+
+   Route::put('{id}/impaye', 'Api\PaymentController@makeImpaye');
+
+   Route::get('valid-invalid', 'Api\PaymentController@getDiffPayment');
+   Route::get('invalid', 'Api\PaymentController@getInvalidPayments');
+   Route::post('validate', 'Api\PaymentController@validatePayments');
 
    Route::post('{cmd}', 'Api\PaymentController@store');
 
@@ -186,5 +198,17 @@ Route::prefix('inventories')->group(function () {
 
 Route::prefix('banks')->group(function () {
    Route::get('', 'Api\BankController@index');
+   Route::get('external', 'Api\BankController@externals');
+   Route::get('internals', 'Api\BankController@internals');
    Route::get('{name}', 'Api\BankController@show');
+
+   Route::post('{bank?}', 'Api\BankController@storeOn');
+});
+
+Route::prefix('payments-type')->group(function () {
+
+
+   Route::get('', 'PaymentTypeController@index');
+   Route::post('', 'PaymentTypeController@store');
+
 });

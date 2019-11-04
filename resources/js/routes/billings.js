@@ -38,8 +38,18 @@ export default [
          //    path: 'billings-list',
          //    component: () => import('@/pages/Billings/BillingsList'),
          //    meta: {
-         //       title: "Payéments", name: 'listOrder', icon: 'fa fa-gor', roles: 'guest'
+         //       title: "PortFeuille", name: 'listBilling', icon: 'fa fa-gor', roles: 'guest'
          //    },
+         // },
+
+         // {
+         //    name: 'monthBilling',
+         //    path: ':year/:month/billings',
+         //    component: () => import('@/pages/Billings/Monthly'),
+         //    meta: {
+         //       title: "PortFeuille Monsuelle", name: 'monthBilling', icon: 'fa fa-gor', roles: 'guest'
+         //    },
+         //    hidden: true
          // },
       ]
    },

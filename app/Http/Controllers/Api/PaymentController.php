@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Bank;
+use App\Payment;
 use App\Services\Payments\PayementService;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
@@ -32,5 +35,43 @@ class PaymentController extends Controller
    public function getPayments()
    {
       return $this->service->getPayments();
+   }
+
+   public function getDiffPayment()
+   {
+      return $this->service->getPayments2Types();
+   }
+
+   public function getInvalidPayments()
+   {
+      return $this->service->getNoValidPayments();
+   }
+
+   public function validatePayments()
+   {
+      return $this->service->validatePayments();
+   }
+
+   public function transfer()
+   {
+      return $this->service->transferMoney();
+   }
+
+   public function makeImpaye(Payment $id)
+   {
+      return $this->service->makeImpaye($id);
+   }
+
+   public function transferToBank($bank_id, Request $request)
+   {
+      $ids = $request->get('ids');
+
+      foreach ($ids as $id) {
+         $payment = Payment::find($id);
+         $payment->update(['in_bank' => $bank_id]);
+      }
+
+      return response()->json('Transfer to the Bank Successfully ! ', 201);
+
    }
 }

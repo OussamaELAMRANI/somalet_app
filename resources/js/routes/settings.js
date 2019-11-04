@@ -21,7 +21,7 @@ export default [
             path: 'unities',
             component: () => import('@/pages/Setting/Unities/UnitySetting'),
             meta: {
-               title: "Paramétrage des unités", name: 'settingUnity', icon: 'fa fa-gor', roles: 'guest'
+               title: "Unités", name: 'settingUnity', icon: 'fa fa-gor', roles: 'guest'
             },
          },
          {
@@ -29,7 +29,15 @@ export default [
             path: 'categories',
             component: () => import('@/pages/Setting/Categories/CategorySetting'),
             meta: {
-               title: "Paramétrage des unités", name: 'settingUnity', icon: 'fa fa-gor', roles: 'guest'
+               title: "Catégories", name: 'settingCategory', icon: 'fa fa-gor', roles: 'guest'
+            },
+         },
+         {
+            name: 'settingPayments',
+            path: 'payments',
+            component: () => import('@/pages/Setting/Payments/PaymentsType'),
+            meta: {
+               title: "Paiéments", name: 'settingPayments', icon: 'fa fa-gor', roles: 'guest'
             },
          },
       ]
