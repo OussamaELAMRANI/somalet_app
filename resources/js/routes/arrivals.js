@@ -9,7 +9,7 @@ export default [
         component: Arrivals,
         redirect: 'arrivals/arrivals-list',
         meta: {
-            title: 'Arrivage', name: 'all_arrivals', icon: 'fa fa-tasks', roles: 'guest'
+            title: 'Arrivage', name: 'all_arrivals', icon: 'fa fa-tasks',  roles: ['MAGAZINIER','COMMERCIAL']
         },
         children: [
             {
@@ -17,24 +17,24 @@ export default [
                 path: 'new-arrival',
                 component: NewArrival,
                 meta: {
-                    title: 'Nouveau arrivage', name: 'new_arrival', icon: 'fa fa-briefcase', roles: 'guest'
+                    title: 'Nouveau arrivage', name: 'new_arrival', icon: 'fa fa-briefcase',  roles: ['MAGAZINIER','COMMERCIAL']
                 },
             },
-            {
-                name: 'update_arrival',
-                path: ':id/update',
-                component: NewArrival,
-                hidden:true,
-                meta: {
-                    title: 'Modifier arrivage', name: 'update_arrival', icon: 'fa fa-briefcase', roles: 'guest'
-                },
-            },
+            // {
+            //     name: 'update_arrival',
+            //     path: ':id/update',
+            //     component: NewArrival,
+            //     hidden:true,
+            //     meta: {
+            //         title: 'Modifier arrivage', name: 'update_arrival', icon: 'fa fa-briefcase', roles: 'guest'
+            //     },
+            // },
             {
                 name: 'list_arrivals',
                 path: 'arrivals-list',
                 component: ArrivalsList,
                 meta: {
-                    title: 'Liste des arrivages', name: 'list_arrivals', icon: 'fa fa-briefcase', roles: 'guest'
+                    title: 'Lister les arrivages', name: 'list_arrivals', icon: 'fa fa-briefcase',  roles: ['MAGAZINIER','COMMERCIAL']
                 },
             },
         ]

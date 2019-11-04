@@ -45,8 +45,8 @@
                   input.form-control.form-control-sm(type="number", placeholder="Prix de Vente" v-model.number="products[i].pivot.sell_price")
          tfoot
             tr
-               td.text-right(colspan="6")
-                  button.btn.btn-outline-primary.mx-1(@click="validContainer(false)") Valider le Contenaire
+               td.text-right(colspan="8")
+                  //button.btn.btn-outline-primary.mx-1(@click="validContainer(false)") Valider le Contenaire
                   button.btn.btn-outline-success.mx-1(@click="validContainer(true)") Valider tout
 
 </template>

@@ -9,7 +9,7 @@ export default [
       component: Stocks,
       redirect: 'stock/stock-list',
       meta: {
-         title: 'Stocks', name: 'allStocks', icon: 'fa fa-box', roles: 'guest'
+         title: 'Stocks', name: 'allStocks', icon: 'fa fa-box', roles: ['MAGAZINIER','COMMERCIAL']
       },
       children: [
          {
@@ -34,7 +34,7 @@ export default [
             path: 'inventories',
             component: Inventories,
             meta: {
-               title: "Stock réel", name: 'inventories', icon: 'fa fa-gor', roles: 'guest'
+               title: "Stock réel", name: 'inventories', icon: 'fa fa-gor',  roles: ['MAGAZINIER','COMMERCIAL']
             },
          },
          {

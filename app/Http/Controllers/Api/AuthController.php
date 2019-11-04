@@ -21,7 +21,7 @@ class AuthController extends Controller
     {
         $credentials = \request(['username', 'first_name', 'last_name', 'password']);
         User::create($credentials);
-        return response()->json(['message' => 'Cet utilisateur a ete bien crée !'], 201);
+        return response()->json(['message' => 'Cet utilisateur a été bien crée !'], 201);
     }
 
     /**
@@ -43,8 +43,8 @@ class AuthController extends Controller
         $user = $request->user();
         // Check type and Add it like a Scope
         $clientType = $user->checkClientType();
-        // Generate a Token and Specify the Scope (Admin, controller, magaziner ...)
-        $tokenResult = $user->createToken('Personal Access Token', [$clientType]);
+        // Generate a Token and Specify the Scope (Admin, controller, magaziner  ...)
+        $tokenResult = $user->createToken('Personal Access Token', json_decode($clientType));
         $token = $tokenResult->token;
         // Grow up the duration of our token
         if ($request->remember_me) {

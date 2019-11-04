@@ -5,8 +5,8 @@
             .col-8
                img(:src="getImage(img)", alt="img" height="60px")
             .col-4(v-if="hasState")
-               span.badge.badge-primary.mr-1 NEW {{hasState.danger}}
-               span.badge.badge-success ADD {{hasState.success}}
+                slot
+
             .col-12.text-center.ar
                h6.mt-2(:class="h") {{title}}
                p.text-secondary {{subtitle}}

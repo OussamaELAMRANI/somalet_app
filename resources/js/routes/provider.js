@@ -9,7 +9,7 @@ export default [
       redirect: 'provider/provider-list',
       component: Providers,
       meta: {
-         title: 'Fournisseurs', name: 'allProviders', icon: 'fa fa-briefcase', roles: 'guest'
+         title: 'Fournisseurs', name: 'allProviders', icon: 'fa fa-briefcase', roles: ['COMMERCIAL','COMTABLE']
       },
       children: [
          {
@@ -17,7 +17,7 @@ export default [
             path: 'new-provider',
             component: NewProvider,
             meta: {
-               title: 'Nouveau fournisseur', name: 'newProvider', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Nouveau fournisseur', name: 'newProvider', icon: 'fa fa-gor', roles: ['COMMERCIAL','COMTABLE']
             },
          },
          {
@@ -26,24 +26,24 @@ export default [
             path: ':id/update',
             component: () => import('@/pages/Providers/NewProvider'),
             meta: {
-               title: 'Modifier Fournisseur', name: 'updateProvider', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Modifier Fournisseur', name: 'updateProvider', icon: 'fa fa-gor', roles: ['COMMERCIAL','COMTABLE']
             },
          },
-         {
-            name: 'deleteProvider',
-            hidden: true,
-            path: ':id/delete',
-            meta: {
-               title: 'delete Fournisseur', name: 'deleteProvider', icon: 'fa fa-gor', roles: 'guest'
-            },
-         },
+         // {
+         //    name: 'deleteProvider',
+         //    hidden: true,
+         //    path: ':id/delete',
+         //    meta: {
+         //       title: 'delete Fournisseur', name: 'deleteProvider', icon: 'fa fa-gor', roles: 'guest'
+         //    },
+         // },
          {
             name: 'detailProvider',
             hidden: true,
             path: ':id/detail',
             component: () => import('@/pages/Providers/ProviderDetail'),
             meta: {
-               title: 'Détail Fournisseur', name: 'detailProvider', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Détail Fournisseur', name: 'detailProvider', icon: 'fa fa-gor', roles: ['COMMERCIAL','COMTABLE']
             },
          },
          {
@@ -51,7 +51,7 @@ export default [
             path: 'provider-list',
             component: ProvidersList,
             meta: {
-               title: 'Liste des fournisseurs', name: 'listProvider', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Liste des fournisseurs', name: 'listProvider', icon: 'fa fa-gor', roles: ['COMMERCIAL','COMTABLE']
             },
          },
       ]

@@ -3,6 +3,7 @@ import './bootstrap'
 import Vue from 'vue'
 import moment from 'moment'
 import VueHtmlToPaper from 'vue-html-to-paper';
+import Popover  from 'vue-js-popover'
 
 // import vueRouter from 'vue-router'
 import App from './AppRun'
@@ -82,7 +83,9 @@ const printerOptions = {
 }
 
 Vue.use(VueHtmlToPaper, printerOptions);
-
+Vue.use(Popover);
+import VPopover from 'vue-js-popover'
+Vue.use(VPopover, { tooltip: true })
 /**
  * Global Filtering | pipeline truck
  */

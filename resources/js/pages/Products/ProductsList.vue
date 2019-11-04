@@ -82,21 +82,21 @@
          :data="tableDate">
          <tr v-for="(p,index) in products.data">
             <th scope="row">{{index+1}}</th>
-            <td><img :src="getImage(p.img)" alt="image produit" height="60px"></td>
+            <td class="align-middle"><img :src="getImage(p.img)" alt="image produit" height="60px"></td>
             <!--                <td><img :src="p.img" alt="image produit" height="60px"></td>-->
-            <td>{{p.reference}}</td>
-            <td>{{p.name}}</td>
+            <td class="align-middle">{{p.reference}}</td>
+            <td class="align-middle">{{p.name}}</td>
             <td :class="(p.color)?'row justify-content-center b-0 m-0':'' ">
-               <template v-if="p.color">
+               <div v-if="p.color" class="row justify-content-around">
                   <div class="col-2 rounded-circle" :style="{backgroundColor: p.color.color}"></div>
                   <div class="col">{{p.color.name}}</div>
-               </template>
+               </div>
                <template v-else>
                   SANS COULEUR
                </template>
             </td>
-            <td>{{p.unit.name}}</td>
-            <td>{{p.provider.steName}}</td>
+            <td class="align-middle">{{p.unit.name}}</td>
+            <td class="align-middle">{{p.provider.steName}}</td>
             <td style="width: 130px">
                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
                        @click="show(p.id)">

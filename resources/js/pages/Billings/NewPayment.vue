@@ -96,7 +96,7 @@
                 .catch(error => {
                     console.log(error);
                     this.$router.push('/404')
-                    this.$notification.error(error.response.data);
+                    this.$notification.error('Ce client n\'existe plus !');
 
                 });
             axios.get('/api/payments-type')

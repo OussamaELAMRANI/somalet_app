@@ -9,7 +9,7 @@ export default [
       component: () => import('@/pages/Billings/Billings'),
       redirect: 'billings/billings-list',
       meta: {
-         title: 'Payéments', name: 'allBillings', icon: 'fa fa-money-bill', roles: 'guest'
+         title: 'Payéments', name: 'allBillings', icon: 'fa fa-money-bill',
       },
       hidden: true,
 
@@ -19,7 +19,7 @@ export default [
             path: ':cmd/new-payment',
             component: () => import('@/pages/Billings/NewPayment'),
             meta: {
-               title: "Ajouter un Payément", name: 'newPayment', icon: 'fa fa-gor', roles: 'guest'
+               title: "Ajouter un Payément", name: 'newPayment', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
             hidden: true,
          },

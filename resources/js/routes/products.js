@@ -8,7 +8,7 @@ export default [
         component: Products,
         redirect: 'product/product-list',
         meta: {
-            title: 'Produits', name: 'allProducts', icon: 'fa fa-cube', roles: 'guest'
+            title: 'Produits', name: 'allProducts', icon: 'fa fa-cube', roles: ['COMMERCIAL', 'COMTABLE']
         },
         children: [
             {
@@ -16,7 +16,7 @@ export default [
                 path: 'new-product',
                 component: () => import('@/pages/Products/NewProduct'),
                 meta: {
-                    title: 'Nouveau Produit', name: 'newProduct', icon: 'fa fa-gor', roles: 'guest'
+                    title: 'Nouveau Produit', name: 'newProduct', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                 },
             },
             {
@@ -25,16 +25,16 @@ export default [
                 path: ':id/update',
                 component: () => import('@/pages/Products/NewProduct'),
                 meta: {
-                    title: 'Modifier Produit', name: 'updateProduct', icon: 'fa fa-gor', roles: 'guest'
+                    title: 'Modifier Produit', name: 'updateProduct', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                 },
             },
-           {
+            {
                 name: 'detailProduct',
                 hidden: true,
                 path: ':id/detail',
                 component: () => import('@/pages/Products/DetailProduct'),
                 meta: {
-                    title: 'Détail Produit', name: 'detailProduct', icon: 'fa fa-gor', roles: 'guest'
+                    title: 'Détail Produit', name: 'detailProduct', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                 },
             },
             {
@@ -42,7 +42,7 @@ export default [
                 hidden: true,
                 path: ':id/delete',
                 meta: {
-                    title: 'delete Produit', name: 'deleteProduct', icon: 'fa fa-gor', roles: 'guest'
+                    title: 'delete Produit', name: 'deleteProduct', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                 },
             },
             {
@@ -50,7 +50,7 @@ export default [
                 path: 'product-list',
                 component: ProductList,
                 meta: {
-                    title: 'Liste des produits', name: 'listProducts', icon: 'fa fa-gor', roles: 'guest'
+                    title: 'Liste des produits', name: 'listProducts', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                 },
             },
         ]

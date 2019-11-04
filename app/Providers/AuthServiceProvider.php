@@ -31,8 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         // Scopes of each
         Passport::tokensCan([
             'controller' => 'Has a Controller Right',
-            'magaziner' => 'Making and preparing our Products',
-            'comptable' => 'comptable of the container',
+            'magazinier' => 'Making and preparing our Products',
+            'commercial' => 'comptable of the container',
             'admin' => 'Super User, Or the Boss',
             // add more
             'guest' => 'simple user waiting the role',

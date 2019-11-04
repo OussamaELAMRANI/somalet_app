@@ -35,7 +35,7 @@ class ClientService
 
    public function getClientDetail($id)
    {
-      $clients = Client::with('products')->find($id);
+      $clients = Client::with('products')->findOrFail($id);
 //      $products = collect($clients->products);
 //      $clients['discounting'] = $this->collapseProductDiscount($products);
       return response()->json($clients, 200);

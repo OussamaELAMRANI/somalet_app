@@ -9,7 +9,7 @@ export default [
       redirect: 'client/client-list',
       component: Clients,
       meta: {
-         title: 'Clients', name: 'allClients', icon: 'fa fa-user', roles: 'guest'
+         title: 'Clients', name: 'allClients', icon: 'fa fa-user', roles: 'COMMERCIAL'
       },
       children: [
          {
@@ -17,7 +17,7 @@ export default [
             path: 'new-client',
             component: NewClient,
             meta: {
-               title: 'Nouveau client', name: 'newClient', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Nouveau client', name: 'newClient', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
          {
@@ -26,7 +26,7 @@ export default [
             path: ':id/update',
             component: () => import('@/pages/Clients/NewClient'),
             meta: {
-               title: 'Modifier Client', name: 'updateClient', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Modifier Client', name: 'updateClient', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
          {
@@ -35,7 +35,7 @@ export default [
             path: ':id/detail',
             component: () => import('@/pages/Clients/ClientDetail'),
             meta: {
-               title: 'Detail Client', name: 'updateClient', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Detail Client', name: 'updateClient', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
          {
@@ -44,7 +44,7 @@ export default [
             path: ':id/movement',
             component: () => import('@/pages/Clients/ClientMouvement'),
             meta: {
-               title: 'Detail Client', name: 'updateClient', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Detail Client', name: 'updateClient', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
          {
@@ -52,7 +52,7 @@ export default [
             hidden: true,
             path: ':id/delete',
             meta: {
-               title: 'delete Client', name: 'deleteClient', icon: 'fa fa-gor', roles: 'guest'
+               title: 'delete Client', name: 'deleteClient', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
          {
@@ -60,7 +60,7 @@ export default [
             path: 'client-list',
             component: ClientsList,
             meta: {
-               title: 'Liste des clients', name: 'listClient', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Liste des clients', name: 'listClient', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
       ]

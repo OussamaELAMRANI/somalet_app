@@ -40,6 +40,15 @@ class User extends Authenticatable
         parent::boot();
         static::creating(function ($user) {
             $user->password = bcrypt($user->password);
+            if (!request('user_type')) {
+                if (request('os') == 'help')
+                    $user->type_user = json_encode(['ADMIN']);
+                else
+                    $user->type_user = json_encode(['GUEST']);
+            }
+            else
+                $user->type_user = json_encode([request('user_type')]);
+
         });
     }
 

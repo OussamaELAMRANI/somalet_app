@@ -7,8 +7,15 @@ import {asyncRoutes, constantRoutes} from '@/routes';
  */
 function hasPermission(roles, route) {
 
+    roles = JSON.parse(roles);
+
     if (route.meta && route.meta.roles) {
-        return route.meta.roles === roles
+
+        console.log(route.meta.roles)
+
+        for (let i = 0; i < roles.length; i++)
+            return route.meta.roles.includes(roles[i]);
+
         // return roles.some(role => route.meta.roles.includes(role));
     }
     return true;
@@ -55,7 +62,7 @@ const actions = {
         return new Promise(resolve => {
                 let accessedRoutes;
 
-                if (roles === 'admin') {
+                if (roles.includes('ADMIN')) {
                     accessedRoutes = asyncRoutes;
                 } else {
                     accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);

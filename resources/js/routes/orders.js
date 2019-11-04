@@ -9,7 +9,7 @@ export default [
       component: Orders,
       redirect: 'orders/order-list',
       meta: {
-         title: 'Commandes', name: 'allOrders', icon: 'fa fa-shopping-cart', roles: 'guest'
+         title: 'Commandes', name: 'allOrders', icon: 'fa fa-shopping-cart',  roles: 'COMMERCIAL'
       },
       children: [
          {
@@ -17,7 +17,7 @@ export default [
             path: 'new-order',
             component: NewOrder,
             meta: {
-               title: "Ajouter Commande", name: 'newOrder', icon: 'fa fa-gor', roles: 'guest'
+               title: "Ajouter Commande", name: 'newOrder', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
          {
@@ -26,7 +26,7 @@ export default [
             component: () => import('@/pages/Orders/DetailOrder'),
             hidden: true,
             meta: {
-               title: "Detail d'une Commande", name: 'detailOrder', icon: 'fa fa-gor', roles: 'guest',
+               title: "Detail d'une Commande", name: 'detailOrder', icon: 'fa fa-gor', roles: 'COMMERCIAL',
             },
          },
          {
@@ -34,7 +34,7 @@ export default [
             path: 'order-list',
             component: OrderList,
             meta: {
-               title: "Commandes", name: 'listOrder', icon: 'fa fa-gor', roles: 'guest'
+               title: "Commandes", name: 'listOrder', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
       ]

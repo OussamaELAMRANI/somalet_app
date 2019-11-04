@@ -8,7 +8,7 @@ Vue.use(Router);
 import Providers from './provider'
 import client from './client'
 import Products from './products'
-import arrivals from './arrivals'
+import alerts from './alerts'
 import Users from './users'
 import Receptions from './receptions'
 import Stock from './stock'
@@ -52,7 +52,7 @@ export const asyncRoutes = [
       name: 'dashboard',
       component: () => import("@/pages/admin/Dashbord"),
       meta: {
-         title: 'Tableau de Bord', icon: 'fa fa-cogs', roles: 'guest'
+         title: 'Tableau de Bord', icon: 'fa fa-cogs',
       },
 
       children: [
@@ -62,7 +62,7 @@ export const asyncRoutes = [
             component: () => import('@/pages/admin/home'),
             hidden: true,
             meta: {
-               title: 'Molsat Application', icon: 'fa fa-gor', roles: 'guest'
+               title: 'Molsat Application', icon: 'fa fa-gor', roles: ['GUEST','MAGAZINIER','COMMERCIAL']
             },
          },
          {
@@ -86,6 +86,7 @@ export const asyncRoutes = [
          ...billings,
          ...reglements,
          ...settings,
+         ...alerts,
 
       ],
    },
