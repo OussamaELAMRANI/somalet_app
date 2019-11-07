@@ -18,6 +18,11 @@ class InventoryService
         $this->req = $request;
     }
 
+    /**
+     * Real Stock with Detail
+     *
+     * @return array
+     */
     public function getDetailStock()
     {
         $allProducts = Product::with('color', 'arrivals', 'clients', 'unit', 'orders')
@@ -28,7 +33,6 @@ class InventoryService
 
         return $getQte;
     }
-
 
     public function getAlertStock()
     {
@@ -109,6 +113,13 @@ class InventoryService
         return Arrival::WhereNotIn('state', ['VALID'])->with('product', 'provider', 'user')->get();
     }
 
+    /**
+     * Filter Helper - Give the Real Stock
+     *
+     * @param $products_group
+     * @param null $client_id
+     * @return array
+     */
     private function getFilterQte($products_group, $client_id = null)
     {
         $result = [];
@@ -151,7 +162,7 @@ class InventoryService
                 // O(n)
                 foreach ($p['orders'] as $order) {
 
-                    if (is_null($order['deleted_at'])) {
+                    if (is_null($order['deleted_at']) && !$order['validate_canceled']) {
 
                         $qte_order[$order['pivot']['qte_rapport']][] = $order['pivot']['qte'];
                         $result[$p['name']]["orders_qte"] = $qte_order;

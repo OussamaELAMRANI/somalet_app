@@ -25,6 +25,9 @@ class CreateOrderItemsTable extends Migration
          // To Make Trace in DB, Because the [price, Discount] are Variables
          $table->double('price');
 
+         $table->integer('is_replaced')->default(0);
+         $table->integer('is_replaceable')->default(0);
+
          $table->foreign('cmd_id')
             ->references('id')->on('orders')
             ->onUpdate('cascade');
