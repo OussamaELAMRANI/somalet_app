@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
             'controller' => 'Has a Controller Right',
             'magazinier' => 'Making and preparing our Products',
             'commercial' => 'comptable of the container',
-            'admin' => 'Super User, Or the Boss',
+            'admine' => 'Super User, Or the Boss',
             // add more
             'guest' => 'simple user waiting the role',
         ]);
