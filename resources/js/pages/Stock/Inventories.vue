@@ -11,7 +11,7 @@
                   <th>Designation</th>
                   <th>Quantité</th>
                   <th>Unité</th>
-                  <th>CR HT</th>
+                  <th v-if="roles.includes('ADMINE')">CR HT</th>
                   <th>Prix de Vente</th>
                </tr>
                </thead>
@@ -47,7 +47,7 @@
                         </ul>
                      </td>
                      <td class="text-uppercase text-primary font-weight-light align-middle">{{inv.unity}}</td>
-                     <td class="align-middle">{{inv.ht | fixed_two}} <span class="badge">DH</span></td>
+                     <td v-if="roles.includes('ADMINE')"  class="align-middle">{{inv.ht | fixed_two}} <span class="badge">DH</span></td>
                      <td class="align-middle">{{inv.price | fixed_two}} <span class="badge">DH</span></td>
                   </template>
                </tr>
@@ -79,7 +79,7 @@
 <script>
     import BigTitle from "@/components/layouts/BigTitle";
     import {HalfCircleSpinner} from 'epic-spinners'
-
+   import store from "@/store";
     export default {
         name: "Inventories",
         components: {BigTitle, HalfCircleSpinner},
@@ -88,7 +88,8 @@
                 reference: '',
                 isLoading: false,
                 inventories: [],
-                searchIventories: []
+                searchIventories: [],
+               roles: store.getters.roles
             }
         },
         mounted() {
@@ -100,7 +101,10 @@
         },
         methods: {
             getInventoriesByRef() {
-                const ref = this.reference;
+                let ref = this.reference;
+                ref = ref.split('/').join('.');
+                ref = ref.split(`\\`).join('.');
+
                 axios.get(`/api/inventories/search/${ref}`)
                     .then(({data}) => {
                         this.searchIventories = data;

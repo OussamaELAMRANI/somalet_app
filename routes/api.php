@@ -182,7 +182,7 @@ Route::prefix('inventories')->group(function () {
 
     Route::get('detail', 'ReceptionController@getDetailStock');
     Route::get('alert', 'ReceptionController@getStockAlert');
-    Route::get('search/{search_ref?}', 'ReceptionController@search');
+    Route::get('search/{search_ref?}', 'ReceptionController@search')->where('search_ref', '[\/\w\.-]*');;
     Route::patch('{id}/validate', 'ReceptionController@validContainer');
     Route::patch('{id}/validate-all', 'ReceptionController@validAllInContainer');
     Route::get('no-valid', 'ReceptionController@notYetValid');
