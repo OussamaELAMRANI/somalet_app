@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  somalet:
+    build: .
+    # Means SomaletApp need mysql as dependency, and Start MariaDB 1st
+    depends_on:
+      - mysql_server
+    ports:
+      - 8080:80
+    volumes:
+      - .:/srv/app # map from .current to server side
+
+  mysql_server:
+    image: mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_server:/var/lib/mysql # Where MariaDB store Data
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: somalet_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
+# To recover the data when docker down,
+# Because Volumes store Backup on the Local
+volumes:
+  mysql_server:
+    driver: local
