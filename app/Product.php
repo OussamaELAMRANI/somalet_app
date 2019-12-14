@@ -3,11 +3,17 @@
 namespace App;
 
 use App\Services\Filters\Products\ProductFilter;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
+/**
+ * @method static insert(array $products)
+ * @property mixed id
+ */
 class Product extends Model
 {
    use SoftDeletes;
@@ -49,18 +55,15 @@ class Product extends Model
       return $this->belongsToMany(Client::class, Discount::class)->withPivot(['discount']);
    }
 
-   function pointures()
-   {
-      return $this->hasMany(Pointure::class, 'product_id');
-   }
-//    function larrival()
-//    {
-//        return $this->hasMany(LArrival::class, 'product_id');
-//    }
+//   function pointures()
+//   {
+//      return $this->hasMany(Pointure::class, 'product_id');
+//   }
+
 
    /**
     * Haves a Pivot table Order_items
-    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    * @return BelongsToMany
     */
    public function arrivals()
    {
@@ -75,4 +78,34 @@ class Product extends Model
          'product_id', 'cmd_id')
          ->withPivot(['qte', 'qte_rapport', 'discount', 'price']);
    }
+
+   public function sizes()
+   {
+      return $this->belongsToMany(ShoeSize::class, 'product_size',
+         'size_id', 'product_id')
+         ->withPivot(['weight']);
+   }
+
+   public function saveSizes(array $sizes, $now): self
+   {
+      $dts = $now->toDateTimeString();
+      $productSizes = array_map(function ($size) use ($dts) {
+         if ($size['weight'] != '') {
+            return [
+               "size_id" => $size['id'],
+               "product_id" => $this->id,
+               "weight" => $size['weight'],
+               'created_at' => $dts,
+               'updated_at' => $dts
+            ];
+         }
+
+      }, $sizes);
+      $productSizes = array_filter($productSizes);
+
+      $this->sizes()->attach($productSizes);
+
+      return $this;
+   }
+
 }

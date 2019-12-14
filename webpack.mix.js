@@ -10,4 +10,4 @@ mix.js('resources/js/app.js', 'public/js')
 mix.webpackConfig(config);
 
 //
-mix.browserSync('localhost:8080');
+mix.browserSync('somalet.io');

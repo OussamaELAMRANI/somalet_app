@@ -22,8 +22,26 @@
         components: {NavBar, LeftBar},
         methods: {},
         mounted() {
-            // this.loadIt();
-            // this.userInfos();
+           let el = document.body;
+           if (el.addEventListener) {
+              el.addEventListener("online", function () {
+                 alert("online");}, true);
+
+              el.addEventListener("offline", function () {
+                 alert("offline");}, true);
+           }
+           else if (el.attachEvent) {
+              el.attachEvent("ononline", function () {
+                 alert("online");});
+              el.attachEvent("onoffline", function () {
+                 alert("offline");});
+           }
+           else {
+              el.ononline = function () {
+                 alert("online");};
+              el.onoffline = function () {
+                 alert("offline");};
+           }
         }
     }
 </script>

@@ -71,9 +71,6 @@ class Arrival extends Model
     */
    public function saveItems(array $items, $arrival_id = 0)
    {
-      // Fill array with IDs
-//        $arrival_id = array_fill(0, count($items), $arrival_id);
-
       $orderItem = array_map(function ($itm) {
          unset($itm['name']);
          return array_merge($itm, ['arrival_id' => $this->id]);
@@ -81,12 +78,7 @@ class Arrival extends Model
 
       $this->product()->attach($orderItem);
 
-      // Updating original Inventory
-//        foreach ($items as $prod) {
-//            $upProduct = $this->product()->find($prod['productId']);
-//            $upProduct->inventory -= $prod['quantity'];
-//            $upProduct->save();
-//        }
+
       return $this;
    }
 }

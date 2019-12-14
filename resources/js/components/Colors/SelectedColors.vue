@@ -3,7 +3,7 @@
         .row.mt-3.justify-content-center.align-items-center
             .col-5.h-limit.segment
                 ul.list-group(v-for="c in initColors")
-                    li.list-group-item.d-flex.justify-content-between.align-items-center.list-group-item-action(v-on:dblclick="switchColor(c.id,true)")
+                    li.list-group-item.d-flex.justify-content-between.align-items-center.list-group-item-action(v-on:click="switchColor(c.id,true)")
                         | {{c.name}}
                         span.rounded-circle(:style="{backgroundColor:c.color}")
             .col-1.m-0
@@ -11,7 +11,7 @@
                     i.fa.fa-angle-right
             .col-5.h-limit.segment
                 ul.list-group(v-for="s in selectColors")
-                    li.list-group-item.d-flex.justify-content-between.align-items-center.list-group-item-action(v-on:dblclick="switchColor(s.id,false)")
+                    li.list-group-item.d-flex.justify-content-between.align-items-center.list-group-item-action(v-on:click="switchColor(s.id,false)")
                         | {{s.name}}
                         span.rounded-circle(:style="{backgroundColor:s.color}")
 
@@ -48,10 +48,11 @@
             },
             switchColor(id, inverse) {
                 if (inverse)
-                    this.selectColors.push(..._.remove(this.initColors, (c) => c.id === id))
+                    this.selectColors.push(..._.remove(this.initColors, (c) => c.id === id));
                 else
-                    this.initColors.push(..._.remove(this.selectColors, (d) => d.id === id))
-                this.$emit('giveColors', this.selectColors)
+                    this.initColors.push(..._.remove(this.selectColors, (d) => d.id === id));
+
+               this.$emit('giveColors', this.selectColors)
             }
         }
     }
@@ -65,7 +66,7 @@
     }
 
     .h-limit {
-        height: 300px;
+        height: 400px;
         overflow: auto;
     }
 

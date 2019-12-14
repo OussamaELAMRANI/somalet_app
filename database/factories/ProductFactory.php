@@ -6,21 +6,26 @@ use App\Model;
 use Faker\Generator as Faker;
 
 $factory->define(App\Product::class, function (Faker $faker) {
-    return [
-        'reference' => $faker->unique()->userName,
-        'name' => $faker->unique()->userAgent,
-        'description' => $faker->text,
-        'remark' => $faker->text,
-        'img' => $faker->imageUrl(),
-    ];
+   return [
+      'reference' => $faker->unique()->userName,
+      'name' => $faker->unique()->userAgent,
+      'description' => $faker->text,
+      'remark' => $faker->text,
+      'img' => $faker->imageUrl(),
+   ];
 });
 $factory->define(App\Color::class, function (Faker $faker) {
-    return [
-        'name' => $faker->unique()->colorName,
-    ];
+   return [
+      'name' => $faker->unique()->colorName,
+   ];
 });
 $factory->define(App\Unit::class, function (Faker $faker) {
-    return [
-        'name' => $faker->unique()->name,
-    ];
+   return [
+      'name' => $faker->unique()->name,
+   ];
+});
+$factory->define(App\ShoeSize::class, function (Faker $faker) {
+   return [
+      'size' => $faker->numberBetween(26, 45),
+   ];
 });
