@@ -30,6 +30,7 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 /**
  * Add Plugins
  */
+import Multiselect from 'vue-multiselect'
 
 // Add Validation Inputs
 import fr from 'vee-validate/dist/locale/fr';
@@ -68,6 +69,7 @@ Vue.use(vueSmoothScroll, {
    y: true
 })
 
+Vue.component('multiselect', Multiselect);
 
 const printerOptions = {
    name: '_blank',

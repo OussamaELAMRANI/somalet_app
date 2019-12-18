@@ -33,18 +33,18 @@ class ProductService
       $colors = json_decode($this->req->input('colors'), true);
       $product = json_decode($this->req->input('product'), true);
       $sizes = json_decode($this->req->input('sizes'), true);
-
+      $product_name = $product['name'];
 
       if ($colors) {
          foreach ($colors as $color) {
-            $product['name'] = "{$product['name']}/{$color['name']}";
+            $product['name'] = "{$product_name}/{$color['name']}";
             $db = $now->toDateTimeString();
             $color_merge = ['img' => $portrait_url, 'color_id' => $color['id'], 'created_at' => $db, 'updated_at' => $db];
             $products = array_merge($product, $color_merge);
             $newProduct = Product::create($products);
-            if ($sizes) {
-               $newProduct->saveSizes($sizes, $now);
-            }
+//            if ($sizes) {
+            $newProduct->saveSizes($sizes, $now);
+//            }
          }
       }
 
@@ -100,5 +100,11 @@ class ProductService
    public function getProductById($id)
    {
       return response()->json(Product::filter($this->req)->findOrFail($id), 200);
+   }
+
+   public function searchProductByName($slot)
+   {
+      return response()->json(Product::where('name', 'LIKE', "%$slot%")->filter($this->req)->get(), 200);
+
    }
 }

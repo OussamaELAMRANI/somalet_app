@@ -18,26 +18,38 @@
       h3.text-uppercase.text-secondary conteneurs
       hr
       .container
-         table(class="table table-hover table-striped")
-            thead(class="bg-success text-white")
-               tr
-                  th #
-                  th Numéro
-                  th Type
-                  th Date
-                  th Quantité
-                  th Rapport
-            tbody
-               tr(v-for="(c, i) in detail.arrivals ")
-                  td {{i+1}}
-                  td {{c.n_dossier}}
-                  td {{c.type}}
-                  td {{c.date_facture | humane_date}}
-                  td {{c.pivot.qte_facture}}
-                     small.text-secondary  {{" ("+detail.type}})
-                  td {{c.pivot.rapport_qte}}
-
-
+         .row
+            .col-9
+               table(class="table table-hover table-striped")
+                  thead(class="bg-success text-white")
+                     tr
+                        th #
+                        th Numéro
+                        th Type
+                        th Date
+                        th Quantité
+                        th Rapport
+                  tbody
+                     tr(v-for="(c, i) in detail.arrivals ")
+                        td {{i+1}}
+                        td {{c.n_dossier}}
+                        td {{c.type}}
+                        td {{c.date_facture | humane_date}}
+                        td {{c.pivot.qte_facture}}
+                           small.text-secondary  {{" ("+detail.type}})
+                        td {{c.pivot.rapport_qte}}
+            .col-3
+               table(class="table table-hover table-striped text-center")
+                  thead(class="bg-primary text-white")
+                     tr
+                        th #
+                        th Pointure
+                        th (g)
+                  tbody
+                     tr(v-for="(c, i) in detail.sizes ")
+                        td {{i+1}}
+                        td {{c.size}}
+                        td {{c.pivot | getWeight}}
 </template>
 
 <script>
@@ -63,11 +75,18 @@
          }
       },
       mounted() {
-         axios.get('/api/products/1?with=unit,provider,color,category,arrivals')
+         const id = this.$route.params.id
+         axios.get(`/api/products/${id}?with=unit,provider,color,category,arrivals,sizes`)
             .then(({data}) => {
                this.detail = {...data}
             })
             .catch(err => console.log(err.response))
+      },
+      filters: {
+         getWeight: function (w) {
+            if (!w) return '';
+            return w.weight;
+         }
       }
    }
 </script>

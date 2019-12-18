@@ -134,4 +134,9 @@ class ProductController extends Controller
    {
       return $this->service->getDistinctProductByName();
    }
+
+   public function searchProductByName($name)
+   {
+      return $this->service->searchProductByName($name);
+   }
 }

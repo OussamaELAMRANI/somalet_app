@@ -20,6 +20,14 @@ export default [
                     title: "Ajouter Commande", name: 'newOrder', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                 },
             },
+           {
+              name: 'molsatOrder',
+              path: 'molsat',
+              component: () => import('@/pages/Orders/MolsatOrder'),
+              meta: {
+                 title: "Commande de production", name: 'molsatOrder', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+              },
+           },
             {
                 name: 'detailOrder',
                 path: ':id/detail',

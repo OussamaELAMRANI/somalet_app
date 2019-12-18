@@ -142,7 +142,7 @@
             img_url: '',
             types: [
                {id: 'MP', title: "Matière première", isActive: false, img: 'boxes/flask.svg'},
-               {id: 'PF', title: "Produit finis", isActive: false, img: 'boxes/shose.svg'},
+               {id: 'PF', title: "Production", isActive: false, img: 'boxes/shose.svg'},
                {id: 'NEG', title: "Marchandise", isActive: true, img: 'boxes/handshake.svg'},
                {id: 'CONS', title: "Consommable", isActive: false, img: 'boxes/recycle.svg'},
                {id: 'EMB', title: "Emballage", isActive: false, img: 'boxes/box.svg'}

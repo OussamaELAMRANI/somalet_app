@@ -5,6 +5,7 @@ Route::prefix('products')->group(function () {
    Route::get('sizes', 'SizesController@index');
    Route::get('distinct', 'Api\ProductController@distinctProductByName');
    Route::get('search/{searchValue?}', 'Api\ProductController@search');
+   Route::get('{name}/search', 'Api\ProductController@searchProductByName');
    Route::get('', 'Api\ProductController@index');
    Route::get('{id}', 'Api\ProductController@show');
 

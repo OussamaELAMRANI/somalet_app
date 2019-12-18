@@ -73,6 +73,7 @@
         "vee-validate": "^2.2.8",
         "vue-html-to-paper": "^1.1.1",
         "vue-js-popover": "^1.1.8",
+        "vue-multiselect": "^2.1.6",
         "vue-property-decorator": "^7.3.0",
         "webpack": "^4.32.2"
     }

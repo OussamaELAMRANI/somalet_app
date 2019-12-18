@@ -82,8 +82,8 @@ class Product extends Model
    public function sizes()
    {
       return $this->belongsToMany(ShoeSize::class, 'product_size',
-         'size_id', 'product_id')
-         ->withPivot(['weight']);
+         'product_id', 'size_id')
+         ->withPivot('weight');
    }
 
    public function saveSizes(array $sizes, $now): self
