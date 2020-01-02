@@ -104,7 +104,7 @@ class ProductService
 
    public function searchProductByName($slot)
    {
-      return response()->json(Product::where('name', 'LIKE', "%$slot%")->filter($this->req)->get(), 200);
-
+      $products = Product::where('name', 'LIKE', "%$slot%")->filter($this->req)->get();
+      return response()->json($products, 200);
    }
 }

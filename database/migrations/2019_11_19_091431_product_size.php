@@ -15,7 +15,7 @@ class ProductSize extends Migration
     {
         Schema::create('product_size', function (Blueprint $table) {
 
-            $table->increments('id');
+           $table->bigIncrements('id');
 
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('size_id');

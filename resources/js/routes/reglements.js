@@ -87,6 +87,15 @@ export default [
             },
             hidden: true
          },
+         {
+            name: 'operationMoney',
+            path: 'operation',
+            component: () => import('@/pages/Reglement/OperationFromBank'),
+            meta: {
+               title: "Operation", name: 'operationMoney', icon: 'fa fa-gor', roles: 'ADMINE'
+            },
+            hidden: true
+         },
 
       ]
    },

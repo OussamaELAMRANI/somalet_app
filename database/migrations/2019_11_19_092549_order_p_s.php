@@ -15,7 +15,7 @@ class OrderPS extends Migration
     {
         Schema::create('order_ps', function (Blueprint $table) {
             $table->unsignedBigInteger('cmd_id');
-            $table->unsignedInteger('ps_id');
+            $table->unsignedBigInteger('ps_id');
 
 
             $table->foreign('ps_id')
@@ -34,7 +34,8 @@ class OrderPS extends Migration
             $table->integer('is_replaced')->default(0);
             $table->integer('is_replaceable')->default(0);
 
-            $table->timestamps();
+           $table->softDeletes();
+           $table->timestamps();
         });
     }
 

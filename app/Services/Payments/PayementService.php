@@ -194,4 +194,17 @@ class PayementService
 
       return response()->json($created, 201);
    }
+
+   public function makeOperation()
+   {
+      $payment = $this->req->get('payment');
+      $payment['payed_at'] = Carbon::now()->toDateString();
+      $payment['operation'] = 'OPR';
+      $payment['valid'] = 1;
+
+      $typee = PaymentType::Where('type', 'ESPECE')->first();
+      $created = $typee->payments()->create($payment);
+
+      return response()->json($created, 201);
+   }
 }

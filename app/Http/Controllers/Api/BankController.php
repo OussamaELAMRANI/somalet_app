@@ -16,9 +16,37 @@ class BankController extends Controller
       return response()->json($banks, Response::HTTP_OK);
    }
 
-   public function show($name)
+   public function show($name, Request $request)
    {
-      $banks = Bank::where('name', $name)->with('payments', 'payments.client')->first();
+
+      if ($request->has('from') && $request->has('to')) {
+
+         $sumTransfer = 0;
+         $sumOperation = 0;
+
+         $banks = Bank::where('name', $name)
+            ->with(['payments' => function ($query) use ($sumOperation, $sumTransfer) {
+               return $query->whereBetween('payed_at', [\request('from'), \request('to')])
+                  ->with('client');
+            }])
+            ->first();
+
+         $payment = collect($banks)['payments'];
+         foreach ($payment as $p) {
+            if ($p['operation'] == 'OPR') {
+               $sumOperation += $p['amount'];
+            } else {
+               $sumTransfer += $p['amount'];
+            }
+         }
+
+      } else
+         $banks = Bank::where('name', $name)
+            ->with('payments', 'payments.client')->first();
+
+      $banks['debit'] = $sumOperation;
+      $banks['credit'] = $sumTransfer;
+
       return response()->json($banks, Response::HTTP_OK);
    }
 

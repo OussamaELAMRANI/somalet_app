@@ -10,6 +10,7 @@ Route::prefix('payments')->group(function () {
 
    Route::post('validate', 'Api\PaymentController@validatePayments');
    Route::post('transfer', 'Api\PaymentController@transfer');
+   Route::post('operation', 'Api\PaymentController@operation');
    Route::post('{cmd}', 'Api\PaymentController@store');
 
    Route::put('transfer-to/{bank_id}', 'Api\PaymentController@transferToBank');

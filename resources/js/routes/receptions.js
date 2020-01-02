@@ -16,6 +16,14 @@ export default [
                     title: 'Liste des arrivages', name: 'list_receptions', icon: 'fa fa-briefcase', roles: 'MAGAZINIER'
                 },
             },
+           {
+                name: 'soleReceptions',
+                path: 'receptions-list',
+                component: () => import('@/pages/receptions/SolesReceptions'),
+                meta: {
+                    title: 'Reception de Semelle', name: 'soleReceptions', icon: 'fa fa-briefcase', roles: 'MAGAZINIER'
+                },
+            },
         ]
     },
 ]

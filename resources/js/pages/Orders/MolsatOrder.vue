@@ -1,41 +1,47 @@
 <template>
    <div id="molsat-order" class="container">
-      <table class="table table-striped text-center">
-         <thead>
+      <table class="table table-striped text-center table-bordered shadow">
+         <thead class="bg-primary text-white">
          <tr>
             <th>#</th>
             <th>Produit</th>
-            <th>Qte</th>
-            <th>Couleurs</th>
+            <th>Quantité</th>
+            <th>Couleur</th>
             <th>Pointures</th>
+            <th>Action</th>
          </tr>
          </thead>
          <tbody>
          <tr v-for="(o,i) in order">
-            <td>{{i+1}}</td>
-            <td>{{o.product}}</td>
-            <td>{{o.qte}}</td>
-            <td>
+            <th scope="row" class="align-middle">{{i+1}}</th>
+            <td class="align-middle">{{o.product}}</td>
+            <td class="align-middle">{{o.qte}}</td>
+            <td class="align-middle">
                <div class="square__long shadow rounded my-3 mx-1" v-if="o !== null"
                     :style="o.color|getColor">
                </div>
             </td>
-            <td>
+            <td class="align-middle">
                <div class="square shadow rounded my-2 mx-1 text-center d-inline-block bg-success text-white"
                     v-for="s in o.sizes">
                   {{s.size}}
                </div>
             </td>
+            <td>
+               <button class="btn btn-danger rounded-pill" @click="deleteItem(i)">
+                  <i class="fa fa-trash"></i>
+               </button>
+            </td>
          </tr>
-         <tr>
-            <td colspan="6" class="bg-secondary"></td>
+         <tr v-if="order.length>0">
+            <td colspan="6" class="bg-secondary text-right my-0">
+               <button class="btn btn-success ">Ajouter Cette commande</button>
+            </td>
          </tr>
          </tbody>
          <tfoot>
-
          <tr class="segment">
-            <td></td>
-            <td class="d-flex align-items-center" style="height: 100px;">
+            <td class="align-middle" colspan="2" style="height: 100px; text-align: center">
                <div class="col-8">
                   <cool-select :items='searchProduct' @search='onSearch' :loading='loading' item-text='name'
                                v-model='tempo'>
@@ -52,8 +58,8 @@
                </div>
 
             </td>
-            <td class="align-middle" style="max-width: 50px">
-               <input type="number" class="form-control" v-model="qte">
+            <td class="align-middle" style="max-width: 100px">
+               <input type="number" class="form-control" v-model.number="qte">
             </td>
             <td class="align-middle" style="max-width: 50px">
                <div class="square__long shadow rounded my-3 mx-1" v-if="tempo !== null"
@@ -63,26 +69,25 @@
             <td class="align-middle" style="max-width: 150px">
                <multiselect v-model="sizes" :options="getSizes" :multiple="true" :close-on-select="false"
                             :clear-on-select="false"
-                            :preserve-search="true" placeholder="Pick some" label="size" track-by="size"
+                            selectedLabel="Sélectionné"
+                            deselectLabel="Désélectionné"
+                            selectLabel="Prendre cette pointure"
+                            :preserve-search="true" placeholder="Choisissez-en 👞" label="size" track-by="size"
                             :preselect-first="true">
                   <template slot="selection" slot-scope="{ values, search, isOpen }">
-                     <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span>
+                     <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} Pointures sont sélectionnés</span>
                   </template>
+                  <template slot="noOptions">List est vide.</template>
+
                </multiselect>
                <div class="square shadow rounded my-2 mx-1 text-center d-inline-block bg-success text-white"
                     v-for="s in sizes">
                   {{s.size}}
                </div>
-
             </td>
-         </tr>
-         <tr>
-            <td colspan="5" class="text-right">
-               <button class="btn btn-success" @click="insertOrder">
+            <td class="align-middle">
+               <button class="btn btn-success" id="btn__insert" @click="insertOrder">
                   <i class="fa fa-plus"></i>
-               </button>
-               <button class="btn btn-danger">
-                  <i class="fa fa-window-close"></i>
                </button>
             </td>
          </tr>
@@ -140,6 +145,9 @@
             })
          },
          insertOrder() {
+            if (this.tempo == null || this.tempo.length < 1)
+               return;
+
             const info = _.cloneDeep(this.tempo);
             const order = {
                product: info.name,
@@ -150,6 +158,9 @@
             this.order.unshift(order)
             this.tempo = []
             this.sizes = []
+         },
+         deleteItem(index) {
+            this.order.splice(index, 1)
          }
       },
       filters: {
@@ -178,4 +189,27 @@
       height: 25px;
       width: 100%;
    }
+
+   #btn__insert:hover {
+      animation: rotations 5s 2;
+   }
+
+   @keyframes rotations {
+      0% {
+         transform: rotate(72deg);
+      }
+      25% {
+         transform: rotate(144deg);
+      }
+      50% {
+         transform: rotate(216deg);
+      }
+      75% {
+         transform: rotate(288deg);
+      }
+      100% {
+         transform: rotate(0deg);
+      }
+   }
+
 </style>

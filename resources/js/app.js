@@ -3,7 +3,7 @@ import './bootstrap'
 import Vue from 'vue'
 import moment from 'moment'
 import VueHtmlToPaper from 'vue-html-to-paper';
-import Popover  from 'vue-js-popover'
+import Popover from 'vue-js-popover'
 
 // import vueRouter from 'vue-router'
 import App from './AppRun'
@@ -87,7 +87,8 @@ const printerOptions = {
 Vue.use(VueHtmlToPaper, printerOptions);
 Vue.use(Popover);
 import VPopover from 'vue-js-popover'
-Vue.use(VPopover, { tooltip: true })
+
+Vue.use(VPopover, {tooltip: true})
 /**
  * Global Filtering | pipeline truck
  */
@@ -99,6 +100,11 @@ Vue.filter('humane_date', function (date) {
 Vue.filter('fixed_two', function (n) {
    if (n !== null)
       return Number(n).toFixed(2);
+   return null
+})
+Vue.filter('clientName', function (c) {
+   if (c !== null)
+      return c.nom;
    return null
 })
 

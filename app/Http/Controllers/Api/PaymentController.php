@@ -6,6 +6,7 @@ use App\Bank;
 use App\Payment;
 use App\Services\Payments\PayementService;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -52,9 +53,24 @@ class PaymentController extends Controller
       return $this->service->validatePayments();
    }
 
+   /**
+    * Transfer Money to a Specific Bank to Credit it
+    *
+    * @return JsonResponse
+    */
    public function transfer()
    {
       return $this->service->transferMoney();
+   }
+
+   /**
+    * Make un operation [AMOUNT] from Internal Bank to Debit it
+    *
+    * @return JsonResponse
+    */
+   public function operation()
+   {
+      return $this->service->makeOperation();
    }
 
    public function makeImpaye(Payment $id)
