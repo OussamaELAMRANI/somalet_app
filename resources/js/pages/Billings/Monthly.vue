@@ -28,11 +28,11 @@
                               th Type
                               th Numéro
                               th Designation
-                              //th Action
+                              th Action
                         tbody
-                           tr(v-for="(iv, i) in hasValid")
+                           tr(v-for="(iv, i) in hasValid" :class="(cannotTransfer(iv.date_deadline) ? 'bg-light': 'bg-warning')")
                               td.align-middle
-                                 .form-group
+                                 .form-group(v-if="cannotTransfer(iv.date_deadline)")
                                     .form-check
                                        input.form-check-input.form-control-lg(type='checkbox' :id="'check_'+i" v-model="hasValid[i].checked")
                                        label.form-check-label.text-primary(:for="'check_'+i")
@@ -46,8 +46,8 @@
                               td.align-middle
                                  p {{iv.client.nom}}
                                  p {{iv.designation}}
-                              //td.align-middle
-                                 button.btn.btn-outline-secondary.btn-sm.shadow(@click="setImpaye(iv.id)") Impayé
+                              td.align-middle
+                                 router-link.btn.btn-outline-secondary.btn-sm.shadow(:to="{name:'UpDeadline',params:{id:iv.id}}") Modifier
                                  //@click="validElement(iv.id,1)"
                   //.col-12
                      h4.text-secondary IMPAYÉ
@@ -82,80 +82,88 @@
 </template>
 
 <script>
-    export default {
-        name: "Monthly",
-        data() {
-            return {
-                valid: [],
-                hasValid: [],
-                invalid: [],
-                months_name: ['Janvier', 'février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-                banksIN: [],
+   import moment from 'moment'
 
-                in_bank: null
+   export default {
+      name: "Monthly",
+      data() {
+         return {
+            valid: [],
+            hasValid: [],
+            invalid: [],
+            months_name: ['Janvier', 'février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            banksIN: [],
 
+            in_bank: null
+
+         }
+      },
+      mounted() {
+         const {year, month} = this.$route.params;
+
+         axios.get(`/api/payments/valid-invalid`, {
+            params: {
+               year, month
             }
-        },
-        mounted() {
-            const {year, month} = this.$route.params;
+         })
+            .then(({data}) => {
+               const {valid, invalid} = data;
 
-            axios.get(`/api/payments/valid-invalid`, {
-                params: {
-                    year, month
-                }
+               valid.forEach(v => {
+                  const check = {...v, checked: false};
+                  this.hasValid.push(check);
+               });
+
             })
-                .then(({data}) => {
-                    const {valid, invalid} = data;
 
-                    valid.forEach(v => {
-                        const check = {...v, checked: false};
-                        this.hasValid.push(check);
-                    });
-
-                })
-
-            axios.get('/api/banks/internals')
-                .then(({data}) => {
-                    this.banksIN = data
-                }).catch(error => console.log(error))
-        },
-        methods: {
-            validElement(id, type) {
-                if (type) {
-                    this.invalid.unshift(...this.valid.filter(v => v.id === id))
-                    this.valid = this.valid.filter(v => v.id !== id)
-                } else {
-                    this.valid.unshift(...this.invalid.filter(v => v.id === id))
-                    this.invalid = this.invalid.filter(v => v.id !== id)
-                }
-            },
-            setImpaye(id) {
-                axios.put(`/api/payments/${id}/impaye`)
-                    .then(({data}) => {
-                        console.log(data);
-                        const {id} = data
-                        this.validElement(1, id)
-                    })
-            },
-
-            transferToBank() {
-                const bank_id = this.in_bank;
-                let ids = [];
-                this.hasValid.forEach(v => {
-                    if (v.checked)
-                        ids.push(v.id)
-                });
-
-                axios.put(`/api/payments/transfer-to/${bank_id}`, {ids})
-                    .then(({data}) => {
-                        console.log(data);
-                        this.$router.push({name: 'banks'})
-                    });
-
-                console.log(ids);
+         axios.get('/api/banks/internals')
+            .then(({data}) => {
+               this.banksIN = data
+            }).catch(error => console.log(error))
+      },
+      methods: {
+         validElement(id, type) {
+            if (type) {
+               this.invalid.unshift(...this.valid.filter(v => v.id === id))
+               this.valid = this.valid.filter(v => v.id !== id)
+            } else {
+               this.valid.unshift(...this.invalid.filter(v => v.id === id))
+               this.invalid = this.invalid.filter(v => v.id !== id)
             }
-        }
-    }
+         },
+         setImpaye(id) {
+            axios.put(`/api/payments/${id}/impaye`)
+               .then(({data}) => {
+                  console.log(data);
+                  const {id} = data
+                  this.validElement(1, id)
+               })
+         },
+         transferToBank() {
+            const bank_id = this.in_bank;
+            let ids = [];
+            this.hasValid.forEach(v => {
+               if (v.checked)
+                  ids.push(v.id)
+            });
+
+            axios.put(`/api/payments/transfer-to/${bank_id}`, {ids})
+               .then(({data}) => {
+                  console.log(data);
+                  this.$router.push({name: 'banks'})
+               });
+
+            console.log(ids);
+         },
+         cannotTransfer(d) {
+            let now = moment(new Date()); //todays date
+            let end = moment(d); // another date
+            let duration = moment.duration(now.diff(end));
+            console.log(duration.asDays())
+            return (duration.asDays() > 1);
+         }
+      }
+   }
 </script>
 
 <style scoped>

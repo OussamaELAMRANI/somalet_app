@@ -33,7 +33,7 @@ class BankController extends Controller
 
          $payment = collect($banks)['payments'];
          foreach ($payment as $p) {
-            if ($p['operation'] == 'OPR') {
+            if ($p['operation'] == 'OPR' || !$p['done']) {
                $sumOperation += $p['amount'];
             } else {
                $sumTransfer += $p['amount'];

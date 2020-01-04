@@ -143,7 +143,7 @@ class PayementService
 
    public function getNoValidPayments()
    {
-      $noValid = Payment::with('formBanque')
+      $noValid = Payment::with('formBank')
          ->join('payment_types AS t', 't.id', '=', 'payments.typed')
          ->Join('clients AS c', 'c.id', '=', 'payments.client_id')
          ->select(['payments.*', 't.type', 'c.nom'])
@@ -200,11 +200,17 @@ class PayementService
       $payment = $this->req->get('payment');
       $payment['payed_at'] = Carbon::now()->toDateString();
       $payment['operation'] = 'OPR';
-      $payment['valid'] = 1;
+      $payment['valid'] = 0;
 
-      $typee = PaymentType::Where('type', 'ESPECE')->first();
-      $created = $typee->payments()->create($payment);
+      $created = Payment::create($payment)->first();
 
       return response()->json($created, 201);
+   }
+
+
+   public function getOutstandingPayments()
+   {
+      $impayes= Payment::where('done',0)->get();
+      return response()->json($impayes, 200);
    }
 }

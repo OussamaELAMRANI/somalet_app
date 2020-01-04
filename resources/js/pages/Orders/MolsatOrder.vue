@@ -117,7 +117,8 @@
             order: [],
             sizes: [],
             qte: 0,
-            getSizes: []
+            getSizes: [],
+            production_orders: []
          }
       },
       methods: {
@@ -173,6 +174,12 @@
             if (_.has(t, 'sizes')) {
                this.getSizes = t.sizes
             } else this.getSizes = []
+         },
+         order: function (o) {
+            _.forEach(o, function (c) {
+               const order_quantity = c.qte;
+               // _.forEach(c.si)
+            })
          }
       }
    }

@@ -15,10 +15,10 @@ class Payment extends Model
 
    public function types()
    {
-      return $this->belongsTo(PaymentType::class,'type');
+      return $this->belongsTo(PaymentType::class,'typed');
    }
 
-   public function formBanque()
+   public function formBank()
    {
       return $this->belongsTo(Bank::class,'from_bank');
    }

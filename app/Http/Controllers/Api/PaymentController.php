@@ -6,8 +6,10 @@ use App\Bank;
 use App\Payment;
 use App\Services\Payments\PayementService;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends Controller
 {
@@ -16,6 +18,12 @@ class PaymentController extends Controller
    public function __construct(PayementService $payementService)
    {
       $this->service = $payementService;
+   }
+
+   public function show($id)
+   {
+      $payment = Payment::with('types', 'formBank')->findOrFail($id);
+      return response()->json($payment);
    }
 
    public function store($cmd)
@@ -88,6 +96,28 @@ class PaymentController extends Controller
       }
 
       return response()->json('Transfer to the Bank Successfully ! ', 201);
+   }
 
+   public function getOutstandingPayments()
+   {
+      return $this->service->getOutstandingPayments();
+   }
+
+   public function isOutstandingPayments($id)
+   {
+      $payment = Payment::find($id)->first();
+      if ($payment['done']) {
+         return response()->json([], 400);
+      }
+      return response()->json([], 200);
+
+   }
+
+   public function updateDeadline(Payment $payment, Request $req)
+   {
+      $payment->update([
+         'date_deadline' => Carbon::parse($req->input('date_deadline'))->toDateString()
+      ]);
+      return response()->json('', Response::HTTP_OK);
    }
 }

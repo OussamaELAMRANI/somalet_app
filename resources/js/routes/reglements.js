@@ -79,6 +79,14 @@ export default [
             },
          },
          {
+            name: 'outstandingPayments',
+            path: 'impaye',
+            component: () => import('@/pages/Billings/OutstandingPayments'),
+            meta: {
+               title: "Impayés", name: 'outstandingPayments', icon: 'fa fa-gor', roles: 'guest'
+            },
+         },
+         {
             name: 'transferMoney',
             path: 'transfer',
             component: () => import('@/pages/Reglement/TransferMoney'),
@@ -93,6 +101,24 @@ export default [
             component: () => import('@/pages/Reglement/OperationFromBank'),
             meta: {
                title: "Operation", name: 'operationMoney', icon: 'fa fa-gor', roles: 'ADMINE'
+            },
+            hidden: true
+         },
+         {
+            name: 'adjust',
+            path: ':id/adjust',
+            component: () => import('@/pages/Billings/AdjustOustanding'),
+            meta: {
+               title: "Régler les impayés", name: 'adjust', icon: 'fa fa-gor', roles: 'ADMINE'
+            },
+            hidden: true
+         },
+         {
+            name: 'UpDeadline',
+            path: ':id/deadline',
+            component: () => import('@/pages/Billings/UpdateDeadline'),
+            meta: {
+               title: "Modifier la date d'écheancé", name: 'UpDeadline', icon: 'fa fa-gor', roles: 'ADMINE'
             },
             hidden: true
          },

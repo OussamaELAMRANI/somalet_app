@@ -89,6 +89,7 @@ Vue.use(Popover);
 import VPopover from 'vue-js-popover'
 
 Vue.use(VPopover, {tooltip: true})
+
 /**
  * Global Filtering | pipeline truck
  */
@@ -101,12 +102,23 @@ Vue.filter('fixed_two', function (n) {
    if (n !== null)
       return Number(n).toFixed(2);
    return null
-})
+});
 Vue.filter('clientName', function (c) {
    if (c !== null)
       return c.nom;
    return null
-})
+});
+
+Vue.filter('paymentMode', function (c) {
+   if (c !== null)
+      return c.type;
+   return null
+});
+Vue.filter('getBank', function (c) {
+   if (c !== null)
+      return c.name;
+   return null
+});
 
 
 new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

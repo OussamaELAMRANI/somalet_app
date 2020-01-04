@@ -24,6 +24,7 @@ $factory->define(App\Unit::class, function (Faker $faker) {
       'name' => $faker->unique()->name,
    ];
 });
+
 $factory->define(App\ShoeSize::class, function (Faker $faker) {
    return [
       'size' => $faker->numberBetween(26, 45),

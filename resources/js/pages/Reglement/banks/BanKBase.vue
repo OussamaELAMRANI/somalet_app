@@ -5,18 +5,27 @@
          .col-9
             table-layout(theme="bg-primary text-white", :head-table="ifItems", data="payments", empty-text="Pas de payement")
                tr(v-for="p in payments")
-                  td {{p.id}}
-                  td {{p.payed_at | humane_date}}
-                  td
+                  td.align-middle {{p.id}}
+                  td.align-middle {{p.payed_at | humane_date}}
+                  td.align-middle
+                     p.badge.badge-info {{getType(p.typed) | getTypeName}}
+                  td.align-middle
                      p {{p.client | clientName}}
+                     p
+                        strong {{(p.chq_number == null)? null : `N: ${p.chq_number}`}}
                      p {{p.designation}}
 
-                  td {{(p.operation === 'OPR')? `${p.amount} DH` : ''}}
-                  td {{ (p.operation === 'TRS') ? `${p.amount} DH` : ''}}
+                  td.align-middle {{(p.operation === 'OPR' || !p.done )? `${p.amount} DH` : ''}}
+                  td.align-middle {{ ((p.operation === 'TRS' || p.operation === 'PYM') && p.done) ? `${p.amount} DH` : ''}}
+                  td.align-middle(v-if="p.done")
+                     button.btn.btn-block.btn-primary(v-if="hasImpayed(p.typed)" @click="makeOut(p.id)") Impayé
+                  td.align-middle(v-else)
+                     p.badge-danger Impayé
                tr(class="bg-info text-uppercase font-weight-bold text-white shadow")
-                  td(colspan="3") TOTAL
+                  td(colspan="4") TOTAL
                   td {{debit}} DH
                   td {{credit}} DH
+                  td {{credit-debit | fixed_two}} DH
          .col-3.segment.shadow
             router-link.btn.rounded-pill.btn-outline-info.btn-block(:to="{name:'operationMoney'}") Operation
             hr
@@ -53,7 +62,7 @@
       data() {
          return {
             fr,
-            ifItems: ['#', 'Date', 'Client', 'Debit', 'Crédit'],
+            ifItems: ['#', 'Date', 'Type', 'Détail', 'Debit', 'Crédit', 'Impayé'],
             payments: [],
             debit: 0,
             credit: 0,
@@ -62,11 +71,17 @@
             filterDate: {
                'from': moment(new Date).format('YYYY-MM-DD'),
                'to': moment(new Date).format('YYYY-MM-DD'),
-            }
+            },
+            types: [],
+            pType: '',
          }
       },
       mounted() {
          this.filterByDate()
+         axios.get('/api/payments-type')
+            .then(({data}) => {
+               this.types = data;
+            }).catch(error => console.log(error));
       },
       methods: {
          filterByDate() {
@@ -84,6 +99,24 @@
                      this.credit = credit
                   })
                   .catch(error => console.log(error))
+         },
+         hasImpayed(t) {
+            let p = this.getType(t)
+            p = p[0].type
+
+            return ['CHEQUE', 'EFFET'].includes(p)
+         },
+         getType(t) {
+            return _.filter(this.types, (p) => {
+               return p.id === t
+            })
+         },
+         makeOut(id) {
+            axios.put(`/api/payments/${id}/impaye`)
+               .then(({data}) => {
+                  // this.types = data;
+                  this.$router.push({name: 'outstandingPayments'})
+               }).catch(error => console.log(error));
          }
       },
       watch: {
@@ -93,6 +126,12 @@
          au: function (d) {
             this.filterDate.to = moment(d).format('YYYY-MM-DD')
          },
+      },
+      filters: {
+         getTypeName: function (t) {
+            console.log(t)
+            return (t.length == 0) ? null : t[0].type
+         }
       },
       components: {TableLayout, Datepicker}
    }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ShoeSize extends Model
 {
+   protected $fillable = ['size'];
 
    public function products()
    {

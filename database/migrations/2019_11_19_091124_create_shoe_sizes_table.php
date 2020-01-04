@@ -16,7 +16,7 @@ class CreateShoeSizesTable extends Migration
         Schema::create('shoe_sizes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('size');
-//            $table->timestamps();
+            $table->timestamps();
         });
     }
 

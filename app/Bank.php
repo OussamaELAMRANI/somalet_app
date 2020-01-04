@@ -12,4 +12,9 @@ class Bank extends Model
    {
       return $this->hasMany(Payment::class, 'in_bank');
    }
+
+   function paymentsFrom()
+   {
+      return $this->hasMany(Payment::class, 'in_bank');
+   }
 }

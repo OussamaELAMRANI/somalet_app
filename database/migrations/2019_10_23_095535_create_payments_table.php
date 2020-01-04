@@ -37,6 +37,7 @@ class CreatePaymentsTable extends Migration
          // En Caisse
          $table->integer('checkout_now')->default(0);
          $table->integer('done')->default(1); // [IMPAYE, PAYE]
+         $table->enum('state',['IGN','JST'])->nullable(); // [IMPAYE=> IGN, IMPAYE=>JUSTIFY]
          $table->integer('valid')->default(0); // [Valid, No Valid] By Admin
 
          $table->string('chq_number')->nullable();
@@ -44,7 +45,7 @@ class CreatePaymentsTable extends Migration
 
          $table->unsignedBigInteger('typed')->unsigned();
          $table->unsignedBigInteger('client_id')->nullable()->unsigned();
-         $table->unsignedBigInteger('adjust_by')->nullable()->unsigned();
+//         $table->unsignedBigInteger('adjust_by')->nullable()->unsigned();
          $table->unsignedBigInteger('in_bank')->nullable()->unsigned();
          $table->unsignedBigInteger('from_bank')->nullable()->unsigned();
 
@@ -63,10 +64,12 @@ class CreatePaymentsTable extends Migration
             ->on('banks')
             ->onUpdate('cascade');
 
-         $table->foreign('adjust_by')
-            ->references('id')
-            ->on('payments')
-            ->onUpdate('cascade');
+//         $table->foreign('adjust_by')
+//            ->references('id')
+//            ->on('payments')
+//            ->onUpdate('cascade');
+
+         $table->string('adjust_by')->nullable();
 
          $table->foreign('typed')
             ->references('id')
