@@ -105,11 +105,11 @@ class PaymentController extends Controller
 
    public function isOutstandingPayments($id)
    {
-      $payment = Payment::find($id)->first();
-      if ($payment['done']) {
-         return response()->json([], 400);
-      }
-      return response()->json([], 200);
+      $payment = Payment::where('state', 'JST')->with('types', 'formBank')->findOrfail($id);
+//      if ($payment['state'] !=='JST') {
+//         return response()->json([], 400);
+//      }
+      return response()->json($payment, 200);
 
    }
 
@@ -119,5 +119,11 @@ class PaymentController extends Controller
          'date_deadline' => Carbon::parse($req->input('date_deadline'))->toDateString()
       ]);
       return response()->json('', Response::HTTP_OK);
+   }
+
+
+   public function adjustPayment(Payment $payment)
+   {
+      return $this->service->adjustPayment($payment);
    }
 }

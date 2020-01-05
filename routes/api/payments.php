@@ -19,6 +19,7 @@ Route::prefix('payments')->group(function () {
    Route::put('transfer-to/{bank_id}', 'Api\PaymentController@transferToBank');
    Route::put('{id}/impaye', 'Api\PaymentController@makeImpaye');
    Route::put('{payment}/deadline', 'Api\PaymentController@updateDeadline');
+   Route::put('{payment}/adjust', 'Api\PaymentController@adjustPayment');
 
 });
 

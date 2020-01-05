@@ -7,7 +7,7 @@
             router-link(:to="{name:'bank_if'}").btn.btn-primary IF Banque
             router-link(:to="{name:'bank_molsat'}").btn.btn-success MOLSAT
             router-link(:to="{name:'bank_bb'}").btn.btn-secondary BB
-      router-view
+      router-view(:key="$route.path")
 </template>
 
 <script>

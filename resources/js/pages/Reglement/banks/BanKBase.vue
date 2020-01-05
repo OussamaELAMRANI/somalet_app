@@ -17,10 +17,16 @@
 
                   td.align-middle {{(p.operation === 'OPR' || !p.done )? `${p.amount} DH` : ''}}
                   td.align-middle {{ ((p.operation === 'TRS' || p.operation === 'PYM') && p.done) ? `${p.amount} DH` : ''}}
-                  td.align-middle(v-if="p.done")
-                     button.btn.btn-block.btn-primary(v-if="hasImpayed(p.typed)" @click="makeOut(p.id)") Impayé
+                  td.align-middle(v-if="p.done && p.operation === 'PYM' && p.state !== 'IGN'")
+                     button.btn.btn-block.btn-link(v-if="hasImpayed(p.typed)" @click="makeOut(p.id)") Impayé
+                  td.align-middle(v-else-if="p.operation === 'TRS'")
+                     p.badge-warning TRANSFER
+                  td.align-middle(v-else-if="p.state === 'IGN'")
+                     p.badge-danger IMPAYÉ
+                  td.align-middle(v-else-if="p.state === 'JST'")
+                     p.text-danger {{(p.adjust_by) ? 'Réglé par: '+p.adjust_by :'EN ATTENT'}}
                   td.align-middle(v-else)
-                     p.badge-danger Impayé
+                     p.badge-success CHARGES
                tr(class="bg-info text-uppercase font-weight-bold text-white shadow")
                   td(colspan="4") TOTAL
                   td {{debit}} DH
@@ -62,7 +68,7 @@
       data() {
          return {
             fr,
-            ifItems: ['#', 'Date', 'Type', 'Détail', 'Debit', 'Crédit', 'Impayé'],
+            ifItems: ['#', 'Date', 'Type', 'Détail', 'Debit', 'Crédit', 'ETAT'],
             payments: [],
             debit: 0,
             credit: 0,
@@ -115,7 +121,8 @@
             axios.put(`/api/payments/${id}/impaye`)
                .then(({data}) => {
                   // this.types = data;
-                  this.$router.push({name: 'outstandingPayments'})
+                  // this.$router.push({name: 'banks'})
+                  location.reload();
                }).catch(error => console.log(error));
          }
       },

@@ -26,8 +26,8 @@ class BankController extends Controller
 
          $banks = Bank::where('name', $name)
             ->with(['payments' => function ($query) use ($sumOperation, $sumTransfer) {
-               return $query->whereBetween('payed_at', [\request('from'), \request('to')])
-                  ->with('client');
+               return $query->whereBetween('date_deadline', [\request('from'), \request('to')])
+                  ->with('client')->orderBy('date_deadline','ASC');
             }])
             ->first();
 

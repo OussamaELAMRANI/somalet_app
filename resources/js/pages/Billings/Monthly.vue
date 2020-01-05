@@ -160,7 +160,7 @@
             let end = moment(d); // another date
             let duration = moment.duration(now.diff(end));
             console.log(duration.asDays())
-            return (duration.asDays() > 1);
+            return (duration.asDays() > 0);
          }
       }
    }

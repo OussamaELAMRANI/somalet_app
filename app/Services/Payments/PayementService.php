@@ -175,17 +175,26 @@ class PayementService
 
    public function makeImpaye(Payment $payment)
    {
-//      $noValid = Payment::find($id);
-      $payment->update(['done' => 0]);
+      if ($payment['state'] !== 'IGN') {
+         $payment->update(['done' => 1, 'state' => 'IGN']);
+         $new_payment = $payment;
+         $new_payment['designation'] = "IMPAYÉ \n {$new_payment['chq_number']} \n {$new_payment['designation']}";
+         $new_payment['state'] = 'JST';
+         $new_payment['done'] = 0;
+         $new_payment['date_deadline'] = Carbon::now()->toDateString();;
+         unset($new_payment['id'], $new_payment['created_at'], $new_payment['updated_at']);
+         Payment::create($new_payment->toArray());
 
-      return response()->json($payment);
+         return response()->json('Update and create a new one');
+      }
+      return response()->json('This payment is already Ignored !', 401);
    }
 
 
    public function transferMoney()
    {
       $payment = $this->req->get('payment');
-      $payment['payed_at'] = Carbon::now()->toDateString();
+      $payment['payed_at'] = $payment['date_deadline'] = Carbon::now()->toDateString();
       $payment['operation'] = 'TRS';
       $payment['valid'] = 1;
 
@@ -198,7 +207,7 @@ class PayementService
    public function makeOperation()
    {
       $payment = $this->req->get('payment');
-      $payment['payed_at'] = Carbon::now()->toDateString();
+      $payment['payed_at'] = $payment['date_deadline'] = Carbon::now()->toDateString();
       $payment['operation'] = 'OPR';
       $payment['valid'] = 0;
 
@@ -210,7 +219,31 @@ class PayementService
 
    public function getOutstandingPayments()
    {
-      $impayes= Payment::where('done',0)->get();
+      $impayes = Payment::where('done', 0)->where('state', 'JST')->where('adjust_by', null)->orderBy('id','desc')->get();
       return response()->json($impayes, 200);
+   }
+
+   public function adjustPayment(Payment $payment)
+   {
+      $p = $this->req->input('payment');
+
+      $payment->update([
+         'adjust_by' => $p['adjust_by'],
+//         'state' => null,
+//         'done' => 1,
+//         'valid' => 1,
+//         'typed' => $p['typed'],
+//         'in_bank' => null,
+      ]);
+      unset($payment['id']);
+      $payment['valid'] = 0;
+      $payment['done'] = 1;
+      $payment['adjust_by'] = null;
+      $payment['in_bank'] = null;
+      $payment['state'] = null;
+      $payment['typed'] =  $p['typed'];
+      Payment::create($payment->toArray());
+
+      return \response()->json('OK', 200);
    }
 }
