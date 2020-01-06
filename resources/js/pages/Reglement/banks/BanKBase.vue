@@ -136,7 +136,6 @@
       },
       filters: {
          getTypeName: function (t) {
-            console.log(t)
             return (t.length == 0) ? null : t[0].type
          }
       },

@@ -219,7 +219,7 @@ class PayementService
 
    public function getOutstandingPayments()
    {
-      $impayes = Payment::where('done', 0)->where('state', 'JST')->where('adjust_by', null)->orderBy('id','desc')->get();
+      $impayes = Payment::where('done', 0)->where('state', 'JST')->where('adjust_by', null)->orderBy('id', 'desc')->get();
       return response()->json($impayes, 200);
    }
 
@@ -235,13 +235,21 @@ class PayementService
 //         'typed' => $p['typed'],
 //         'in_bank' => null,
       ]);
-      unset($payment['id']);
+
+      if (in_array($payment['types']['type'], ['EFFET', 'CHEQUE'])) {
+         $payment['payed_at'] = $p['payed_at'];
+         $payment['date_deadline'] = $p['date_deadline'];
+         $payment['chq_number'] = $p['chq_number'];
+         $payment['in_bank'] = $p['in_bank'];
+      }
+      unset($payment['id'], $payment['types'], $payment['form_bank']);
       $payment['valid'] = 0;
       $payment['done'] = 1;
       $payment['adjust_by'] = null;
       $payment['in_bank'] = null;
       $payment['state'] = null;
-      $payment['typed'] =  $p['typed'];
+      $payment['typed'] = $p['typed'];
+
       Payment::create($payment->toArray());
 
       return \response()->json('OK', 200);

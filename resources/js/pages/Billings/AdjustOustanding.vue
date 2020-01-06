@@ -48,27 +48,51 @@
             select.form-control(v-model="payment.typed")
                option(:value="null" disabled) Selectionnez ici
                option(v-for="(t,i) in types" :value="t.id") {{t.type}}
-         .col-6(v-if="['CHEQUE','EFFET'].includes(pType) ")
-            label N (Chéque/Effet)
-            .input-group
-               .input-group-append
-                  span.input-group-text NUMÉRO
-               input.form-control(type="number", v-model="payment.chq_number")
+
+         template(v-if="['CHEQUE','EFFET'].includes(pType)")
+            .col-6
+               .form-group
+                  label Banque
+                  select.form-control(v-model="payment.from_bank")
+                     option(:value="null") Indifférent
+                     option(v-for="(t,i) in banks" :value="t.id") {{t.company}}
+
+            .col-6
+               label Date d'encaissement
+               datepicker.form-control(:language='fr' :monday-first='true' format="dd/MM/yyyy" @selected="getDate"
+                  calendar-button-icon='fa fa-user' name='date_picker' v-model='payed_at' id="payed")
+            .col-6
+               .form-group
+                  label Date d'échéance :
+                  datepicker.form-control(:language='fr' :monday-first='true' format="dd/MM/yyyy" @selected="getDeadline"
+                     calendar-button-icon='fa fa-user' name='date_picker' v-model='date_deadline')
+            .col-6
+               label N (Chéque/Effet)
+               .input-group
+                  .input-group-append
+                     span.input-group-text NUMÉRO
+                  input.form-control(type="number", v-model="payment.chq_number")
 
          .col-12.text-right
-            button.btn.btn-primary(@click="adjustNow") Transférer
+            button.btn.btn-primary(@click="adjustNow") Régler maintenant
 
 
 </template>
 
 <script>
    import TableLayout from "@/components/layouts/TableLayout";
+   import Datepicker from 'vuejs-datepicker';
+   import {fr} from 'vuejs-datepicker/dist/locale'
+   import moment from 'moment'
 
    export default {
       name: "AdjustOustanding",
-      components: {TableLayout},
+      components: {TableLayout, Datepicker},
       data() {
          return {
+            payed_at: moment().toDate(),
+            date_deadline: moment().toDate(),
+            fr,
             impayed_id: null,
             banksIN: [],
             types: [],
@@ -84,7 +108,8 @@
                adjust_by: null,
                valid: 0 // Just make Trace before Validation
             },
-            pType: null,
+            pType: 'CHEQUE',
+            banks: []
          }
       },
       mounted() {
@@ -95,16 +120,16 @@
             })
             .catch(error => {
                console.log(error)
-               this.$router.push('404')
+               this.$router.push('/404')
             });
          axios.get('/api/payments-type')
             .then(({data}) => {
                this.types = data;
             })
             .catch(error => console.log(error));
-         axios.get('/api/banks/internals')
+         axios.get('/api/banks/external')
             .then(({data}) => {
-               this.banksIN = data
+               this.banks = data
             }).catch(error => console.log(error))
 
       },
@@ -121,14 +146,23 @@
                   name: 'outstandingPayments'
                })
             })
-         }
+         },
+         getDate(d) {
+            this.payment.payed_at = moment(d).format('YYYY-MM-DD');
+            console.log(moment(d).format('DD/MM/YYYY'));
+         },
+         getDeadline(d) {
+            this.payment.date_deadline = moment(d).format('YYYY-MM-DD')
+         },
       },
       watch: {
          'payment.typed': function (t) {
-            const p = _.filter(this.types, (p) => {
-               return p.id === t
-            })
-            this.payment.adjust_by = p[0].type
+            if (this.types.length > 0) {
+               const p = _.filter(this.types, (p) => {
+                  return p.id === t
+               })
+               this.payment.adjust_by = this.pType = p[0].type;
+            }
          }
       }
    }
