@@ -16,14 +16,9 @@ class CreateProductionOrdersTable extends Migration
       Schema::create('production_orders', function (Blueprint $table) {
 
          $table->bigIncrements('id');
-         $table->unsignedBigInteger('ps_id');
+         $table->date('date_cmd');
+         $table->enum('state',['ATTENTE','VUE','RECEPTION','VALID'])->default('ATTENTE');
 
-         $table->integer('order_quantity');
-         $table->integer('fabric_quantity')->default(0);
-
-         $table->foreign('ps_id')
-            ->references('id')
-            ->on('product_size');
 
          $table->softDeletes();
          $table->timestamps();

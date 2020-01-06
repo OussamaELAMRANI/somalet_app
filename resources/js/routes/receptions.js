@@ -18,7 +18,7 @@ export default [
             },
            {
                 name: 'soleReceptions',
-                path: 'receptions-list',
+                path: 'sole-list',
                 component: () => import('@/pages/receptions/SolesReceptions'),
                 meta: {
                     title: 'Reception de Semelle', name: 'soleReceptions', icon: 'fa fa-briefcase', roles: 'MAGAZINIER'

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Arrival;
 use App\Http\Controllers\Controller;
 use App\Services\Arrivals\ArrivalService;
+use App\Services\Production\ProductionService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,10 +58,10 @@ class ArrivalController extends Controller
 
       if ($arr['state'] == 'VUE' || $arr['state'] == 'ATTENTE') {
          $arr = $arr->update(['state' => $request->input('state')]);
-         return response()->json($arr,Response::HTTP_OK);
+         return response()->json($arr, Response::HTTP_OK);
       }
 
-      return response()->json(['message'=>'It\'s already see it !'],Response::HTTP_BAD_REQUEST);
+      return response()->json(['message' => 'It\'s already see it !'], Response::HTTP_BAD_REQUEST);
 
    }
 

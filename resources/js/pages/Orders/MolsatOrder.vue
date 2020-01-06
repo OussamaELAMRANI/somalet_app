@@ -35,7 +35,7 @@
          </tr>
          <tr v-if="order.length>0">
             <td colspan="6" class="bg-secondary text-right my-0">
-               <button class="btn btn-success ">Ajouter Cette commande</button>
+               <button class="btn btn-success " @click="addProductionOrder">Ajouter Cette commande</button>
             </td>
          </tr>
          </tbody>
@@ -118,7 +118,7 @@
             sizes: [],
             qte: 0,
             getSizes: [],
-            production_orders: []
+            production_order: []
          }
       },
       methods: {
@@ -143,7 +143,7 @@
                   this.noData = true
 
                this.loading = false;
-            })
+            }).catch(err => console.log(err))
          },
          insertOrder() {
             if (this.tempo == null || this.tempo.length < 1)
@@ -162,6 +162,16 @@
          },
          deleteItem(index) {
             this.order.splice(index, 1)
+         },
+         addProductionOrder() {
+            axios.post(`/api/receptions/production`,
+               {
+                  production_order: this.production_order
+               }
+            ).then(({data}) => {
+               console.log(data)
+            }).catch(err => console.log(err))
+
          }
       },
       filters: {
@@ -176,10 +186,18 @@
             } else this.getSizes = []
          },
          order: function (o) {
+            const production_order = [];
             _.forEach(o, function (c) {
                const order_quantity = c.qte;
-               // _.forEach(c.si)
+               _.forEach(c.sizes, (s) => {
+                  production_order.push({
+                     ps_id: s.id,
+                     order_quantity: order_quantity,
+                     fabric_quantity: 0,
+                  })
+               })
             })
+            this.production_order = production_order;
          }
       }
    }
