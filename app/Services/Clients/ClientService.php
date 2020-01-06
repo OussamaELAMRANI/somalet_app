@@ -158,6 +158,7 @@ class ClientService
       $payments = DB::table('payments AS p')
          ->where('p.client_id', '=', $client_id)
          ->where('p.payed_at', '<=', $to_date)
+         ->where('p.state', null)
          //->get('date_cmd')
          ->get();
 

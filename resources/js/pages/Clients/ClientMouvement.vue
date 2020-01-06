@@ -54,15 +54,21 @@
 
                         <tr v-for="c in m">
 
-                           <template v-if="c.cmd_number">
+                           <template v-if="c.cmd_number || c.state === 'JST'">
                               <td>{{c.date_cmd | humane_date}}</td>
-                              <td>COMMANDE: {{c.cmd_number}}</td>
+                              <td>
+                                 {{(c.state === 'JST') ? 'IMPAYÉ': `COMMANDE: ${c.cmd_number}` }}
+                              </td>
                               <td>{{c.amount}} DH</td>
                               <td></td>
                            </template>
                            <template v-else>
                               <td>{{c.payed_at | humane_date}}</td>
-                              <td>Paiement <strong>({{c.type}})</strong></td>
+                              <td>
+                                 <p>
+                                    Paiement <strong>({{c.type}})</strong>
+                                 </p>
+                              </td>
                               <td></td>
                               <td>{{c.amount}} DH</td>
                            </template>
@@ -115,100 +121,100 @@
 </template>
 
 <script>
-    import moment from 'moment';
-    import Datepicker from 'vuejs-datepicker';
-    import {fr} from 'vuejs-datepicker/dist/locale'
-    import {HalfCircleSpinner} from 'epic-spinners'
+   import moment from 'moment';
+   import Datepicker from 'vuejs-datepicker';
+   import {fr} from 'vuejs-datepicker/dist/locale'
+   import {HalfCircleSpinner} from 'epic-spinners'
 
-    export default {
-        components: {Datepicker, HalfCircleSpinner},
-        name: "ClientMouvement",
-        data() {
-            return {
-                fr,
-                dateFrom: moment(new Date).toDate(),
-                dateTo: moment(new Date).toDate(),
-                client: {},
-                movements: [],
-                isLoading: false,
-                debits: 0,
-                debit: 0,
-                credit: 0,
-                form_d: moment(new Date).format('YYYY-MM-DD'),
-                to_d: moment(new Date).format('YYYY-MM-DD'),
-                sold: 0,
-                sold_today: 0
-            }
-        },
-        mounted() {
-            const id = this.$route.params.id;
+   export default {
+      components: {Datepicker, HalfCircleSpinner},
+      name: "ClientMouvement",
+      data() {
+         return {
+            fr,
+            dateFrom: moment(new Date).toDate(),
+            dateTo: moment(new Date).toDate(),
+            client: {},
+            movements: [],
+            isLoading: false,
+            debits: 0,
+            debit: 0,
+            credit: 0,
+            form_d: moment(new Date).format('YYYY-MM-DD'),
+            to_d: moment(new Date).format('YYYY-MM-DD'),
+            sold: 0,
+            sold_today: 0
+         }
+      },
+      mounted() {
+         const id = this.$route.params.id;
+         this.isLoading = true;
+         this.getMovements(id);
+      },
+      methods: {
+         getMovements(id) {
+            axios.get(`/api/clients/${id}/movements`)
+               .then(({data}) => {
+                  const {movements, client, sold_today, sold} = data;
+                  console.log(sold_today)
+
+                  this.client = client;
+                  this.movements = movements;
+                  this.sold = sold;
+                  this.sold_today = sold_today;
+                  this.isLoading = false;
+               })
+               .catch(error => console.log(error.response))
+         },
+         filterNow() {
             this.isLoading = true;
-            this.getMovements(id);
-        },
-        methods: {
-            getMovements(id) {
-                axios.get(`/api/clients/${id}/movements`)
-                    .then(({data}) => {
-                        const {movements, client, sold_today, sold} = data;
-                        console.log(sold_today)
+            const id = this.$route.params.id;
+            axios.get(`/api/clients/${id}/movements`, {params: {between: `${this.form_d},${this.to_d}`}})
+               .then(({data}) => {
+                  console.log(data);
+                  const {movements, sold, sold_today} = data;
 
-                        this.client = client;
-                        this.movements = movements;
-                        this.sold = sold;
-                        this.sold_today = sold_today;
-                        this.isLoading = false;
-                    })
-                    .catch(error => console.log(error.response))
-            },
-            filterNow() {
-                this.isLoading = true;
-                const id = this.$route.params.id;
-                axios.get(`/api/clients/${id}/movements`, {params: {between: `${this.form_d},${this.to_d}`}})
-                    .then(({data}) => {
-                        console.log(data);
-                        const {movements, sold, sold_today} = data;
+                  this.movements = movements;
+                  this.sold = sold;
+                  this.sold_today = sold_today;
 
-                        this.movements = movements;
-                        this.sold = sold;
-                        this.sold_today = sold_today;
+                  this.isLoading = false;
+               })
+               .catch(error => console.log(error.response))
+         },
+         print() {
+            // Pass the element id here
+            this.$htmlToPaper('printMe');
+         }
+      },
+      watch: {
+         movements: function (v) {
 
-                        this.isLoading = false;
-                    })
-                    .catch(error => console.log(error.response))
-            },
-            print() {
-                // Pass the element id here
-                this.$htmlToPaper('printMe');
-            }
-        },
-        watch: {
-            movements: function (v) {
+            let td = 0;
+            let tc = 0;
 
-                let td = 0;
-                let tc = 0;
+            Object.keys(v).forEach(k => {
+               this.movements[k].forEach(m => {
+                  if (m.date_cmd || m.state === 'JST')
+                     td += m.amount;
+                  else
+                     tc += m.amount;
+               })
+            });
+            this.credit = tc;
+            this.debit = td;
+         },
 
-                Object.keys(v).forEach(k => {
-                    this.movements[k].forEach(m => {
-                        if (m.date_cmd)
-                            td += m.amount;
-                        else
-                            tc += m.amount;
-                    })
-                });
-                this.credit = tc;
-                this.debit = td;
-            },
+         dateFrom: function (d) {
+            console.log(d)
+            this.form_d = moment(d).format('YYYY-MM-DD');
+         },
+         dateTo: function (d) {
+            this.to_d = moment(d).format('YYYY-MM-DD');
+         }
 
-            dateFrom: function (d) {
-                console.log(d)
-                this.form_d = moment(d).format('YYYY-MM-DD');
-            },
-            dateTo: function (d) {
-                this.to_d = moment(d).format('YYYY-MM-DD');
-            }
-
-        }
-    }
+      }
+   }
 
 </script>
 
