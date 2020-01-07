@@ -23,7 +23,7 @@ export default [
            {
               name: 'molsatOrder',
               path: 'molsat',
-              component: () => import('@/pages/Orders/MolsatOrder'),
+              component: () => import('@/pages/Productions/MolsatOrder'),
               meta: {
                  title: "Commande de production", name: 'molsatOrder', icon: 'fa fa-gor', roles: 'COMMERCIAL'
               },

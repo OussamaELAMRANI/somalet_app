@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Arrival;
 //use App\Reception;
 use App\Product;
+use App\ProductionOrder;
 use App\Services\Production\ProductionService;
 use App\Services\Stock\InventoryService;
 use Illuminate\Http\Request;
@@ -210,6 +211,20 @@ class ReceptionController extends Controller
    {
       return response()->json(
          $this->production->addProductionOrder(),
+         Response::HTTP_OK);
+   }
+
+   public function  listProductionOrder()
+   {
+      return response()->json(
+         $this->production->listProductionOrder(),
+         Response::HTTP_OK);
+   }
+
+ public function  getProductionDetail(ProductionOrder $order)
+   {
+      return response()->json(
+         $this->production->getProductionDetail($order),
          Response::HTTP_OK);
    }
 

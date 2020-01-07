@@ -44,8 +44,6 @@ class ProductionOrdersItems extends Migration
     */
    public function down()
    {
-      Schema::create('po_items', function (Blueprint $table) {
          Schema::dropIfExists('po_items');
-      });
    }
 }

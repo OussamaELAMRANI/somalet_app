@@ -29,5 +29,15 @@ class ProductionService extends AbstractService
       return ProductionOrder::with('productSizes', 'productSizes.product', 'productSizes.size')->last();
    }
 
+   public function listProductionOrder()
+   {
+      return ProductionOrder::last();
+   }
 
+   public function getProductionDetail(ProductionOrder $order)
+   {
+      return $order->load('productSizes', 'productSizes.product', 'productSizes.size');
+//         ::with();
+//         ->toArray();
+   }
 }

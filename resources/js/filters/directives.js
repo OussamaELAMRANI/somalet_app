@@ -30,3 +30,19 @@ Vue.filter('getBank', function (c) {
       return c.name;
    return null
 });
+
+Vue.filter('getProductName', function (p) {
+   return (p == null) ? null : p.name
+});
+
+Vue.filter('getProductSize', function (p) {
+   return (p == null) ? null : p.size
+});
+
+Vue.filter('getQteFabric', function (p) {
+   return (p == null) ? null : p.fabric_quantity
+});
+
+Vue.filter('getOrderQte', function (p) {
+   return (p == null) ? null : p.order_quantity
+});

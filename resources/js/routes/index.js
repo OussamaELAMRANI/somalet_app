@@ -17,6 +17,7 @@ import billings from './billings'
 import reglements from './reglements'
 import settings from './settings'
 import containers from './containers'
+import productions from './productions'
 
 // import NotFound from './../pages/NotFound'
 
@@ -78,7 +79,7 @@ export const asyncRoutes = [
          ...Providers,
          ...client,
          ...Products,
-         // ...arrivals,
+         ...productions,
          ...containers,
          ...Receptions,
          ...Stock,
