@@ -20,9 +20,9 @@
             label(for='new-unity') Nouvelle Unité
             .input-group
                input#new-unity.form-control(type='text' placeholder='Unité ...' name='newUnity' v-model='unity'
-                  v-on:keyup.enter='addUnity' v-validate="'required'")
+                  v-on:keyup.enter='addUnity')
                button.btn-success.btn-group-sm(@click="addUnity") Ajouter
-            small.text-danger(v-show="errors.has('newUnity')")  Vous douvez saisir une nouvelle unité
+            // small.text-danger(v-show="errors.has('newUnity')")  Vous douvez saisir une nouvelle unité
 
 </template>
 

@@ -5,25 +5,14 @@ namespace App\Services\Product;
 
 use App\Color;
 use App\Product;
+use App\Services\AbstractService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ProductService
+class ProductService extends AbstractService
 {
-   public $req;
-
-   /**
-    * Inject Request Object
-    * ProductService constructor.
-    * @param Request $request
-    */
-   public function __construct(Request $request)
-   {
-      $this->req = $request;
-   }
 
    public function addProducts()
    {
@@ -46,13 +35,11 @@ class ProductService
             $newProduct->saveSizes($sizes, $now);
 //            }
          }
+      } else {
+         Product::create($product);
       }
 
       return $this->sendResponse(['message' => "Products successfully added"], 201);
-
-
-//      } else
-//         Product::create(array_merge($product, ['img' => $portrait_url]));
 
    }
 
@@ -83,13 +70,7 @@ class ProductService
     */
    public function getProduct($ref)
    {
-      return response()->json(Product::where('reference', $ref)->filter($this->req)->get(), 200);
-   }
-
-
-   private function sendResponse($message, $status = 200)
-   {
-      return response()->json($message, $status);
+      return $this->sendResponse(Product::where('reference', $ref)->filter($this->req)->get());
    }
 
    public function getDistinctProductByName()

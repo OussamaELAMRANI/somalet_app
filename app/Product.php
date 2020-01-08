@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 /**
  * @method static insert(array $products)
+ * @method static filter(Request $req)
  * @property mixed id
  */
 class Product extends Model
@@ -83,7 +84,7 @@ class Product extends Model
    {
       return $this->belongsToMany(ShoeSize::class, 'product_size',
          'product_id', 'size_id')
-         ->withPivot('weight');
+         ->withPivot(['weight','id']);
    }
 
    public function saveSizes(array $sizes, $now): self

@@ -30,11 +30,12 @@ export default [
          },
          {
             name: 'orderReception',
-            path: 'order-reception',
+            path: ':id/order-reception',
             component: () => import('@/pages/Productions/SolesReceptions'),
             meta: {
                title: "Reception des commandes", name: 'orderReception', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
+            hidden: true
          },
          {
             name: 'listOrderProduction',
@@ -43,6 +44,25 @@ export default [
             meta: {
                title: "Lister en details", name: 'listOrderProduction', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
+         },
+         {
+            name: 'prodctionReceptions',
+            path: 'receptions',
+            component: () => import('@/pages/Productions/ProductionReceptionList'),
+            redirect: 'receptions/list',
+            meta: {
+               title: "Reception", name: 'prodctionReceptions', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+            },
+            children: [
+               {
+                  name: 'listOrderReception',
+                  path: 'list',
+                  component: () => import('@/pages/Productions/ReceptionList'),
+                  meta: {
+                     title: "Lister en details", name: 'listOrderReception', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+                  },
+               },
+            ]
          },
 
       ]

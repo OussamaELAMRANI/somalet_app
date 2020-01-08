@@ -135,7 +135,7 @@
 
             axios.get(`/api/products/${search}/search`, {
                params: {
-                  with: 'unit,provider,color,category,arrivals,sizes'
+                  with: 'color,sizes'
                }
             }).then(({data}) => {
                this.searchProduct = data;
@@ -192,7 +192,7 @@
                const order_quantity = c.qte;
                _.forEach(c.sizes, (s) => {
                   production_order.push({
-                     ps_id: s.id,
+                     ps_id: s['pivot']['id'],
                      order_quantity: order_quantity,
                      fabric_quantity: 0,
                   })

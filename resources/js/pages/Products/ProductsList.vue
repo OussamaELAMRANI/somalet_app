@@ -1,9 +1,5 @@
-<template>
+   <template>
    <div id="products_list" class="container">
-<!--      <router-link :to="{name:'newProduct'}" class="btn-sm btn-success btn text-capitalize">-->
-<!--         <i class="fa fa-plus mx-1"></i>-->
-<!--         Ajouter nouveau produit-->
-<!--      </router-link>-->
 
       <alert-modal title="Supperession d'un Produit" id="bitch">
          <template slot="content">
@@ -128,13 +124,11 @@
    import TableLayout from "@/components/layouts/TableLayout";
    import ModalDetail from "@/components/Modals/ModalDetail";
    import BigTitle from "@/components/layouts/BigTitle";
-   import ComboBox from "@/components/layouts/ComboBox";
 
    export default {
       name: "ProductsList",
       data() {
          return {
-            // host: `${process.env.MIX_APP_URL}/storage/`,
             filterBy: 'reference',
             ElementIdToDelete: null,
             products: {},
@@ -211,16 +205,8 @@
          EmptyText() {
             this.searchTxt = ''
          },
-         // show(id) {
-         //     console.log(id)
-         //     const val = this.providers
-         //     this.provider = _.find(val, o => {
-         //         return o.id == id
-         //     });
-         // }
       },
       components: {
-         ComboBox,
          BigTitle,
          ModalDetail,
          TableLayout,

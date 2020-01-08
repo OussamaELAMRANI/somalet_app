@@ -18,7 +18,6 @@
                </tr>
                </thead>
                <tbody>
-               <!--               <template v-for="(r,i) in receptions">-->
                <tr v-for="(s,j) in receptions.product_sizes">
                   <template v-if="j%receptions.product_sizes.length === 0">
                      <td class="align-middle" :rowspan="receptions.product_sizes.length">
@@ -34,9 +33,6 @@
                      <div v-html="getStatus(s.pivot)"></div>
                   </td>
                </tr>
-
-
-               <!--               </template>-->
 
                </tbody>
             </table>
@@ -61,8 +57,6 @@
                this.receptions = data;
             })
             .catch(err => {
-               console.log(err.response);
-               console.log(err.response);
                console.log(err.response);
                this.$router.push('/404');
             })

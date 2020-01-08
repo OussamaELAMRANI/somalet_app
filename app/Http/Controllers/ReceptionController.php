@@ -214,17 +214,38 @@ class ReceptionController extends Controller
          Response::HTTP_OK);
    }
 
-   public function  listProductionOrder()
+   public function listProductionOrder()
    {
       return response()->json(
          $this->production->listProductionOrder(),
          Response::HTTP_OK);
    }
 
- public function  getProductionDetail(ProductionOrder $order)
+   public function getProductionDetail(ProductionOrder $order)
    {
       return response()->json(
          $this->production->getProductionDetail($order),
+         Response::HTTP_OK);
+   }
+
+   public function orderNotFinished()
+   {
+      return response()->json(
+         $this->production->orderNotFinished(),
+         Response::HTTP_OK);
+   }
+
+   public function changeOrderState(ProductionOrder $order)
+   {
+      return response()->json(
+         $this->production->changeOrderState($order),
+         Response::HTTP_OK);
+   }
+
+   public function validReception(ProductionOrder $order)
+   {
+      return response()->json(
+         $this->production->validReception($order),
          Response::HTTP_OK);
    }
 

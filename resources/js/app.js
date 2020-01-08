@@ -1,7 +1,7 @@
 import './bootstrap'
 
 import Vue from 'vue'
-import moment from 'moment'
+// import moment from 'moment'
 import VueHtmlToPaper from 'vue-html-to-paper';
 import Popover from 'vue-js-popover'
 
@@ -13,7 +13,9 @@ import store from './store'
 import '@/permission'; // permission control
 
 // import VeeValidate from 'vee-validate'
-import VeeValidate, {Validator} from 'vee-validate';
+// import VeeValidate, {Validator} from 'vee-validate';
+import { ValidationProvider } from 'vee-validate';
+
 import VueNotification from "@kugatsu/vuenotification";
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
@@ -25,6 +27,7 @@ import ToggleSwitch from 'vuejs-toggle-switch'
 import vueSmoothScroll from 'vue-scrollto'
 
 Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('ValidationProvider', ValidationProvider);
 
 
 /**
@@ -33,12 +36,12 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 import Multiselect from 'vue-multiselect'
 
 // Add Validation Inputs
-import fr from 'vee-validate/dist/locale/fr';
+// import fr from 'vee-validate/dist/locale/fr';
 
 // Vue.use(Breabcrumbs);
 
-Vue.use(VeeValidate);
-Validator.localize('fr', fr);
+// Vue.use(VeeValidate);
+// Validator.localize('fr', fr);
 
 Vue.use(VueNotification, {
    error: {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductionOrder extends Model
 {
-   protected $fillable = ['date_cmd'];
+   protected $fillable = ['date_cmd','state'];
 
    public function scopeLast(Builder $builder)
    {
@@ -38,6 +38,8 @@ class ProductionOrder extends Model
          return array_merge($itm, ['cmd_id' => $this->id]);
 
       }, $items);
+
+//      dd($orderItem);
 
       $this->productSizes()->attach($orderItem);
 

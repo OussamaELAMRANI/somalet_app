@@ -2,8 +2,8 @@
    #colorPack
       .segment.clearfix
          label Nom de couleur
-         input.form-control(type='text' placeholder='Nouveau couleur ...' v-model='name' name="colorName" v-validate="'required'")
-         small.text-danger(v-show="errors.has('colorName')") Vous douvez donner une nouvelle couleur
+         input.form-control(type='text' placeholder='Nouveau couleur ...' v-model='name' name="colorName" )
+         //small.text-danger(v-show="errors.has('colorName')") Vous douvez donner une nouvelle couleur
          p Selectionnez une couleur
          .dropdown-divider
          Chrome(v-model='color')
@@ -31,23 +31,23 @@
       },
       methods: {
          addColor() {
-            this.$validator.validateAll().then((isValid) => {
-               if (isValid)
-                  axios.post('/api/colors',
-                     {
-                        name: this.name,
-                        color: this.color.hex,
-                     })
-                     .then(({data}) => {
-                        if (data.hasColor)
-                           this.$emit('getColors', data, true)
-                        else
-                           this.$emit('getColors', data, false)
-                     })
-               else
-                  this.$notification.error("L'ajout de la couleur est obligatoire !")
-                  this.$scrollTo('#colorPack',500)
-            })
+            // this.$validator.validateAll().then((isValid) => {
+            //    if (isValid)
+            axios.post('/api/colors',
+               {
+                  name: this.name,
+                  color: this.color.hex,
+               })
+               .then(({data}) => {
+                  if (data.hasColor)
+                     this.$emit('getColors', data, true)
+                  else
+                     this.$emit('getColors', data, false)
+               })
+            // else
+            //    this.$notification.error("L'ajout de la couleur est obligatoire !")
+            //    this.$scrollTo('#colorPack',500)
+            // })
          }
       },
    }

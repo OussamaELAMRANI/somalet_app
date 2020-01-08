@@ -10,7 +10,7 @@
                      <label>Produit :</label>
                      <cool-select :items="prods[k]" @search="onSearch($event,k)" :loading="loading"
                                   item-text="name" item-value="id" :name="'produit'+k"
-                                     v-model="product.product_id" v-validate="'required'" :ref="'__'+k">
+                                     v-model="product.product_id" :ref="'__'+k">
                         <template slot="item" slot-scope="{ item:p }">
                            <div class="d-flex">
                               <div>
@@ -26,8 +26,8 @@
                            "Chercher par nom de produit" }}
                         </template>
                      </cool-select>
-                     <small class="text-danger" v-show="errors.has('produit'+k)"> Vous devez selectionner un produit
-                     </small>
+<!--                     <small class="text-danger" v-show="errors.has('produit'+k)"> Vous devez selectionner un produit-->
+<!--                     </small>-->
                      <div class="dropdown-divider"></div>
                   </div>
                </div>
@@ -35,9 +35,8 @@
                <div class="col">
                   <div class="form-group">
                      <label>Quantité :</label>
-                     <input type="number" :name="'qte'+k" class="form-control" v-model="product.qte"
-                            v-validate="'required'">
-                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('qte'+k)"></i>
+                     <input type="number" :name="'qte'+k" class="form-control" v-model="product.qte">
+<!--                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('qte'+k)"></i>-->
                   </div>
                </div>
                <div class="col">
@@ -54,18 +53,18 @@
                      <div class="form-group">
                         <label>Prix en devise :</label>
                         <input type="number" class="form-control" v-model="product.product_devis"
-                               :name="'price_devise'+k" v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger"
-                           v-show="errors.has('price_devise'+k)"></i>
+                               :name="'price_devise'+k"/>
+<!--                        <i class="fa fa-exclamation-triangle text-danger"-->
+<!--                           v-show="errors.has('price_devise'+k)"></i>-->
                      </div>
                   </div>
                   <div class="col">
                      <div class="form-group">
                         <label>Prix de Douane :</label>
                         <input type="number" class="form-control" v-model="product.douane"
-                               :name="'douane'+k" v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger"
-                           v-show="errors.has('douane'+k)"></i>
+                               :name="'douane'+k" />
+<!--                        <i class="fa fa-exclamation-triangle text-danger"-->
+<!--                           v-show="errors.has('douane'+k)"></i>-->
                      </div>
                   </div>
                   <!--   Calculate Sell Product's price-->
@@ -82,9 +81,9 @@
                      <div class="form-group">
                         <label for="">Prix d'achat Unitaire HT :</label>
                         <input type="number" :name="'prix_u_HT'+k" class="form-control"
-                               v-model="product.price_unit_ht" v-validate="'required'">
-                        <i class="fa fa-exclamation-triangle text-danger"
-                           v-show="errors.has('prix_u_HT'+k)"></i>
+                               v-model="product.price_unit_ht" >
+<!--                        <i class="fa fa-exclamation-triangle text-danger"-->
+<!--                           v-show="errors.has('prix_u_HT'+k)"></i>-->
                         <div class="dropdown-divider"></div>
                      </div>
                   </div>
@@ -92,10 +91,9 @@
                      <div class="form-group">
                         <label for="">Prix d'achat Unitaire TTC</label>
                         <input type="number" class="form-control" v-model="product.price_unit_ttc"
-                               :name="'prix_u_ttc'+k"
-                               v-validate="{ min_value: product.sell_price , required:true}">
-                        <i class="fa fa-exclamation-triangle text-danger"
-                           v-show="errors.has('prix_u_ttc'+k)"></i>
+                               :name="'prix_u_ttc'+k">
+<!--                        <i class="fa fa-exclamation-triangle text-danger"-->
+<!--                           v-show="errors.has('prix_u_ttc'+k)"></i>-->
                         <!--                        <span class="help text-danger" v-show="errors.has('prix_u_ttc')">{{ errors.first('prix_u_ttc') }}</span>-->
                         <div class="dropdown-divider"></div>
                      </div>

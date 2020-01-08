@@ -11,15 +11,14 @@
                .row
                   .col-6
                      label(for='reference') Réference du produit
-                     input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.reference' name='reference' v-validate="'required'")
-                     small.text-danger(v-show="errors.has('reference')") Vous devez saisir la réference !
+                     input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.reference' name='reference' )
+                     //small.text-danger(v-show="errors.has('reference')") Vous devez saisir la réference !
                   .col-6
                      label(for='name') Nom du Produit
                      input#name.form-control(type='text' placeholder='Designation ...' v-model='product.name' )
                   .col-6
                      label(for='stockAlerte') Alert quantit&eacute; minimum
-                     input#stockAlerte.form-control(type='Number' placeholder='Alert de Stock ...' name='alert' v-model='product.alertQte'
-                        v-validate="'required'")
+                     input#stockAlerte.form-control(type='Number' placeholder='Alert de Stock ...' name='alert' v-model='product.alertQte')
                   select-category(@sendSubCategory="getSubCategory")
                   .col-12
                      label(for='desc') Description

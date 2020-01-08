@@ -10,14 +10,13 @@
                         .form-group
                            label Client
                            cool-select(:items='clients' :item-text="'nom'" item-value='id'
-                              name='client' placeholder="Nom ou Prénom" v-model='header_order.client_id'
-                              v-validate="'required'")
+                              name='client' placeholder="Nom ou Prénom" v-model='header_order.client_id')
                               template(slot='item' slot-scope='{ item:p }')
                                  p
                                     strong ({{p.id + ') '}}
                                     | {{ p.lastName }}
                                     strong {{ ' '+ p.firstName }}
-                           span.help.text-danger(v-show="errors.has('client')") Vous devez selectionner le client
+                           //span.help.text-danger(v-show="errors.has('client')") Vous devez selectionner le client
                      .col
                         .form-group
                            label Date de la Facture :
@@ -27,7 +26,7 @@
                         .form-group
                            label(for="delivery") Numéro de Livraison
                            input(class='form-control' type='text', placeholder='Numero de Facture ...' id='delivery' v-model='header_order.cmd_number' disabled)
-                           span.help.text-danger(v-show="errors.has('cmd_number')") Vous devez Saisire le numéro de la livraison
+                           //span.help.text-danger(v-show="errors.has('cmd_number')") Vous devez Saisire le numéro de la livraison
                   hr
                .col-12
                   table.table.table-hover.table-striped.text-center
@@ -75,7 +74,7 @@
                      .form-group
                         label Rechercher par désignation de produit
                         cool-select(:items='prods' @search='onSearch' :loading='loading'
-                           item-text='name' name='produit' v-model='putOrder' v-validate="'required'" )
+                           item-text='name' name='produit' v-model='putOrder')
                            //item-value='id'
                            template(slot='item' slot-scope='{ item:p }')
                               .d-flex

@@ -20,4 +20,10 @@ abstract class AbstractService
       $this->req = $request;
    }
 
+   protected function sendResponse($message, $status = 200)
+   {
+      return response()->json($message, $status);
+   }
+
+
 }

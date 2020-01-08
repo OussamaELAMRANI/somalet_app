@@ -13,27 +13,25 @@
                <div class="col">
                   <label>Fournisseur : </label>
                   <cool-select :items="providers" item-text="steName" item-value="id" name="provider"
-                               v-model="newArr.provider_id" v-validate="'required'"/>
-                  <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('provider')"></i>
-                  <span class="help text-danger" v-show="errors.has('provider')">{{ messageErr }}</span>
+                               v-model="newArr.provider_id" />
+<!--                  <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('provider')"></i>-->
+<!--                  <span class="help text-danger" v-show="errors.has('provider')">{{ messageErr }}</span>-->
                </div>
                <div class="col">
                   <div class="form-group">
                      <label>Numero Facture</label>
-                     <input class="form-control" name="n_facture" type="text" v-model="newArr.n_facture"
-                            v-validate="'required'"/>
-                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_facture')"></i>
-                     <span class="help text-danger" v-show="errors.has('n_facture')">{{ messageErr }}</span>
-                     <span class="help text-danger">{{ error.facture }}</span>
+                     <input class="form-control" name="n_facture" type="text" v-model="newArr.n_facture"/>
+<!--                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_facture')"></i>-->
+<!--                     <span class="help text-danger" v-show="errors.has('n_facture')">{{ messageErr }}</span>-->
+<!--                     <span class="help text-danger">{{ error.facture }}</span>-->
                   </div>
                </div>
                <div class="col">
                   <div class="form-group">
                      <label>Numero du dossier</label>
-                     <input class="form-control" name="n_dossier" type="text" v-model="newArr.n_dossier"
-                            v-validate="'required'">
-                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_dossier')"></i>
-                     <span class="help text-danger" v-show="errors.has('n_dossier')">{{ messageErr }}</span>
+                     <input class="form-control" name="n_dossier" type="text" v-model="newArr.n_dossier">
+<!--                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_dossier')"></i>-->
+<!--                     <span class="help text-danger" v-show="errors.has('n_dossier')">{{ messageErr }}</span>-->
                   </div>
                </div>
             </div>
@@ -49,9 +47,9 @@
                <div class="col">
                   <div class="form-group">
                      <label for="">Type de l'arrivage :</label>
-                     <cool-select :items="types" name="type" v-model="newArr.type" v-validate="'required'"/>
-                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('type')"></i>
-                     <span class="help text-danger" v-show="errors.has('type')">{{ messageErr }}</span>
+                     <cool-select :items="types" name="type" v-model="newArr.type"/>
+<!--                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('type')"></i>-->
+<!--                     <span class="help text-danger" v-show="errors.has('type')">{{ messageErr }}</span>-->
                   </div>
                </div>
                <div class="col">
@@ -59,13 +57,13 @@
                      <label for="">Prix fournisseur :</label>
                      <div class="input-group">
                         <input :disabled="newArr.type==='INTERNATIONAL'" class="form-control" name="prix_fournisseur"
-                               type="number" v-model="newArr.price_provider" v-validate="'required'"/>
+                               type="number" v-model="newArr.price_provider" />
                         <div class="input-group-append">
                            <div class="input-group-text">DH</div>
                         </div>
                      </div>
-                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('prix_fournisseur')"></i>
-                     <span class="help text-danger" v-show="errors.has('prix_fournisseur')">{{ messageErr }}</span>
+<!--                     <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('prix_fournisseur')"></i>-->
+<!--                     <span class="help text-danger" v-show="errors.has('prix_fournisseur')">{{ messageErr }}</span>-->
                   </div>
                </div>
             </div>

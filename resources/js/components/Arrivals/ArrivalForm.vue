@@ -8,8 +8,8 @@
                     <label for="">Fournisseur : </label>
                     <cool-select :items="items" item-text="steName" item-value="id" name="provider"
                                  v-model="provider_id" v-validate="'required'"/>
-                    <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('provider')"></i>
-                    <span class="help text-danger" v-show="errors.has('provider')">{{ messageErr }}</span>
+<!--                    <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('provider')"></i>-->
+<!--                    <span class="help text-danger" v-show="errors.has('provider')">{{ messageErr }}</span>-->
                 </div>
             </div>
             <div class="row ">
@@ -18,8 +18,8 @@
                         <label for="">Numero Facture</label>
                         <input class="form-control" name="n_facture" type="text" v-model="n_facture"
                                v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_facture')"></i>
-                        <span class="help text-danger" v-show="errors.has('n_facture')">{{ messageErr }}</span>
+<!--                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_facture')"></i>-->
+<!--                        <span class="help text-danger" v-show="errors.has('n_facture')">{{ messageErr }}</span>-->
                     </div>
                 </div>
                 <div class="col">
@@ -27,8 +27,8 @@
                         <label for="">Numero du dossier</label>
                         <input class="form-control" name="n_dossier" type="text" v-model="n_dossier"
                                v-validate="'required'">
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_dossier')"></i>
-                        <span class="help text-danger" v-show="errors.has('n_dossier')">{{ messageErr }}</span>
+<!--                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('n_dossier')"></i>-->
+<!--                        <span class="help text-danger" v-show="errors.has('n_dossier')">{{ messageErr }}</span>-->
                     </div>
                 </div>
             </div>
@@ -38,8 +38,8 @@
                         <label for="">Type de l'arrivage :</label>
                         <cool-select :items="types" name="type"
                                      v-model="type" v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('type')"></i>
-                        <span class="help text-danger" v-show="errors.has('type')">{{ messageErr }}</span>
+<!--                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('type')"></i>-->
+<!--                        <span class="help text-danger" v-show="errors.has('type')">{{ messageErr }}</span>-->
                     </div>
                 </div>
                 <div class="col">
@@ -72,16 +72,16 @@
                         <label for="">Prix fournisseur :</label>
                         <input :disabled="this.type==='INTERNATIONAL'" class="form-control" name="prix_fournisseur"
                                type="number" v-model="price_provider" v-validate="'required'"/>
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('prix_fournisseur')"></i>
-                        <span class="help text-danger" v-show="errors.has('prix_fournisseur')">{{ messageErr }}</span>
+<!--                        <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('prix_fournisseur')"></i>-->
+<!--                        <span class="help text-danger" v-show="errors.has('prix_fournisseur')">{{ messageErr }}</span>-->
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <i class="fa fa-exclamation-triangle text-danger" v-show="formErrors != null"></i>
-                        <span class="help text-danger" v-show="formErrors != null">{{ formErrors }}</span>
+<!--                        <i class="fa fa-exclamation-triangle text-danger" v-show="formErrors != null"></i>-->
+<!--                        <span class="help text-danger" v-show="formErrors != null">{{ formErrors }}</span>-->
                     </div>
                 </div>
             </div>

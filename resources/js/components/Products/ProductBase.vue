@@ -29,7 +29,7 @@
                      li
                         small.text-secondary Matiere première pour fabriquer un produit fini
                      li
-                        small.text-secondary {{'Produit fini' | bold }}: est prêt pour les commandes (Semelle)
+                        small.text-secondary {{'Produit fini' }}: est prêt pour les commandes (Semelle)
                      li
                         small.text-secondary Marchandise est distiné au vendre (Négociable)
                      li
@@ -60,8 +60,8 @@
                            small.text-secondary Information identique de la produit
                         .col-4
                            label(for='reference') Réference du produit
-                           input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.reference' name='reference' v-validate="'required'")
-                           small.text-danger(v-show="errors.has('reference')") Vous devez saisir la réference !
+                           input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.reference' name='reference')
+                           //small.text-danger(v-show="errors.has('reference')") Vous devez saisir la réference !
                         .col-4
                            label(for='name') Nom du Produit
                            input#name.form-control(type='text' placeholder='SIRET ...' v-model='product.name' )
@@ -79,8 +79,8 @@
                         .col-4
                            label(for='stockAlerte') Alert quantit&eacute; minimum
                            input#stockAlerte.form-control(type='Number' placeholder='Alert de Stock ...' name='alert' v-model='product.alertQte'
-                              v-validate="'required'")
-                           small.text-danger(v-show="errors.has('alert')") Vous devez saisir la Quantité d'alert !
+                           )
+                           //small.text-danger(v-show="errors.has('alert')") Vous devez saisir la Quantité d'alert !
                         select-category(@sendSubCategory="getSubCategory")
 
                      .dropdown-divider
@@ -179,30 +179,27 @@
             this.product.type = t
          },
          insert() {
-            return this.$validator.validateAll().then((isValid) => {
-               if (isValid) {
-                  const formData = new FormData()
-                  const images = this.$refs.portraits
-                  formData.append('img', images.file)
-                  formData.append('colors', JSON.stringify(this.colorsId))
-                  formData.append('product', JSON.stringify(this.product))
+            const formData = new FormData()
+            const images = this.$refs.portraits
+            formData.append('img', images.file)
+            formData.append('colors', JSON.stringify(this.colorsId))
+            formData.append('product', JSON.stringify(this.product))
 
-                  axios.post('/api/products/new', formData, {
-                     headers: {
-                        'Content-Type': 'multipart/form-data'
-                     }
-                  }).then(({data}) => {
-                     console.log(data)
-                     this.$router.push({name: 'listProducts'})
-                  }).catch(err => console.log(err.response))
-
-               } else {
-                  this.$notification.error("Réference est obligatoire !")
-                  this.$scrollTo('#reference', 700)
+            axios.post('/api/products/new', formData, {
+               headers: {
+                  'Content-Type': 'multipart/form-data'
                }
+            }).then(({data}) => {
+               console.log(data)
+               this.$router.push({name: 'listProducts'})
+            })
+               .catch(err => console.log(err.response))
 
-            });
+            // } else {
+            //    this.$notification.error("Réference est obligatoire !")
+            //    this.$scrollTo('#reference', 700)
          }
+
       },
       mounted() {
          //pour determiner si l'etat de la vue en mode : Ajout ou modification
