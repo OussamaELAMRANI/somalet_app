@@ -31,9 +31,9 @@ class ProductService extends AbstractService
             $color_merge = ['img' => $portrait_url, 'color_id' => $color['id'], 'created_at' => $db, 'updated_at' => $db];
             $products = array_merge($product, $color_merge);
             $newProduct = Product::create($products);
-//            if ($sizes) {
-            $newProduct->saveSizes($sizes, $now);
-//            }
+            if ($sizes) {
+               $newProduct->saveSizes($sizes, $now);
+            }
          }
       } else {
          Product::create($product);

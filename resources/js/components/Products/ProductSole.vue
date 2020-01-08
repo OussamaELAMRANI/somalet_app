@@ -67,6 +67,7 @@
                provider_id: _.cloneDeep(this.provider),
                subcategory_id: '',
                rapport: 0,
+               type: 'PF',
             },
             sizes: [],
          }

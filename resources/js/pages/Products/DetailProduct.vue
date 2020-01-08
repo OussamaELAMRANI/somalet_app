@@ -38,7 +38,7 @@
                         td {{c.pivot.qte_facture}}
                            small.text-secondary  {{" ("+detail.type}})
                         td {{c.pivot.rapport_qte}}
-            .col-3
+            .col-3(v-if="detail.type === 'PF'")
                table(class="table table-hover table-striped text-center")
                   thead(class="bg-primary text-white")
                      tr
