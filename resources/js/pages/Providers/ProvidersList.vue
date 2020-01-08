@@ -2,7 +2,7 @@
    <div id="provider-list">
       <div class="row">
          <div class="col-3">
-            <router-link class="btn-sm btn-primary" :to="{name:'newProvider'}">
+            <router-link class="btn-sm btn btn-primary" :to="{name:'newProvider'}">
                <i class="fa fa-plus mx-2"></i> Nouveau Fournisseur
             </router-link>
          </div>

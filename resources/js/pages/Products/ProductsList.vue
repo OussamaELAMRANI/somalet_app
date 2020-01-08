@@ -82,11 +82,10 @@
             <!--                <td><img :src="p.img" alt="image produit" height="60px"></td>-->
             <td class="align-middle">{{p.reference}}</td>
             <td class="align-middle">{{p.name}}</td>
-            <td :class="(p.color)?'row justify-content-center b-0 m-0':'' ">
-               <div v-if="p.color" class="row justify-content-around">
-                  <div class="col-2 rounded-circle" :style="{backgroundColor: p.color.color}"></div>
-                  <div class="col">{{p.color.name}}</div>
-               </div>
+            <td >
+               <template v-if="p.color" >
+                  <div  :style="{backgroundColor: p.color.color, height:'30px',width:'100%'}" class="shadow rounded"></div>
+               </template>
                <template v-else>
                   SANS COULEUR
                </template>

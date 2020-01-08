@@ -14,7 +14,7 @@
             .row.justify-content-center
                 .col
                     label(for="mail") Email
-                    input( type="text" class="form-control " id="mail" aria-describedby="emailHelp" placeholder="Email..."  v-model="email")
+                    input( type="text" class="form-control " id="mail" placeholder="Email..."  v-model="email")
                     small.text-info exemple: mail@domain.com
             .row
                 .col

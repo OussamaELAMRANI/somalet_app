@@ -6,17 +6,17 @@
             .row
                 .col
                     label(for="address") Adresse
-                    textarea( class="form-control " rows="4"  id="address" aria-describedby="emailHelp" placeholder="Adresse ici ..." v-model="address")
+                    textarea( class="form-control " rows="4"  id="address"  placeholder="Adresse ici ..." v-model="address")
             .row
                 .col
                     label(for="cp") Code postal
-                    input( type="number" class="form-control" id="cp" aria-describedby="emailHelp" placeholder="Code postal ..." v-model="cp")
+                    input( type="number" class="form-control" id="cp" placeholder="Code postal ..." v-model="cp")
                 .col
                     label(for="city") Ville
-                    input( type="text" class="form-control" id="city" aria-describedby="emailHelp" placeholder="Ville ..." v-model="city")
+                    input( type="text" class="form-control" id="city"  placeholder="Ville ..." v-model="city")
                 .col
                     label(for="country") Paye
-                    input( type="text" class="form-control" id="country" aria-describedby="emailHelp" placeholder="Paye ..." v-model="country")
+                    input( type="text" class="form-control" id="country" placeholder="Paye ..." v-model="country")
 
             .dropdown-divider
             slot

@@ -89,7 +89,8 @@
                            button.btn-sm.btn-outline-success( data-toggle="modal" data-target="#colorModal")
                               i.fa.mr-1.fa-plus
                               | Ajouter une couleur
-                     //transition(name="fade")
+                     .row.justify-content-start
+                        .square.shadow.rounded.my-3.mx-1(v-for="c in computeColors" :style="'background-color:'+c.color")
 
                      .row
                         .col
@@ -244,6 +245,11 @@
             this.id = 0
          }
       },
+      computed:{
+         computeColors() {
+            return this.colorsId;
+         }
+      },
       components: {
          ProductSole,
          ProductType,
@@ -293,5 +299,9 @@
       height: 50px;
       width: 50px;
       border-radius: 50%;
+   }
+   .square {
+      height: 25px;
+      width: 25px;
    }
 </style>

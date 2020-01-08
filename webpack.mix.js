@@ -11,4 +11,4 @@ mix.webpackConfig(config);
 
 //
 // mix.browserSync('somalet.io');
-mix.browserSync('localhost:80');
+mix.browserSync('127.0.0.1:8000');

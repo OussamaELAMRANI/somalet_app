@@ -18,6 +18,16 @@
       h3.text-uppercase.text-secondary conteneurs
       hr
       .container
+         .row.m-3.segment
+            .col-4
+               label Prix d'achat
+               input.form-control(type="number" v-model="detail.buy_price")
+            .col-4
+               label Prix de vente
+               input.form-control(type="number" v-model="detail.buy_price")
+            .col-4.text-center
+               label.text-white Action
+               button.btn.btn-block.btn-success Enregister le prix
          .row
             .col-9
                table(class="table table-hover table-striped")

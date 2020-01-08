@@ -42,9 +42,6 @@
             <button type="button" class="btn btn-outline-success" @click="submitClient">VALIDER</button>
         </divider>
 
-<!--        <p><code>-->
-<!--            {{client}}-->
-<!--        </code></p>-->
     </div>
 </template>
 
