@@ -53,7 +53,7 @@
                   </tr>
 
                   </tbody>
-                  <tfoot>
+                  <tfoot v-if="['VUE','ATTENTE'].includes(receptions.state)">
                   <tr>
                      <td colspan="6"></td>
                      <td colspan="2">

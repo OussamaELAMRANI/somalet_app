@@ -9,7 +9,7 @@
                   h4.text-uppercase Commande
                   p.m-2.text-info.load {{n.date_cmd | humane_date}}
                hr
-               button.btn-block.btn.p-1.m-0.shadow(@click="makeVue(n.id)") {{n.state}}
+               button.btn-block.btn.p-1.m-0.shadow(@click="makeVue(n.id,n.state)") {{n.state}}
 </template>
 
 <script>
@@ -26,13 +26,17 @@
             .catch((err) => console.log(err))
       },
       methods: {
-         makeVue(id) {
-            axios.put(`/api/receptions/${id}/state`, {state: 'VUE'})
-               .then(({data}) => {
-                  this.$router.push({name: 'orderReception', params: {id: id}})
-               }).catch(err => {
-               console.log(err.response);
-            })
+         makeVue(id, state) {
+            if (state === 'ATTENTE')
+               axios.put(`/api/receptions/${id}/state`, {state: 'VUE'})
+                  .then(({data}) => {
+                     this.$router.push({name: 'orderReception', params: {id: id}})
+                  }).catch(err => {
+                  console.log(err.response);
+               })
+            else
+               this.$router.push({name: 'orderReception', params: {id: id}})
+
          },
       }
    }

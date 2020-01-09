@@ -5,7 +5,9 @@ namespace App\Services\Production;
 
 
 use App\Arrival;
+use App\Product;
 use App\ProductionOrder;
+use App\ProductSize;
 use App\Services\AbstractService;
 use Carbon\Carbon;
 
@@ -42,7 +44,7 @@ class ProductionService extends AbstractService
 
    public function orderNotFinished()
    {
-      return ProductionOrder::WhereIn('state', ['ATTENTE', 'VUE'])->get();
+      return ProductionOrder::Where('state', '<>', 'VALID')->get();
    }
 
    public function changeOrderState(ProductionOrder $order)
@@ -88,4 +90,53 @@ class ProductionService extends AbstractService
       return true;
    }
 
+   public function getAllProductionsDetail()
+   {
+      $allPF = ProductSize::with('productionOrders', 'product', 'size')
+         ->get()->toArray();
+      $allQte = [];
+      foreach ($allPF as $pf) {
+         if (count($pf['production_orders']) > 0) {
+            $allQte[$pf['product']['name']][] =
+               $this->getCommandQte($pf['production_orders'], $pf['size']['size'], $pf['product']['buy_price'], $pf['product']['sell_price']);
+         }
+      }
+      return $allQte;
+   }
+
+   public function getCommandQte($ps, $size, $buy, $price)
+   {
+      $qte = ['order_quantity' => 0, 'size' => null, 'name' => null, 'sell_price' => 0];
+
+      foreach ($ps as $p) {
+         if ($p['state'] === 'VALID') {
+            $qte['order_quantity'] += $p['pivot']['order_quantity'];
+            $qte['size'] = $size;
+            $qte['buy_price'] = $buy;
+            $qte['sell_price'] = $price;
+         }
+      }
+
+      return $qte;
+   }
+
+   public function searchByRef($ref = '')
+   {
+      $validProducts = [];
+      $pattern = "/{$ref}/i";
+      $products = $this->getAllProductionsDetail();
+
+      $keys = array_keys($products);
+      $result = preg_grep($pattern, $keys);
+
+      if (is_null($result)) {
+         return [];
+      }
+
+      foreach ($result as $name) {
+         $validProducts[$name] = $products[$name];
+      }
+
+      return $validProducts;
+   }
 }

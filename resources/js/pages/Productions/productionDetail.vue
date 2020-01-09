@@ -5,6 +5,9 @@
       </h4>
       <hr>
       <div class="row justify-content-center">
+         <div class="col-10 my-3 text-right" v-if="receptions.state ==='RECEPTION'">
+            <button class="btn btn-success" @click="ValidateOrder">VALIDER CETTE COMMANDE</button>
+         </div>
          <div class="col-10">
             <table class="table-striped table table-bordered text-center">
                <thead class="bg-dark text-light">
@@ -71,6 +74,15 @@
             else
                return `<p class="badge badge-warning">EN COURS</p>`;
 
+         },
+         ValidateOrder(){
+            const {id} = this.$route.params;
+            axios.put(`/api/receptions/${id}/state`, {state: 'VALID'})
+               .then(({data}) => {
+                  this.$router.push({name: 'listOrderProduction'})
+               }).catch(err => {
+               console.log(err.response);
+            })
          }
       }
    }

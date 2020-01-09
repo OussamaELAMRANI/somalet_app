@@ -249,4 +249,18 @@ class ReceptionController extends Controller
          Response::HTTP_OK);
    }
 
+   public function productionsDetail()
+   {
+      return response()->json(
+         $this->production->getAllProductionsDetail(),
+         Response::HTTP_OK);
+   }
+
+   public function productionSearch($ref)
+   {
+      return response()->json(
+         $this->production->searchByRef($ref),
+         Response::HTTP_OK);
+   }
+
 }

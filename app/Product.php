@@ -56,12 +56,6 @@ class Product extends Model
       return $this->belongsToMany(Client::class, Discount::class)->withPivot(['discount']);
    }
 
-//   function pointures()
-//   {
-//      return $this->hasMany(Pointure::class, 'product_id');
-//   }
-
-
    /**
     * Haves a Pivot table Order_items
     * @return BelongsToMany

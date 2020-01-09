@@ -46,6 +46,14 @@ export default [
             },
          },
          {
+            name: 'inventoryProduction',
+            path: 'inventory',
+            component: () => import('@/pages/Productions/ProductionStock'),
+            meta: {
+               title: "Stock Production", name: 'inventoryProduction', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+            },
+         },
+         {
             name: 'prodctionReceptions',
             path: 'receptions',
             component: () => import('@/pages/Productions/ProductionReceptionList'),
