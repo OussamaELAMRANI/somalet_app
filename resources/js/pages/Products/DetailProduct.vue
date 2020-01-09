@@ -18,16 +18,16 @@
       h3.text-uppercase.text-secondary conteneurs
       hr
       .container
-         .row.m-3.segment
+         .row.m-3.segment(v-if="detail.type === 'PF'")
             .col-4
                label Prix d'achat
                input.form-control(type="number" v-model="detail.buy_price")
             .col-4
                label Prix de vente
-               input.form-control(type="number" v-model="detail.buy_price")
+               input.form-control(type="number" v-model="detail.sell_price")
             .col-4.text-center
                label.text-white Action
-               button.btn.btn-block.btn-success Enregister le prix
+               button.btn.btn-block.btn-success(@click="setPrice") Enregister le prix
          .row
             .col-9
                table(class="table table-hover table-striped")
@@ -80,6 +80,8 @@
                subcategory: {},
                color: {},
                provider: {},
+               sell_price: 0,
+               buy_price: 0,
             },
             head_table: ['#', 'Image', 'Reference', 'Designation', 'Stock min', "Type", "Unité", "Catégorie", "Couleur", "Fournisseur"],
          }
@@ -91,6 +93,17 @@
                this.detail = {...data}
             })
             .catch(err => console.log(err.response))
+      },
+      methods: {
+         setPrice() {
+            const id = this.$route.params.id
+            const {sell_price, buy_price} = this.detail;
+            axios.put(`/api/products/${id}/price`, {sell_price, buy_price})
+               .then(({data}) => {
+                  this.$notification.success("Prix a été bien modifier")
+               })
+               .catch(err => console.log(err.response))
+         }
       },
       filters: {
          getWeight: function (w) {

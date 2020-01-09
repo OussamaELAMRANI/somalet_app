@@ -139,4 +139,9 @@ class ProductController extends Controller
    {
       return $this->service->searchProductByName($name);
    }
+
+   public function setPrice(Product $product)
+   {
+      return $this->service->setPriceForProduction($product);
+   }
 }

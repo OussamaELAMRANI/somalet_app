@@ -88,4 +88,23 @@ class ProductService extends AbstractService
       $products = Product::where('name', 'LIKE', "%$slot%")->filter($this->req)->get();
       return response()->json($products, 200);
    }
+
+   /**
+    * @param Product $product
+    * @return Product
+    */
+   public function setPriceForProduction(Product $product)
+   {
+      $reference = $product['reference'];
+      $subcategory_id = $product['subcategory_id'];
+      $sell = ($this->req->get('sell_price')) ?? 0;
+      $buy = ($this->req->get('buy_price')) ?? 0;
+      $prod = Product::where('reference', $reference)
+         ->where('subcategory_id', $subcategory_id)
+         ->where('type', 'PF');
+      if ($prod)
+         $prod->update(['sell_price' => $sell, 'buy_price' => $buy]);
+
+      return $this->sendResponse($prod->get());
+   }
 }

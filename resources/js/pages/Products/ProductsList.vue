@@ -82,7 +82,7 @@
             <!--                <td><img :src="p.img" alt="image produit" height="60px"></td>-->
             <td class="align-middle">{{p.reference}}</td>
             <td class="align-middle">{{p.name}}</td>
-            <td >
+            <td class="align-middle">
                <template v-if="p.color" >
                   <div  :style="{backgroundColor: p.color.color, height:'30px',width:'100%'}" class="shadow rounded"></div>
                </template>
@@ -95,16 +95,16 @@
             <td style="width: 130px">
                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
                        @click="show(p.id)">
-                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  <i class="fa fa-eye"></i>
                </button>
                <button class="btn btn-sm btn-primary"
                        @click="redirect(p.id)">
-                  <i class="fa fa-list" aria-hidden="true"></i>
+                  <i class="fa fa-list"></i>
                </button>
                <button class="btn btn-sm btn-danger"
                        @click="getElementIdToDelete(p.id)"
                        data-target="#bitch" data-toggle="modal">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  <i class="fa fa-trash"></i>
                </button>
             </td>
          </tr>
