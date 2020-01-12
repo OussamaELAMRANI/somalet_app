@@ -55,25 +55,25 @@
          },
          addUnity() {
             const _this = this
-            this.$validator.validateAll().then((valid) => {
-               if (valid) {
-                  axios.post('/api/unities',
-                     {
-                        name: this.unity
-                     }
-                  ).then(function (response) {
-                     _this.unities = []
-                     _this.unities = response.data.unities
-                     _this.isNewUnity = false;
-                     _this.unity = ''
-                  })
-                     .catch(function (error) {
-                        console.log(error.response);
-                     })
-               } else {
-                  this.$notification.error("L'ajout de l'unité est obligatoire !")
+            // this.$validator.validateAll().then((valid) => {
+            //    if (valid) {
+            axios.post('/api/unities',
+               {
+                  name: this.unity
                }
-            });
+            ).then(function (response) {
+               _this.unities = []
+               _this.unities = response.data.unities
+               _this.isNewUnity = false;
+               _this.unity = ''
+            })
+               .catch(function (error) {
+                  console.log(error.response);
+               })
+            // } else {
+            //    this.$notification.error("L'ajout de l'unité est obligatoire !")
+            // }
+            // });
 
          },
       },

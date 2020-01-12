@@ -249,10 +249,10 @@ class ReceptionController extends Controller
          Response::HTTP_OK);
    }
 
-   public function productionsDetail()
+   public function productionsDetail($name = null)
    {
       return response()->json(
-         $this->production->getAllProductionsDetail(),
+         $this->production->getAllProductionsDetail($name),
          Response::HTTP_OK);
    }
 
@@ -260,6 +260,13 @@ class ReceptionController extends Controller
    {
       return response()->json(
          $this->production->searchByRef($ref),
+         Response::HTTP_OK);
+   }
+
+   public function getStockToCommand($name)
+   {
+      return response()->json(
+         $this->production->getStockToCommand($name),
          Response::HTTP_OK);
    }
 

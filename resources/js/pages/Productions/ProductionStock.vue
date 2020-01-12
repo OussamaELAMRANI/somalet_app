@@ -2,7 +2,6 @@
    <div id="production-stock">
       <big-title title="STOCK DE PRODUCTION" position="text-right" classes="text-primary h2"/>
       <div class="row">
-
          <div class="col-9">
             <table class="table table-hover table-striped text-center table-bordered">
                <thead class="bg-primary text-white text-uppercase table-bordered">
@@ -12,12 +11,11 @@
                   <th>Prix de Vente</th>
                   <th>Pointures</th>
                   <th>Quantites</th>
-                  <!--                  <th v-if="roles.includes('ADMINE')">CR HT</th>-->
                </tr>
                </thead>
                <tbody class="segment">
                <tr v-if="isLoading">
-                  <td colspan="6" class="p-0">
+                  <td colspan="5" class="p-0">
                      <div class="row justify-content-center bg-white">
                         <div class="col-2">
                            <half-circle-spinner color="#f83896" :size="40"/>
@@ -25,29 +23,37 @@
                      </div>
                   </td>
                </tr>
-               <tr v-if="Object.keys(searchIventories).length === 0">
-                  <td colspan="4">
+               <tr v-if="searchIventories.length === 0">
+                  <td colspan="5">
                      <h5 class="text-uppercase text-center text-secondary">0 Produits</h5>
                   </td>
                </tr>
 
-               <template v-for="p in Object.keys(searchIventories)">
+               <template v-for="inv in searchIventories">
 
-                  <tr v-for="(inv, j) in inventories[p]">
-                     <template v-if="j%inventories[p].length === 0">
-                        <td :rowspan="inventories[p].length" class="align-middle">
-                           <h5> {{p}}</h5>
+                  <tr v-for="(q,j) in inv.qte" class="border-0">
+                     <template v-if="j % inv.qte.length ===0">
+                        <td class="align-middle" :rowspan="inv.qte.length">
+                           <h5 class="text-uppercase"> {{inv.name}}</h5>
                         </td>
-                        <td :rowspan="inventories[p].length" class="align-middle" v-if="roles.includes('ADMINE')">
-                           <h5>{{inv.buy_price}} DH</h5>
+                        <td class="align-middle" :rowspan="inv.qte.length">
+                           <h5 class="text-primary">
+                              {{inv.buy}} DH
+                           </h5>
                         </td>
-                        <td :rowspan="inventories[p].length" class="align-middle">
-                           <h5>{{inv.sell_price}} DH</h5>
+                        <td class="align-middle" :rowspan="inv.qte.length">
+                           <h5>
+                              {{inv.sell}} DH
+                           </h5>
                         </td>
                      </template>
-                     <td class="align-middle">{{inv.size}}</td>
-                     <td class="align-middle">{{inv.order_quantity}}</td>
+                     <td>{{q.size}}</td>
+                     <td>
+                        {{q.order_quantity}}
+                        <span class="badge">PAIRE</span>
+                     </td>
                   </tr>
+
 
                </template>
                </tbody>
@@ -88,7 +94,7 @@
          }
       },
       mounted() {
-         axios.get('/api/inventories/production/detail')
+         axios.get(`/api/inventories/production/detail`)
             .then(({data}) => {
                this.inventories = data
                this.searchIventories = data
@@ -102,10 +108,11 @@
 
             if (ref === '') {
                this.searchIventories = this.inventories;
+               this.isLoading = false
                return
             }
 
-            axios.get(`/api/inventories/production/search/${ref}`)
+            axios.get(`/api/inventories/production/detail/${ref}`)
                .then(({data}) => {
                   this.searchIventories = data
                   this.isLoading = false
@@ -114,7 +121,8 @@
       },
       watch: {
          reference: function (ref) {
-            // this.isLoading = true
+            if (ref !== '')
+               this.isLoading = true
          }
       }
    }

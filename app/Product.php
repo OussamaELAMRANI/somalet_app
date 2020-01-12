@@ -81,6 +81,9 @@ class Product extends Model
          ->withPivot(['weight','id']);
    }
 
+
+
+
    public function saveSizes(array $sizes, $now): self
    {
       $dts = $now->toDateTimeString();

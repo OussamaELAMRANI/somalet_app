@@ -24,4 +24,7 @@ class ProductSize extends Model
    {
     return $this->belongsTo(ShoeSize::class,'size_id');
    }
+
+
+
 }

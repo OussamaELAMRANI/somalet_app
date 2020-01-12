@@ -3,6 +3,7 @@ Route::prefix('clients')->group(function () {
 
    Route::get('by', 'Api\ClientController@getClientBy');
    Route::get('search/{searchValue?}', 'Api\ClientController@search');
+   Route::get('name/{name?}', 'Api\ClientController@getClientByName');
    Route::get('{id}/movements', 'Api\ClientController@getMovements');
    Route::get('{id}/sold', 'Api\ClientController@getClientSold');
    Route::get('', 'Api\ClientController@index');

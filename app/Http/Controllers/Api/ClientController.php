@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Client;
 use App\Services\Clients\ClientService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,7 @@ class ClientController extends Controller
    /**
     *
     * @param Request $req
-    * @return \Illuminate\Http\JsonResponse
+    * @return JsonResponse
     */
    public function store(Request $req)
    {
@@ -53,7 +54,7 @@ class ClientController extends Controller
     * Display the specified resource.
     *
     * @param int $id
-    * @return \Illuminate\Http\Response
+    * @return JsonResponse
     */
    public function show($id)
    {
@@ -69,6 +70,12 @@ class ClientController extends Controller
    public function search(Request $req, $searchValue = null)
    {
       return response()->json(Client::filter($req)->paginate(20), 200);
+   }
+
+   public function getClientByName($name = null)
+   {
+      $clients = Client::where('nom', 'LIKE', "%{$name}%")->get();
+      return response()->json($clients, 200);
    }
 
    /**

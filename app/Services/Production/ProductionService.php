@@ -10,6 +10,7 @@ use App\ProductionOrder;
 use App\ProductSize;
 use App\Services\AbstractService;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class ProductionService extends AbstractService
 {
@@ -90,30 +91,40 @@ class ProductionService extends AbstractService
       return true;
    }
 
-   public function getAllProductionsDetail()
+   public function getAllProductionsDetail($name = null)
    {
       $allPF = ProductSize::with('productionOrders', 'product', 'size')
-         ->get()->toArray();
+         ->whereHas('product', function ($query) use ($name) {
+            $query->where('type', "PF")->where('name', 'LIKE', "%{$name}%");;
+         })->get()->toArray();
+
       $allQte = [];
       foreach ($allPF as $pf) {
+         if (!key_exists($pf['product']['name'], $allQte)) {
+            $allQte[$pf['product']['name']] =
+               [
+                  'name' => $pf['product']['name'],
+                  'sell' => $pf['product']['sell_price'],
+                  'buy' => $pf['product']['buy_price'],
+                  'qte' => [],
+               ];
+         }
          if (count($pf['production_orders']) > 0) {
-            $allQte[$pf['product']['name']][] =
-               $this->getCommandQte($pf['production_orders'], $pf['size']['size'], $pf['product']['buy_price'], $pf['product']['sell_price']);
+            $allQte[$pf['product']['name']]['qte'][] = $this->getCommandQte($pf['production_orders'], $pf['size']['size']);
          }
       }
-      return $allQte;
+
+      return array_values($allQte);
    }
 
-   public function getCommandQte($ps, $size, $buy, $price)
+   public function getCommandQte($ps, $size)
    {
-      $qte = ['order_quantity' => 0, 'size' => null, 'name' => null, 'sell_price' => 0];
+      $qte = ['order_quantity' => 0, 'size' => null];
 
       foreach ($ps as $p) {
-         if ($p['state'] === 'VALID') {
+         if (in_array($p['state'], ['VALID', 'RECEPTION'])) {
             $qte['order_quantity'] += $p['pivot']['order_quantity'];
             $qte['size'] = $size;
-            $qte['buy_price'] = $buy;
-            $qte['sell_price'] = $price;
          }
       }
 
@@ -139,4 +150,41 @@ class ProductionService extends AbstractService
 
       return $validProducts;
    }
+
+   public function getStockToCommand($name = '')
+   {
+      $allPF = ProductSize::with('productionOrders')
+         ->whereHas('product', function ($query) use ($name) {
+            $query->where('name', 'LIKE', "%{$name}%");
+         })
+         ->get()
+         ->groupBy('product_id');
+
+      $allPF = collect($allPF)->all();
+      $allQte = collect();
+
+      return $allPF;
+
+      foreach ($allPF as $key => $pf) {
+         return $pf;
+//         $prod = $this->getCollectionQte($key, collect($pf));
+//         $allQte->add($prod);
+      }
+//         if (!key_exists($pf['product_id'], $allQte))
+//            $allQte[$pf['product_id']][] =
+//               array_merge([
+//                  'id' => $pf['product']['id'],
+//                  'name' => $pf['product']['name'],
+//                  'QTE' => 0
+//               ]);
+//
+//         if (count($pf['production_orders']) > 0) {
+//            $qte = $this->getCommandQte($pf['production_orders'], $pf['size']['size'], $pf['product']['buy_price'], $pf['product']['sell_price']);
+//            $allQte[$pf['product_id']]['QTE'][] = $qte;
+////            return $allQte[$pf['product_id']];
+//         }
+//      }
+      return $allQte->all();
+   }
+
 }

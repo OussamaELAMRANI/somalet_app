@@ -4,8 +4,10 @@ Route::prefix('inventories')->group(function () {
 
    Route::prefix('production')->group(function () {
 
-      Route::get('detail', 'ReceptionController@productionsDetail');
-      Route::get('search/{ref?}', 'ReceptionController@productionSearch')->where('ref', '[\/\w\.-]*');;
+      Route::get('detail/{name?}', 'ReceptionController@productionsDetail')->where('ref', '[\/\w\.-]*');;
+      Route::get('search/{ref?}', 'ReceptionController@productionSearch')->where('ref', '[\/\w\.-]*');
+
+      Route::get('stock/{name?}', 'ReceptionController@getStockToCommand')->where('name', '[\/\w\.-]*');
 
    });
 

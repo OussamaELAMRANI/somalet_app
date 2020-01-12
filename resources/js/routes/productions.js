@@ -72,7 +72,14 @@ export default [
                },
             ]
          },
-
+         {
+            name: 'commandProduction',
+            path: 'new-command',
+            component: () => import('@/pages/Productions/NewProductionCommand'),
+            meta: {
+               title: "Nouvelle Commande", name: 'commandProduction', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+            },
+         },
       ]
    },
 ]
