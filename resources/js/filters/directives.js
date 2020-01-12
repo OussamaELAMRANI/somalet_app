@@ -46,3 +46,7 @@ Vue.filter('getQteFabric', function (p) {
 Vue.filter('getOrderQte', function (p) {
    return (p == null) ? null : p.order_quantity
 });
+
+Vue.filter('getByChoice', function (p,choice) {
+   return (p == null) ? null : p[choice]
+});

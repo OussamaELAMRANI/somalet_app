@@ -256,18 +256,5 @@ class ReceptionController extends Controller
          Response::HTTP_OK);
    }
 
-   public function productionSearch($ref)
-   {
-      return response()->json(
-         $this->production->searchByRef($ref),
-         Response::HTTP_OK);
-   }
-
-   public function getStockToCommand($name)
-   {
-      return response()->json(
-         $this->production->getStockToCommand($name),
-         Response::HTTP_OK);
-   }
 
 }

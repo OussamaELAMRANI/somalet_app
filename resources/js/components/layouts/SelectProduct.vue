@@ -18,12 +18,17 @@
    export default {
       name: "SelectProduct",
       components: {CoolSelect},
+      props: {
+         client_id: {
+            default: null
+         }
+      },
       data() {
          return {
             products: [],
             noData: false,
             loading: false,
-            product: 0,
+            product: {qte: []},
          }
       },
       methods: {
@@ -40,16 +45,15 @@
             let Isearch = search.split('/').join('.');
             Isearch = Isearch.split(`\\`).join('.');
 
-            axios.get(`/api/inventories/production/detail/${Isearch}`,
-               {
-                  params:{with:'sizes'}
+            axios.get(`/api/inventories/production/detail/${Isearch}`, {
+               params: {
+                  client_id: this.client_id
                }
-               )
+            })
                .then(({data}) => {
                   this.products = data;
                   if (data.length === 0)
                      this.noData = true;
-
                   this.loading = false;
                })
          },

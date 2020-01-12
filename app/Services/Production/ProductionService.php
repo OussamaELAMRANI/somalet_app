@@ -4,13 +4,11 @@
 namespace App\Services\Production;
 
 
-use App\Arrival;
-use App\Product;
+use App\Order;
 use App\ProductionOrder;
 use App\ProductSize;
 use App\Services\AbstractService;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 
 class ProductionService extends AbstractService
 {
@@ -91,35 +89,59 @@ class ProductionService extends AbstractService
       return true;
    }
 
+   /**
+    * Get Stock Detail for Sole product with client [Discount]
+    * Search by @param $name
+    *
+    * @return array
+    */
    public function getAllProductionsDetail($name = null)
    {
-      $allPF = ProductSize::with('productionOrders', 'product', 'size')
+      $discount = true;
+      $allPF = ProductSize::with('productionOrders', 'product', 'size', 'product.clients')
          ->whereHas('product', function ($query) use ($name) {
-            $query->where('type', "PF")->where('name', 'LIKE', "%{$name}%");;
-         })->get()->toArray();
+            $query->where('type', "PF")
+               ->where('name', 'LIKE', "%{$name}%");
+         });
+
+      if ($this->req->has('client_id')) {
+         $discount = $this->hasDiscounting(clone $allPF, $this->req->get('client_id'));
+      }
+
+      $allPF = $allPF->get()->toArray();
 
       $allQte = [];
       foreach ($allPF as $pf) {
          if (!key_exists($pf['product']['name'], $allQte)) {
             $allQte[$pf['product']['name']] =
                [
+                  'id' => $pf['product']['id'],
                   'name' => $pf['product']['name'],
                   'sell' => $pf['product']['sell_price'],
                   'buy' => $pf['product']['buy_price'],
+                  'discount' => ($discount) ? $pf['product']['clients'][0]['pivot']['discount'] : 0,
                   'qte' => [],
                ];
          }
          if (count($pf['production_orders']) > 0) {
-            $allQte[$pf['product']['name']]['qte'][] = $this->getCommandQte($pf['production_orders'], $pf['size']['size']);
+            $allQte[$pf['product']['name']]['qte'][] = $this->getCommandQte($pf['id'], $pf['production_orders'], $pf['size']['size']);
          }
       }
 
       return array_values($allQte);
    }
 
-   public function getCommandQte($ps, $size)
+   /**
+    * Helper of @function {$this->getAllProductionsDetail}
+    *
+    * @param $id
+    * @param $ps
+    * @param $size
+    * @return array
+    */
+   private function getCommandQte($id, $ps, $size)
    {
-      $qte = ['order_quantity' => 0, 'size' => null];
+      $qte = ['ps_id' => $id, 'order_quantity' => 0, 'size' => null];
 
       foreach ($ps as $p) {
          if (in_array($p['state'], ['VALID', 'RECEPTION'])) {
@@ -131,60 +153,34 @@ class ProductionService extends AbstractService
       return $qte;
    }
 
-   public function searchByRef($ref = '')
+   /**
+    * Check if has an Discount to avoid empty result []
+    *
+    * @param $pf
+    * @param $client_id
+    * @return bool
+    */
+   public function hasDiscounting($pf, $client_id): bool
    {
-      $validProducts = [];
-      $pattern = "/{$ref}/i";
-      $products = $this->getAllProductionsDetail();
+      $hasDiscounting = $pf->whereHas('product.clients', function ($query) use ($client_id) {
+         $query->where('id', $client_id);
+      })->get()->toArray();;
 
-      $keys = array_keys($products);
-      $result = preg_grep($pattern, $keys);
-
-      if (is_null($result)) {
-         return [];
-      }
-
-      foreach ($result as $name) {
-         $validProducts[$name] = $products[$name];
-      }
-
-      return $validProducts;
+      return ($hasDiscounting) ? true : false;
    }
 
-   public function getStockToCommand($name = '')
+   public function addExternalCommand()
    {
-      $allPF = ProductSize::with('productionOrders')
-         ->whereHas('product', function ($query) use ($name) {
-            $query->where('name', 'LIKE', "%{$name}%");
-         })
-         ->get()
-         ->groupBy('product_id');
-
-      $allPF = collect($allPF)->all();
-      $allQte = collect();
-
-      return $allPF;
-
-      foreach ($allPF as $key => $pf) {
-         return $pf;
-//         $prod = $this->getCollectionQte($key, collect($pf));
-//         $allQte->add($prod);
-      }
-//         if (!key_exists($pf['product_id'], $allQte))
-//            $allQte[$pf['product_id']][] =
-//               array_merge([
-//                  'id' => $pf['product']['id'],
-//                  'name' => $pf['product']['name'],
-//                  'QTE' => 0
-//               ]);
-//
-//         if (count($pf['production_orders']) > 0) {
-//            $qte = $this->getCommandQte($pf['production_orders'], $pf['size']['size'], $pf['product']['buy_price'], $pf['product']['sell_price']);
-//            $allQte[$pf['product_id']]['QTE'][] = $qte;
-////            return $allQte[$pf['product_id']];
-//         }
-//      }
-      return $allQte->all();
+      $order = $this->req->get('order'); // [cmd_number, date_cmd, client_id ]
+      /**
+       * [
+       *    {
+       *       buy, discount, price, qte
+       *    }
+       * ]
+       */
+      $order_ps = $this->req->get('order_ps');
+      $newOrder = Order::create($order);
+      return $newOrder->savePSItems($order_ps);
    }
-
 }

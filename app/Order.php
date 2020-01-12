@@ -26,12 +26,6 @@ class Order extends Model
       return $this->belongsTo(Client::class);
    }
 
-//   function payments()
-//   {
-//      return $this->hasMany(Payment::class,'cmd_id');
-//   }
-
-
    /**
     * Haves a Pivot table {order_items}
     */
@@ -39,30 +33,62 @@ class Order extends Model
    {
       return $this->belongsToMany(Product::class, 'order_items',
          'cmd_id', 'product_id')
-         ->withPivot(['qte', 'qte_rapport','price','discount']);
+         ->withPivot(['qte', 'qte_rapport', 'price', 'discount']);
    }
 
    /**
-    * Save All Order Items for this Client
+    * Haves a Pivot table {order_ps}
+    */
+   public function productSize()
+   {
+      return $this->belongsToMany(ProductSize::class, 'order_ps',
+         'cmd_id', 'ps_id')
+         ->withPivot(['qte', 'price', 'discount', 'is_replaced', 'is_replaceable']);
+   }
+
+
+   /**
+    * Save All Order Items for this Client  {order_ps}
+    *
+    * @param array $items
+    * @return Order
+    */
+   public function savePSItems(array $items)
+   {
+      foreach ($items as $item) {
+         $orderItem = [];
+
+         foreach ($item['qte'] as $q) {
+            $orderItem[] = [
+               'cmd_id' => $this->id,
+               'ps_id' => $q['ps_id'],
+               'price' => $item['sell'],
+               'discount' => $item['discount'],
+               'qte' => $q['qte'],
+            ];
+         }
+         $this->productSize()->attach($orderItem);
+      }
+
+      return $this;
+   }
+
+   /**
+    * Save All  Order for this Client  {order_items}
     *
     * @param array $items
     * @return Order
     */
    public function saveItems(array $items)
    {
-
       $orderItem = array_map(function ($itm) {
          return array_merge($itm, ['cmd_id' => $this->id]);
       }, $items);
 
       $this->product()->attach($orderItem);
 
-      // Updating original Inventory TODO
-//        foreach ($items as $prod) {
-//            $upProduct = $this->product()->find($prod['productId']);
-//            $upProduct->inventory -= $prod['quantity'];
-//            $upProduct->save();
-//        }
       return $this;
    }
+
+
 }

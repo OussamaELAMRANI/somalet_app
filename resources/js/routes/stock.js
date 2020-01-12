@@ -17,7 +17,7 @@ export default [
             path: 'stock-list',
             component: StockList,
             meta: {
-               title: "Stock d'entre", name: 'listStock', icon: 'fa fa-gor', roles: 'guest'
+               title: "Entrée Stock", name: 'listStock', icon: 'fa fa-gor', roles: 'guest'
             },
          },
          {

@@ -2,6 +2,14 @@
 
 Route::prefix('orders')->group(function () {
 
+   Route::prefix('productions')->group(function () {
+
+      Route::get('', 'Api\OrderController@getAllProductionCommand');
+      Route::post('', 'Api\OrderController@addProductionCommand');
+
+   });
+
+
    Route::get('canceled', 'Api\OrderController@canceled');
    Route::get('cmd_number', 'Api\OrderController@getLastOrderNumber');
    Route::get('', 'Api\OrderController@index');
