@@ -40,8 +40,8 @@
       <hr>
       <div class="row">
          <div class="col-9">
-            <table-layout :head-table="['ID','Nom','Prénom','Actions']" :data="clients"
-                          empty-text="Pas de client dans ce cas (Vide...)" theme="bg-primary text-white small">
+            <table-layout :head-table="['ID','Nom','Prénom','Mouvements','Detail']" :data="clients"
+                          empty-text="Pas de client dans ce cas (Vide...)" theme="bg-primary text-white">
                <tr>
                   <td colspan="4" v-if="isloading">
                      <div class="row justify-content-center bg-white">
@@ -56,27 +56,30 @@
                   <td>{{p.lastName}}</td>
                   <td>{{p.firstName}}</td>
                   <td>
-                     <button class="btn btn-sm btn-outline-info rounded-pill shadow" data-toggle="modal"
+                     <router-link :to="{name:'movementClient', params:{id:p.id}}"
+                                  class="btn-outline-secondary btn shadow">
+                        <i class="fa fa-cash-register my-1" aria-hidden="true"></i>
+                     </router-link>
+                     <router-link :to="{name:'newPayment', params:{cmd:p.id}}"
+                                  class="btn-outline-success btn shadow">
+                        <i class="fa fa-money-bill-alt my-1" aria-hidden="true"></i>
+                     </router-link>
+                  </td>
+                  <td>
+                     <button class="btn btn-outline-danger shadow"
+                             @click="getElementIdToDelete(p.id)" v-if="roles.includes('ADMINE')"
+                             data-target="#bitch" data-toggle="modal">
+                        <i class="fa fa-trash " aria-hidden="true"></i>
+                     </button>
+
+                     <button class="btn btn-outline-info shadow" data-toggle="modal"
                              data-target="#exampleModal"
                              @click="redirect(p.id)">
                         <i class="fa fa-edit my-1" aria-hidden="true"></i>
                      </button>
-                     <button class="btn btn-sm btn-outline-danger rounded-pill shadow"
-                             @click="getElementIdToDelete(p.id)"
-                             data-target="#bitch" data-toggle="modal">
-                        <i class="fa fa-trash " aria-hidden="true"></i>
-                     </button>
                      <router-link :to="{name:'detailClient', params:{id:p.id}}"
-                                  class="btn-outline-primary btn btn-sm rounded-pill shadow">
-                        <i class="fa fa-list my-1" aria-hidden="true"></i>
-                     </router-link>
-                     <router-link :to="{name:'movementClient', params:{id:p.id}}"
-                                  class="btn-outline-secondary btn btn-sm rounded-pill shadow">
-                        <i class="fa fa-cash-register my-1" aria-hidden="true"></i>
-                     </router-link>
-                     <router-link :to="{name:'newPayment', params:{cmd:p.id}}"
-                                  class="btn-outline-success btn btn-sm rounded-pill shadow">
-                        <i class="fa fa-money-bill-alt my-1" aria-hidden="true"></i>
+                                  class="btn-outline-primary btn shadow">
+                        <i class="fa fa-list " aria-hidden="true"></i>
                      </router-link>
                   </td>
                </tr>
@@ -112,94 +115,97 @@
 </template>
 
 <script>
-    import ShowClient from "./showClient";
-    import AlertModal from "@/components/Modals/AlertModal";
-    import TableLayout from "@/components/layouts/TableLayout";
-    // import pagination from "laravel-vue-pagination";
-    import {HalfCircleSpinner} from 'epic-spinners'
+   import ShowClient from "./showClient";
+   import AlertModal from "@/components/Modals/AlertModal";
+   import TableLayout from "@/components/layouts/TableLayout";
+   // import pagination from "laravel-vue-pagination";
+   import {HalfCircleSpinner} from 'epic-spinners'
+   import store from "@/store";
 
-    export default {
-        name: "ClientsList",
-        data() {
-            return {
-                ElementIdToDelete: null,
-                clients: [],
-                searchClients: null,
-                searchTxt: '',
-                searchId: '',
-                by: 'id',
-                opt: 'ste',
-                client: {},
-                dataTable: null,
-                isloading: false
+   export default {
+      name: "ClientsList",
+      data() {
+         return {
+            ElementIdToDelete: null,
+            clients: [],
+            searchClients: null,
+            searchTxt: '',
+            searchId: '',
+            by: 'id',
+            opt: 'ste',
+            client: {},
+            dataTable: null,
+            isloading: false,
+            roles: store.getters.roles
+
+         }
+      },
+      mounted() {
+         this.filter();
+      },
+
+      methods: {
+         getElementIdToDelete(id) {
+            this.ElementIdToDelete = id;
+         },
+         supp() {
+            let id = this.ElementIdToDelete;
+            axios.delete(`/api/clients/${id}/delete`)
+               .then(res => {
+                  // this.$notification.error('produit bien supprimer')
+                  // this.$router.push({name: 'listClient', params: {id}});
+                  // this.getClients();
+                  document.getElementById(this.ElementIdToDelete).remove()
+               })
+               .catch(err => {
+                  this.$notification.error("Ce produit n'existe pas !")
+                  this.$notification.error('impossible de supprimer ce produit')
+                  // this.$router.push('/404')
+               })
+         },
+         redirect(id) {
+            this.$router.push({name: 'updateClient', params: {id}});
+         },
+         filter(arg = 0) {
+            this.isloading = true;
+            let quote = this.searchTxt;
+            let by = 'name';
+
+            if (arg == 1) {
+               quote = this.searchId;
+               by = 'id'
             }
-        },
-        mounted() {
+
+            axios.get(`/api/clients/by`,
+               {
+                  params: {by, quote}
+               })
+               .then(({data}) => {
+                  console.log(data)
+                  this.clients = data;
+                  this.isloading = false;
+
+               })
+               .catch(err => console.log(err.response))
+         },
+         EmptyText() {
+            this.searchTxt = ''
             this.filter();
-        },
-
-        methods: {
-            getElementIdToDelete(id) {
-                this.ElementIdToDelete = id;
-            },
-            supp() {
-                let id = this.ElementIdToDelete;
-                axios.delete(`/api/clients/${id}/delete`)
-                    .then(res => {
-                        // this.$notification.error('produit bien supprimer')
-                        // this.$router.push({name: 'listClient', params: {id}});
-                        // this.getClients();
-                        document.getElementById(this.ElementIdToDelete).remove()
-                    })
-                    .catch(err => {
-                        this.$notification.error("Ce produit n'existe pas !")
-                        this.$notification.error('impossible de supprimer ce produit')
-                        // this.$router.push('/404')
-                    })
-            },
-            redirect(id) {
-                this.$router.push({name: 'updateClient', params: {id}});
-            },
-            filter(arg = 0) {
-                this.isloading = true;
-                let quote = this.searchTxt;
-                let by = 'name';
-
-                if (arg == 1) {
-                    quote = this.searchId;
-                    by = 'id'
-                }
-
-                axios.get(`/api/clients/by`,
-                    {
-                        params: {by, quote}
-                    })
-                    .then(({data}) => {
-                        console.log(data)
-                        this.clients = data;
-                        this.isloading = false;
-
-                    })
-                    .catch(err => console.log(err.response))
-            },
-            EmptyText() {
-                this.searchTxt = ''
-                this.filter();
-            },
-            show(id) {
-                this.$router.push({name: 'detailClient', params: {id}})
-                // console.log(id)
-                // const val = this.clients.data
-                // this.client = _.find(val, o => {
-                //     return o.id == id
-                // });
-            },
-        },
-        components: {
-            TableLayout, HalfCircleSpinner,
-            ShowClient, AlertModal,
-        }
-    }
+         },
+         show(id) {
+            this.$router.push({name: 'detailClient', params: {id}})
+            // console.log(id)
+            // const val = this.clients.data
+            // this.client = _.find(val, o => {
+            //     return o.id == id
+            // });
+         },
+      },
+      components: {
+         TableLayout, HalfCircleSpinner,
+         ShowClient, AlertModal,
+      }
+   }
 </script>
 
 <style>

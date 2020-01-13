@@ -36,7 +36,7 @@
                      <td class="align-middle">{{inv.name}}</td>
                      <!--                     <td>{{inv.QTE.length}}</td>-->
                      <td>
-                        <ul class="list-group  list-group-horizontal" v-for="(v,k) in inv.QTE_TOTAL">
+                        <ul class="list-group  list-group-horizontal" v-for="(v,k) in inv.QTE_TOTAL" v-if="v>0">
 
                            <li class="list-group-item  m-1 p-0 w-50 ">{{v}}</li>
                            <li class="list-group-item  my-1 p-0 bg-success"></li>

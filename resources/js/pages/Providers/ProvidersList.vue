@@ -19,6 +19,7 @@
          </template>
       </alert-modal>
       <!-- Modal -->
+
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
          <div class="modal-dialog modal-xl" role="">
             <div class="modal-content">
@@ -100,7 +101,7 @@
                        @click="redirect(p.id)">
                   <i class="fa fa-edit" aria-hidden="true"></i>
                </button>
-               <button class="btn btn-sm btn-danger"
+               <button class="btn btn-sm btn-danger" v-if="roles.includes('ADMINE')"
                        @click="getElementIdToDelete(p.id)"
                        data-target="#bitch" data-toggle="modal">
                   <i class="fa fa-trash" aria-hidden="true"></i>
@@ -120,6 +121,7 @@
    import AlertModal from "@/components/Modals/AlertModal";
    import TableLayout from "@/components/layouts/TableLayout";
    // import pagination from "laravel-vue-pagination";
+   import store from "@/store";
 
    export default {
       name: "ProvidersList",
@@ -131,7 +133,9 @@
             searchTxt: '',
             opt: 'ste',
             provider: {},
-            dataTable: null
+            dataTable: null,
+            roles: store.getters.roles
+
          }
       },
       mounted() {

@@ -87,4 +87,10 @@ class ArrivalController extends Controller
       return response()->json(null, Response::HTTP_NOT_FOUND);
 
    }
+
+
+   public function getContainerDetail(Arrival $container)
+   {
+      return $this->service->containerDetail($container);
+   }
 }

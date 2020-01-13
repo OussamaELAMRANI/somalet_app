@@ -7,18 +7,15 @@ namespace App\Services\Clients;
 use App\Client;
 use App\Order;
 use App\Payment;
+use App\Product;
+use App\Services\AbstractService;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ClientService
+class ClientService extends AbstractService
 {
-   private $req;
-
-   public function __construct(Request $request)
-   {
-      $this->req = $request;
-   }
 
    private function collapseProductDiscount($products)
    {
@@ -36,6 +33,11 @@ class ClientService
    public function getClientDetail($id)
    {
       $clients = Client::with('products')->findOrFail($id);
+//      $products = Product::whereHas('orders',function ($q){
+//         $q->whereHas('product',function ($auery){
+//
+//         });
+//      });
 //      $products = collect($clients->products);
 //      $clients['discounting'] = $this->collapseProductDiscount($products);
       return response()->json($clients, 200);
@@ -51,7 +53,7 @@ class ClientService
    /**
     * @param $id [client_id]
     *
-    * @return \Illuminate\Http\JsonResponse
+    * @return JsonResponse
     */
    public function getMovementClient($id)
    {
@@ -75,7 +77,7 @@ class ClientService
          ->get()->groupBy('payed_at')->toArray();
 
       $sold = $this->getClientSold($id, $res[0]);
-      $sold_today = ($this->getClientSold($id, $res[1]) - $sold);
+      $sold_today = ($this->getClientSold($id, $res[1]));
 
       $movements = [];
       foreach ($orders as $k => $v) {
@@ -164,7 +166,6 @@ class ClientService
 
       return collect($payments);
    }
-
 
    public function getSold($orders, $payments)
    {

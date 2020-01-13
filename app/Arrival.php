@@ -5,6 +5,7 @@ namespace App;
 use App\Services\Filters\Arrivals\ArrivalFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,6 @@ class Arrival extends Model
 {
    use SoftDeletes;
    protected $guarded = [];
-
-//    protected $primaryKey = 'n_facture';
-
 
    public function scopeFilter(Builder $builder, Request $req, array $filters = [])
    {
@@ -46,30 +44,26 @@ class Arrival extends Model
       return $this->primaryKey;
    }
 
-//    public function products()
-//    {
-//        return $this->belongsToMany(Product::class);
-//    }
 
    /**
     * Haves a Pivot table l_arrivals
-    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    * @return BelongsToMany
     */
    public function product()
    {
       return $this->belongsToMany(Product::class, 'l_arrivals')
          ->withPivot(['qte_facture', 'rapport_qte', 'price_unit_ht', 'sell_price', 'remark',
-            'date_reception', 'qte_reception','qte_rapport_reception', 'remark_reception']);
+            'date_reception', 'qte_reception', 'qte_rapport_reception', 'remark_reception']);
    }
 
    /**
     * Save All Order Items for this Client
     *
     * @param array $items
-    * @param $userId
-    * @return double Total
+    * @param int $arrival_id
+    * @return Arrival Total
     */
-   public function saveItems(array $items, $arrival_id = 0)
+   public function saveItems(array $items, $arrival_id = 0): self
    {
       $orderItem = array_map(function ($itm) {
          unset($itm['name']);

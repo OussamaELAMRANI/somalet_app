@@ -101,8 +101,8 @@
                         <th class="font-weight-bolder border-dark text-uppercase">Couleur</th>
                         <th class="font-weight-bolder border-dark text-uppercase">qunité</th>
                         <th class="font-weight-bolder border-dark text-uppercase">prix</th>
-                        <th class="font-weight-bolder border-dark text-uppercase">Remise</th>
-                        <th class="font-weight-bolder border-dark text-uppercase">Montant</th>
+<!--                        <th class="font-weight-bolder border-dark text-uppercase">Remise</th>-->
+                        <th class="font-weight-bolder border-dark text-uppercase" colspan="2">Montant</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -115,9 +115,8 @@
                         <td class="p-2  border-dark text-uppercase">{{p.reference}}</td>
                         <td class="p-2 border-dark ">{{p.color.name}}</td>
                         <td class="p-2 border-dark ">{{p.pivot.qte_rapport * p.pivot.qte}}</td>
-                        <td class="p-2 border-dark ">{{p.pivot.price}} DH</td>
-                        <td class="p-2 border-dark ">{{p.pivot.discount}}</td>
-                        <td class="p-2 border-dark ">{{(p.pivot.price - p.pivot.discount) * (p.pivot.qte_rapport *
+                        <td class="p-2 border-dark ">{{p.pivot.price - p.pivot.discount}} DH</td>
+                        <td colspan="2" class="p-2 border-dark ">{{(p.pivot.price - p.pivot.discount) * (p.pivot.qte_rapport *
                             p.pivot.qte)}} DH
                         </td>
                     </tr>

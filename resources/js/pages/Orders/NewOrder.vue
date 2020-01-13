@@ -16,12 +16,8 @@
                                     strong ({{p.id + ') '}}
                                     | {{ p.lastName }}
                                     strong {{ ' '+ p.firstName }}
-                           //span.help.text-danger(v-show="errors.has('client')") Vous devez selectionner le client
                      .col
-                        .form-group
-                           label Date de la Facture :
-                           datepicker.form-control(:format='customFormatter' :language='fr' :monday-first='true'
-                              calendar-button-icon='fa fa-user' name='date_picker' v-model='dateCmd')
+                        select-date(@sendDate="getDate" title="Date de la Facture :")
                      .col
                         .form-group
                            label(for="delivery") Numéro de Livraison
@@ -121,234 +117,238 @@
 </template>
 
 <script>
-    import BigTitle from "@/components/layouts/BigTitle";
-    import OrderTable from "@/components/Orders/OrderTable";
-    import {CoolSelect} from 'vue-cool-select'
-    import moment from 'moment'
-    import Datepicker from 'vuejs-datepicker';
-    import {fr} from 'vuejs-datepicker/dist/locale'
-    import TableLayout from "@/components/layouts/TableLayout";
+   import BigTitle from "@/components/layouts/BigTitle";
+   import OrderTable from "@/components/Orders/OrderTable";
+   import {CoolSelect} from 'vue-cool-select'
+   import moment from 'moment'
+   import Datepicker from 'vuejs-datepicker';
+   import {fr} from 'vuejs-datepicker/dist/locale'
+   import TableLayout from "@/components/layouts/TableLayout";
+   import SelectDate from "@/components/layouts/SelectDate";
 
-    export default {
-        name: "NewOrder",
-        components: {TableLayout, OrderTable, BigTitle, CoolSelect, Datepicker},
-        mounted() {
-            this.getClients()
-            this.getOrderNumber()
-        },
-        data() {
-            return {
-                fr,
-                dateCmd: moment().toDate(),
-                header_order: {
-                    client_id: '',
-                    cmd_number: null,
-                    date_cmd: moment().toDate(),
-                },
-                order: {
-                    // product_id: '',
-                    // produit: '',
-                    qte: null,
-                },
-                qte: [],
-                commands: [],
-                clients: [],
-                loading: false,
-                noData: false,
-                prods: Array(),
-                selected_order: {
-                    reference: "",
-                    name: "",
-                    price: "",
-                    discount: 0,
-                    QTE: {},
-                    QTE_TOTAL: {}
-                },
-                putOrder: null,
-                qteError: false,
-                isEmpty: false
+   export default {
+      name: "NewOrder",
+      components: {SelectDate, TableLayout, OrderTable, BigTitle, CoolSelect, Datepicker},
+      mounted() {
+         this.getClients()
+         this.getOrderNumber()
+      },
+      data() {
+         return {
+            fr,
+            dateCmd: moment().toDate(),
+            header_order: {
+               client_id: '',
+               cmd_number: null,
+               date_cmd: moment().toDate(),
+            },
+            order: {
+               // product_id: '',
+               // produit: '',
+               qte: null,
+            },
+            qte: [],
+            commands: [],
+            clients: [],
+            loading: false,
+            noData: false,
+            prods: Array(),
+            selected_order: {
+               reference: "",
+               name: "",
+               price: "",
+               discount: 0,
+               QTE: {},
+               QTE_TOTAL: {}
+            },
+            putOrder: null,
+            qteError: false,
+            isEmpty: false
+         }
+      },
+      methods: {
+         getDate(d) {
+            this.header_order.date_cmd = d
+         },
+         getClients() {
+            axios.get('/api/clients')
+               .then(({data}) => {
+                  this.clients = data
+                  console.log(data)
+               })
+               .catch(err => console.log(err.response))
+         },
+         getOrderNumber() {
+            axios.get('/api/orders/cmd_number')
+               .then(({data}) => {
+                  const {cmd_number} = data;
+                  this.header_order.cmd_number = Number(cmd_number) + 1
+               })
+         },
+         getOrders() {
+            let hasError = false
+            const qte = {'qte_cmd': {...this.qte}}
+            const products = this.putOrder
+            const total = {...products.QTE_TOTAL}
+
+            if (Object.keys(qte.qte_cmd).length === 0) {
+               this.isEmpty = true;
+               return;
+            } else if (Object.values(qte.qte_cmd)[0] == "") {
+               this.isEmpty = true;
+               return;
+            } else {
+               this.isEmpty = false
             }
-        },
-        methods: {
-            getClients() {
-                axios.get('/api/clients')
-                    .then(({data}) => {
-                        this.clients = data
-                        console.log(data)
-                    })
-                    .catch(err => console.log(err.response))
-            },
-            getOrderNumber() {
-                axios.get('/api/orders/cmd_number')
-                    .then(({data}) => {
-                        const {cmd_number} = data;
-                        this.header_order.cmd_number = Number(cmd_number) + 1
-                    })
-            },
-            getOrders() {
-                let hasError = false
-                const qte = {'qte_cmd': {...this.qte}}
-                const products = this.putOrder
-                const total = {...products.QTE_TOTAL}
 
-                if (Object.keys(qte.qte_cmd).length === 0) {
-                    this.isEmpty = true;
-                    return;
-                } else if (Object.values(qte.qte_cmd)[0] == "") {
-                    this.isEmpty = true;
-                    return;
-                } else {
-                    this.isEmpty = false
-                }
+            Object.keys(total).forEach(function (k) {
+               if (qte.qte_cmd[k] !== undefined || qte.qte_cmd[k] !== "") {
+                  if (total[k] < qte.qte_cmd[k])
+                     hasError = true
+               }
 
-                Object.keys(total).forEach(function (k) {
-                    if (qte.qte_cmd[k] !== undefined || qte.qte_cmd[k] !== "") {
-                        if (total[k] < qte.qte_cmd[k])
-                            hasError = true
-                    }
+            });
 
-                });
-
-                if (hasError) {
-                    this.qteError = true
-                    return
-                } else
-                    this.qteError = false
+            if (hasError) {
+               this.qteError = true
+               return
+            } else
+               this.qteError = false
 
 
-                const command = {...products, ...qte}
-                this.deleteItem(command.product_id)
-                this.commands.unshift(command)
+            const command = {...products, ...qte}
+            this.deleteItem(command.product_id)
+            this.commands.unshift(command)
 
-                this.qte = []
-                this.putOrder = []
+            this.qte = []
+            this.putOrder = []
 
-            },
-            customFormatter(date) {
-                return moment(date).format('DD/MM/YYYY');
-            },
-            onSearch(search) {
-                // let rejectId = ""
-                const lettersLimit = 2;
+         },
+         customFormatter(date) {
+            return moment(date).format('DD/MM/YYYY');
+         },
+         onSearch(search) {
+            // let rejectId = ""
+            const lettersLimit = 2;
 
-                this.noData = false;
-                if (search.length < lettersLimit) {
-                    this.prods = [];
-                    this.loading = false;
-                    return;
-                }
-                this.loading = true;
-
-                axios.get(`/api/receptions/search/${search}`, {
-                    params: {
-                        client_id: this.header_order.client_id,
-                    }
-                }).then(({data}) => {
-                    this.prods = data;
-                    if (data.length === 0)
-                        this.noData = true
-
-                    this.loading = false;
-                })
-            },
-            addOrder() {
-                const order = this.header_order
-                const products = this.commands.map(p => {
-
-                    // p.qte_cmd.map((k, v) => {
-                    //
-                    // })
-                    const qte = p.qte_cmd
-                    const qte_rapport = Object.keys(p.qte_cmd)
-
-                    return {
-                        'product_id': p.product_id,
-                        qte,
-                        qte_rapport,
-                        'price': Number(p.price),
-                        'discount': Number(p.discount).toFixed(2),
-                    }
-                })
-
-                axios.post('/api/orders', {order, products})
-                    .then(({data}) => {
-                        console.log(data)
-                        this.$router.push({name: 'listOrder'})
-                        this.$notification.success("La commande a été bien ajouté ! ")
-                    })
-                    .catch(err => {
-                        const {cmd_number, date_cmd} = err.response.data.errors
-
-                        if (cmd_number !== undefined)
-                            this.$notification.error(cmd_number[0])
-                        if (date_cmd !== undefined)
-                            this.$notification.error(date_cmd[0])
-
-                        console.log(err.response)
-                    })
-            },
-            deleteItem(id) {
-                this.commands = this.commands.filter(i => {
-                    return (id !== i.product_id)
-                })
-            },
-            // ANIMATION =============
-            enter(element) {
-                const width = getComputedStyle(element).width;
-
-                element.style.width = width;
-                element.style.position = 'absolute';
-                element.style.visibility = 'hidden';
-                element.style.height = 'auto';
-
-                const height = getComputedStyle(element).height;
-
-                element.style.width = null;
-                element.style.position = null;
-                element.style.visibility = null;
-                element.style.height = 0;
-
-                // Force repaint to make sure the
-                // animation is triggered correctly.
-                getComputedStyle(element).height;
-
-                // Trigger the animation.
-                // We use `setTimeout` because we need
-                // to make sure the browser has finished
-                // painting after setting the `height`
-                // to `0` in the line above.
-                setTimeout(() => {
-                    element.style.height = height;
-                });
-            },
-            afterEnter(element) {
-                element.style.height = 'auto';
-            },
-            leave(element) {
-                const height = getComputedStyle(element).height;
-
-                element.style.height = height;
-
-                // Force repaint to make sure the
-                // animation is triggered correctly.
-                getComputedStyle(element).height;
-
-                setTimeout(() => {
-                    element.style.height = 0;
-                });
-            },
-        },
-        watch: {
-            dateCmd: function (d) {
-                this.header_order.date_cmd = moment(d).format('DD/MM/YYYY');
-            },
-            putOrder: function (o) {
-                this.qte = []; // To Avoid Putting Invalid data to Commands
-                this.selected_order = {...o}
+            this.noData = false;
+            if (search.length < lettersLimit) {
+               this.prods = [];
+               this.loading = false;
+               return;
             }
-        },
+            this.loading = true;
 
-    }
+            axios.get(`/api/receptions/search/${search}`, {
+               params: {
+                  client_id: this.header_order.client_id,
+               }
+            }).then(({data}) => {
+               this.prods = data;
+               if (data.length === 0)
+                  this.noData = true
+
+               this.loading = false;
+            })
+         },
+         addOrder() {
+            const order = this.header_order
+            const products = this.commands.map(p => {
+
+               // p.qte_cmd.map((k, v) => {
+               //
+               // })
+               const qte = p.qte_cmd
+               const qte_rapport = Object.keys(p.qte_cmd)
+
+               return {
+                  'product_id': p.product_id,
+                  qte,
+                  qte_rapport,
+                  'price': Number(p.price),
+                  'discount': Number(p.discount).toFixed(2),
+               }
+            })
+
+            axios.post('/api/orders', {order, products})
+               .then(({data}) => {
+                  console.log(data)
+                  this.$router.push({name: 'listOrder'})
+                  this.$notification.success("La commande a été bien ajouté ! ")
+               })
+               .catch(err => {
+                  const {cmd_number, date_cmd} = err.response.data.errors
+
+                  if (cmd_number !== undefined)
+                     this.$notification.error(cmd_number[0])
+                  if (date_cmd !== undefined)
+                     this.$notification.error(date_cmd[0])
+
+                  console.log(err.response)
+               })
+         },
+         deleteItem(id) {
+            this.commands = this.commands.filter(i => {
+               return (id !== i.product_id)
+            })
+         },
+         // ANIMATION =============
+         enter(element) {
+            const width = getComputedStyle(element).width;
+
+            element.style.width = width;
+            element.style.position = 'absolute';
+            element.style.visibility = 'hidden';
+            element.style.height = 'auto';
+
+            const height = getComputedStyle(element).height;
+
+            element.style.width = null;
+            element.style.position = null;
+            element.style.visibility = null;
+            element.style.height = 0;
+
+            // Force repaint to make sure the
+            // animation is triggered correctly.
+            getComputedStyle(element).height;
+
+            // Trigger the animation.
+            // We use `setTimeout` because we need
+            // to make sure the browser has finished
+            // painting after setting the `height`
+            // to `0` in the line above.
+            setTimeout(() => {
+               element.style.height = height;
+            });
+         },
+         afterEnter(element) {
+            element.style.height = 'auto';
+         },
+         leave(element) {
+            const height = getComputedStyle(element).height;
+
+            element.style.height = height;
+
+            // Force repaint to make sure the
+            // animation is triggered correctly.
+            getComputedStyle(element).height;
+
+            setTimeout(() => {
+               element.style.height = 0;
+            });
+         },
+      },
+      watch: {
+         dateCmd: function (d) {
+            this.header_order.date_cmd = moment(d).format('DD/MM/YYYY');
+         },
+         putOrder: function (o) {
+            this.qte = []; // To Avoid Putting Invalid data to Commands
+            this.selected_order = {...o}
+         }
+      },
+
+   }
 </script>
 
 <style scoped>

@@ -189,7 +189,7 @@ class ReceptionController extends Controller
 
    public function validContainersHistory()
    {
-      $v_arrival = Arrival::where('state', 'VALID')->get();
+      $v_arrival = Arrival::where('state', 'VALID')->last();
 
       return response()->json($v_arrival, Response::HTTP_OK);
    }

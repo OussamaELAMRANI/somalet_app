@@ -17,15 +17,15 @@ export default [
                     title: 'Nouveau Contenaire', name: 'new_container', icon: 'fa fa-briefcase', roles: 'COMMERCIAL'
                 },
             },
-            // {
-            //    name: 'update_arrival',
-            //    path: ':id/update',
-            //    component: NewArrival,
-            //    hidden: true,
-            //    meta: {
-            //       title: 'Modifier arrivage', name: 'update_arrival', icon: 'fa fa-briefcase', roles: 'guest'
-            //    },
-            // },
+            {
+               name: 'ContainerDetail',
+               path: ':id/detail',
+               component: ()=> import('@/pages/Containers/DetailContainer'),
+               hidden: true,
+               meta: {
+                  title: 'Détail Contenaire', name: 'ContainerDetail', icon: 'fa fa-list', roles: 'COMMERCIAL'
+               },
+            },
             {
                 name: 'list_container',
                 path: 'container-list',

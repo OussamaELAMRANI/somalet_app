@@ -1,6 +1,10 @@
 <template lang="pug">
    #valid_history
       .row
+         .col-9
+            hr
+         .col-3.text-center
+            h4.text-uppercase Historique d'entrée aux stock
          .col-10
             table.table.text-center
                thead.bg-success.text-white
@@ -22,26 +26,26 @@
 </template>
 
 <script>
-    export default {
-        name: "ValidContainersHistory",
-        data() {
-            return {
-                arrivals: []
-            }
-        },
-        mounted() {
-            this.getValidContainers()
-        },
-        methods: {
-            getValidContainers() {
-                axios.get('/api/inventories/valid-history')
-                    .then(({data}) => {
-                        this.arrivals = data
-                    })
-                    .catch(err => console.log(err.response))
-            }
-        }
-    }
+   export default {
+      name: "ValidContainersHistory",
+      data() {
+         return {
+            arrivals: []
+         }
+      },
+      mounted() {
+         this.getValidContainers()
+      },
+      methods: {
+         getValidContainers() {
+            axios.get('/api/inventories/valid-history')
+               .then(({data}) => {
+                  this.arrivals = data
+               })
+               .catch(err => console.log(err.response))
+         }
+      }
+   }
 </script>
 
 <style scoped>

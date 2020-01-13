@@ -13,7 +13,7 @@ export default [
             path: 'new-production-order',
             component: () => import('@/pages/Productions/MolsatOrder'),
             meta: {
-               title: "Commande au production",
+               title: "Commande d'usine",
                name: 'newProductionOrder',
                icon: 'fa fa-gor',
                roles: 'COMMERCIAL'

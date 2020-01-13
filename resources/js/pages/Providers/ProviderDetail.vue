@@ -12,16 +12,16 @@
 
         table-layout(:head-table="porductsHeader", theme="bg-success text-white" empty-text="Sans Produits" :data="getProducts")
             tr(v-for="( p,i ) in products").text-center
-                td {{i+1}}
-                td
+                td.align-middle {{i+1}}
+                td.align-middle
                     img(:src="'/storage/'+p.img" height="90")
-                td {{p.reference}}
-                td {{p.name}}
-                td
+                td.align-middle {{p.reference}}
+                td.align-middle {{p.name}}
+                td.align-middle
                     p(v-if="(p.color.name) === null") SANS
                     p(v-else).m-0
                         .koora.rounded-pill.shadow(:style="{backgroundColor:p.color.color}")
-                td {{p.unit.name}}
+                td.align-middle {{p.unit.name}}
 
 </template>
 

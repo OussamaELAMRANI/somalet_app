@@ -97,12 +97,14 @@ class ProductionService extends AbstractService
     */
    public function getAllProductionsDetail($name = null)
    {
-      $discount = true;
-      $allPF = ProductSize::with('productionOrders', 'product', 'size', 'product.clients')
+      $discount = false;
+      $allPF = ProductSize::with('productionOrders', 'product', 'size', 'product.clients', 'commands')
          ->whereHas('product', function ($query) use ($name) {
             $query->where('type', "PF")
                ->where('name', 'LIKE', "%{$name}%");
          });
+
+//      return $allPF->get();
 
       if ($this->req->has('client_id')) {
          $discount = $this->hasDiscounting(clone $allPF, $this->req->get('client_id'));
@@ -124,7 +126,8 @@ class ProductionService extends AbstractService
                ];
          }
          if (count($pf['production_orders']) > 0) {
-            $allQte[$pf['product']['name']]['qte'][] = $this->getCommandQte($pf['id'], $pf['production_orders'], $pf['size']['size']);
+            $allQte[$pf['product']['name']]['qte'][] =
+               $this->getCommandQte($pf['id'], $pf['production_orders'], $pf['size']['size'], $pf['commands']);
          }
       }
 
@@ -137,16 +140,22 @@ class ProductionService extends AbstractService
     * @param $id
     * @param $ps
     * @param $size
+    * @param $cmd
     * @return array
     */
-   private function getCommandQte($id, $ps, $size)
+   private function getCommandQte($id, $ps, $size, $cmd)
    {
-      $qte = ['ps_id' => $id, 'order_quantity' => 0, 'size' => null];
+      $qte = ['ps_id' => $id, 'order_quantity' => 0, 'size' => $size];
 
       foreach ($ps as $p) {
          if (in_array($p['state'], ['VALID', 'RECEPTION'])) {
             $qte['order_quantity'] += $p['pivot']['order_quantity'];
-            $qte['size'] = $size;
+         }
+      }
+      // List all qte and do diff
+      foreach ($cmd as $c) {
+         if (!$c['is_canceled']) {
+            $qte['order_quantity'] -= $c['pivot']['qte'];
          }
       }
 

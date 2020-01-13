@@ -7,9 +7,7 @@
                <div class="col-3">
                   <label>Fournisseur : </label>
                   <cool-select :items="providers" item-text="steName" item-value="id" name="provider"
-                               v-model="container.provider_id" v-validate="'required'"/>
-                  <!--            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('provider')"></i>-->
-                  <!--            <span class="help text-danger" v-show="errors.has('provider')">{{ messageErr }}</span>-->
+                               v-model="container.provider_id"/>
                </div>
                <div class="col-3">
                   <div class="form-group">
@@ -71,7 +69,7 @@
                <label>Produit :</label>
                <cool-select :items="products" @search="onSearch" :loading="loading" ref="cool"
                             item-text="name" item-value="id" :name="'produit'"
-                            v-model="products_items.product_id" v-validate="'required'">
+                            v-model="products_items.product_id" >
                   <template slot="item" slot-scope="{ item:p }">
                      <div class="d-flex">
                         <div>

@@ -7,8 +7,6 @@ Route::prefix('inventories')->group(function () {
       Route::get('detail/{name?}', 'ReceptionController@productionsDetail')->where('ref', '[\/\w\.-]*');;
       Route::get('search/{ref?}', 'ReceptionController@productionSearch')->where('ref', '[\/\w\.-]*');
 
-//      Route::get('stock/{name?}', 'ReceptionController@getStockToCommand')->where('name', '[\/\w\.-]*');
-
    });
 
    Route::get('detail', 'ReceptionController@getDetailStock');

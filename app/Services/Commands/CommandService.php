@@ -76,8 +76,19 @@ class CommandService
 
    public function getCommands($is_canceled = 0)
    {
-      return Order::where('is_canceled', $is_canceled)
-         ->with('client', 'product', 'product.provider')
+
+      $orders = Order::where('is_canceled', $is_canceled);
+
+      if ($this->req->has('from') && $this->req->has('to')) {
+         $fromDate = $this->req->get('from');
+         $toDate = $this->req->get('to');
+         $orders->whereBetween('date_cmd', [$fromDate, $toDate]);
+      } else {
+         $toDay = Carbon::now();
+         $orders->whereBetween('date_cmd', [$toDay->addDays(-1)->toDateString(), $toDay->addDays(1)->toDateString()]);
+      }
+
+      return $orders->with('client', 'product', 'product.provider')
          ->last();
    }
 
@@ -85,7 +96,7 @@ class CommandService
    {
       return Order::where('cmd_number', $cmd_number)
          ->with('client', 'product', 'product.color',
-            'productSize','productSize.product','productSize.size')->first();
+            'productSize', 'productSize.product', 'productSize.size')->first();
    }
 
 }

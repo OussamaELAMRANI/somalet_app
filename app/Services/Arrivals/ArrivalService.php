@@ -102,4 +102,8 @@ class    ArrivalService
       return response()->json("Already Exist (Change the arrivals NFacture )", Response::HTTP_NOT_ACCEPTABLE); // Not Acceptable [STATUE]
    }
 
+   public function containerDetail(Arrival $container)
+   {
+      return $container->load('product');
+   }
 }

@@ -16,14 +16,14 @@ export default [
                     title: 'Liste des arrivages', name: 'list_receptions', icon: 'fa fa-briefcase', roles: 'MAGAZINIER'
                 },
             },
-           {
-                name: 'soleReceptions',
-                path: 'sole-list',
-                component: () => import('@/pages/Productions/SolesReceptions'),
-                meta: {
-                    title: 'Reception de Semelle', name: 'soleReceptions', icon: 'fa fa-briefcase', roles: 'MAGAZINIER'
-                },
-            },
+           // {
+           //      name: 'soleReceptions',
+           //      path: 'sole-list',
+           //      component: () => import('@/pages/Productions/SolesReceptions'),
+           //      meta: {
+           //          title: 'Reception de Semelle', name: 'soleReceptions', icon: 'fa fa-briefcase', roles: 'MAGAZINIER'
+           //      },
+           //  },
         ]
     },
 ]

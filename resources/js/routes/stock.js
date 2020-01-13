@@ -1,21 +1,17 @@
-import Stocks from '@/pages/Stock/Stocks'
-import StockList from '@/pages/Stock/StockList'
-import Inventories from '@/pages/Stock/Inventories'
-
 export default [
    {
       name: 'allStocks',
       path: 'stock',
-      component: Stocks,
+      component: () => import('@/pages/Stock/Stocks'),
       redirect: 'stock/stock-list',
       meta: {
-         title: 'Stocks', name: 'allStocks', icon: 'fa fa-box', roles: ['MAGAZINIER','COMMERCIAL']
+         title: 'Stocks', name: 'allStocks', icon: 'fa fa-box', roles: ['MAGAZINIER', 'COMMERCIAL']
       },
       children: [
          {
             name: 'listStock',
             path: 'stock-list',
-            component: StockList,
+            component: () => import('@/pages/Stock/StockList'),
             meta: {
                title: "Entrée Stock", name: 'listStock', icon: 'fa fa-gor', roles: 'guest'
             },
@@ -32,15 +28,15 @@ export default [
          {
             name: 'inventories',
             path: 'inventories',
-            component: Inventories,
+            component: () => import('@/pages/Stock/Inventories'),
             meta: {
-               title: "Stock réel", name: 'inventories', icon: 'fa fa-gor',  roles: ['MAGAZINIER','COMMERCIAL']
+               title: "Stock réel", name: 'inventories', icon: 'fa fa-gor', roles: ['MAGAZINIER', 'COMMERCIAL']
             },
          },
          {
             name: 'histories',
             path: 'histories',
-            component: ()=> import('@/pages/Stock/ValidContainersHistory'),
+            component: () => import('@/pages/Stock/ValidContainersHistory'),
             meta: {
                title: "Historiques", name: 'histories', icon: 'fa fa-gor', roles: 'guest'
             },

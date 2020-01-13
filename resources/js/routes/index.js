@@ -44,6 +44,15 @@ export const constantRoutes = [
       },
       component: () => import('@/pages/NotFound'),
    },
+   {
+      path: '/printer',
+      name: 'printer',
+      component: () => import("@/pages/Printer/Printer"),
+      hidden: true,
+      meta: {
+         title: 'Imprimer maintenant', name: 'printer', icon: 'fa fa-print'
+      }
+   },
 ];
 
 export const asyncRoutes = [
@@ -65,15 +74,6 @@ export const asyncRoutes = [
             meta: {
                title: 'Molsat Application', icon: 'fa fa-gor', roles: ['GUEST','MAGAZINIER','COMMERCIAL']
             },
-         },
-         {
-            path: '/printer',
-            name: 'printer',
-            component: () => import("@/pages/Printer/Printer"),
-            hidden: true,
-            meta: {
-               title: 'Imprimer maintenant', name: 'printer', icon: 'fa fa-print', roles: 'guest'
-            }
          },
          ...Users,
          ...Providers,
