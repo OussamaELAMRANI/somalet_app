@@ -6,27 +6,24 @@ namespace App\Services\Stock;
 
 use App\Arrival;
 use App\Product;
+use App\Services\AbstractService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class InventoryService
+class InventoryService extends AbstractService
 {
-   private $req;
-
-   public function __construct(Request $request)
-   {
-      $this->req = $request;
-   }
 
    /**
     * Real Stock with Detail for No Sole Products
     *
+    * @param string $name (Search)
     * @return array
     */
-   public function getDetailStock()
+   public function getDetailStock($name = '')
    {
       $allProducts = Product::with('color', 'arrivals', 'clients', 'unit', 'orders')
          ->where('type', '<>', 'PF')
+         ->where('name', 'LIKE', "%{$name}%")
          ->get()->groupBy('reference');
 
       $client_id = $this->req->get('client_id');

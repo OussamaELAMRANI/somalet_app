@@ -152,9 +152,9 @@ class ReceptionController extends Controller
       return response()->json($validProducts, 200);
    }
 
-   public function getDetailStock()
+   public function getDetailStock(string $name = '')
    {
-      return $this->inventory->getDetailStock();
+      return $this->inventory->getDetailStock($name);
    }
 
    public function searchProductToOrder($product = '')
@@ -177,10 +177,11 @@ class ReceptionController extends Controller
    }
 
 
-   public function search($search_ref = '')
-   {
-      return $this->inventory->searchByRef($search_ref);
-   }
+   // DEPRECATED
+//   public function search($search_ref = '')
+//   {
+//      return $this->inventory->searchByRef($search_ref);
+//   }
 
    public function notYetValid()
    {
