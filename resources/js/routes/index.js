@@ -53,6 +53,15 @@ export const constantRoutes = [
          title: 'Imprimer maintenant', name: 'printer', icon: 'fa fa-print'
       }
    },
+   {
+      path: '/:id/printer-production',
+      name: 'productionPrinter',
+      component: () => import("@/pages/Printer/SolePrinter"),
+      hidden: true,
+      meta: {
+         title: 'Imprimer maintenant', name: 'productionPrinter', icon: 'fa fa-print'
+      }
+   },
 ];
 
 export const asyncRoutes = [

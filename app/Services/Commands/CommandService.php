@@ -96,7 +96,37 @@ class CommandService
    {
       return Order::where('cmd_number', $cmd_number)
          ->with('client', 'product', 'product.color',
-            'productSize', 'productSize.product', 'productSize.size')->first();
+            'productSize', 'productSize.product', 'productSize.product.color', 'productSize.size')->first();
+   }
+
+   public function getCommandByIdToPrint($cmd_number)
+   {
+      $order = Order::where('cmd_number', $cmd_number)
+         ->with('client', 'product', 'product.color',
+            'productSize', 'productSize.product', 'productSize.product.color', 'productSize.size')->first()->toArray();
+
+      $products = [];
+      $productSize = $order['product_size'];
+
+//      dd($productSize);
+
+      foreach ($productSize as $ps) {
+         if (!array_key_exists($ps['product']['name'], $products)) {
+
+            $products[$ps['product']['name']][] = [
+                  'name' => $ps['product']['reference'],
+                  'color' => $ps['product']['color']['name'],
+                  'price' => $ps['product']['sell_price'],
+                  'qte' => $ps['pivot']['qte'],
+                  'discount' => $ps['pivot']['discount'],
+            ];
+         } else {
+            $products[$ps['product']['name']][0]['qte'] += $ps['pivot']['qte'];
+         }
+
+      }
+
+      return response(['products'=>$products,'order'=>$order], 200);
    }
 
 }

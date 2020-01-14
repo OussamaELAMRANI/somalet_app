@@ -36,7 +36,7 @@
                         <td class="align-middle" :rowspan="inv.qte.length">
                            <h5 class="text-uppercase"> {{inv.name}}</h5>
                         </td>
-                        <td class="align-middle" :rowspan="inv.qte.length">
+                        <td class="align-middle" :rowspan="inv.qte.length" v-if="roles.includes('ADMINE')">
                            <h5 class="text-primary">
                               {{inv.buy}} DH
                            </h5>

@@ -17,7 +17,7 @@
             td {{detail.provider.steName}}
       h3.text-uppercase.text-secondary conteneurs
       hr
-      .container
+      .container(v-if="roles.includes('ADMINE')")
          .row.m-3.segment(v-if="detail.type === 'PF'")
             .col-4
                label Prix d'achat
@@ -28,48 +28,51 @@
             .col-4.text-center
                label.text-white Action
                button.btn.btn-block.btn-success(@click="setPrice") Enregister le prix
-         .row
-            .col-9
-               table(class="table table-hover table-striped")
-                  thead(class="bg-success text-white")
-                     tr
-                        th #
-                        th Numéro
-                        th Type
-                        th Date
-                        th Quantité
-                        th Rapport
-                  tbody
-                     tr(v-for="(c, i) in detail.arrivals ")
-                        td {{i+1}}
-                        td {{c.n_dossier}}
-                        td {{c.type}}
-                        td {{c.date_facture | humane_date}}
-                        td {{c.pivot.qte_facture}}
-                           small.text-secondary  {{" ("+detail.type}})
-                        td {{c.pivot.rapport_qte}}
-            .col-3(v-if="detail.type === 'PF'")
-               table(class="table table-hover table-striped text-center")
-                  thead(class="bg-primary text-white")
-                     tr
-                        th #
-                        th Pointure
-                        th (g)
-                  tbody
-                     tr(v-for="(c, i) in detail.sizes ")
-                        td {{i+1}}
-                        td {{c.size}}
-                        td {{c.pivot | getWeight}}
+      .row
+         .col-9
+            table(class="table table-hover table-striped")
+               thead(class="bg-success text-white")
+                  tr
+                     th #
+                     th Numéro
+                     th Type
+                     th Date
+                     th Quantité
+                     th Rapport
+               tbody
+                  tr(v-for="(c, i) in detail.arrivals ")
+                     td {{i+1}}
+                     td {{c.n_dossier}}
+                     td {{c.type}}
+                     td {{c.date_facture | humane_date}}
+                     td {{c.pivot.qte_facture}}
+                        small.text-secondary  {{" ("+detail.type}})
+                     td {{c.pivot.rapport_qte}}
+
+         .col-3(v-if="detail.type === 'PF'")
+            table(class="table table-hover table-striped text-center")
+               thead(class="bg-primary text-white")
+                  tr
+                     th #
+                     th Pointure
+                     th (g)
+               tbody
+                  tr(v-for="(c, i) in detail.sizes ")
+                     td {{i+1}}
+                     td {{c.size}}
+                     td {{c.pivot | getWeight}}
 </template>
 
 <script>
    import TableLayout from "@/components/layouts/TableLayout";
+   import store from "@/store";
 
    export default {
       name: "DetailProduct",
       components: {TableLayout},
       data() {
          return {
+            roles: store.getters.roles,
             detail: {
                img: '',
                reference: '',

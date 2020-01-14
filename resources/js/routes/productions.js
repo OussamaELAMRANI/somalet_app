@@ -5,7 +5,7 @@ export default [
       component: () => import('@/pages/Productions/Productions'),
       redirect: 'productions/productions-list',
       meta: {
-         title: 'Productions', name: 'allProductions', icon: 'fa fa-industry', roles: 'GUEST'
+         title: 'Productions', name: 'allProductions', icon: 'fa fa-industry'
       },
       children: [
          {
@@ -16,7 +16,7 @@ export default [
                title: "Commande d'usine",
                name: 'newProductionOrder',
                icon: 'fa fa-gor',
-               roles: 'COMMERCIAL'
+               roles: ['COMMERCIAL']
             },
          },
          {
@@ -33,7 +33,7 @@ export default [
             path: ':id/order-reception',
             component: () => import('@/pages/Productions/SolesReceptions'),
             meta: {
-               title: "Reception des commandes", name: 'orderReception', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+               title: "Reception des commandes", name: 'orderReception', icon: 'fa fa-gor', roles: ['COMMERCIAL','MAGAZINIER']
             },
             hidden: true
          },
@@ -50,7 +50,7 @@ export default [
             path: 'inventory',
             component: () => import('@/pages/Productions/ProductionStock'),
             meta: {
-               title: "Stock Production", name: 'inventoryProduction', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+               title: "Stock Production", name: 'inventoryProduction', icon: 'fa fa-gor', roles: ['COMMERCIAL','MAGAZINIER']
             },
          },
          {
@@ -59,7 +59,7 @@ export default [
             component: () => import('@/pages/Productions/ProductionReceptionList'),
             redirect: 'receptions/list',
             meta: {
-               title: "Reception", name: 'prodctionReceptions', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+               title: "Reception", name: 'prodctionReceptions', icon: 'fa fa-gor', roles: ['MAGAZINIER']
             },
             children: [
                {
@@ -67,7 +67,7 @@ export default [
                   path: 'list',
                   component: () => import('@/pages/Productions/ReceptionList'),
                   meta: {
-                     title: "Lister en details", name: 'listOrderReception', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+                     title: "Lister en details", name: 'listOrderReception', icon: 'fa fa-gor', roles: ['COMMERCIAL','MAGAZINIER']
                   },
                },
             ]

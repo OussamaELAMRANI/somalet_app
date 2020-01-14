@@ -13,8 +13,12 @@
                   td {{o.date_cmd | humane_date}}
                   td {{o.client.lastName}} {{o.client.firstName}}
                   td
-                     button.btn.btn-sm.btn-outline-success.shadow.rounded-pill.mx-1(@click="toPrint(o.cmd_number)")
-                        i.fa.fa-print
+                     template(v-if="o.status === 'OUT'")
+                        button.btn.btn-sm.btn-outline-success.shadow.rounded-pill.mx-1(@click="toPrint(o.cmd_number)")
+                           i.fa.fa-print
+                     template(v-else)
+                        router-link.btn.btn-sm.btn-outline-success.shadow.rounded-pill.mx-1( :to="{name: 'productionPrinter',params:{id: o.cmd_number } }")
+                           i.fa.fa-print
                      router-link(:to="{name:'detailOrder',params:{id:o.cmd_number}}").mx-2
                         i.fa.fa-list
          .col-3.mt-0.segment.tall
@@ -72,7 +76,7 @@
          },
          filterNow() {
             axios.get('/api/orders', {
-               params:{
+               params: {
                   'from': this.dateFrom,
                   'to': this.dateTo,
                }

@@ -41,6 +41,11 @@ class OrderController extends Controller
       return $this->service->getCommandById($id);
    }
 
+   public function toPrint($id)
+   {
+      return $this->service->getCommandByIdToPrint($id);
+   }
+
    public function getLastOrderNumber()
    {
       $last = DB::table('orders')->latest()->first();

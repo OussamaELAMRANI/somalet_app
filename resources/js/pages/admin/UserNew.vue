@@ -16,8 +16,7 @@
                            <div class="col">
                               <div class="form-group">
                                  <label>Login</label>
-                                 <input class="form-control" name="username" type="text" v-model="username"
-                                        v-validate="'required'"/>
+                                 <input class="form-control" name="username" type="text" v-model="username"/>
                                  <!--                                            <i class="fa fa-exclamation-triangle text-danger" v-show="errors.has('username')"></i>-->
                                  <!--                                            <span class="help text-danger" v-show="errors.has('username')">{{ errors.first('username') }}</span>-->
                               </div>
@@ -139,7 +138,7 @@
                }
             }
          };
-         this.$validator.localize('en', dict);
+         // this.$validator.localize('en', dict);
          //Edition
          // const id = this.$route.params['id'];
          // if (this.$route.params['id'] !== undefined) {
@@ -202,9 +201,9 @@
                })
                .catch(err => {
                   console.log(err.data)
-                  // this.errorConnection = "Imposible de se connecter, votre mot de passe ou username est incorrect !"
+                  const {errors} = err.data;
+                  this.$notification.error(errors)
                })
-            // });
          },
          ...mapActions({SignUp: 'userStore/sign_up'}),
       }

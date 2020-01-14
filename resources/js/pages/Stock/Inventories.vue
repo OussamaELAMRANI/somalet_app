@@ -3,13 +3,13 @@
 
       <big-title title="Stock des produits" position="text-left" classes="text-primary"/>
       <div class="row">
-         <div class="col-9">
+         <div class="col-9" id="printMe">
             <table class="table table-hover table-striped text-center">
                <thead class="bg-primary text-white text-uppercase small table-bordered">
                <tr>
                   <th>Reference</th>
                   <th>Designation</th>
-                  <th>Quantité</th>
+                  <th style="width: 200px">Quantité</th>
                   <th>Unité</th>
                   <th v-if="roles.includes('ADMINE')">CR HT</th>
                   <th>Prix de Vente</th>
@@ -70,6 +70,10 @@
                <!--               </div>-->
                <hr>
                <!--               <button class="btn btn-outline-primary btn-block rounded-pill">Filter</button>-->
+               <button @click="print"
+                       class="btn btn-primary text-uppercase text-white font-weight-bolder btn-block ">
+                  Imprimer
+               </button>
             </div>
          </div>
 
@@ -113,6 +117,9 @@
                   this.isLoading = false
                })
                .catch(error => console.log(error.response))
+         },
+         print() {
+            this.$htmlToPaper('printMe');
          }
       },
       watch: {
