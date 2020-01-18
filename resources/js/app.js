@@ -11,10 +11,10 @@ import App from './AppRun'
 import router from '@/routes'
 import store from './store'
 import '@/permission'; // permission control
+import '@/validations'; // Validation Rules
 
 // import VeeValidate from 'vee-validate'
 // import VeeValidate, {Validator} from 'vee-validate';
-import { ValidationProvider } from 'vee-validate';
 
 import VueNotification from "@kugatsu/vuenotification";
 import VueFormWizard from 'vue-form-wizard'
@@ -27,7 +27,6 @@ import ToggleSwitch from 'vuejs-toggle-switch'
 import vueSmoothScroll from 'vue-scrollto'
 
 Vue.component('pagination', require('laravel-vue-pagination'));
-Vue.component('ValidationProvider', ValidationProvider);
 
 
 /**

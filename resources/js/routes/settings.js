@@ -4,17 +4,36 @@ export default [
       path: 'settings',
       component: () => import('@/pages/Setting/AppSettings'),
       meta: {
-         title: 'Paramétrage', name: 'settings', icon: 'fa fa-cog', roles: 'guest'
+         title: 'Paramétrage', name: 'settings', icon: 'fa fa-cog',
       },
       children: [
-
          {
             name: 'settingColors',
             path: 'colors',
             component: () => import('@/pages/Setting/Colors/ColorSetting'),
             meta: {
-               title: "Couleurs", name: 'colors', icon: 'fa fa-gor', roles: 'guest'
+               title: "Couleurs", name: 'settingColors', icon: 'fa fa-gor'
             },
+            redirect: 'colors/colors-list',
+
+            children: [
+               {
+                  name: 'colorsList',
+                  path: 'colors-list',
+                  component: () => import('@/pages/Setting/Colors/ColorsList'),
+                  meta: {
+                     title: "Couleurs", name: 'colorsList',
+                  },
+               },
+               {
+                  name: 'updateColor',
+                  path: ':id/color',
+                  component: () => import('@/pages/Setting/Colors/UpdateColor'),
+                  meta: {
+                     title: "Modifier Couleur", name: 'updateColor', icon: 'fa fa-gor'
+                  },
+               }
+            ]
          },
          {
             name: 'settingUnity',
