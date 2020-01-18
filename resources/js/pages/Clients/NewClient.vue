@@ -89,12 +89,11 @@
                 this.isNew = false
                 this.client.id = id
                 axios.get(`/api/clients/${id}`)
-                    .then(res => {
-                        const data = res.data
+                    .then(({data}) => {
                         this.client.professional = {
                             firstName: data.firstName,
                             lastName: data.lastName,
-                            nSiret: data.nSiret,
+                           old_sold: data.old_sold,
                         }
                         this.client.contact = {
                             cell: data.cell,

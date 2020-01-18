@@ -73,8 +73,8 @@ class ClientService extends AbstractService
          ->groupBy('date_deadline')->toArray();
 
 
-      $sold = $this->getClientSold($id, $res[0]);
-      $sold_today = ($this->getClientSold($id, $res[1]));
+      $sold = $this->getClientSold($client, $res[0]);
+      $sold_today = ($this->getClientSold($client, $res[1]));
 
       $movements = [];
       foreach ($orders as $k => $v) {
@@ -134,50 +134,28 @@ class ClientService extends AbstractService
 
    /**
     * Get client Sold until date $to
-    * @param $client_id
+    * @param $client
     * @param null $to
     * @return float|int
     */
-   public function getClientSold($client_id, $to = null)
+   public function getClientSold(Client $client, $to = null)
    {
       if (is_null($to))
          $to = Carbon::now()->toDateString();
 
-      $orders = $this->getOrdersAt($client_id, $to);
-      $payments = $this->getPaymentAt($client_id, $to);
+      $orders = $this->getOrdersAt($client['id'], $to);
+      $payments = $this->getPaymentAt($client['id'], $to);
 
-      return $this->getSold($orders, $payments);;
+      return $this->getSold($orders, $payments) + $client['old_sold'];
    }
 
    public function getOrdersAt($client_id, $to_date)
    {
-//      $firstCommand = DB::table('orders AS o')
-//         ->join('order_items as it', 'it.cmd_id', '=', 'o.id')
-//         ->where('o.client_id', '=', $client_id)
-//         ->where('o.date_cmd', '<=', $to_date)
-//         ->get();
-      $firstCommand = Order::with('product', 'productSize')
+      return Order::with('product', 'productSize')
          ->where('date_cmd', '<=', $to_date)
          ->whereHas('client', function ($c) use ($client_id) {
             $c->where('id', '=', $client_id);
          })->get()->toArray();
-
-//      dd($firstCommand);
-
-      return ($firstCommand);
-
-//      if ($firstCommand->where('o.status', '=', 'OUT')->exists()) {
-//      $cmd = $firstCommand->join('order_items as it', 'it.cmd_id', '=', 'o.id');
-//      } else {
-//         $cmd = $firstCommand->join('order_ps as ps', 'ps.cmd_id', '=', 'o.id');
-//      }
-
-//      $cmd->where('o.client_id', '=', $client_id)
-//         ->where('o.date_cmd', '<=', $to_date)
-//         //->get('date_cmd')
-//         ->get();
-
-//      return collect($firstCommand);
    }
 
    public function getPaymentAt($client_id, $to_date)
@@ -203,8 +181,7 @@ class ClientService extends AbstractService
             foreach ($command['product'] as $p) {
                $price[] = $p['pivot']['qte'] * $p['pivot']['qte_rapport'] * ($p['pivot']['price'] - $p['pivot']['discount']);
             }
-         }
-         else{
+         } else {
             foreach ($command['product_size'] as $p) {
                $price[] = $p['pivot']['qte'] * ($p['pivot']['price'] - $p['pivot']['discount']);
             }

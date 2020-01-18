@@ -202,11 +202,10 @@
                })
             });
             this.credit = tc;
-            this.debit = td;
+            this.debit = td + this.client.old_sold
          },
 
          dateFrom: function (d) {
-            console.log(d)
             this.form_d = moment(d).format('YYYY-MM-DD');
          },
          dateTo: function (d) {

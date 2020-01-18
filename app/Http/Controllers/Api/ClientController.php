@@ -37,7 +37,8 @@ class ClientController extends Controller
       if ($filterRequest['id'] === 0) {
          $newClient = Client::create($filterRequest);
          $message = "Client bien ajouter : {$newClient->firstName}";
-      } else {
+      }
+      else {
          $existe = Client::find($filterRequest['id']);
          $data = $existe;
          if ($existe) {
