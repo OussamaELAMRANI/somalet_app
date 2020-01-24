@@ -3,7 +3,6 @@
       .segment.clearfix
          label Nom de couleur
          input.form-control(type='text' placeholder='Nouveau couleur ...' v-model='name' name="colorName" )
-         //small.text-danger(v-show="errors.has('colorName')") Vous douvez donner une nouvelle couleur
          p Selectionnez une couleur
          .dropdown-divider
          Chrome(v-model='color')

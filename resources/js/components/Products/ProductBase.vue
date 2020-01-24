@@ -61,7 +61,6 @@
                         .col-4
                            label(for='reference') Réference du produit
                            input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.reference' name='reference')
-                           //small.text-danger(v-show="errors.has('reference')") Vous devez saisir la réference !
                         .col-4
                            label(for='name') Nom du Produit
                            input#name.form-control(type='text' placeholder='SIRET ...' v-model='product.name' )

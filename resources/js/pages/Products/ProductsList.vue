@@ -1,4 +1,4 @@
-   <template>
+<template>
    <div id="products_list" class="container">
 
       <alert-modal title="Supperession d'un Produit" id="bitch">
@@ -79,12 +79,12 @@
          <tr v-for="(p,index) in products.data">
             <th scope="row">{{index+1}}</th>
             <td class="align-middle"><img :src="getImage(p.img)" alt="image produit" height="60px"></td>
-            <!--                <td><img :src="p.img" alt="image produit" height="60px"></td>-->
             <td class="align-middle">{{p.reference}}</td>
             <td class="align-middle">{{p.name}}</td>
             <td class="align-middle">
-               <template v-if="p.color" >
-                  <div  :style="{backgroundColor: p.color.color, height:'30px',width:'100%'}" class="shadow rounded"></div>
+               <template v-if="p.color">
+                  <div :style="{backgroundColor: p.color.color, height:'30px',width:'100%'}"
+                       class="shadow rounded"></div>
                </template>
                <template v-else>
                   SANS COULEUR
@@ -92,7 +92,7 @@
             </td>
             <td class="align-middle">{{p.unit.name}}</td>
             <td class="align-middle">{{p.provider.steName}}</td>
-            <td style="width: 130px">
+            <td style="width: 100px">
                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal"
                        @click="show(p.id)">
                   <i class="fa fa-eye"></i>
@@ -106,6 +106,9 @@
                        data-target="#bitch" data-toggle="modal">
                   <i class="fa fa-trash"></i>
                </button>
+               <router-link :to="{name:'updateProduct', params:{id:p.id}}" class="btn btn-sm btn-info">
+                  <i class="fa fa-pen text-white"></i>
+               </router-link>
             </td>
          </tr>
 

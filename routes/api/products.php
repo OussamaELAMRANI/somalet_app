@@ -15,6 +15,7 @@ Route::prefix('products')->group(function () {
    Route::get('', 'Api\ProductController@index');
    Route::get('{id}', 'Api\ProductController@show');
 
+   Route::post('{product}/update', 'Api\ProductController@updateProducts');
    Route::put('{product}/price', 'Api\ProductController@setPrice');
    Route::post('new', 'Api\ProductController@newProducts');
    Route::delete('{id}/delete', 'Api\ProductController@destroy');

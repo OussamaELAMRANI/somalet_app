@@ -7,6 +7,7 @@ use App\Product;
 use App\Provider;
 use App\Services\Product\ProductService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -24,7 +25,7 @@ class ProductController extends Controller
    /**
     * Display a listing of the Product.
     *
-    * @return \Illuminate\Http\Response
+    * @return Response
     */
    public function index()
    {
@@ -36,6 +37,11 @@ class ProductController extends Controller
    public function newProducts()
    {
       return $this->service->addProducts();
+   }
+
+   public function updateProducts(Product $product)
+   {
+      return $this->service->updateProducts($product);
    }
 
    public function store(Request $req)
@@ -55,7 +61,7 @@ class ProductController extends Controller
             $year = Carbon::parse($req->input('date'))->year;
             $month = Carbon::parse($req->input('date'))->month;
             $portrait_url = Storage::disk('public')->putFile("products/{$year}/{$month}", $req->file('img'));
-         } catch (\Exception $e) {
+         } catch (Exception $e) {
             return response(['error' => $e->getMessage()]);
          }
       }
@@ -98,7 +104,7 @@ class ProductController extends Controller
     * Display the specified resource.
     *
     * @param int $id
-    * @return \Illuminate\Http\Response
+    * @return Response
     */
    public function show($id)
    {
@@ -111,7 +117,7 @@ class ProductController extends Controller
     * Remove the specified resource from storage.
     *
     * @param int $id
-    * @return \Illuminate\Http\Response
+    * @return Response
     */
    public function destroy(Product $id)
    {

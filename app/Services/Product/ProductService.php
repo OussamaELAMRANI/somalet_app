@@ -43,6 +43,38 @@ class ProductService extends AbstractService
 
    }
 
+   public function updateProducts(Product $product)
+   {
+//      $now = Carbon::now();
+//      $portrait_url = $this->insertImage($now);
+
+//      $colors = json_decode($this->req->input('colors'), true);
+      $upProduct = json_decode($this->req->get('product'), true);
+
+      return $this->sendResponse($upProduct, 201);
+
+//      $sizes = json_decode($this->req->input('sizes'), true);
+      $product_name = $product['name'];
+
+//      if ($colors) {
+//         foreach ($colors as $color) {
+//            $product['name'] = "{$product_name}/{$color['name']}";
+//            $db = $now->toDateTimeString();
+//            $color_merge = ['img' => $portrait_url, 'color_id' => $color['id'], 'created_at' => $db, 'updated_at' => $db];
+//            $products = array_merge($product, $color_merge);
+//            $newProduct = Product::create($products);
+//            if ($sizes) {
+//               $newProduct->saveSizes($sizes, $now);
+//            }
+//         }
+//      } else {
+//         Product::create($product);
+//      }
+
+      return $this->sendResponse(['message' => "Products successfully added"], 201);
+
+   }
+
    /**
     * @param  $now
     * @return string

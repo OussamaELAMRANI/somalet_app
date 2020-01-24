@@ -23,7 +23,7 @@ export default [
                 name: 'updateProduct',
                 hidden: true,
                 path: ':id/update',
-                component: () => import('@/pages/Products/NewProduct'),
+                component: () => import('@/pages/Products/UpdateProduct'),
                 meta: {
                     title: 'Modifier Produit', name: 'updateProduct', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                 },

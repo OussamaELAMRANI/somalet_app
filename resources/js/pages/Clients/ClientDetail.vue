@@ -28,7 +28,7 @@
                         .form-group
                            label Désignation
                            cool-select(:items='prods' @search='onSearch' :loading='loading'
-                              item-text='name' name='produit' v-model='newDiscount.product_id' item-value='product_id')
+                              item-text='name' name='produit' v-model='newDiscount.product_id' item-value='id')
                            template(slot='item' slot-scope='{ item:p }')
                               .d-flex
                                  div
@@ -126,7 +126,7 @@
                 }
                 this.loading = true;
 
-                axios.get(`/api/receptions/search/${search}`, {
+                axios.get(`/api/products/${search}/search`, {
                     params: {
                         // client_id: this.$route.params.id
                     }

@@ -10,7 +10,7 @@
                small.text-secondary Sinon vous pouvez selectionnner une unité dans la liste
       .col-4
          label(for='unity') Selectionnez l&apos;unit&eacute;
-         select#unity.form-control(v-on:change='getUnity')
+         select#unity.form-control(v-on:change='getUnity' v-model="unit")
             option(selected='selected' disabled='disabled') Selectionnez...
             option NOUVEAU ++
             option(v-for=' c in unities' :id="'unity_'+c.id" :selected='(c.id === unity)')
@@ -22,19 +22,24 @@
                input#new-unity.form-control(type='text' placeholder='Unité ...' name='newUnity' v-model='unity'
                   v-on:keyup.enter='addUnity')
                button.btn-success.btn-group-sm(@click="addUnity") Ajouter
-            // small.text-danger(v-show="errors.has('newUnity')")  Vous douvez saisir une nouvelle unité
 
 </template>
 
 <script>
    export default {
       name: "SelectUnity",
+      props: {
+         selectedUnity: {
+            default: null
+         }
+
+      },
       data() {
          return {
             isNewUnity: false,
             hasRapport: true,
             unity: null,
-            // rapport: '',
+            unit: null,
             unities: ''
          }
       },
@@ -55,8 +60,6 @@
          },
          addUnity() {
             const _this = this
-            // this.$validator.validateAll().then((valid) => {
-            //    if (valid) {
             axios.post('/api/unities',
                {
                   name: this.unity
@@ -70,10 +73,6 @@
                .catch(function (error) {
                   console.log(error.response);
                })
-            // } else {
-            //    this.$notification.error("L'ajout de l'unité est obligatoire !")
-            // }
-            // });
 
          },
       },
@@ -83,6 +82,11 @@
                this.unities = res.data
             })
             .catch(err => console.log(err.response))
+      },
+      watch: {
+         selectedUnity: function (u) {
+            this.unit = u
+         }
       }
    }
 </script>
