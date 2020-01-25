@@ -45,12 +45,26 @@ class ProductService extends AbstractService
 
    public function updateProducts(Product $product)
    {
-//      $now = Carbon::now();
-//      $portrait_url = $this->insertImage($now);
+      $now = Carbon::now();
+      $portrait_url = $this->insertImage($now);
 
 //      $colors = json_decode($this->req->input('colors'), true);
       $upProduct = json_decode($this->req->get('product'), true);
 
+      unset($upProduct['color'], $upProduct['unit'], $upProduct['subcategory']);
+
+      if ($upProduct['type'] !== 'PF') {
+         unset($upProduct['sizes']);
+
+         foreach ($upProduct as $key => $value) {
+            if ($key === 'img' && !is_null($portrait_url)) {
+               $product->update([$key => $portrait_url]);
+            } else
+               $product->update([
+                  $key => $value
+               ]);
+         }
+      }
       return $this->sendResponse($upProduct, 201);
 
 //      $sizes = json_decode($this->req->input('sizes'), true);
@@ -82,7 +96,7 @@ class ProductService extends AbstractService
     */
    public function insertImage($now)
    {
-      $portrait_url = '';
+      $portrait_url = null;
       if ($this->req->has('img') && $this->req->file('img')) {
          try {
             $year = $now->year;

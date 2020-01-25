@@ -89,7 +89,8 @@
          return {
             newColors: {},
             product: {
-               name: ''
+               img: '',
+               name: '',
             },
             img_url: '',
             color: '#ffffff',
@@ -102,6 +103,7 @@
             category: {
                sub_category: ''
             },
+            image: null
          }
       },
       mounted() {
@@ -133,6 +135,13 @@
          },
          getAllColors(data) {
             this.colorsId = _.cloneDeep(data)
+            if (data.length > 0) {
+               const {id, name} = this.colorsId[0]
+               const color = this.product.name.substr(this.product.name.lastIndexOf('/'), this.product.name.length);
+               this.product.color_id = id
+               this.product.name = this.product.name.replace(color, `/${name}`)
+            }
+
          },
          getUnity(u) {
             this.product.unit_id = u
@@ -146,10 +155,19 @@
          updateNow() {
             const formData = new FormData();
             const {id} = this.$route.params;
+            const images = this.$refs.portraits
+            const {name} = images.file;
+
             formData.append('product', JSON.stringify(this.product));
+            if (!this.product.img.includes(name)) {
+               formData.append('img', images.file);
+            }
+
+
             axios.post(`/api/products/${id}/update`, formData
             ).then(({data}) => {
                console.log(data)
+               this.$router.back()
             }).catch(err => console.log(err))
          },
          getColors(data, hasColor) {
@@ -158,6 +176,9 @@
             else
                this.$notification.error("Cette couleur déjà existe")
          },
+         imageChanged(file) {
+            this.image = this.$refs.portraits
+         }
       },
       watch: {
          product: function (p) {

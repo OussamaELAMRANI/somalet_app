@@ -20,6 +20,7 @@ class Product extends Model
    use SoftDeletes;
 
    protected $guarded = [];
+   protected $hidden = ['deleted_at', 'created_at', 'updated_at'];
 
    public function scopeFilter(Builder $builder, Request $req, array $filters = [])
    {
@@ -78,10 +79,8 @@ class Product extends Model
    {
       return $this->belongsToMany(ShoeSize::class, 'product_size',
          'product_id', 'size_id')
-         ->withPivot(['weight','id']);
+         ->withPivot(['weight', 'id']);
    }
-
-
 
 
    public function saveSizes(array $sizes, $now): self
