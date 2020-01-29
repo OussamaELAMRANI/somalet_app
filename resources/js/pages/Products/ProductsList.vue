@@ -101,7 +101,7 @@
                        @click="redirect(p.id)">
                   <i class="fa fa-list"></i>
                </button>
-               <button class="btn btn-sm btn-danger"
+               <button class="btn btn-sm btn-danger" v-if="roles.includes(['ADMINE','COMMERCIAL'])"
                        @click="getElementIdToDelete(p.id)"
                        data-target="#bitch" data-toggle="modal">
                   <i class="fa fa-trash"></i>
@@ -126,6 +126,7 @@
    import TableLayout from "@/components/layouts/TableLayout";
    import ModalDetail from "@/components/Modals/ModalDetail";
    import BigTitle from "@/components/layouts/BigTitle";
+   import store from "@/store";
 
    export default {
       name: "ProductsList",
@@ -150,7 +151,9 @@
                color: {color: ''},
                unit: {name: ''},
             },
-            tableDate: null
+            tableDate: null,
+            roles: store.getters.roles
+
          }
       },
       mounted() {
