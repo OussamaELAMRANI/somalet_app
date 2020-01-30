@@ -101,7 +101,7 @@
                        @click="redirect(p.id)">
                   <i class="fa fa-list"></i>
                </button>
-               <button class="btn btn-sm btn-danger" v-if="roles.includes(['ADMINE','COMMERCIAL'])"
+               <button class="btn btn-sm btn-danger" v-if="roles.includes(['ADMINE']) || roles.includes(['COMMERCIAL']) "
                        @click="getElementIdToDelete(p.id)"
                        data-target="#bitch" data-toggle="modal">
                   <i class="fa fa-trash"></i>
