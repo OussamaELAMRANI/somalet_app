@@ -97,23 +97,20 @@ class ProductionService extends AbstractService
     */
    public function getAllProductionsDetail($name = null)
    {
-      $discount = false;
+      $discount = 0;
       $allPF = ProductSize::with('productionOrders', 'product', 'size', 'product.clients', 'commands')
          ->whereHas('product', function ($query) use ($name) {
             $query->where('type', "PF")
                ->where('name', 'LIKE', "%{$name}%");
          });
 
-//      return $allPF->get();
-
-      if ($this->req->has('client_id')) {
-         $discount = $this->hasDiscounting(clone $allPF, $this->req->get('client_id'));
-      }
-
       $allPF = $allPF->get()->toArray();
 
       $allQte = [];
       foreach ($allPF as $pf) {
+         if ($this->req->has('client_id')) {
+            $discount = $this->hasDiscounting($pf, $this->req->get('client_id'));
+         }
          if (!key_exists($pf['product']['name'], $allQte)) {
             $allQte[$pf['product']['name']] =
                [
@@ -121,7 +118,7 @@ class ProductionService extends AbstractService
                   'name' => $pf['product']['name'],
                   'sell' => $pf['product']['sell_price'],
                   'buy' => $pf['product']['buy_price'],
-                  'discount' => ($discount) ? $pf['product']['clients'][0]['pivot']['discount'] : 0,
+                  'discount' => $discount,
                   'qte' => [],
                ];
          }
@@ -169,13 +166,19 @@ class ProductionService extends AbstractService
     * @param $client_id
     * @return bool
     */
-   public function hasDiscounting($pf, $client_id): bool
+   public function hasDiscounting($pf, $client_id)
    {
-      $hasDiscounting = $pf->whereHas('product.clients', function ($query) use ($client_id) {
-         $query->where('id', $client_id);
-      })->get()->toArray();;
-
-      return ($hasDiscounting) ? true : false;
+      $clients = $pf['product']['clients'];
+      if (count($clients) == 0)
+         return 0;
+      else {
+         $discount = 0;
+         foreach ($clients as $client) {
+            if ($client['id'] == $client_id)
+               $discount = $client['pivot']['discount'];
+         }
+         return $discount;
+      }
    }
 
    public function addExternalCommand()
