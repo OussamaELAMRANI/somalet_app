@@ -68,6 +68,9 @@
                                  <p>
                                     Paiement <strong>({{c.type}})</strong>
                                  </p>
+                                 <p>
+                                    <strong>{{c.chq_number}}</strong>
+                                 </p>
                               </td>
                               <td></td>
                               <td>{{c.amount}} DH</td>
@@ -102,12 +105,12 @@
             <div class="form-group">
                <label>DE: </label>
                <datepicker id="date_de" class="form-control rounded-pill" :language='fr' :monday-first='true'
-                           v-model="dateFrom"></datepicker>
+                           v-model="dateFrom"/>
             </div>
             <div class="form-group">
                <label>AU:</label>
-               <datepicker id="date_de" class="form-control rounded-pill" :language='fr' :monday-first='true'
-                           v-model="dateTo"></datepicker>
+               <datepicker id="date_au" class="form-control rounded-pill" :language='fr' :monday-first='true'
+                           v-model="dateTo"/>
             </div>
             <hr>
             <button class="rounded-pill btn-block btn-outline-primary btn text-uppercase" @click="filterNow">filter
