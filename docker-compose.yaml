@@ -64,7 +64,14 @@ services:
       volumes:
          - .:/var/www/html
       working_dir: /var/www/html
-      entrypoint: ['npm']
+#      entrypoint: ['npm']
+      depends_on:
+         - nginx
+      ports:
+         - 3000:3000
+      expose:
+         - "3000"
+      command: sh -c 'npm run watch'
 
    artisan:
       build:

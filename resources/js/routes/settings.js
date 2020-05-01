@@ -59,6 +59,14 @@ export default [
                title: "Paiéments", name: 'settingPayments', icon: 'fa fa-gor', roles: 'guest'
             },
          },
+         {
+            name: 'settingShoes',
+            path: 'shoes-size',
+            component: () => import('@/pages/Setting/Shoes/Shoes-size'),
+            meta: {
+               title: "Pointures", name: 'settingShoes', icon: 'fa fa-pencil', roles: 'guest'
+            },
+         },
       ]
    },
 ]

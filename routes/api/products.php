@@ -16,6 +16,10 @@ Route::prefix('products')->group(function () {
    Route::get('{id}', 'Api\ProductController@show');
 
    Route::post('{product}/update', 'Api\ProductController@updateProducts');
+
+   Route::post('sizes', 'SizesController@store');
+   Route::delete('sizes/{id}', 'SizesController@destroy');
+
    Route::put('{product}/price', 'Api\ProductController@setPrice');
    Route::post('new', 'Api\ProductController@newProducts');
    Route::delete('{id}/delete', 'Api\ProductController@destroy');
