@@ -3,7 +3,7 @@
 Route::prefix('auth')->group(function () {
 
    Route::post('sign-up', 'Api\AuthController@signUp');
-   Route::post('login', 'Api\AuthController@logIn');
+   Route::post('login', 'Api\AuthController@logIn')->name('login');
 
    // User Should be connected !
    Route::group(['middleware' => 'auth:api'], function () {

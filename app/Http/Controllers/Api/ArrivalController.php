@@ -66,9 +66,12 @@ class ArrivalController extends Controller
    }
 
 
-   public function destroy(Arrival $arrival)
+   public function destroy(int $arrival_id)
    {
-      //
+      $isDelete = Arrival::destroy($arrival_id);
+      return ($isDelete)
+         ? response()->json('Delete it', 200)
+         : response()->json('Cannot delete it !', 402);
    }
 
    public function products(Request $req)

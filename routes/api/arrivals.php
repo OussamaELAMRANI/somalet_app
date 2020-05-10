@@ -15,5 +15,7 @@ Route::prefix('arrivals')->group(function () {
       Route::put('{arrival_id}/valid-reception', 'Api\ArrivalController@validateReception');
       Route::put('state/{arr}', 'Api\ArrivalController@state');
 
+      Route::delete('{arrival_id}/delete', 'Api\ArrivalController@destroy');
+
    });
 });

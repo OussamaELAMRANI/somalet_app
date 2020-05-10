@@ -1,35 +1,39 @@
 <template>
    <div class="">
+      <alert-modal title="Supperession d'un contenaire" id="bitch">
+         <template slot="content">
+            <h5 class="text-uppercase text-danger text-center">
+               Voullez-vous vraiment supprimer ce contenaire ?
+            </h5>
+         </template>
+         <template slot="btn">
+            <button class="btn btn-danger" @click="supp()" data-dismiss="modal">Supprimer</button>
+         </template>
+      </alert-modal>
+
       <big-title title="Liste Contenaires"/>
       <div class="row justify-content-center">
+
          <div class="col-10 my-2">
-            <table class="table table-striped table-hover">
-               <thead class="bg-primary small text-white text-center">
-               <tr>
-                  <th>#</th>
-                  <th>Numero de contenaire</th>
-                  <th>Date De contenaire</th>
-                  <th>Status</th>
-                  <th>Action</th>
-               </tr>
-               </thead>
-               <tbody class="text-center">
-               <tr class="" v-for=" (c,j) in containers">
+            <table-layout theme="bg-primary small text-white text-center" :headTable="tabHeader" :data="containers"
+                          empty-text="Pas de contenaire en cours..">
+               <tr v-for=" (c,j) in containers">
                   <td>{{j+1}}</td>
                   <td>{{c.n_dossier}}</td>
                   <td>{{c.date_facture | humane_date}}</td>
                   <td :class="(c.state != 'ATTENTE')? 'text-success font-weight-bolder':'text-primary'">{{c.state}}</td>
                   <td class="text-info">
-                     <!--                     <button class="btn btn-outline-danger btn-sm rounded-circle shadow"><i class="fa fa-trash my-1"></i></button>-->
-                     <!--                     <button class="btn btn-outline-secondary btn-sm rounded-circle shadow"><i class="fa fa-pen my-1"></i></button>-->
+                     <button class="btn btn-outline-danger  rounded-pill shadow" @click="getElementIdToDelete(c.id)"
+                             data-target="#bitch" data-toggle="modal" v-if="c.state !== 'VALID' ">
+                        <i class="fa fa-trash my-1"/> Supprimer
+                     </button>
                      <router-link class="btn btn-primary rounded-pill text-white shadow"
                                   :to="{name:'ContainerDetail', params:{id:c.id}}">
-                        <i class="fa fa-list mx-2"></i> Détail
+                        <i class="fa fa-list mx-2"/> Détail
                      </router-link>
                   </td>
                </tr>
-               </tbody>
-            </table>
+            </table-layout>
          </div>
          <!--         <div class="col mx-2 segment filter shadow">-->
          <!--            <h5 class="text-primary">Filter par:</h5>-->
@@ -51,24 +55,52 @@
 
 <script>
    import BigTitle from "@/components/layouts/BigTitle";
+   import TableLayout from "@/components/layouts/TableLayout";
+   import AlertModal from "@/components/Modals/AlertModal";
 
    export default {
       name: "ListContainer",
       data() {
          return {
-            containers: [],
+            containers: null,
             product: {},
-            detail: []
+            detail: [],
+            tabHeader: ['#', 'Numero de contenaire', 'Date', 'Status', 'Actions'],
+            urlBase: '/api/arrivals',
+            ElementIdToDelete: null
          }
       },
       mounted() {
-         axios.get('/api/arrivals?with=product&status=attent,vue,reception')
-            .then(({data}) => {
-               this.containers = data
-            })
-            .catch(err => console.log(err.response))
+         this.getContainers()
       },
       methods: {
+         getElementIdToDelete(id) {
+            this.ElementIdToDelete = id;
+         },
+         getContainers() {
+            axios.get(this.urlBase, {
+               params: {
+                  with: 'product&status=attent,vue,reception'
+               }
+            }).then(({data}) => {
+               this.containers = data
+            })
+               .catch(err => console.log(err.response))
+         },
+         supp() {
+            let id = this.ElementIdToDelete;
+            axios.delete(`${this.urlBase}/${id}/delete`)
+               .then(res => {
+                  this.containers = null;
+                  this.getContainers();
+                  this.$notification.success("Supression en sccess")
+
+               })
+               .catch(err => {
+                  this.$notification.error("Ce produit n'existe pas !")
+               })
+         },
+
          // getDetail(id, index) {
          //     console.log(id)
          //     console.log(index)
@@ -81,7 +113,7 @@
          //         .catch(err => console.log(err.response))
          // },
       },
-      components: {BigTitle}
+      components: {AlertModal, TableLayout, BigTitle}
    }
 </script>
 
