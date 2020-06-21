@@ -6,9 +6,9 @@ namespace App\Services\Product;
 use App\Color;
 use App\Product;
 use App\Services\AbstractService;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class ProductService extends AbstractService
@@ -48,45 +48,29 @@ class ProductService extends AbstractService
       $now = Carbon::now();
       $portrait_url = $this->insertImage($now);
 
-//      $colors = json_decode($this->req->input('colors'), true);
-      $upProduct = json_decode($this->req->get('product'), true);
 
-      unset($upProduct['color'], $upProduct['unit'], $upProduct['subcategory']);
-
-      if ($upProduct['type'] !== 'PF') {
-         unset($upProduct['sizes']);
-
-         foreach ($upProduct as $key => $value) {
-            if ($key === 'img' && !is_null($portrait_url)) {
-               $product->update([$key => $portrait_url]);
-            } else
-               $product->update([
-                  $key => $value
-               ]);
+      $newOne = collect(json_decode(request('product')));
+      $collection = collect($product);
+      if ($collection->get('type') === 'PF') {
+         $sizes = collect(json_decode(request('sizes')));
+         $product->sizes()->detach();
+         foreach ($sizes as $size) {
+            $product->sizes()->attach($size->id,
+               ['weight' => $size->weight,]
+            );
          }
       }
-      return $this->sendResponse($upProduct, 201);
+      foreach ($collection as $key => $value) {
+         if (in_array($key, ['id', 'provider_id'])) continue;
 
-//      $sizes = json_decode($this->req->input('sizes'), true);
-      $product_name = $product['name'];
+         $product[$key] = $newOne->get($key);
+      }
+      if ($portrait_url !== $product['img']) {
+         $product->update(['img' => $portrait_url]);
+      }
+      $product->update();
 
-//      if ($colors) {
-//         foreach ($colors as $color) {
-//            $product['name'] = "{$product_name}/{$color['name']}";
-//            $db = $now->toDateTimeString();
-//            $color_merge = ['img' => $portrait_url, 'color_id' => $color['id'], 'created_at' => $db, 'updated_at' => $db];
-//            $products = array_merge($product, $color_merge);
-//            $newProduct = Product::create($products);
-//            if ($sizes) {
-//               $newProduct->saveSizes($sizes, $now);
-//            }
-//         }
-//      } else {
-//         Product::create($product);
-//      }
-
-      return $this->sendResponse(['message' => "Products successfully added"], 201);
-
+      return $this->sendResponse('Updated on success !', 201);
    }
 
    /**
@@ -116,7 +100,16 @@ class ProductService extends AbstractService
     */
    public function getProduct($ref)
    {
-      return $this->sendResponse(Product::where('reference', $ref)->filter($this->req)->get());
+      $products = Product::where('reference', $ref)->filter($this->req)->get();
+      $col = collect($products);
+      $colors = $col->pluck('color');;
+      $sizes = $col->pluck('sizes');;
+
+      return $this->sendResponse([
+         'product' => $products,
+         'colors' => $colors,
+         'sizes' => $sizes,
+      ]);
    }
 
    public function getDistinctProductByName()

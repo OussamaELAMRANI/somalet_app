@@ -18,7 +18,9 @@
                      td
                         p.badge(:class="(p.state==='ATTENTE') ? 'badge-warning' : 'badge-success'") {{p.state}}
                      td
-                        router-link(:to="{name:'detailProductionOrder', params:{id:p.id}}") Détails >
+                        button.btn.btn-outline-danger.rounded-pill.mx-2 Supprimer
+                        router-link(:to="{name:'detailProductionOrder', params:{id:p.id}}"
+                           class="btn  rounded-pill btn-outline-primary") Détails
 </template>
 
 <script>

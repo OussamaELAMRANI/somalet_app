@@ -13,6 +13,7 @@ Route::prefix('products')->group(function () {
       ->where('name', '[\/\w\.-]*');
 
    Route::get('', 'Api\ProductController@index');
+   Route::get('ref/{ref}', 'Api\ProductController@productByRef');
    Route::get('{id}', 'Api\ProductController@show');
 
    Route::post('{product}/update', 'Api\ProductController@updateProducts');

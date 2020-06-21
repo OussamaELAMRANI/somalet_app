@@ -2,44 +2,6 @@
    <div id="molsat-order" class="container">
       <table class="table table-striped text-center table-bordered shadow">
          <thead class="bg-primary text-white">
-         <tr>
-            <th>#</th>
-            <th>Produit</th>
-            <th>Quantité</th>
-            <th>Couleur</th>
-            <th>Pointures</th>
-            <th>Action</th>
-         </tr>
-         </thead>
-         <tbody>
-         <tr v-for="(o,i) in order">
-            <th scope="row" class="align-middle">{{i+1}}</th>
-            <td class="align-middle">{{o.product}}</td>
-            <td class="align-middle">{{o.qte}}</td>
-            <td class="align-middle">
-               <div class="square__long shadow rounded my-3 mx-1" v-if="o !== null"
-                    :style="o.color|getColor">
-               </div>
-            </td>
-            <td class="align-middle">
-               <div class="square shadow rounded my-2 mx-1 text-center d-inline-block bg-success text-white"
-                    v-for="s in o.sizes">
-                  {{s.size}}
-               </div>
-            </td>
-            <td>
-               <button class="btn btn-danger rounded-pill" @click="deleteItem(i)">
-                  <i class="fa fa-trash"></i>
-               </button>
-            </td>
-         </tr>
-         <tr v-if="order.length>0">
-            <td colspan="6" class="bg-secondary text-right my-0">
-               <button class="btn btn-success " @click="addProductionOrder">Ajouter Cette commande</button>
-            </td>
-         </tr>
-         </tbody>
-         <tfoot>
          <tr class="segment">
             <td class="align-middle" colspan="2" style="height: 100px; text-align: center">
                <div class="col-8">
@@ -47,7 +9,7 @@
                                v-model='tempo'>
                      <template slot="item" slot-scope="{ item:p }">
                         <div class="d-flex">
-                           <p>{{p.name}}</p>
+                           <p class="text-primary">{{p.name}}</p>
                         </div>
                      </template>
                      <template slot="no-data">
@@ -91,7 +53,97 @@
                </button>
             </td>
          </tr>
-         </tfoot>
+
+         <tr>
+            <th>#</th>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Couleur</th>
+            <th>Pointures</th>
+            <th>Action</th>
+         </tr>
+         </thead>
+         <tbody>
+         <tr v-for="(o,i) in order">
+            <th scope="row" class="align-middle">{{i+1}}</th>
+            <td class="align-middle">{{o.product}}</td>
+            <td class="align-middle">{{o.qte}}</td>
+            <td class="align-middle">
+               <div class="square__long shadow rounded my-3 mx-1" v-if="o !== null"
+                    :style="o.color|getColor">
+               </div>
+            </td>
+            <td class="align-middle">
+               <div class="square shadow rounded my-2 mx-1 text-center d-inline-block bg-success text-white"
+                    v-for="s in o.sizes">
+                  {{s.size}}
+               </div>
+            </td>
+            <td>
+               <button class="btn btn-danger rounded-pill" @click="deleteItem(i)">
+                  <i class="fa fa-trash"></i>
+               </button>
+            </td>
+         </tr>
+         <tr v-if="order.length>0">
+            <td colspan="6" class="bg-secondary text-right my-0">
+               <button class="btn btn-success " @click="addProductionOrder">Ajouter Cette commande</button>
+            </td>
+         </tr>
+         </tbody>
+<!--         <tfoot>-->
+<!--         <tr class="segment">-->
+<!--            <td class="align-middle" colspan="2" style="height: 100px; text-align: center">-->
+<!--               <div class="col-8">-->
+<!--                  <cool-select :items='searchProduct' @search='onSearch' :loading='loading' item-text='name'-->
+<!--                               v-model='tempo'>-->
+<!--                     <template slot="item" slot-scope="{ item:p }">-->
+<!--                        <div class="d-flex">-->
+<!--                           <p>{{p.name}}</p>-->
+<!--                        </div>-->
+<!--                     </template>-->
+<!--                     <template slot="no-data">-->
+<!--                        {{ noData ? "Aucun produit trouvée" :"Chercher par nom de produit" }}-->
+<!--                     </template>-->
+
+<!--                  </cool-select>-->
+<!--               </div>-->
+
+<!--            </td>-->
+<!--            <td class="align-middle" style="max-width: 100px">-->
+<!--               <input type="number" class="form-control" v-model.number="qte">-->
+<!--            </td>-->
+<!--            <td class="align-middle" style="max-width: 50px">-->
+<!--               <div class="square__long shadow rounded my-3 mx-1" v-if="tempo !== null"-->
+<!--                    :style="tempo.color|getColor">-->
+<!--               </div>-->
+<!--            </td>-->
+<!--            <td class="align-middle" style="max-width: 150px">-->
+<!--               <multiselect v-model="sizes" :options="getSizes" :multiple="true" :close-on-select="false"-->
+<!--                            :clear-on-select="false"-->
+<!--                            selectedLabel="Sélectionné"-->
+<!--                            deselectLabel="Désélectionné"-->
+<!--                            selectLabel="Prendre cette pointure"-->
+<!--                            :preserve-search="true" placeholder="Choisissez-en 👞" label="size" track-by="size"-->
+<!--                            :preselect-first="true">-->
+<!--                  <template slot="selection" slot-scope="{ values, search, isOpen }">-->
+<!--                     <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} Pointures sont sélectionnés</span>-->
+<!--                  </template>-->
+<!--                  <template slot="noOptions">List est vide.</template>-->
+
+<!--               </multiselect>-->
+<!--               <div class="square shadow rounded my-2 mx-1 text-center d-inline-block bg-success text-white"-->
+<!--                    v-for="s in sizes">-->
+<!--                  {{s.size}}-->
+<!--               </div>-->
+<!--            </td>-->
+<!--            <td class="align-middle">-->
+<!--               <button class="btn btn-success" id="btn__insert" @click="insertOrder">-->
+<!--                  <i class="fa fa-plus"></i>-->
+<!--               </button>-->
+<!--            </td>-->
+<!--         </tr>-->
+<!--         </tfoot>-->
       </table>
 
 

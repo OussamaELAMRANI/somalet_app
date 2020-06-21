@@ -13,7 +13,7 @@ class ColorController extends Controller
    /**
     * Display a listing of the resource.
     *
-    * @return Response
+    * @return JsonResponse
     */
    public function index()
    {
@@ -82,5 +82,10 @@ class ColorController extends Controller
    public function destroy($id)
    {
       //
+   }
+
+   public function searchByName($name)
+   {
+      return response()->json(Color::where('name', 'LIKE', "%{$name}%")->get());
    }
 }

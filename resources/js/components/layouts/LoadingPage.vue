@@ -1,7 +1,7 @@
 <template lang="pug">
     #loading_page.segment
         #loading_core
-            half-circle-spinner(color="#f83896", :size="80")
+            half-circle-spinner(color="#FF952F", :size="80")
 </template>
 
 <script>

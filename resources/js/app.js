@@ -93,6 +93,7 @@ import VPopover from 'vue-js-popover'
 Vue.use(VPopover, {tooltip: true})
 
 import '@/filters/directives'
+import '@/filters/mixins'
 
 
 new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

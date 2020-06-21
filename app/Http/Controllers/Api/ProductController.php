@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\ProductRequest;
 use App\Product;
-use App\Provider;
 use App\Services\Product\ProductService;
-use Carbon\Carbon;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -41,7 +40,8 @@ class ProductController extends Controller
 
    public function updateProducts(Product $product)
    {
-      return $this->service->updateProducts($product);
+     return $this->service->updateProducts($product);
+      return \response()->json([$product, json_decode($newOne)]);
    }
 
    public function store(Request $req)
@@ -104,14 +104,18 @@ class ProductController extends Controller
     * Display the specified resource.
     *
     * @param int $id
-    * @return Response
+    * @return JsonResponse|Response
     */
    public function show($id)
    {
-//      return $this->service->getProduct($id);
       return $this->service->getProductById($id);
    }
 
+
+   public function productByRef($ref)
+   {
+      return $this->service->getProduct($ref);
+   }
 
    /**
     * Remove the specified resource from storage.

@@ -72,6 +72,8 @@ services:
       expose:
          - "3000"
       command: sh -c 'npm run watch'
+      networks:
+         - laravel
 
    artisan:
       build:
