@@ -69,7 +69,7 @@
                <label>Produit :</label>
                <cool-select :items="products" @search="onSearch" :loading="loading" ref="cool"
                             item-text="name" item-value="id" :name="'produit'"
-                            v-model="products_items.product_id" >
+                            v-model="products_items.product_id">
                   <template slot="item" slot-scope="{ item:p }">
                      <div class="d-flex">
                         <div>
@@ -111,122 +111,124 @@
 </template>
 
 <script>
-    import BigTitle from "@/components/layouts/BigTitle";
-    import {CoolSelect} from 'vue-cool-select'
-    import Datepicker from 'vuejs-datepicker';
-    import {fr} from 'vuejs-datepicker/dist/locale'
-    import moment from 'moment'
+   import BigTitle from "@/components/layouts/BigTitle";
+   import {CoolSelect} from 'vue-cool-select'
+   import Datepicker from 'vuejs-datepicker';
+   import {fr} from 'vuejs-datepicker/dist/locale'
+   import moment from 'moment'
+   import {mapActions, mapGetters} from 'vuex'
 
-    export default {
-        name: "NewContainer",
-        data() {
-            return {
-                fr,
-                error: null,
-                container: {
-                    provider_id: '',
-                    n_dossier: '',
-                    // n_facture: '',
-                    date_facture: ''
-                },
-                products_items: {
-                    // name: '',
-                    product_id: 0,
-                    qte_facture: 0,
-                    rapport_qte: 0,
-                    price_unit_ht: 0,
-                    // price_unit_ttc: 0
-                },
-                products: [],
-                providers: [],
-                loading: false,
-                noData: false,
-                selected_items: []
+   export default {
+      name: "NewContainer",
+      data() {
+         return {
+            fr,
+            error: null,
+            container: {
+               provider_id: '',
+               n_dossier: '',
+               // n_facture: '',
+               date_facture: ''
+            },
+            products_items: {
+               // name: '',
+               product_id: 0,
+               qte_facture: 0,
+               rapport_qte: 0,
+               price_unit_ht: 0,
+               // price_unit_ttc: 0
+            },
+            products: [],
+            providers: [],
+            loading: false,
+            noData: false,
+            selected_items: []
+         }
+      },
+      computed: {
+         ...mapGetters({getProviders: 'getProviders'})
+      },
+      mounted() {
+         this.loadProviders().then(data => this.providers = (data) ?? this.getProviders);
+      },
+      methods: {
+         onSearch(search) {
+            const lettersLimit = 2;
+            this.noData = false;
+
+            if (search.length < lettersLimit) {
+               this.products = [];
+               this.loading = false;
+               return;
             }
-        },
-        mounted() {
-            axios.get('/api/providers')
-                .then(({data}) => {
-                    // console.log(data)
-                    this.providers = data
-                })
-                .catch(error => console.log(error.response))
-        },
-        methods: {
-            onSearch(search) {
-                const lettersLimit = 2;
-                this.noData = false;
+            this.loading = true;
 
-                if (search.length < lettersLimit) {
-                    this.products = [];
-                    this.loading = false;
-                    return;
-                }
-                this.loading = true;
+            axios.get(`/api/products/search/${search}`, {params: {by: 'name'}})
+               .then(({data}) => {
+                  // console.log(data.data)
+                  this.products = data.data;
+                  if (data.length === 0)
+                     this.noData = true
 
-                axios.get(`/api/products/search/${search}`, {params: {by: 'name'}})
-                    .then(({data}) => {
-                        // console.log(data.data)
-                        this.products = data.data;
-                        if (data.length === 0)
-                            this.noData = true
-
-                        this.loading = false;
-                    })
-            },
-            push_item() {
-                let product = _.cloneDeep(this.products_items)
-                const productName = _.filter(this.products, (p) => {
-                    return p.id === product.product_id
-                })
-                const name = {name: productName[0].name}
-                if (product.product_id !== 0 || product.qte_facture !== 0 && product.rapport_qte !== 0) {
-                    product = {...name, ...product}
-                    this.selected_items.unshift(product)
-                    this.products_items = {
-                        ...{
-                            product_id: 0,
-                            qte_facture: 0,
-                            rapport_qte: 0,
-                            price_unit_ht: 0,
-                            // price_unit_ttc: 0
-                        }
-                    }
-                }
-            },
-            deleteItem(id, rapport) {
-                this.selected_items = this.selected_items.filter(i => {
-                    return (id != i.product_id || rapport != i.rapport_qte)
-                })
-            },
-            addContainer() {
-                const container = this.container
-                const products = this.selected_items
-                container.date_facture = moment(container.date_facture).toDate();
-                axios.post('/api/containers', {container, products})
-                    .then(({data}) => {
-                        console.log(data)
-                        this.$router.push({name: 'list_container'})
-                    })
-                    .catch(error => {
-                        console.log(error.response)
-                        this.error = error.response.data
-                    })
+                  this.loading = false;
+               })
+         },
+         push_item() {
+            let product = _.cloneDeep(this.products_items)
+            const productName = _.filter(this.products, (p) => {
+               return p.id === product.product_id
+            })
+            const name = {name: productName[0].name}
+            if (product.product_id !== 0 || product.qte_facture !== 0 && product.rapport_qte !== 0) {
+               product = {...name, ...product}
+               this.selected_items.unshift(product)
+               this.products_items = {
+                  ...{
+                     product_id: 0,
+                     qte_facture: 0,
+                     rapport_qte: 0,
+                     price_unit_ht: 0,
+                     // price_unit_ttc: 0
+                  }
+               }
             }
-        },
-        watch: {
-            'products_items.qte_facture': function (q) {
-                this.products_items.qte_facture = Number(q)
-            },
-            'products_items.rapport_qte': function (q) {
-                this.products_items.rapport_qte = Number(q)
-            },
-            // 'container.date_facture': function (d) {
-            //     this.container.date_facture = moment(d).toDate();
-            // }
-        },
-        components: {BigTitle, CoolSelect, Datepicker}
-    }
+         },
+         deleteItem(id, rapport) {
+            this.selected_items = this.selected_items.filter(i => {
+               return (id != i.product_id || rapport != i.rapport_qte)
+            })
+         },
+         addContainer() {
+            const container = this.container
+            const products = this.selected_items
+            container.date_facture = moment(container.date_facture).toDate();
+            axios.post('/api/containers', {container, products})
+               .then(({data}) => {
+                  console.log(data)
+                  this.$router.push({name: 'list_container'})
+               })
+               .catch(error => {
+                  console.log(error.response)
+                  this.error = error.response.data
+               })
+         },
+         ...mapActions({
+            loadProviders: 'providerStore/getProviders'
+         }),
+      },
+      watch: {
+         'products_items.qte_facture': function (q) {
+            this.products_items.qte_facture = Number(q)
+         },
+         'products_items.rapport_qte': function (q) {
+            this.products_items.rapport_qte = Number(q)
+         },
+         // 'container.date_facture': function (d) {
+         //     this.container.date_facture = moment(d).toDate();
+         // }
+      },
+      components: {BigTitle, CoolSelect, Datepicker}
+   }
 </script>
 
 <style scoped>

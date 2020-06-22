@@ -5,12 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Arrival;
 use App\Http\Controllers\Controller;
 use App\Services\Arrivals\ArrivalService;
-use App\Services\Production\ProductionService;
-use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Carbon;
 
 class ArrivalController extends Controller
 {
@@ -95,5 +93,41 @@ class ArrivalController extends Controller
    public function getContainerDetail(Arrival $container)
    {
       return $this->service->containerDetail($container);
+   }
+
+   /**
+    * Update no valid Container
+    *
+    * @param Arrival $container
+    * @return JsonResponse
+    */
+   public function updateContainer(Arrival $container)
+   {
+      $upContainer = request()->get('container');
+      $arrivalFields = ['n_dossier', 'date_facture', 'provider_id'];
+      // Update Container fields
+      foreach ($arrivalFields as $field) {
+         $container->update([
+            $field => ($field == 'date_facture') ?
+               Carbon::parse($upContainer[$field])->toDate()
+               : $upContainer[$field]]);
+      }
+      $collection = collect($container);
+      // update arrival_products
+      if ($collection->get('state') !== 'VALID') {
+         $products = collect(request('products'));
+         $container->product()->detach();
+         foreach ($products as $product) {
+            $container->product()->attach($product['product_id'], [
+               'qte_facture' => $product['qte_facture'],
+               'rapport_qte' => $product['rapport_qte'],
+               'price_unit_ht' => $product['price_unit_ht'],
+            ]);
+         }
+      }
+      // Change the state to notify the storekeeper
+      $container->update(['state' => 'VUE']);
+
+      return response()->json($container);
    }
 }

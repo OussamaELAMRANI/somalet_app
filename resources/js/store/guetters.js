@@ -18,5 +18,8 @@ const getters = {
    updateData: state => state.updateStore.data,
    updateRedirect: state => state.updateStore.redirect,
 
+   //
+   getProviders: state => state.providerStore.providers,
+
 };
 export default getters;

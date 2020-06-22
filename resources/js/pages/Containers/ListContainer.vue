@@ -23,14 +23,21 @@
                   <td>{{c.date_facture | humane_date}}</td>
                   <td :class="(c.state != 'ATTENTE')? 'text-success font-weight-bolder':'text-primary'">{{c.state}}</td>
                   <td class="text-info">
-                     <button class="btn btn-outline-danger  rounded-pill shadow" @click="getElementIdToDelete(c.id)"
-                             data-target="#bitch" data-toggle="modal" v-if="c.state !== 'VALID' ">
-                        <i class="fa fa-trash my-1"/> Supprimer
-                     </button>
-                     <router-link class="btn btn-primary rounded-pill text-white shadow"
-                                  :to="{name:'ContainerDetail', params:{id:c.id}}">
-                        <i class="fa fa-list mx-2"/> Détail
-                     </router-link>
+                     <div class="btn-group">
+                        <button class="btn btn-outline-danger" @click="getElementIdToDelete(c.id)"
+                                data-target="#bitch" data-toggle="modal" v-if="c.state !== 'VALID' ">
+                           <i class="fa fa-trash my-1"/>
+                        </button>
+                        <router-link class="btn btn-outline-info "
+                                     :to="{name:'ContainerUpdate', params:{id:c.id}}"
+                                     v-if="c.state !== 'VALID' ">
+                           <i class="fa  fa-wrench"/>
+                        </router-link>
+                        <router-link class="btn btn-primary text-white "
+                                     :to="{name:'ContainerDetail', params:{id:c.id}}">
+                           <i class="fa fa-list"/>
+                        </router-link>
+                     </div>
                   </td>
                </tr>
             </table-layout>
