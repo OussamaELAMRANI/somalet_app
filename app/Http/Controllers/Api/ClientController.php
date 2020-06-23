@@ -95,8 +95,13 @@ class ClientController extends Controller
       return $data;
    }
 
-
-   public function getMovements($id)
+   /**
+    * Get All movement of Client Object
+    *
+    * @param Client $id
+    * @return JsonResponse
+    */
+   public function getMovements(Client $id)
    {
       return $this->service->getMovementClient($id);
    }

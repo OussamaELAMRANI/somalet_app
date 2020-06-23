@@ -5,11 +5,11 @@ namespace App\Services\Arrivals;
 
 
 use App\Arrival;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
-class    ArrivalService
+class ArrivalService
 {
    private $req;
 

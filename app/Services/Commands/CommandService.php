@@ -4,10 +4,8 @@
 namespace App\Services\Commands;
 
 
-use App\Arrival;
-use App\Http\Requests\Orders\CommandRequest;
 use App\Order;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 
 class CommandService
@@ -92,11 +90,17 @@ class CommandService
          ->last();
    }
 
-   public function getCommandById($cmd_number)
+   /**
+    * Used to check Order with Deep Detail
+    *
+    * @param Order $order
+    * @return Order
+    */
+   public function getCommandById(Order $order)
    {
-      return Order::where('cmd_number', $cmd_number)
-         ->with('client', 'product', 'product.color',
-            'productSize', 'productSize.product', 'productSize.product.color', 'productSize.size')->first();
+      return $order
+         ->load('client', 'product', 'product.color',
+            'productSize', 'productSize.product', 'productSize.product.color', 'productSize.size');
    }
 
    public function getCommandByIdToPrint($cmd_number)
@@ -114,11 +118,11 @@ class CommandService
          if (!array_key_exists($ps['product']['name'], $products)) {
 
             $products[$ps['product']['name']][] = [
-                  'name' => $ps['product']['reference'],
-                  'color' => $ps['product']['color']['name'],
-                  'price' => $ps['product']['sell_price'],
-                  'qte' => $ps['pivot']['qte'],
-                  'discount' => $ps['pivot']['discount'],
+               'name' => $ps['product']['reference'],
+               'color' => $ps['product']['color']['name'],
+               'price' => $ps['product']['sell_price'],
+               'qte' => $ps['pivot']['qte'],
+               'discount' => $ps['pivot']['discount'],
             ];
          } else {
             $products[$ps['product']['name']][0]['qte'] += $ps['pivot']['qte'];
@@ -126,7 +130,7 @@ class CommandService
 
       }
 
-      return response(['products'=>$products,'order'=>$order], 200);
+      return response(['products' => $products, 'order' => $order], 200);
    }
 
 }

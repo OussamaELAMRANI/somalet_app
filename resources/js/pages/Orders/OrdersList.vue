@@ -1,5 +1,6 @@
 <template lang="pug">
    #orders_list
+      delete-action(:url="deleteURI" @isDeleted="refreshOrdersList")
       router-link(:to="{name:'newOrder'}").btn.btn-sm.btn-outline-success
          i.fa.fa-backward
          | {{' Nouveau Command'}}
@@ -19,8 +20,10 @@
                      template(v-else)
                         router-link.btn.btn-sm.btn-outline-success.shadow.rounded-pill.mx-1( :to="{name: 'productionPrinter',params:{id: o.cmd_number } }")
                            i.fa.fa-print
-                     router-link(:to="{name:'detailOrder',params:{id:o.cmd_number}}").mx-2
+                     router-link(:to="{name:'detailOrder',params:{id:o.id}}").mx-2
                         i.fa.fa-list
+                     button.btn.btn-outline-danger.rounded-pill(@click="getElementIdToDelete(o.id)" data-target="#bitch" data-toggle="modal")
+                        i.fa.fa-trash.my-1
          .col-3.mt-0.segment.tall
             h5.text-primary.text-uppercase Filter Par
             hr
@@ -35,6 +38,7 @@
    import BigTitle from "@/components/layouts/BigTitle";
    import TableLayout from "@/components/layouts/TableLayout";
    import SelectDate from "@/components/layouts/SelectDate";
+   import DeleteAction from "@/components/Actions/DeleteAction";
 
    export default {
       name: "OrdersList",
@@ -44,6 +48,7 @@
             orders: null,
             dateFrom: '',
             dateTo: '',
+            deleteURI: ''
          }
       },
       mounted() {
@@ -86,9 +91,16 @@
                   console.log(data)
                })
                .catch(err => console.log(err.response))
+         },
+         getElementIdToDelete(id) {
+            this.deleteURI = `/api/orders/${id}/delete`;
+            this.deleteId = id
+         },
+         refreshOrdersList() {
+            this.orders = this.orders.filter(o => o.id !== this.deleteId)
          }
       },
-      components: {SelectDate, TableLayout, BigTitle}
+      components: {DeleteAction, SelectDate, TableLayout, BigTitle}
    }
 </script>
 

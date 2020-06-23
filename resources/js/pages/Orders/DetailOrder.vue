@@ -137,7 +137,8 @@
 
             axios.post(`/api/orders/annulate/${id}`, {'description': this.description})
                .then(({data}) => {
-                  console.log(data)
+                  // console.log(data)
+                  this.$notification.success("Cette commande a été annulé !")
                })
                .catch(err => {
                   console.log(err.response)

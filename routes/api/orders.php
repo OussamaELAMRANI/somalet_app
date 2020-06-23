@@ -13,10 +13,12 @@ Route::prefix('orders')->group(function () {
    Route::get('canceled', 'Api\OrderController@canceled');
    Route::get('cmd_number', 'Api\OrderController@getLastOrderNumber');
    Route::get('', 'Api\OrderController@index');
-   Route::get('{id}', 'Api\OrderController@show');
+   Route::get('{order}', 'Api\OrderController@show');
    Route::get('{id}/print', 'Api\OrderController@toPrint');
 
-   Route::post('annulate/{id}', 'Api\OrderController@canceledOrder');
-   Route::post('validate-canceled/{id}', 'Api\OrderController@validateCanceledOrder');
+   Route::post('annulate/{order}', 'Api\OrderController@canceledOrder');
+   Route::post('validate-canceled/{order}', 'Api\OrderController@validateCanceledOrder');
    Route::post('', 'Api\OrderController@store');
+
+   Route::delete('{order}/delete', 'Api\OrderController@destroy');
 });

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Orders\CommandRequest;
 use App\Order;
 use App\Services\Commands\CommandService;
 use App\Http\Controllers\Controller;
 use App\Services\Production\ProductionService;
-use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
@@ -36,9 +36,15 @@ class OrderController extends Controller
       return $this->service->getCommands();
    }
 
-   public function show($id)
+   /**
+    * Use Object to render Order data (by ID)
+    *
+    * @param Order $order
+    * @return Order
+    */
+   public function show(Order $order)
    {
-      return $this->service->getCommandById($id);
+      return $this->service->getCommandById($order);
    }
 
    public function toPrint($id)
@@ -55,9 +61,17 @@ class OrderController extends Controller
       return response()->json($last, Response::HTTP_OK);
    }
 
-   public function canceledOrder($id, Request $req)
+   /**
+    * Cancel one Order
+    *
+    * @method POST
+    *
+    * @param Order $order
+    * @param Request $req
+    * @return JsonResponse
+    */
+   public function canceledOrder(Order $order, Request $req)
    {
-      $order = Order::find($id);
       $order->update([
          'canceled_date' => Carbon::now()->toDateString(),
          'is_canceled' => 1,
@@ -68,18 +82,42 @@ class OrderController extends Controller
       return \response()->json("Update Successfully !");
    }
 
-   public function validateCanceledOrder($id)
+   /**
+    * Validate Canceled Order
+    * That make it return to the real stock
+    * Then delete it on the client Movements
+    *
+    * @method POST
+    * @param Order $order
+    * @return JsonResponse
+    */
+   public function validateCanceledOrder(Order $order)
    {
-      $order = Order::find($id);
       $order->update(['validate_canceled' => 1]);
-
 
       return \response()->json("Validate Successfully !");
    }
 
+   /**
+    * Get Canceled Orders (Valid/noValid)
+    * by other criteria of search (by Date) ...
+    *
+    * @method GET
+    * @return JsonResponse
+    */
    public function canceled()
    {
-      return $this->service->getCommands(1);
+      $canceledOrders = Order::where('is_canceled', 1)
+         ->where('validate_canceled',
+            (request()->has('valid') ? request()->get('valid') : 0));
+
+      if (request()->has('from') && request()->has('to')) {
+         $fromDate = request()->get('from');
+         $toDate = request()->get('to');
+         $canceledOrders->whereBetween('date_cmd', [$fromDate, $toDate]);
+      }
+
+      return response()->json($canceledOrders->filter(request())->last());
    }
 
    public function addProductionCommand()
@@ -90,5 +128,21 @@ class OrderController extends Controller
    public function getAllProductionCommand()
    {
       return Order::with('productSize')->get();
+   }
+
+   /**
+    * @param Order $order
+    * @return JsonResponse
+    */
+   public function destroy(Order $order)
+   {
+      $order->product()->detach();
+      try {
+         $order->delete();
+      } catch (\Exception $e) {
+         \response()->json(['message' => $e->getMessage()], Response::HTTP_PRECONDITION_FAILED);
+      }
+
+      return \response()->json(['message' => 'Delete it on success']);
    }
 }

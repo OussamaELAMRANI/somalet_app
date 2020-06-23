@@ -6,12 +6,9 @@ namespace App\Services\Clients;
 
 use App\Client;
 use App\Order;
-use App\Payment;
-use App\Product;
 use App\Services\AbstractService;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientService extends AbstractService
@@ -44,11 +41,10 @@ class ClientService extends AbstractService
 
 
    /**
-    * @param $id [client_id]
-    *
+    * @param Client $client
     * @return JsonResponse
     */
-   public function getMovementClient($id)
+   public function getMovementClient(Client $client)
    {
       $res = [];
       $dates = explode(',', \request()->query('between'));
@@ -63,8 +59,9 @@ class ClientService extends AbstractService
       }
 
       // Filter By [Client_id, Date_from, to]
-      $client = Client::find($id);
-      $orders = $client->commands()->whereBetween('date_cmd', [$res[0], $res[1]])
+//      $client = Client::find($id);
+      $orders = $client->commands()
+         ->whereBetween('date_cmd', [$res[0], $res[1]])
          ->with('product', 'productSize')
          ->get()->groupBy('date_cmd')->toArray();
       $payments = $client->payments()->whereBetween('date_deadline', [$res[0], $res[1]])
@@ -79,7 +76,8 @@ class ClientService extends AbstractService
       $movements = [];
       foreach ($orders as $k => $v) {
          foreach ($v as $order)
-            $movements[$k][] = $this->getOrderAmount($order);
+            if (collect($order)->get('validate_canceled') === 0)
+               $movements[$k][] = $this->getOrderAmount($order);
       }
 
       // O(n)
@@ -152,6 +150,7 @@ class ClientService extends AbstractService
    public function getOrdersAt($client_id, $to_date)
    {
       return Order::with('product', 'productSize')
+         ->where('validate_canceled', 0)
          ->where('date_cmd', '<=', $to_date)
          ->whereHas('client', function ($c) use ($client_id) {
             $c->where('id', '=', $client_id);
