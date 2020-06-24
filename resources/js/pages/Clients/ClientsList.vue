@@ -69,17 +69,16 @@
                      <button class="btn btn-outline-danger shadow"
                              @click="getElementIdToDelete(p.id)" v-if="roles.includes('ADMINE')"
                              data-target="#bitch" data-toggle="modal">
-                        <i class="fa fa-trash " aria-hidden="true"></i>
+                        <i class="fa fa-trash"/>
                      </button>
-
                      <button class="btn btn-outline-info shadow" data-toggle="modal"
                              data-target="#exampleModal"
                              @click="redirect(p.id)">
-                        <i class="fa fa-edit my-1" aria-hidden="true"></i>
+                        <i class="fa fa-edit my-1"/>
                      </button>
                      <router-link :to="{name:'detailClient', params:{id:p.id}}"
                                   class="btn-outline-primary btn shadow">
-                        <i class="fa fa-list " aria-hidden="true"></i>
+                        <i class="fa fa-list"/>
                      </router-link>
                   </td>
                </tr>

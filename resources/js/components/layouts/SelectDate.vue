@@ -3,7 +3,7 @@
       label {{title}}
       datepicker.form-control(:language='fr' :monday-first='true'
          calendar-button-icon='fa fa-user'
-         name='date_picker' @selected='getDate')
+         name='date_picker' @selected='getDate' v-model="innerDate")
 
 </template>
 
@@ -14,15 +14,19 @@
 
    export default {
       name: "SelectDate",
-      props:{
-         title:{
-            default:'Date'
+      props: {
+         title: {
+            default: 'Date'
+         },
+         currentDate: {
+            default: moment.now()
          }
       },
       components: {Datepicker},
       data() {
          return {
             fr,
+            innerDate: _.cloneDeep(this.currentDate)
          }
       },
       methods: {

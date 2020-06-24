@@ -31,6 +31,30 @@ class OrderController extends Controller
       return $this->service->addCommand($request);
    }
 
+   public function update(Order $order)
+   {
+      $upProducts = request()->get('products');
+      $date_cmd = request()->get('date_cmd');
+      $order->update(['date_cmd' => Carbon::parse($date_cmd)->toDate()]);
+
+      $products = collect($upProducts);
+
+      if (!$products->isEmpty()) {
+         $order->product()->detach();
+         foreach ($products as $product) {
+            $order->product()->attach($product['product_id'], [
+               'qte' => $product['qte'],
+               'qte_rapport' => $product['qte_rapport'],
+               'discount' => $product['discount'],
+               'price' => $product['price'],
+            ]);
+         }
+      }
+      $order->update();
+
+      return response()->json($order);
+   }
+
    public function index()
    {
       return $this->service->getCommands();

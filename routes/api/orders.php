@@ -20,5 +20,7 @@ Route::prefix('orders')->group(function () {
    Route::post('validate-canceled/{order}', 'Api\OrderController@validateCanceledOrder');
    Route::post('', 'Api\OrderController@store');
 
+   Route::put('{order}/update', 'Api\OrderController@update');
+
    Route::delete('{order}/delete', 'Api\OrderController@destroy');
 });

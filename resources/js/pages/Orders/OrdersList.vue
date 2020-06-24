@@ -14,16 +14,19 @@
                   td {{o.date_cmd | humane_date}}
                   td {{o.client.lastName}} {{o.client.firstName}}
                   td
-                     template(v-if="o.status === 'OUT'")
-                        button.btn.btn-sm.btn-outline-success.shadow.rounded-pill.mx-1(@click="toPrint(o.cmd_number)")
-                           i.fa.fa-print
-                     template(v-else)
-                        router-link.btn.btn-sm.btn-outline-success.shadow.rounded-pill.mx-1( :to="{name: 'productionPrinter',params:{id: o.cmd_number } }")
-                           i.fa.fa-print
-                     router-link(:to="{name:'detailOrder',params:{id:o.id}}").mx-2
-                        i.fa.fa-list
-                     button.btn.btn-outline-danger.rounded-pill(@click="getElementIdToDelete(o.id)" data-target="#bitch" data-toggle="modal")
-                        i.fa.fa-trash.my-1
+                     .btn-group
+                        template(v-if="o.status === 'OUT'")
+                           button.btn.btn-sm.btn-outline-success(@click="toPrint(o.cmd_number)")
+                              i.fa.fa-print
+                        template(v-else)
+                           router-link.btn.btn-sm.btn-outline-success(:to="{name: 'productionPrinter',params:{id: o.cmd_number } }")
+                              i.fa.fa-print
+                        router-link.btn.btn-sm.btn-primary(:to="{name:'detailOrder',params:{id:o.id}}")
+                           i.fa.fa-list
+                        router-link.btn.btn-sm.btn-info(:to="{name:'updateOrder',params:{id:o.id}}" v-if="roles.includes('ADMINE')")
+                           i.fa.fa-wrench
+                        button.btn.btn-sm.btn-outline-danger(@click="getElementIdToDelete(o.id)" data-target="#bitch" data-toggle="modal")
+                           i.fa.fa-trash
          .col-3.mt-0.segment.tall
             h5.text-primary.text-uppercase Filter Par
             hr
@@ -39,6 +42,7 @@
    import TableLayout from "@/components/layouts/TableLayout";
    import SelectDate from "@/components/layouts/SelectDate";
    import DeleteAction from "@/components/Actions/DeleteAction";
+   import store from "@/store";
 
    export default {
       name: "OrdersList",
@@ -48,7 +52,8 @@
             orders: null,
             dateFrom: '',
             dateTo: '',
-            deleteURI: ''
+            deleteURI: '',
+            roles: store.getters.roles
          }
       },
       mounted() {
