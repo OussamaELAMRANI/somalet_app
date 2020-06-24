@@ -43,10 +43,10 @@
                                     li.list-group-item.m-1.p-0.w-50.bg-success.text-white {{order.pivot | getByChoice('qte_rapport')}}
                                     li.list-group-item.my-1.p-0.bg-warning
                                     li.list-group-item.my-1.p-0.bg-warning
-                                    li.list-group-item.m-1.p-0.w-50.bg-primary.text-white {{addition(order.pivot.qte, order.pivot.qte_rapport)}}
+                                    li.list-group-item.m-1.p-0.w-50.bg-primary.text-white {{total(order.pivot.qte, order.pivot.qte_rapport)}}
                               td {{order.pivot | getByChoice('discount')}}
                               td {{order.pivot | getByChoice('price')}} DH
-                              td {{total(addition(order.pivot.qte, order.pivot.qte_rapport),subtraction(order.pivot.price, order.pivot.discount))  | fixed_two}} DH
+                              td {{total(total(order.pivot.qte, order.pivot.qte_rapport),subtraction(order.pivot.price, order.pivot.discount))  | fixed_two}} DH
                               td
                                  button.btn.btn-outline-danger.btn-sm.rounded-pill.shadow(@click="deleteItem(order.pivot)")
                                     i.fa.fa-minus
