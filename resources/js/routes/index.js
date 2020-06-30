@@ -18,6 +18,7 @@ import reglements from './reglements'
 import settings from './settings'
 import containers from './containers'
 import productions from './productions'
+import payments from './payments'
 
 // import NotFound from './../pages/NotFound'
 
@@ -81,20 +82,21 @@ export const asyncRoutes = [
             component: () => import('@/pages/admin/home'),
             hidden: true,
             meta: {
-               title: 'Molsat Application', icon: 'fa fa-gor', roles: ['GUEST','MAGAZINIER','COMMERCIAL']
+               title: 'Molsat Application', icon: 'fa fa-gor', roles: ['GUEST', 'MAGAZINIER', 'COMMERCIAL']
             },
          },
-         ...Users,
-         ...Providers,
          ...client,
-         ...Products,
-         ...productions,
-         ...containers,
-         ...Receptions,
-         ...Stock,
          ...order,
+         ...payments,
+         ...Stock,
+         ...containers,
+         ...productions,
+         ...Receptions,
+         ...Products,
          ...billings,
          ...reglements,
+         ...Providers,
+         ...Users,
          ...settings,
          ...alerts,
 

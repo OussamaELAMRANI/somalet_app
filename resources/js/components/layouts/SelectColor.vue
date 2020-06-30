@@ -2,6 +2,7 @@
    .form-group
       label Choisissez une couleur
       cool-select(:items='colors' :item-text="'name'"  @search='onSearch'
+         :loading="loading"
          name='color' placeholder="la couleur..." v-model='color')
          template(slot='item' slot-scope='{ item:c }')
             div.d-flex

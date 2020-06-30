@@ -35,9 +35,14 @@
       border-bottom: 2px solid $orange;
       border-radius: 0;
       width: 60%;
+
+      & > .breadcrumb-item {
+         line-height: 1;
+      }
    }
-   i{
-      color: darken($orange,30);
-      margin-right: 2px;
+
+   i {
+      color: darken($orange, 30);
+      margin: 0 4px;
    }
 </style>

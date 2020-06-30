@@ -42,7 +42,7 @@ const actions = {
         return axios.post('/api/auth/login', userData)
             .then(res => {
                 const {data} = res
-                console.log(data)
+                // console.log(data)
                 commit('SET_TOKEN', data.access_token);
                 setToken(data.access_token);
 
@@ -51,7 +51,7 @@ const actions = {
 
                 commit('SET_ROLES', data.user.type_user);
 
-                Promise.resolve(res)
+                return Promise.resolve(res)
             })
             .catch((error) => Promise.reject(error.response));
     },

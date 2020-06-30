@@ -67,6 +67,7 @@
     },
     "dependencies": {
         "@radial-color-picker/vue-color-picker": "^2.3.0",
+        "@vue/composition-api": "^0.6.7",
         "acorn": "^6.1.1",
         "ag-grid-community": "^20.2.0",
         "ag-grid-vue": "^20.2.0",
@@ -74,6 +75,7 @@
         "vue-html-to-paper": "^1.1.1",
         "vue-js-popover": "^1.1.8",
         "vue-multiselect": "^2.1.6",
+        "vue-offline": "^2.0.8",
         "vue-property-decorator": "^7.3.0",
         "webpack": "^4.32.2"
     }

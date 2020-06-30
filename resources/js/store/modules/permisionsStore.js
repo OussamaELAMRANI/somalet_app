@@ -11,7 +11,7 @@ function hasPermission(roles, route) {
 
     if (route.meta && route.meta.roles) {
 
-        console.log(route.meta.roles)
+        // console.log(route.meta.roles)
 
         for (let i = 0; i < roles.length; i++)
             return route.meta.roles.includes(roles[i]);

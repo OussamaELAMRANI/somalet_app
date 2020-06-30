@@ -15,8 +15,8 @@
                   p.text-uppercase.text-black.mb-0 Produit
                   small.text-secondary Information identique de la produit
                .col-4
-                  label(for='reference') Réference du produit
-                  input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.reference' name='reference' disabled)
+                  label(for='reference') Réference du produits
+                  input#reference.form-control(type='text' placeholder='Ref ...' v-model='product.reference' name='reference')
                .col-4
                   label(for='name') Nom du Produit
                   .input-group

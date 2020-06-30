@@ -4,12 +4,11 @@
 namespace App\Services\Payments;
 
 
-use App\Order;
 use App\Payment;
 use App\PaymentType;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
 class PayementService
 {
@@ -38,26 +37,10 @@ class PayementService
       return $payment;
    }
 
-   private function availablePayment($cmd)
-   {
-      //$order = Order::where('client_id', $cmd)->with('product')->first();
-      //$amount = $this->getOrderPrice(collect($order)->get('product'));
-//      $payment = $this->getOrderPayment(collect($order)->get('payments'));
-
-////      $total = $payment - $amount;
-//      if ($total == 0)
-//         return 0;
-
-//      return $order->id;
-   }
-
    public function addPayment($client_id)
    {
 
       $payment = $this->req->input('payment');
-
-//      if ($payment['typed'] == 'ESP')
-//         $payment['checkout_now'] = 1;
 
       $payment['payed_at'] = Carbon::parse($payment['payed_at'])->toDateString();
       $payment['date_deadline'] = Carbon::parse($payment['date_deadline'])->toDateString();
@@ -87,7 +70,6 @@ class PayementService
       $checkout = Payment::join('payment_types AS t', 't.id', '=', 'payments.typed')
          ->where('in_bank', null)
          ->whereIn('t.type', ['EFFET', 'CHEQUE'])->with('client')->get();
-      //
       return response()->json($checkout, 201);
    }
 
@@ -125,19 +107,10 @@ class PayementService
             $invalid [] = $p;
       }
 
-//      $valid[] = collect($payments)->map(function ($p) {
-//         return ($p->done !== 0);
-//      });
-//      $invalid = collect($payments)->reject(function ($p) {
-//         return ($p->done !== 0);
-//      });
-
-
       return response()->json([
          'valid' => $valid,
          'invalid' => $invalid
       ]);
-
    }
 
 
@@ -229,11 +202,6 @@ class PayementService
 
       $payment->update([
          'adjust_by' => $p['adjust_by'],
-//         'state' => null,
-//         'done' => 1,
-//         'valid' => 1,
-//         'typed' => $p['typed'],
-//         'in_bank' => null,
       ]);
 
       if (in_array($payment['types']['type'], ['EFFET', 'CHEQUE'])) {

@@ -42,12 +42,7 @@ router.beforeEach(async (to, from, next) => {
                 // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
                 store.dispatch('userStore/userInfos')
                     .then((data) => {
-
-                            // console.log("User Info Dispach")
-                            // console.log(data.type_user)
-
                             store.dispatch('permisionsStore/generateRoutes', data.type_user)
-
                                 .then(accessRoutes => {
 
                                     // dynamically add accessible routes
@@ -58,7 +53,6 @@ router.beforeEach(async (to, from, next) => {
                                     NProgress.done();
 
                                 }).catch(err => console.log(err))
-
                         }
                     )
                     .catch(err => {

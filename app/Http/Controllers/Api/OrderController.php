@@ -164,7 +164,7 @@ class OrderController extends Controller
       try {
          $order->delete();
       } catch (\Exception $e) {
-         \response()->json(['message' => $e->getMessage()], Response::HTTP_PRECONDITION_FAILED);
+         return response()->json(['message' => $e->getMessage()], Response::HTTP_PRECONDITION_FAILED);
       }
 
       return \response()->json(['message' => 'Delete it on success']);

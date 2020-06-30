@@ -25,6 +25,9 @@ import 'vue2-dialog/dist/VueDialog.css'
 import ToggleSwitch from 'vuejs-toggle-switch'
 // import on your project (less then 1KB gziped)
 import vueSmoothScroll from 'vue-scrollto'
+import VueCompositionAPI from '@vue/composition-api'
+import VueOffline from 'vue-offline'
+
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 
@@ -95,5 +98,7 @@ Vue.use(VPopover, {tooltip: true})
 import '@/filters/directives'
 import '@/filters/mixins'
 
+Vue.use(VueCompositionAPI);
+Vue.use(VueOffline);
 
 new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

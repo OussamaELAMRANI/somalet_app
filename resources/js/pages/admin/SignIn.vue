@@ -47,22 +47,48 @@
                password: '',
                remember_me: true
             },
-            errorConnection: null
+            errorConnection: null,
+            redirect: undefined,
+            otherQuery: {},
          }
       },
       methods: {
          login() {
             this.signIn(this.credentials)
                .then((res) => {
-                  this.$router.go('/')
+                  this.$router.go();
+                  this.$router.push({
+                     path: this.redirect || '/',
+                     query: this.otherQuery
+                  })
                })
                .catch(err => {
                   console.log(err)
                   this.errorConnection = "Imposible de se connecter, votre mot de passe ou username est incorrect !"
                })
          },
+         getOtherQuery(query) {
+            return Object.keys(query).reduce((acc, cur) => {
+               if (cur !== 'redirect') {
+                  acc[cur] = query[cur];
+               }
+               return acc;
+            }, {});
+         },
          ...mapActions({signIn: 'userStore/login'}),
-      }
+      },
+      watch: {
+         $route: {
+            handler: function (route) {
+               const query = route.query;
+               if (query) {
+                  this.redirect = query.redirect;
+                  this.otherQuery = this.getOtherQuery(query);
+               }
+            },
+            immediate: true,
+         },
+      },
    }
 </script>
 

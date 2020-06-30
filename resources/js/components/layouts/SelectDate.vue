@@ -20,19 +20,32 @@
          },
          currentDate: {
             default: moment.now()
+         },
+         // Example (fromDate, toDate)[range] ...
+         type: {
+            default: null
          }
       },
       components: {Datepicker},
       data() {
          return {
             fr,
-            innerDate: _.cloneDeep(this.currentDate)
+            innerDate: _.cloneDeep(new Date(this.currentDate))
          }
       },
       methods: {
          getDate(date) {
-            this.$emit('sendDate', moment(date).format('YYYY-MM-DD'))
+            this.$emit('sendDate', moment(date).format('YYYY-MM-DD'), this.type)
          },
+      },
+      mounted() {
+         this.getDate()
+      },
+      watch: {
+         currentDate: function (d) {
+            if (d)
+               this.innerDate = _.cloneDeep(new Date(d))
+         }
       }
    }
 </script>

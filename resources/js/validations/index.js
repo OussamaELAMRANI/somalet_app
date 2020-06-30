@@ -10,7 +10,23 @@ extend('required', {
       };
    },
    computesRequired: true,
-   message: 'Vous devez saisire votre {_field_}'
+   message: 'Vous devez saisire {_field_}'
+});
+
+extend('max', {
+   validate(value, args) {
+      return value <= args.max;
+   },
+   params: ['max'],
+   message: `Max est {max}`
+});
+
+extend('min', {
+   validate(value, args) {
+      return value >= args.min;
+   },
+   params: ['min'],
+   message: `Min est {min}`
 });
 
 

@@ -2,7 +2,7 @@
    .form-group
       label Selectionnez un client
       cool-select(:items='clients' :item-text="'nom'" item-value='id' @search='onSearch'
-         name='client' placeholder="Nom ou Prénom" v-model='client_id')
+         name='client' placeholder="Nom ou Prénom" v-model='client_id' :loading="loading")
          template(slot='item' slot-scope='{ item:p }')
             p
                strong ({{p.id + ') '}}

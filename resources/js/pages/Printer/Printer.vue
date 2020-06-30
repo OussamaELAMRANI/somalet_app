@@ -56,7 +56,7 @@
                         <td class="p-3 border-dark"></td>
                         <td class="p-3 border-dark"></td>
                         <td class="p-3 border-dark font-weight-bold ">TOTAL</td>
-                        <td class="p-3 border-dark font-weight-bolder">{{total}} DH</td>
+                        <td class="p-3 border-dark font-weight-bolder">{{totaux}} DH</td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -134,7 +134,7 @@
                         <td class="p-3 border-dark"></td>
                         <td class="p-3 border-dark"></td>
                         <td class="p-3 border-dark font-weight-bold ">TOTAL</td>
-                        <td class="p-3 border-dark font-weight-bolder">{{total}} DH</td>
+                        <td class="p-3 border-dark font-weight-bolder">{{totaux}} DH</td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -212,7 +212,7 @@
                         <td class="p-3 border-dark"></td>
                         <td class="p-3 border-dark"></td>
                         <td class="p-3 border-dark font-weight-bold ">TOTAL</td>
-                        <td class="p-3 border-dark font-weight-bolder">{{total}} DH</td>
+                        <td class="p-3 border-dark font-weight-bolder">{{totaux}} DH</td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -256,7 +256,7 @@
                 products: [],
                 client: {nom: '', id: null},
                 color: {name: ''},
-                total: 0
+                totaux: 0
             }
         },
         mounted() {
@@ -269,7 +269,7 @@
                     this.products = product
 
                     _.forEach(product, (p) => {
-                        this.total += (p.pivot.price - p.pivot.discount) * (p.pivot.qte_rapport * p.pivot.qte)
+                        this.totaux += (p.pivot.price - p.pivot.discount) * (p.pivot.qte_rapport * p.pivot.qte)
                     })
                 })
         },

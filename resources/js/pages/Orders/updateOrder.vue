@@ -43,10 +43,10 @@
                                     li.list-group-item.m-1.p-0.w-50.bg-success.text-white {{order.pivot | getByChoice('qte_rapport')}}
                                     li.list-group-item.my-1.p-0.bg-warning
                                     li.list-group-item.my-1.p-0.bg-warning
-                                    li.list-group-item.m-1.p-0.w-50.bg-primary.text-white {{total(order.pivot.qte, order.pivot.qte_rapport)}}
+                                    li.list-group-item.m-1.p-0.w-50.bg-primary.text-white {{calcTotal(order.pivot.qte, order.pivot.qte_rapport)}}
                               td {{order.pivot | getByChoice('discount')}}
                               td {{order.pivot | getByChoice('price')}} DH
-                              td {{total(total(order.pivot.qte, order.pivot.qte_rapport),subtraction(order.pivot.price, order.pivot.discount))  | fixed_two}} DH
+                              td {{calcTotal(calcTotal(order.pivot.qte, order.pivot.qte_rapport),subtraction(order.pivot.price, order.pivot.discount))  | fixed_two}} DH
                               td
                                  button.btn.btn-outline-danger.btn-sm.rounded-pill.shadow(@click="deleteItem(order.pivot)")
                                     i.fa.fa-minus
@@ -200,21 +200,6 @@
          getDate(d) {
             this.order.date_cmd = d
          },
-         // getClients() {
-         //    axios.get('/api/clients')
-         //       .then(({data}) => {
-         //          this.clients = data
-         //          console.log(data)
-         //       })
-         //       .catch(err => console.log(err.response))
-         // },
-         // getOrderNumber() {
-         //    axios.get('/api/orders/cmd_number')
-         //       .then(({data}) => {
-         //          const {cmd_number} = data;
-         //          this.header_order.cmd_number = Number(cmd_number) + 1
-         //       })
-         // },
          getOrders() {
             let hasError = false
             const qte = {'qte_cmd': {...this.qte}}

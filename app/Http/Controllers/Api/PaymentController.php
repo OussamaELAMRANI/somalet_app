@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Bank;
 use App\Payment;
 use App\Services\Payments\PayementService;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 
 class PaymentController extends Controller
 {
@@ -22,7 +21,7 @@ class PaymentController extends Controller
 
    public function show($id)
    {
-      $payment = Payment::with('types', 'formBank')->findOrFail($id);
+      $payment = Payment::with('types', 'formBank', 'client')->findOrFail($id);
       return response()->json($payment);
    }
 
@@ -125,5 +124,48 @@ class PaymentController extends Controller
    public function adjustPayment(Payment $payment)
    {
       return $this->service->adjustPayment($payment);
+   }
+
+   /**
+    * FILTER BY =>> TYPE, client, Valid, Date{from, to}
+    *
+    * @param Request $req
+    * @return JsonResponse
+    */
+   public function search(Request $req)
+   {
+      return response()->json(Payment::filter($req)->get());
+   }
+
+   public function destroy(Payment $payment)
+   {
+      try {
+         if (!$payment['valid'])
+            $payment->delete();
+         else
+            throw new \Exception('Cannot delete valid Payments !');
+
+      } catch (\Exception $e) {
+         return response()->json(['message' => $e->getMessage()], Response::HTTP_PRECONDITION_FAILED);
+      }
+
+      return \response()->json(['message' => 'Delete it on success']);
+   }
+
+
+   public function newPayment(Request $req)
+   {
+      $payment = $req->input('payment');
+      $payment['payed_at'] = Carbon::parse($payment['payed_at'])->toDateString();
+      $payment['date_deadline'] = Carbon::parse($payment['date_deadline'])->toDateString();
+      $payments = Payment::create($payment);
+      return response()->json(['payment' => $payments, 'message' => 'Payment added successfully !'], 201);
+   }
+
+   public function update(Payment $payment, Request $req)
+   {
+      $upPayment = $req->input('payment');
+      $payment->update($upPayment);
+      return \response()->json($payment, Response::HTTP_ACCEPTED);
    }
 }

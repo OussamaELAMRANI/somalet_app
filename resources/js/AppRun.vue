@@ -1,14 +1,18 @@
 <template>
    <div id="somalet">
-      <router-view/>
+      <offline-page v-if="isOffline"/>
+      <router-view v-if="isOnline"/>
    </div>
 
 </template>
 
 <script>
-    export default {
-        name: "AppRun"
-    }
+   import OfflinePage from "@/components/layouts/OfflinePage";
+
+   export default {
+      name: "AppRun",
+      components: {OfflinePage}
+   }
 </script>
 
 <style lang="scss">

@@ -28,13 +28,16 @@
          supp() {
             axios.delete(`${this.url}`)
                .then(res => {
+                  console.log(res.data);
                   this.$notification.success("Supression en sccess");
                   this.$emit('isDeleted', true);
                })
                .catch(err => {
-                  console.log(err)
-                  this.$notification.error("Ce produit n'existe pas !")
-               })
+                     const {data} = err.response;
+                     console.log(data)
+                     this.$notification.error(data.message)
+                  }
+               )
          },
       }
    }

@@ -16,7 +16,7 @@
                   td
                      .btn-group
                         template(v-if="o.status === 'OUT'")
-                           button.btn.btn-sm.btn-outline-success(@click="toPrint(o.cmd_number)")
+                           button.btn.btn-sm.btn-outline-success(@click="toPrint(o.id)")
                               i.fa.fa-print
                         template(v-else)
                            router-link.btn.btn-sm.btn-outline-success(:to="{name: 'productionPrinter',params:{id: o.cmd_number } }")

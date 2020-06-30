@@ -3,7 +3,6 @@
 
 namespace App\Services\Product;
 
-use App\Color;
 use App\Product;
 use App\Services\AbstractService;
 use Exception;
@@ -61,13 +60,14 @@ class ProductService extends AbstractService
          }
       }
       foreach ($collection as $key => $value) {
-         if (in_array($key, ['id', 'provider_id'])) continue;
+         if (in_array($key, ['id', 'provider_id', 'img'])) continue;
 
          $product[$key] = $newOne->get($key);
       }
-      if ($portrait_url !== $product['img']) {
-         $product->update(['img' => $portrait_url]);
-      }
+      if (!is_null($portrait_url))
+         if ($portrait_url !== $product['img']) {
+            $product->update(['img' => $portrait_url]);
+         }
       $product->update();
 
       return $this->sendResponse('Updated on success !', 201);
