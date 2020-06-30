@@ -6,7 +6,7 @@
          .col-2(v-for="n in notYet").text-center
             .segment.square
                div.hold
-                  h4.text-uppercase Commande
+                  h4.text-uppercase {{n.client_name}}
                   p.m-2.text-info.load {{n.date_cmd | humane_date}}
                hr
                button.btn-block.btn.p-1.m-0.shadow(@click="makeVue(n.id,n.state)") {{n.state}}

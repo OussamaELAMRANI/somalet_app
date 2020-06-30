@@ -1,24 +1,29 @@
 <template>
-   <div id="molsat-order" class="container">
+   <div id="molsat-order">
       <table class="table table-striped text-center table-bordered shadow">
          <thead class="bg-primary text-white">
          <tr class="segment">
             <td class="align-middle" colspan="2" style="height: 100px; text-align: center">
-               <div class="col-8">
-                  <cool-select :items='searchProduct' @search='onSearch' :loading='loading' item-text='name'
-                               v-model='tempo'>
-                     <template slot="item" slot-scope="{ item:p }">
-                        <div class="d-flex">
-                           <p class="text-primary">{{p.name}}</p>
-                        </div>
-                     </template>
-                     <template slot="no-data">
-                        {{ noData ? "Aucun produit trouvée" :"Chercher par nom de produit" }}
-                     </template>
+               <div class="row align-items-center">
+                  <div class="col-8">
+                     <cool-select :items='searchProduct' @search='onSearch' :loading='loading' item-text='name'
+                                  v-model='tempo' placeholder="Produit ...">
+                        <template slot="item" slot-scope="{ item:p }">
+                           <div class="d-flex">
+                              <p class="text-primary">{{p.name}}</p>
+                           </div>
+                        </template>
+                        <template slot="no-data">
+                           {{ noData ? "Aucun produit trouvée" :"Chercher par nom de produit" }}
+                        </template>
 
-                  </cool-select>
+                     </cool-select>
+                  </div>
+                  <div class="col-4">
+                     <input id="client-name" type="text" class="form-control"
+                            placeholder="Saisir le nom du client ...." v-model="client_name">
+                  </div>
                </div>
-
             </td>
             <td class="align-middle" style="max-width: 100px">
                <input type="number" class="form-control" v-model.number="qte">
@@ -91,59 +96,59 @@
             </td>
          </tr>
          </tbody>
-<!--         <tfoot>-->
-<!--         <tr class="segment">-->
-<!--            <td class="align-middle" colspan="2" style="height: 100px; text-align: center">-->
-<!--               <div class="col-8">-->
-<!--                  <cool-select :items='searchProduct' @search='onSearch' :loading='loading' item-text='name'-->
-<!--                               v-model='tempo'>-->
-<!--                     <template slot="item" slot-scope="{ item:p }">-->
-<!--                        <div class="d-flex">-->
-<!--                           <p>{{p.name}}</p>-->
-<!--                        </div>-->
-<!--                     </template>-->
-<!--                     <template slot="no-data">-->
-<!--                        {{ noData ? "Aucun produit trouvée" :"Chercher par nom de produit" }}-->
-<!--                     </template>-->
+         <!--         <tfoot>-->
+         <!--         <tr class="segment">-->
+         <!--            <td class="align-middle" colspan="2" style="height: 100px; text-align: center">-->
+         <!--               <div class="col-8">-->
+         <!--                  <cool-select :items='searchProduct' @search='onSearch' :loading='loading' item-text='name'-->
+         <!--                               v-model='tempo'>-->
+         <!--                     <template slot="item" slot-scope="{ item:p }">-->
+         <!--                        <div class="d-flex">-->
+         <!--                           <p>{{p.name}}</p>-->
+         <!--                        </div>-->
+         <!--                     </template>-->
+         <!--                     <template slot="no-data">-->
+         <!--                        {{ noData ? "Aucun produit trouvée" :"Chercher par nom de produit" }}-->
+         <!--                     </template>-->
 
-<!--                  </cool-select>-->
-<!--               </div>-->
+         <!--                  </cool-select>-->
+         <!--               </div>-->
 
-<!--            </td>-->
-<!--            <td class="align-middle" style="max-width: 100px">-->
-<!--               <input type="number" class="form-control" v-model.number="qte">-->
-<!--            </td>-->
-<!--            <td class="align-middle" style="max-width: 50px">-->
-<!--               <div class="square__long shadow rounded my-3 mx-1" v-if="tempo !== null"-->
-<!--                    :style="tempo.color|getColor">-->
-<!--               </div>-->
-<!--            </td>-->
-<!--            <td class="align-middle" style="max-width: 150px">-->
-<!--               <multiselect v-model="sizes" :options="getSizes" :multiple="true" :close-on-select="false"-->
-<!--                            :clear-on-select="false"-->
-<!--                            selectedLabel="Sélectionné"-->
-<!--                            deselectLabel="Désélectionné"-->
-<!--                            selectLabel="Prendre cette pointure"-->
-<!--                            :preserve-search="true" placeholder="Choisissez-en 👞" label="size" track-by="size"-->
-<!--                            :preselect-first="true">-->
-<!--                  <template slot="selection" slot-scope="{ values, search, isOpen }">-->
-<!--                     <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} Pointures sont sélectionnés</span>-->
-<!--                  </template>-->
-<!--                  <template slot="noOptions">List est vide.</template>-->
+         <!--            </td>-->
+         <!--            <td class="align-middle" style="max-width: 100px">-->
+         <!--               <input type="number" class="form-control" v-model.number="qte">-->
+         <!--            </td>-->
+         <!--            <td class="align-middle" style="max-width: 50px">-->
+         <!--               <div class="square__long shadow rounded my-3 mx-1" v-if="tempo !== null"-->
+         <!--                    :style="tempo.color|getColor">-->
+         <!--               </div>-->
+         <!--            </td>-->
+         <!--            <td class="align-middle" style="max-width: 150px">-->
+         <!--               <multiselect v-model="sizes" :options="getSizes" :multiple="true" :close-on-select="false"-->
+         <!--                            :clear-on-select="false"-->
+         <!--                            selectedLabel="Sélectionné"-->
+         <!--                            deselectLabel="Désélectionné"-->
+         <!--                            selectLabel="Prendre cette pointure"-->
+         <!--                            :preserve-search="true" placeholder="Choisissez-en 👞" label="size" track-by="size"-->
+         <!--                            :preselect-first="true">-->
+         <!--                  <template slot="selection" slot-scope="{ values, search, isOpen }">-->
+         <!--                     <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} Pointures sont sélectionnés</span>-->
+         <!--                  </template>-->
+         <!--                  <template slot="noOptions">List est vide.</template>-->
 
-<!--               </multiselect>-->
-<!--               <div class="square shadow rounded my-2 mx-1 text-center d-inline-block bg-success text-white"-->
-<!--                    v-for="s in sizes">-->
-<!--                  {{s.size}}-->
-<!--               </div>-->
-<!--            </td>-->
-<!--            <td class="align-middle">-->
-<!--               <button class="btn btn-success" id="btn__insert" @click="insertOrder">-->
-<!--                  <i class="fa fa-plus"></i>-->
-<!--               </button>-->
-<!--            </td>-->
-<!--         </tr>-->
-<!--         </tfoot>-->
+         <!--               </multiselect>-->
+         <!--               <div class="square shadow rounded my-2 mx-1 text-center d-inline-block bg-success text-white"-->
+         <!--                    v-for="s in sizes">-->
+         <!--                  {{s.size}}-->
+         <!--               </div>-->
+         <!--            </td>-->
+         <!--            <td class="align-middle">-->
+         <!--               <button class="btn btn-success" id="btn__insert" @click="insertOrder">-->
+         <!--                  <i class="fa fa-plus"></i>-->
+         <!--               </button>-->
+         <!--            </td>-->
+         <!--         </tr>-->
+         <!--         </tfoot>-->
       </table>
 
 
@@ -169,6 +174,7 @@
             order: [],
             sizes: [],
             qte: 0,
+            client_name: '',
             getSizes: [],
             production_order: []
          }
@@ -218,6 +224,7 @@
          addProductionOrder() {
             axios.post(`/api/receptions/production`,
                {
+                  client_name: this.client_name,
                   production_order: this.production_order
                }
             ).then(({data}) => {

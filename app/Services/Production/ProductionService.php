@@ -8,7 +8,7 @@ use App\Order;
 use App\ProductionOrder;
 use App\ProductSize;
 use App\Services\AbstractService;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class ProductionService extends AbstractService
 {
@@ -16,8 +16,9 @@ class ProductionService extends AbstractService
    {
       // ps_id
       $date_cmd = Carbon::now()->toDateString();
+      $client = $this->req->input('client_name');
       $orders = $this->req->get('production_order');
-      $newProductionOrder = ProductionOrder::create(['date_cmd' => $date_cmd]);
+      $newProductionOrder = ProductionOrder::create(['date_cmd' => $date_cmd, 'client_name' => $client]);
       // [
       //    { cmd_id, order_quantity, fabric_quantity }
       //]

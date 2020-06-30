@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductionOrder extends Model
 {
-   protected $fillable = ['date_cmd','state'];
+   protected $fillable = ['date_cmd', 'state', 'client_name'];
 
    public function scopeLast(Builder $builder)
    {

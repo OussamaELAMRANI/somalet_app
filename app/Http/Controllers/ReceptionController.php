@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Arrival;
-//use App\Reception;
 use App\Product;
 use App\ProductionOrder;
 use App\Services\Production\ProductionService;
 use App\Services\Stock\InventoryService;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
 class ReceptionController extends Controller
 {
@@ -28,7 +27,7 @@ class ReceptionController extends Controller
    /**
     * Display a listing of the resource.
     *
-    * @return \Illuminate\Http\Response
+    * @return Response
     */
    public function index()
    {
