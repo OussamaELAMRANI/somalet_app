@@ -1,6 +1,14 @@
 <template lang="pug">
    #reception-list
       h4 RECEPTION LISTE
+      .row.justify-content-end
+         .col-6
+            .input-group
+               input.form-control(type="text" placeholder="Nom de client..." @input="search")
+               .input-group-append
+                  span.btn.btn-outline-success
+                     strong Rechercher
+                     i.fa.fa-search.mx-2
       hr
       .row.justify-content-center
          .col-2(v-for="n in notYet").text-center
@@ -17,12 +25,13 @@
       name: "ReceptionList",
       data() {
          return {
-            notYet: []
+            notYet: [],
+            oldOrders: [],
          }
       },
       mounted() {
          axios.get('/api/receptions/not-yet')
-            .then(({data}) => this.notYet = data)
+            .then(({data}) => this.notYet = this.oldOrders = data)
             .catch((err) => console.log(err))
       },
       methods: {
@@ -38,6 +47,18 @@
                this.$router.push({name: 'orderReception', params: {id: id}})
 
          },
+         search(e) {
+            const client = e.target.value;
+
+            if (this.isEmpty(client))
+               this.notYet = this.oldOrders;
+            else {
+               this.notYet = this.oldOrders.filter(o => {
+                  const name = o.client_name.toLowerCase();
+                  return (name.search(client) !== -1);
+               });
+            }
+         }
       }
    }
 </script>
