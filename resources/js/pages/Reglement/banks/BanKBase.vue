@@ -34,11 +34,13 @@
                      p.text-danger {{(p.adjust_by) ? 'Réglé par: '+p.adjust_by :'EN ATTENT'}}
                   td.align-middle(v-else)
                      p.badge-success CHARGES
+                  td
+                     router-link.btn.btn-info(v-if="!['JST'].includes(p.state)" :to="{name:'BankToBankTransfer', params:{id:p.id}}") Transfer
                tr(class="bg-info text-uppercase font-weight-bold text-white shadow")
                   td(colspan="4") TOTAL
                   td {{debit}} DH
                   td {{credit}} DH
-                  td {{credit-debit | fixed_two}} DH
+                  td.align-middle(colspan='2') {{credit-debit | fixed_two}} DH
          .col-3.segment.shadow
             router-link.btn.rounded-pill.btn-outline-info.btn-block(:to="{name:'operationMoney'}") Operation
             hr
@@ -76,7 +78,7 @@
       data() {
          return {
             fr,
-            ifItems: ['#', 'Date', 'Type', 'Détail', 'Debit', 'Crédit', 'ETAT'],
+            ifItems: ['#', 'Date', 'Type', 'Détail', 'Debit', 'Crédit', 'ETAT', 'Actions'],
             payments: [],
             debit: 0,
             credit: 0,

@@ -40,7 +40,7 @@ export default [
             component: () => import('@/pages/Reglement/Banks'),
             redirect: 'banks/molsat',
             meta: {
-               title: "Banques", name: 'banks', icon: 'fa fa-gor', roles: 'guest'
+               title: "Banques", name: 'banks', icon: 'fa fa-gor', roles: 'ADMINE'
             },
             children: [
                {
@@ -48,7 +48,7 @@ export default [
                   path: 'molsat',
                   component: () => import('@/pages/Reglement/banks/BankMolsat'),
                   meta: {
-                     title: "MOLSAT", name: 'bank_molsat', icon: 'fa fa-gor', roles: 'guest'
+                     title: "MOLSAT", name: 'bank_molsat', icon: 'fa fa-gor', roles: 'ADMINE'
                   },
                },
                {
@@ -56,7 +56,7 @@ export default [
                   path: 'if',
                   component: () => import('@/pages/Reglement/banks/BankIf'),
                   meta: {
-                     title: "IF", name: 'bank_if', icon: 'fa fa-gor', roles: 'guest'
+                     title: "IF", name: 'bank_if', icon: 'fa fa-gor', roles: 'ADMINE'
                   },
                },
                {
@@ -64,10 +64,9 @@ export default [
                   path: 'bb',
                   component: () => import('@/pages/Reglement/banks/BankBB'),
                   meta: {
-                     title: "IF", name: 'bank_bb', icon: 'fa fa-gor', roles: 'guest'
+                     title: "IF", name: 'bank_bb', icon: 'fa fa-gor', roles: 'ADMINE'
                   },
                },
-
             ]
          },
          {
@@ -122,6 +121,15 @@ export default [
             },
             hidden: true
          },
+         {
+            name: 'BankToBankTransfer',
+            path: ":id/transfer",
+            hidden: true,
+            component: () => import('@/pages/Reglement/banks/BankToBank'),
+            meta: {
+               title: "Transfer dans banque", name: 'BankToBankTransfer', icon: 'fa fa-gor', roles: 'ADMINE'
+            },
+         }
 
       ]
    },

@@ -47,6 +47,22 @@ Vue.filter('getOrderQte', function (p) {
    return (p == null) ? null : p.order_quantity
 });
 
-Vue.filter('getByChoice', function (p,choice) {
+Vue.filter('getByChoice', function (p, choice) {
    return (p == null) ? null : p[choice]
+});
+
+Vue.filter('paymentOperation', function (o) {
+   let operation = null;
+   switch (o) {
+      case 'PYM':
+         operation = 'Paiement';
+         break;
+      case 'TRS':
+         operation = 'Transfert';
+         break;
+      default:
+         operation = 'Charges';
+   }
+
+   return (o == null) ? null : operation;
 });

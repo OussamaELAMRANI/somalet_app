@@ -105,7 +105,7 @@
    import BigTitle from "@/components/layouts/BigTitle";
    import SmallLoading from "@/components/layouts/SmallLoading";
    import {usePaymentType, managePayment} from '@/Compositions/use-payments'
-   import {useExternalBanks} from '@/Compositions/use-external-banks'
+   import {useBanks} from '@/Compositions/use-banks'
    import SelectDate from "@/components/layouts/SelectDate";
    import SelectClient from "@/components/Client/SelectClient";
    import {ValidationObserver} from 'vee-validate';
@@ -185,7 +185,7 @@
          return {
             ...types,
             err, updateCase, client, isLoading,
-            ...useExternalBanks(),
+            ...useBanks(),
             ...toRefs(state),
             $getClient, $getDate, checkout,
          }

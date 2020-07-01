@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use mysql_xdevapi\Exception;
 
 class PaymentController extends Controller
 {
@@ -21,7 +22,7 @@ class PaymentController extends Controller
 
    public function show($id)
    {
-      $payment = Payment::with('types', 'formBank', 'client')->findOrFail($id);
+      $payment = Payment::with('types', 'formBank', 'client', 'toBank')->findOrFail($id);
       return response()->json($payment);
    }
 
@@ -95,6 +96,23 @@ class PaymentController extends Controller
       }
 
       return response()->json('Transfer to the Bank Successfully ! ', 201);
+   }
+
+   public function transferBankToBank(Payment $payment, Request $req)
+   {
+      $bank_id = $req->input('in_bank');
+
+      try {
+         if (is_null($bank_id))
+            throw new \Exception('Bank ID not found !');
+
+         $payment->update(['in_bank' => $bank_id]);
+
+      } catch (\Exception $exception) {
+         return response()->json($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+      }
+
+      return response()->json(['message' => 'Transferred successfully']);
    }
 
    public function getOutstandingPayments()

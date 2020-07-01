@@ -18,6 +18,7 @@ Route::prefix('payments')->group(function () {
    Route::post('new', 'Api\PaymentController@newPayment');
    Route::post('{cmd}', 'Api\PaymentController@store');
 
+   Route::put('transfer/{payment}/bank', 'Api\PaymentController@transferBankToBank');
    Route::put('transfer-to/{bank_id}', 'Api\PaymentController@transferToBank');
    Route::put('{id}/impaye', 'Api\PaymentController@makeImpaye');
    Route::put('{payment}/deadline', 'Api\PaymentController@updateDeadline');

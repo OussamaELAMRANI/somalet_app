@@ -47,6 +47,7 @@
         "vue-color": "^2.7.0",
         "vue-cool-select": "^2.10.2",
         "vue-date-pick": "^1.1.0",
+        "vue-dump": "^1.0.0",
         "vue-form-wizard": "^0.8.4",
         "vue-google-charts": "^0.3.2",
         "vue-picture-input": "^2.1.6",

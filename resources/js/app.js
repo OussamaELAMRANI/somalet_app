@@ -4,6 +4,7 @@ import Vue from 'vue'
 // import moment from 'moment'
 import VueHtmlToPaper from 'vue-html-to-paper';
 import Popover from 'vue-js-popover'
+import VueDump from 'vue-dump';
 
 // import vueRouter from 'vue-router'
 import App from './AppRun'
@@ -100,5 +101,6 @@ import '@/filters/mixins'
 
 Vue.use(VueCompositionAPI);
 Vue.use(VueOffline);
+Vue.use(VueDump);
 
 new Vue(Vue.util.extend({router, store}, App)).$mount('#app');
