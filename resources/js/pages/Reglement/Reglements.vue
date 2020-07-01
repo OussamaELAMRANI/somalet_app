@@ -9,7 +9,7 @@
          .col-3
             box(img='boxes/bank.svg' title='BANQUE' h='h4' size='70px' subtitle="Gérer les banques ici ..." link='banks')
 
-      .container
+      .container-fluid
          router-view
 
 

@@ -1,6 +1,12 @@
 <template lang="pug">
    #if_bank
-      h2.text-primary.text-uppercase {{bank}}
+      alert-modal(title="Attention", id="bitch")
+         template(v-slot:content)
+            h4.text-center.text-primary Voulez vous vraiment designer ce chéque/effet comme impayé ?
+         template(v-slot:btn)
+            button.btn.btn-success(@click="makeOut") IMPAYÉ
+
+      h2.text-primary.text-uppercase Banque {{bank}}
       .row
          .col-9
             table-layout(theme="bg-primary text-white", :head-table="ifItems", data="payments", empty-text="Pas de payement")
@@ -18,7 +24,8 @@
                   td.align-middle {{(p.operation === 'OPR' || !p.done )? `${p.amount} DH` : ''}}
                   td.align-middle {{ ((p.operation === 'TRS' || p.operation === 'PYM') && p.done) ? `${p.amount} DH` : ''}}
                   td.align-middle(v-if="p.done && p.operation === 'PYM' && p.state !== 'IGN'")
-                     button.btn.btn-block.btn-link(v-if="hasImpayed(p.typed)" @click="makeOut(p.id)") Impayé
+
+                     button.btn.btn-block.btn-link(v-if="hasImpayed(p.typed)" @click="paymentId=p.id" data-target="#bitch" data-toggle="modal") Impayé
                   td.align-middle(v-else-if="p.operation === 'TRS'")
                      p.badge-warning TRANSFER
                   td.align-middle(v-else-if="p.state === 'IGN'")
@@ -57,6 +64,7 @@
    import moment from 'moment'
    import Datepicker from 'vuejs-datepicker';
    import {fr} from 'vuejs-datepicker/dist/locale'
+   import AlertModal from "@/components/Modals/AlertModal";
 
    export default {
       name: "BanKBase",
@@ -80,6 +88,7 @@
             },
             types: [],
             pType: '',
+            paymentId: null
          }
       },
       mounted() {
@@ -117,7 +126,8 @@
                return p.id === t
             })
          },
-         makeOut(id) {
+         makeOut() {
+            const id = this.paymentId
             axios.put(`/api/payments/${id}/impaye`)
                .then(({data}) => {
                   // this.types = data;
@@ -139,7 +149,7 @@
             return (t.length == 0) ? null : t[0].type
          }
       },
-      components: {TableLayout, Datepicker}
+      components: {AlertModal, TableLayout, Datepicker}
    }
 </script>
 
