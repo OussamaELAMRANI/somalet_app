@@ -149,7 +149,7 @@
          ...mapGetters({getProviders: 'getProviders'})
       },
       mounted() {
-         this.loadProviders().then(data => this.providers = (data) ?? this.getProviders);
+         this.loadProviders().then(data => this.providers = (data) ? this.getProviders : []);
       },
       methods: {
          onSearch(search) {

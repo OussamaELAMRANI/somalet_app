@@ -158,7 +158,7 @@
             let data = {payment: state};
             let message = 'Paiément a été bien ';
 
-            if (updateCase) {
+            if (updateCase.value) {
                url = `/api/payments/${updateCase.value}/update`;
                method = 'PUT';
                message += 'modifier';

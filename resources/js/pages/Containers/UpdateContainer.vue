@@ -130,7 +130,7 @@
       name: "UpdateContainer",
       components: {LoadingPage, BigTitle, CoolSelect, Datepicker},
       mounted() {
-         this.loadProviders().then(data => this.providers = (data) ?? this.getProviders);
+         this.loadProviders().then(data => this.providers = (data) ? this.getProviders : []);
          this.oldContainer();
       },
       computed: {
