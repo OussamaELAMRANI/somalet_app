@@ -42,7 +42,7 @@ class User extends Authenticatable
             $user->password = bcrypt($user->password);
             if (!request('user_type')) {
                 if (request('os') == 'help')
-                    $user->type_user = json_encode(['ADMIN']);
+                    $user->type_user = json_encode(['ADMINE']);
                 else
                     $user->type_user = json_encode(['GUEST']);
             }
