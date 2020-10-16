@@ -146,8 +146,8 @@ class ProductionService extends AbstractService
       $qte = ['ps_id' => $id, 'order_quantity' => 0, 'size' => $size];
 
       foreach ($ps as $p) {
-         if (in_array($p['state'], ['VALID', 'RECEPTION'])) {
-            $qte['order_quantity'] += $p['pivot']['order_quantity'];
+         if (in_array($p['state'], ['VALID', 'RECEPTION','VUE'])) {
+            $qte['order_quantity'] += $p['pivot']['fabric_quantity'];
          }
       }
       // List all qte and do diff
