@@ -28,7 +28,7 @@
                                     <option :value="null">Type de Compte</option>
                                     <option value="MAGAZINIER">MAGAZINIER</option>
                                     <option value="COMMERCIAL">COMMERCIAL</option>
-                                    <option value="COMMERCIAL">ADMINE</option>
+                                    <option value="ADMINE">ADMINE</option>
                                  </select>
                               </div>
                            </div>

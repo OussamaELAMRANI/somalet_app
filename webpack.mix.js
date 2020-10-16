@@ -10,5 +10,5 @@ mix.js('resources/js/app.js', 'public/js')
 mix.webpackConfig(config);
 
 //
-mix.browserSync('nginx:80');
-// mix.browserSync('localhost:8000');
+// mix.browserSync('nginx:80');
+mix.browserSync('localhost:8000');

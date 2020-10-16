@@ -163,6 +163,7 @@ class ClientService extends AbstractService
          ->where('p.client_id', '=', $client_id)
          ->where('p.payed_at', '<=', $to_date)
          ->where('p.state', null)
+         ->whereNull('p.deleted_at')
          //->get('date_cmd')
          ->get();
 
