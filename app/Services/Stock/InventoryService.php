@@ -150,8 +150,8 @@ class InventoryService extends AbstractService
 
                   $sell[] = ($arr['pivot']['sell_price']) ?? 0;
                   $crHT [] = ($arr['pivot']['price_unit_ht']) ?? 0;
-
-                  $qte[$arr['pivot']['qte_rapport_reception']][] = $arr['pivot']['qte_reception'];
+                  $qte_receptions = $arr['pivot']['qte_rapport_reception'];
+                  $qte["{$qte_receptions}"][] = $arr['pivot']['qte_reception'];
                   $result[$p['name']]["QTE"] = $qte;
 
                }
