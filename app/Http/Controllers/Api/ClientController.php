@@ -37,8 +37,7 @@ class ClientController extends Controller
       if ($filterRequest['id'] === 0) {
          $newClient = Client::create($filterRequest);
          $message = "Client bien ajouter : {$newClient->firstName}";
-      }
-      else {
+      } else {
          $existe = Client::find($filterRequest['id']);
          $data = $existe;
          if ($existe) {
@@ -103,7 +102,7 @@ class ClientController extends Controller
     */
    public function getMovements(Client $id)
    {
-      return $this->service->getMovementClient($id);
+      return response()->json($this->service->getMovementClient($id), 200);
    }
 
    public function getClientSold($client)
@@ -132,5 +131,15 @@ class ClientController extends Controller
       } else {
          return \response()->json(Client::where('nom', 'like', "%{$search}%")->get(), 200);
       }
+   }
+
+   /**
+    * get All Clients with Solde
+    *
+    * @return JsonResponse
+    */
+   public function getClientsWithSoldes()
+   {
+      return \response()->json($this->service->getClientsMovements(), 200);
    }
 }

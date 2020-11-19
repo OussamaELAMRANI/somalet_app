@@ -1,6 +1,7 @@
 <?php
 Route::prefix('clients')->group(function () {
 
+   Route::get('status', 'Api\ClientController@getClientsWithSoldes');
    Route::get('by', 'Api\ClientController@getClientBy');
    Route::get('search/{searchValue?}', 'Api\ClientController@search');
    Route::get('name/{name?}', 'Api\ClientController@getClientByName');

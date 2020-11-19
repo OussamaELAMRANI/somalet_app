@@ -42,7 +42,7 @@ class ClientService extends AbstractService
 
    /**
     * @param Client $client
-    * @return JsonResponse
+    * @return array
     */
    public function getMovementClient(Client $client)
    {
@@ -90,12 +90,12 @@ class ClientService extends AbstractService
       ksort($movements);
 
 
-      return response()->json([
+      return [
          'client' => $client,
          'movements' => $movements,
          'sold' => $sold,
          'sold_today' => $sold_today
-      ], 200);
+      ];
 
    }
 
@@ -197,5 +197,19 @@ class ClientService extends AbstractService
 
 
       return ($price - $amount);
+   }
+
+   /**
+    * Get clients with their Soldes.
+    */
+   public function getClientsMovements()
+   {
+      $clients = Client::all();
+      $result = [];
+      foreach ($clients as $client) {
+         $result[] = $this->getMovementClient($client);
+      }
+
+      return $result;
    }
 }

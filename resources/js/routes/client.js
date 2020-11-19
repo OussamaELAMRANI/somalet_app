@@ -63,6 +63,14 @@ export default [
                title: 'Liste des clients', name: 'listClient', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
+         {
+            name: 'clientStatus',
+            path: 'client-status',
+            component: () => import('@/pages/Clients/ClientStatus'),
+            meta: {
+               title: 'Etats des clients', name: 'clientStatus', icon: 'fa fa-gor', roles: 'COMMERCIAL'
+            },
+         },
       ]
    },
 ]
