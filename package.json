@@ -69,7 +69,7 @@
     "dependencies": {
         "@radial-color-picker/vue-color-picker": "^2.3.0",
         "@vue/composition-api": "^0.6.7",
-        "acorn": "^6.1.1",
+        "acorn": "^6.4.1",
         "ag-grid-community": "^20.2.0",
         "ag-grid-vue": "^20.2.0",
         "vee-validate": "^3.2.1",
