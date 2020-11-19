@@ -45,7 +45,7 @@
                         </ValidationProvider>
                      </td>
                      <td class="align-middle text-center text-success" v-else>
-                        {{s.updated_at | humane_date}}
+                        {{s.updated_at | full_date}}
                      </td>
                      <td>
                         {{getRest(s.pivot)}}

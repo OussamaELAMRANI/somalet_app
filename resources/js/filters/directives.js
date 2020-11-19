@@ -9,6 +9,12 @@ Vue.filter('humane_date', function (date) {
       return moment(date).format('DD-MM-YYYY');
    return null
 })
+
+Vue.filter('full_date', function (date) {
+   if (date !== null)
+      return moment(date).format('DD-MM-YYYY HH:mm');
+   return null
+})
 Vue.filter('fixed_two', function (n) {
    if (n !== null)
       return Number(n).toFixed(2);
