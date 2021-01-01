@@ -3,6 +3,7 @@
 Route::prefix('payments')->group(function () {
 
    Route::get('', 'Api\PaymentController@getPayments');
+   Route::get('deadline-count', 'Api\PaymentController@getDeadlineCount');
    Route::get('checkout', 'Api\PaymentController@checkout');
    Route::get('cheques', 'Api\PaymentController@cheques');
    Route::get('valid-invalid', 'Api\PaymentController@getDiffPayment');

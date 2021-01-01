@@ -6,6 +6,7 @@ namespace App\Services\Payments;
 
 use App\Payment;
 use App\PaymentType;
+use App\Repositories\PaymentRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,9 +15,15 @@ class PayementService
 {
    private $req;
 
-   public function __construct(Request $request)
+   /**
+    * @var PaymentRepository
+    */
+   private $repository;
+
+   public function __construct(Request $request, PaymentRepository $repository)
    {
       $this->req = $request;
+      $this->repository = $repository;
    }
 
    public function getOrderPrice($product)
@@ -88,15 +95,7 @@ class PayementService
       $month = $this->req->get('month') ?? Carbon::today()->month;
       $year = $this->req->get('year') ?? Carbon::today()->year;
 
-      $payments = Payment::with('client')
-         ->select(['payments.*', 't.type'])
-         ->join('payment_types AS t', 't.id', '=', 'payments.typed')
-         ->whereIn('t.type', ['CHEQUE', 'EFFET'])
-         ->whereYear('date_deadline', $year)
-         ->whereMonth('date_deadline', $month)
-         ->where('valid', 1)
-         ->where('in_bank', null)
-         ->get();
+      $payments = $this->repository->getByDeadline($month, $year);
 
       $valid = [];
       $invalid = [];
@@ -221,5 +220,16 @@ class PayementService
       Payment::create($payment->toArray());
 
       return \response()->json('OK', 200);
+   }
+
+   /**
+    * @return int
+    */
+   public function deadlineCount()
+   {
+      $month = $this->req->get('month') ?? Carbon::today()->month;
+      $year = $this->req->get('year') ?? Carbon::today()->year;
+
+      return $this->repository->deadlineCount($month, $year);
    }
 }

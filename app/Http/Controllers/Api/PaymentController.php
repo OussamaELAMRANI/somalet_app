@@ -186,4 +186,9 @@ class PaymentController extends Controller
       $payment->update($upPayment);
       return \response()->json($payment, Response::HTTP_ACCEPTED);
    }
+
+   public function getDeadlineCount()
+   {
+      return \response()->json(['count' => $this->service->deadlineCount()], Response::HTTP_OK);
+   }
 }
