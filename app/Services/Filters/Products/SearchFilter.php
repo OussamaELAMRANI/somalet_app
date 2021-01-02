@@ -11,7 +11,7 @@ class SearchFilter implements IFilter
 {
    public function filter(Builder $builder, string $by): Builder
    {
-      $searchValue = request('searchValue');
+      $searchValue = request()->get('value');
       $searchBy = $this->ResolveFilterValue($by);
 
       if (is_null($searchValue))

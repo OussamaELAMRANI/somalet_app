@@ -33,6 +33,9 @@
                </tr>
                <tr>
                   <td colspan="3" class="text-right font-weight-bolder">
+                     <h5 class="text-left">
+                        Date: <strong>{{new Date() | full_date}}</strong>
+                     </h5>
                      <h5>Total:</h5>
                   </td>
                   <td class="font-weight-bolder">

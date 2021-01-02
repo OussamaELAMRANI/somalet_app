@@ -28,12 +28,12 @@
                     v-for="(c,index) in searchArrivals"
                     :key="index"
                     :id="c.id">
-                  <div class="col-2 text-left">{{c.n_dossier}}</div>
-                  <div class="col-2">{{c.date_facture}}</div>
-                  <div class="col-2 text-secondary">{{c.type}}</div>
+                  <div class="col-2 text-left">{{ c.n_dossier }}</div>
+                  <div class="col-2">{{ c.date_facture }}</div>
+                  <div class="col-2 text-secondary">{{ c.type }}</div>
                   <div class="col-2 text-center"
                        :class="(c.state == 'RECEPTION')? 'text-success font-weight-bolder':'text-primary'">
-                     {{c.state}}
+                     {{ c.state }}
                   </div>
                   <template v-if="c.product.length >0">
                      <div class="col-12">
@@ -53,31 +53,36 @@
                            <tr>
                               <th scope="col">Produit</th>
                               <th scope="col">Reference</th>
-                              <th scope="col">Qte</th>
+                              <th scope="col">Quantité</th>
+                              <th scope="col">Qte de Reception</th>
                               <th scope="col">Rapport</th>
                               <th scope="col">Qte Total</th>
-                              <th scope="col">Qte de Reception</th>
-                              <th scope="col-2">Qte de Rapport</th>
+                              <!--                              <th scope="col-2">Qte de Rapport</th>-->
                            </tr>
                            </thead>
                            <tbody>
                            <tr v-for="p in c.product">
-                              <td>{{p.name}}</td>
-                              <td>{{p.reference}}</td>
-                              <td class="text-primary font-weight-bolder">{{p.pivot.qte_facture}}</td>
-                              <td class="text-success font-weight-bolder">{{p.pivot.rapport_qte}}</td>
-                              <td>
-                                 {{p.pivot.qte_facture*p.pivot.rapport_qte}}
+                              <td>{{ p.name }}</td>
+                              <td>{{ p.reference }}</td>
+                              <td class="text-primary font-weight-bolder">
+                                 {{ p.pivot.qte_facture }} {{ showUnit(p.unit) }}
                               </td>
                               <td>
                                  <input type="number" class="form-control"
                                         placeholder="tapez ici la Quantite ..." v-model.number="p.pivot.qte_reception">
                               </td>
-                              <td>
-                                 <input type="number" class="form-control"
-                                        placeholder="tapez Quantité de Rapport ..."
-                                        v-model.number="p.pivot.qte_rapport_reception">
+                              <td class="text-success font-weight-bolder">
+                                 {{ p.pivot.rapport_qte }} {{ showUnit(p.unit, false) }}
                               </td>
+                              <td>
+                                 {{ p.pivot.qte_facture * p.pivot.rapport_qte }} {{ showUnit(p.unit, false) }}s
+                              </td>
+
+                              <!--                              <td>-->
+                              <!--                                 <input type="number" class="form-control"-->
+                              <!--                                        placeholder="tapez Quantité de Rapport ..."-->
+                              <!--                                        v-model.number="p.pivot.qte_rapport_reception">-->
+                              <!--                              </td>-->
                            </tr>
                            </tbody>
                            <tfoot class="segment">
@@ -151,135 +156,117 @@
 </template>
 
 <script>
-   import {SelfBuildingSquareSpinner} from 'epic-spinners'
-   import Datepicker from 'vuejs-datepicker';
-   import {fr} from 'vuejs-datepicker/dist/locale'
-   import moment from 'moment'
+import {SelfBuildingSquareSpinner} from 'epic-spinners'
+import Datepicker from 'vuejs-datepicker';
+import {fr} from 'vuejs-datepicker/dist/locale'
+import moment from 'moment'
 
-   export default {
-      name: "ReceptionsList",
-      data() {
-         return {
-            fr,
-            factorType: 'NATIONAL',
-            search: {
-               n_fature: '',
-               n_dossier: '',
-               date_facture: moment().format('DD/MM/YYYY'),
-            },
-            arrivals: [],
-            searchArrivals: [],
-         }
+export default {
+   name: "ReceptionsList",
+   data() {
+      return {
+         fr,
+         factorType: 'NATIONAL',
+         search: {
+            n_fature: '',
+            n_dossier: '',
+            date_facture: moment().format('DD/MM/YYYY'),
+         },
+         arrivals: [],
+         searchArrivals: [],
+      }
+   },
+   mounted() {
+      axios.get('/api/receptions', {params: {with: 'user,provider,product,unit'}})
+         .then(res => {
+            const {data} = res
+            this.arrivals = data
+            this.searchArrivals = data
+            console.log(data)
+         })
+         .catch(err => console.log(err.response))
+   },
+   methods: {
+      changeType(ev) {
+         this.factorType = ev.target.options[ev.target.options.selectedIndex].value
       },
-      mounted() {
-         axios.get('/api/receptions', {params: {with: 'user,provider,product'}})
+      filterArrival() {
+         axios.get('/api/arrivals',
+            {
+               params: {
+                  facture: this.search.n_fature,
+                  dossier: this.search.n_dossier,
+                  with: 'user',
+                  types: this.factorType
+               }
+            })
             .then(res => {
                const {data} = res
-               this.arrivals = data
-               this.searchArrivals = data
                console.log(data)
+               this.searchArrivals = data
             })
             .catch(err => console.log(err.response))
       },
-      methods: {
-         changeType(ev) {
-            let val = ev.target.options[ev.target.options.selectedIndex].value
-            console.log(val)
-            this.factorType = val
-         },
-         filterArrival() {
-            //par facture
-            // if (this.search.n_fature)
-            axios.get('/api/arrivals',
-               {
-                  params: {
-                     facture: this.search.n_fature,
-                     dossier: this.search.n_dossier,
-                     with: 'user',
-                     types: this.factorType
-                  }
-               })
-               .then(res => {
-                  const {data} = res
-                  console.log(data)
-                  this.searchArrivals = data
-               })
-               .catch(err => console.log(err.response))
-            // else
-            //     this.searchArrivals = this.arrivals
-         },
-         getArrival(a) {
-
-         },
-         getIdToDelete(a) {
-
-         },
-         toUpdate(a) {
-
-         },
-         sendReception(arrival_id, index) {
-            const products = this.arrivals[index].product;
-            axios.put('/api/arrivals', {arrival_id, products})
-               .then(({data}) => {
-                  console.log(data)
-                  _.forEach(this.searchArrivals, (arr) => {
-                     if (arr.id === arrival_id)
-                        arr.state = 'RECEPTION'
-                  })
-                  this.$notification.success("La receptions des quantité a été bien faite 👏")
-                  this.$router.push('/')
-               })
-         },
-         validAllReceptions(arrival_id, index) {
-            const products = this.arrivals[index].product;
-            axios.put(`/api/arrivals/${arrival_id}/valid-reception`)
-               .then(({data}) => {
-                  // console.log(data)
-                  _.forEach(this.searchArrivals, (arr) => {
-                     if (arr.id === arrival_id)
-                        arr.state = 'RECEPTION'
-                  })
-                  this.$notification.success("Toutes les receptions ont été bien faite 👏")
-                  this.$router.push('/')
-
-               })
-         },
-         updateState(id) {
-            axios.put(`/api/arrivals/state/${id}`, {state: 'VUE'})
-               .then(({data}) => {
-                  console.log(data)
-                  _.forEach(this.searchArrivals, (arr) => {
-                     if (arr.id === id)
-                        arr.state = 'VUE'
-                  })
-               })
-               .catch(error => console.log(error.response))
-         }
+      calcTotal(p) {
+         const total = Number(p.qte_reception) * Number(p.qte_rapport_reception)
+         return `<strong>${total}</strong>`
       },
-      components: {
-         'loading': SelfBuildingSquareSpinner,
-         Datepicker
-      }
+      sendReception(arrival_id, index) {
+         const articles = this.arrivals[index].product;
+         const products = articles.map(p => {
+            p.pivot.qte_rapport_reception = p.pivot.rapport_qte
+            return p;
+         })
+         axios.put('/api/arrivals', {arrival_id, products})
+            .then(({data}) => {
+               this.$notification.success("La receptions des quantité a été bien faite 👏")
+               this.$router.push('/')
+            })
+      },
+      validAllReceptions(arrival_id, index) {
+         // const products = this.arrivals[index].product;
+         axios.put(`/api/arrivals/${arrival_id}/valid-reception`)
+            .then(({data}) => {
+               this.$notification.success("Toutes les receptions ont été bien faite 👏")
+               this.$router.push('/')
+
+            })
+      },
+      updateState(id) {
+         axios.put(`/api/arrivals/state/${id}`, {state: 'VUE'})
+            .then(({data}) => {
+               _.forEach(this.searchArrivals, (arr) => {
+                  if (arr.id === id)
+                     arr.state = 'VUE'
+               })
+            })
+            .catch(error => console.log(error.response))
+      },
+   },
+   components: {
+      'loading': SelfBuildingSquareSpinner,
+      Datepicker
    }
+}
 </script>
 
 <style lang="scss" scoped>
-   $purpley: #2fbacb;
-   $purple: #ff9f42;
+$purpley: #2fbacb;
+$purple: #ff9f42;
 
 
-   .filter__fix {
-      box-shadow: 0 2px 4px rgba(156, 87, 248, 0.5);
-      max-width: 12em;
-      top: 0;
-      z-index: 100;
-      /*background: #9c5;*/
-      /*position: fixed;*/
-   }
+.filter__fix {
+   box-shadow: 0 2px 4px rgba(156, 87, 248, 0.5);
+   max-width: 12em;
+   top: 0;
+   z-index: 100;
+   /*background: #9c5;*/
+   /*position: fixed;*/
+}
 
-   .segment {
-      margin: 0;
-      border-bottom: 2px solid $purple;
-   }
+.segment {
+   margin: 0;
+   border-bottom: 2px solid $purple;
+}
 
 </style>

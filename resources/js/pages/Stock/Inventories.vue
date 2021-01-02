@@ -4,13 +4,14 @@
       <big-title title="Stock des produits" position="text-left" classes="text-primary"/>
       <div class="row">
          <div class="col-9" id="printMe">
-            <table class="table table-hover table-striped text-center">
+            <table class="table table-hover table-bordered table-striped text-center">
                <thead class="bg-primary text-white text-uppercase small table-bordered">
                <tr>
                   <th>Reference</th>
                   <th>Designation</th>
-                  <th style="width: 200px">Quantité</th>
-                  <th>Unité</th>
+                  <th>Quantité</th>
+                  <th>Rapport</th>
+                  <th>Total</th>
                   <th v-if="roles.includes('ADMINE')">CR HT</th>
                   <th>Prix de Vente</th>
                </tr>
@@ -30,28 +31,28 @@
                      <h5 class="text-uppercase text-center text-secondary">0 Produits</h5>
                   </td>
                </tr>
-               <tr v-for="(inv , k) in searchIventories" v-if="inv.QTE.length != 0">
-                  <template>
-                     <td class="align-middle">{{inv.reference}}</td>
-                     <td class="align-middle">{{inv.name}}</td>
-                     <!--                     <td>{{inv.QTE.length}}</td>-->
-                     <td>
-                        <ul class="list-group  list-group-horizontal" v-for="(v,k) in inv.QTE_TOTAL" v-if="v>0">
-
-                           <li class="list-group-item  m-1 p-0 w-50 ">{{v}}</li>
-                           <li class="list-group-item  my-1 p-0 bg-success"></li>
-                           <li class="list-group-item  m-1 p-0 w-50 bg-success text-white">{{k}}</li>
-                           <li class="list-group-item  my-1 p-0 bg-warning"></li>
-                           <li class="list-group-item  my-1 p-0 bg-warning"></li>
-                           <li class="list-group-item  m-1 p-0 w-50 bg-primary text-white">{{k*v}}</li>
-                        </ul>
+               <template v-for="(inv,j) in searchIventories" v-if="inv.QTE.length != 0">
+                  <template>{{ initIndex(0) }}</template>
+                  <tr v-for="(v,k) in inv.QTE_TOTAL" v-if="v>0">
+                     <template v-if="index === 0">
+                        <td class="align-middle" :rowspan="Object.keys(inv.QTE).length">{{ inv.reference }}</td>
+                        <td class="align-middle" :rowspan="Object.keys(inv.QTE).length">{{ inv.name }}</td>
+                     </template>
+                     <td>{{ v }} {{ showUnit({name: inv.unity}) }}</td>
+                     <td>{{ k }} {{ showUnit({name: inv.unity}, false) }}</td>
+                     <td class="font-weight-bolder align-middle">{{ k * v }}
+                        {{ showUnit({name: inv.unity}, false) }}(s)
                      </td>
-                     <td class="text-uppercase text-primary font-weight-light align-middle">{{inv.unity}}</td>
-                     <td v-if="roles.includes('ADMINE')" class="align-middle">{{inv.ht | fixed_two}} <span
-                        class="badge">DH</span></td>
-                     <td class="align-middle">{{inv.price | fixed_two}} <span class="badge">DH</span></td>
-                  </template>
-               </tr>
+                     <template v-if="index === 0">
+                        <td :rowspan="Object.keys(inv.QTE).length" v-if="roles.includes('ADMINE')" class="align-middle">
+                           {{ inv.ht | fixed_two }} <small>DH</small></td>
+                        <td :rowspan="Object.keys(inv.QTE).length" class="align-middle font-weight-bolder">
+                           {{ inv.price | fixed_two }}<small>DH</small>
+                        </td>
+                        {{ initIndex(1) }}
+                     </template>
+                  </tr>
+               </template>
                </tbody>
             </table>
          </div>
@@ -64,12 +65,7 @@
                   <input type="text" class="form-control rounded-pill" placeholder="Désignation ..."
                          @input="getInventoriesByRef" v-model="reference">
                </div>
-               <!--               <div class="form-group">-->
-               <!--                  <label for="">Prix</label>-->
-               <!--                  <input type="text" class="form-control rounded-pill" placeholder="Prix de vente ...">-->
-               <!--               </div>-->
                <hr>
-               <!--               <button class="btn btn-outline-primary btn-block rounded-pill">Filter</button>-->
                <button @click="print"
                        class="btn btn-primary text-uppercase text-white font-weight-bolder btn-block ">
                   Imprimer
@@ -82,59 +78,63 @@
 </template>
 
 <script>
-   import BigTitle from "@/components/layouts/BigTitle";
-   import {HalfCircleSpinner} from 'epic-spinners'
-   import store from "@/store";
+import BigTitle from "@/components/layouts/BigTitle";
+import {HalfCircleSpinner} from 'epic-spinners'
+import store from "@/store";
 
-   export default {
-      name: "Inventories",
-      components: {BigTitle, HalfCircleSpinner},
-      data() {
-         return {
-            reference: '',
-            isLoading: false,
-            inventories: [],
-            searchIventories: [],
-            roles: store.getters.roles
-         }
-      },
-      mounted() {
-         axios.get('/api/inventories/detail')
+export default {
+   name: "Inventories",
+   components: {BigTitle, HalfCircleSpinner},
+   data() {
+      return {
+         reference: '',
+         isLoading: false,
+         inventories: [],
+         searchIventories: [],
+         roles: store.getters.roles,
+         index: 0
+      }
+   },
+   mounted() {
+      axios.get('/api/inventories/detail')
+         .then(({data}) => {
+            this.inventories = data
+            this.searchIventories = data
+         })
+   },
+   methods: {
+      getInventoriesByRef() {
+         let ref = this.reference;
+         ref = ref.split('/').join('.');
+         ref = ref.split(`\\`).join('.');
+
+         axios.get(`/api/inventories/search/${ref}`)
             .then(({data}) => {
-               this.inventories = data
-               this.searchIventories = data
+               this.searchIventories = data;
+               this.isLoading = false
             })
+            .catch(error => console.log(error.response))
       },
-      methods: {
-         getInventoriesByRef() {
-            let ref = this.reference;
-            ref = ref.split('/').join('.');
-            ref = ref.split(`\\`).join('.');
-
-            axios.get(`/api/inventories/search/${ref}`)
-               .then(({data}) => {
-                  this.searchIventories = data;
-                  this.isLoading = false
-               })
-               .catch(error => console.log(error.response))
-         },
-         print() {
-            this.$htmlToPaper('printMe');
-         }
+      print() {
+         this.$htmlToPaper('printMe');
       },
-      watch: {
-         reference: function (ref) {
-            this.isLoading = true
-         }
+      initIndex(inc = 0) {
+         this.index = inc;
+      }
+   },
+   watch: {
+      reference: function (ref) {
+         this.isLoading = true
       }
    }
+}
 </script>
 
 <style lang="scss" scoped>
-   $orange: #ff9f42;
+$orange: #ff9f42;
 
-   .segment {
-      margin: 0;
-      border-bottom: 2px solid $orange;
-   }
+.segment {
+   margin: 0;
+   border-bottom: 2px solid $orange;
+}
 </style>

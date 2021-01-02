@@ -1,6 +1,6 @@
 <template lang="pug">
    #new_order.my-4.clearfix
-      big-title(title="Nouveau Commande" position="text-center" :classes="['h3','text-secondary','text-uppercase','my-5']")
+      big-title(title="Nouvelle Commande" position="text-center" :classes="['h3','text-secondary','text-uppercase','my-5']")
       .row
          .col-8
             .row
@@ -22,7 +22,6 @@
                         .form-group
                            label(for="delivery") Numéro de Livraison
                            input(class='form-control' type='text', placeholder='Numero de Facture ...' id='delivery' v-model='header_order.cmd_number' disabled)
-                           //span.help.text-danger(v-show="errors.has('cmd_number')") Vous devez Saisire le numéro de la livraison
                   hr
                .col-12
                   table.table.table-hover.table-striped.text-center
@@ -45,12 +44,12 @@
                               td {{order.name}}
                               td
                                  ul.list-group.list-group-horizontal
-                                    li.list-group-item.m-1.p-0.w-50 {{v}}
-                                    li.list-group-item.my-1.p-0.bg-success
-                                    li.list-group-item.m-1.p-0.w-50.bg-success.text-white {{k}}
+                                    li.list-group-item.m-1.p-0.w-50 {{v}} {{showUnit({name:order.unity})}}
+                                    //li.list-group-item.my-1.p-0.bg-success
+                                    li.list-group-item.m-1.p-0.w-50.bg-success.text-white {{k}} {{showUnit({name:order.unity},false)}}
                                     li.list-group-item.my-1.p-0.bg-warning
                                     li.list-group-item.my-1.p-0.bg-warning
-                                    li.list-group-item.m-1.p-0.w-50.bg-primary.text-white {{k*v}}
+                                    li.list-group-item.m-1.p-0.w-50.bg-primary.text-white {{k*v}} {{showUnit({name:order.unity},false)}}(s)
                               td {{order.discount}}
                               td {{order.price}}
                               td {{(order.price - order.discount) * (v * k) | fixed_two}}
@@ -85,8 +84,8 @@
                            table-layout(:head-table="['Designation','Prix','Remise']", theme="text-white bg-info small", data="selected_order")
                               tr.segment
                                  td {{(selected_order) == null ? null : selected_order.name}}
-                                 td {{(selected_order) == null ? null : selected_order.price | fixed_two}}
-                                 td {{(selected_order) == null ? null : selected_order.discount}}
+                                 td {{(selected_order) == null ? null : selected_order.price | fixed_two}} DH
+                                 td {{(selected_order) == null ? null : selected_order.discount}} DH
                         .col-12
                            p.lead Quantité en détail
                            table.table.table-hover.table-striped.text-center
@@ -97,10 +96,13 @@
                                     th Ajouter
                               tbody.segment(v-if="selected_order.QTE_TOTAL !== null")
                                  tr(v-for="(v,k) in selected_order.QTE_TOTAL" )
-                                    td.align-middle {{v}}
-                                    td.align-middle {{k}}
+                                    td.align-middle {{v}} {{showUnit({name:selected_order.unity})}}
+                                    td.align-middle {{k}} {{showUnit({name:selected_order.unity},false)}}
                                     td
-                                       input.form-control(type='number' placeholder='Quantite ...' aria-label='' v-model.number='qte[k]')
+                                       .input-group.input-group-sm.mb-3
+                                          input.form-control(type='number' placeholder='Quantite ...' aria-label='' v-model.number='qte[k]')
+                                          .input-group-prepend
+                                             .input-group-text {{showUnit({name:selected_order.unity})}}
                         .col-12(v-if="qteError")
                            hr
                            p.text-danger.mb-0.text-uppercase Erreur des quantités !
@@ -117,249 +119,249 @@
 </template>
 
 <script>
-   import BigTitle from "@/components/layouts/BigTitle";
-   import OrderTable from "@/components/Orders/OrderTable";
-   import {CoolSelect} from 'vue-cool-select'
-   import moment from 'moment'
-   import Datepicker from 'vuejs-datepicker';
-   import {fr} from 'vuejs-datepicker/dist/locale'
-   import TableLayout from "@/components/layouts/TableLayout";
-   import SelectDate from "@/components/layouts/SelectDate";
+import BigTitle from "@/components/layouts/BigTitle";
+import OrderTable from "@/components/Orders/OrderTable";
+import {CoolSelect} from 'vue-cool-select'
+import moment from 'moment'
+import Datepicker from 'vuejs-datepicker';
+import {fr} from 'vuejs-datepicker/dist/locale'
+import TableLayout from "@/components/layouts/TableLayout";
+import SelectDate from "@/components/layouts/SelectDate";
 
-   export default {
-      name: "NewOrder",
-      components: {SelectDate, TableLayout, OrderTable, BigTitle, CoolSelect, Datepicker},
-      mounted() {
-         this.getClients()
-         this.getOrderNumber()
+export default {
+   name: "NewOrder",
+   components: {SelectDate, TableLayout, OrderTable, BigTitle, CoolSelect, Datepicker},
+   mounted() {
+      this.getClients()
+      this.getOrderNumber()
+   },
+   data() {
+      return {
+         fr,
+         dateCmd: moment().toDate(),
+         header_order: {
+            client_id: '',
+            cmd_number: null,
+            date_cmd: moment().toDate(),
+         },
+         order: {
+            // product_id: '',
+            // produit: '',
+            qte: null,
+         },
+         qte: [],
+         commands: [],
+         clients: [],
+         loading: false,
+         noData: false,
+         prods: Array(),
+         selected_order: {
+            reference: "",
+            name: "",
+            price: "",
+            discount: 0,
+            QTE: {},
+            QTE_TOTAL: {}
+         },
+         putOrder: null,
+         qteError: false,
+         isEmpty: false
+      }
+   },
+   methods: {
+      getDate(d) {
+         this.header_order.date_cmd = d
       },
-      data() {
-         return {
-            fr,
-            dateCmd: moment().toDate(),
-            header_order: {
-               client_id: '',
-               cmd_number: null,
-               date_cmd: moment().toDate(),
-            },
-            order: {
-               // product_id: '',
-               // produit: '',
-               qte: null,
-            },
-            qte: [],
-            commands: [],
-            clients: [],
-            loading: false,
-            noData: false,
-            prods: Array(),
-            selected_order: {
-               reference: "",
-               name: "",
-               price: "",
-               discount: 0,
-               QTE: {},
-               QTE_TOTAL: {}
-            },
-            putOrder: null,
-            qteError: false,
-            isEmpty: false
+      getClients() {
+         axios.get('/api/clients')
+            .then(({data}) => {
+               this.clients = data
+               console.log(data)
+            })
+            .catch(err => console.log(err.response))
+      },
+      getOrderNumber() {
+         axios.get('/api/orders/cmd_number')
+            .then(({data}) => {
+               const {cmd_number} = data;
+               this.header_order.cmd_number = Number(cmd_number) + 1
+            })
+      },
+      getOrders() {
+         let hasError = false
+         const qte = {'qte_cmd': {...this.qte}}
+         const products = this.putOrder
+         const total = {...products.QTE_TOTAL}
+
+         if (Object.keys(qte.qte_cmd).length === 0) {
+            this.isEmpty = true;
+            return;
+         } else if (Object.values(qte.qte_cmd)[0] == "") {
+            this.isEmpty = true;
+            return;
+         } else {
+            this.isEmpty = false
          }
+
+         Object.keys(total).forEach(function (k) {
+            if (qte.qte_cmd[k] !== undefined || qte.qte_cmd[k] !== "") {
+               if (total[k] < qte.qte_cmd[k])
+                  hasError = true
+            }
+
+         });
+
+         if (hasError) {
+            this.qteError = true
+            return
+         } else
+            this.qteError = false
+
+
+         const command = {...products, ...qte}
+         this.deleteItem(command.product_id)
+         this.commands.unshift(command)
+
+         this.qte = []
+         this.putOrder = []
+
       },
-      methods: {
-         getDate(d) {
-            this.header_order.date_cmd = d
-         },
-         getClients() {
-            axios.get('/api/clients')
-               .then(({data}) => {
-                  this.clients = data
-                  console.log(data)
-               })
-               .catch(err => console.log(err.response))
-         },
-         getOrderNumber() {
-            axios.get('/api/orders/cmd_number')
-               .then(({data}) => {
-                  const {cmd_number} = data;
-                  this.header_order.cmd_number = Number(cmd_number) + 1
-               })
-         },
-         getOrders() {
-            let hasError = false
-            const qte = {'qte_cmd': {...this.qte}}
-            const products = this.putOrder
-            const total = {...products.QTE_TOTAL}
+      customFormatter(date) {
+         return moment(date).format('DD/MM/YYYY');
+      },
+      onSearch(search) {
+         // let rejectId = ""
+         const lettersLimit = 2;
 
-            if (Object.keys(qte.qte_cmd).length === 0) {
-               this.isEmpty = true;
-               return;
-            } else if (Object.values(qte.qte_cmd)[0] == "") {
-               this.isEmpty = true;
-               return;
-            } else {
-               this.isEmpty = false
+         this.noData = false;
+         if (search.length < lettersLimit) {
+            this.prods = [];
+            this.loading = false;
+            return;
+         }
+         this.loading = true;
+
+         axios.get(`/api/receptions/search/${search}`, {
+            params: {
+               client_id: this.header_order.client_id,
             }
+         }).then(({data}) => {
+            this.prods = data;
+            if (data.length === 0)
+               this.noData = true
 
-            Object.keys(total).forEach(function (k) {
-               if (qte.qte_cmd[k] !== undefined || qte.qte_cmd[k] !== "") {
-                  if (total[k] < qte.qte_cmd[k])
-                     hasError = true
-               }
+            this.loading = false;
+         })
+      },
+      addOrder() {
+         const order = this.header_order
+         const products = this.commands.map(p => {
 
-            });
+            // p.qte_cmd.map((k, v) => {
+            //
+            // })
+            const qte = p.qte_cmd
+            const qte_rapport = Object.keys(p.qte_cmd)
 
-            if (hasError) {
-               this.qteError = true
-               return
-            } else
-               this.qteError = false
-
-
-            const command = {...products, ...qte}
-            this.deleteItem(command.product_id)
-            this.commands.unshift(command)
-
-            this.qte = []
-            this.putOrder = []
-
-         },
-         customFormatter(date) {
-            return moment(date).format('DD/MM/YYYY');
-         },
-         onSearch(search) {
-            // let rejectId = ""
-            const lettersLimit = 2;
-
-            this.noData = false;
-            if (search.length < lettersLimit) {
-               this.prods = [];
-               this.loading = false;
-               return;
+            return {
+               'product_id': p.product_id,
+               qte,
+               qte_rapport,
+               'price': Number(p.price),
+               'discount': Number(p.discount).toFixed(2),
             }
-            this.loading = true;
+         })
 
-            axios.get(`/api/receptions/search/${search}`, {
-               params: {
-                  client_id: this.header_order.client_id,
-               }
-            }).then(({data}) => {
-               this.prods = data;
-               if (data.length === 0)
-                  this.noData = true
-
-               this.loading = false;
+         axios.post('/api/orders', {order, products})
+            .then(({data}) => {
+               console.log(data)
+               this.$router.push({name: 'listOrder'})
+               this.$notification.success("La commande a été bien ajouté ! ")
             })
-         },
-         addOrder() {
-            const order = this.header_order
-            const products = this.commands.map(p => {
+            .catch(err => {
+               const {cmd_number, date_cmd} = err.response.data.errors
 
-               // p.qte_cmd.map((k, v) => {
-               //
-               // })
-               const qte = p.qte_cmd
-               const qte_rapport = Object.keys(p.qte_cmd)
+               if (cmd_number !== undefined)
+                  this.$notification.error(cmd_number[0])
+               if (date_cmd !== undefined)
+                  this.$notification.error(date_cmd[0])
 
-               return {
-                  'product_id': p.product_id,
-                  qte,
-                  qte_rapport,
-                  'price': Number(p.price),
-                  'discount': Number(p.discount).toFixed(2),
-               }
+               console.log(err.response)
             })
+      },
+      deleteItem(id) {
+         this.commands = this.commands.filter(i => {
+            return (id !== i.product_id)
+         })
+      },
+      // ANIMATION =============
+      enter(element) {
+         const width = getComputedStyle(element).width;
 
-            axios.post('/api/orders', {order, products})
-               .then(({data}) => {
-                  console.log(data)
-                  this.$router.push({name: 'listOrder'})
-                  this.$notification.success("La commande a été bien ajouté ! ")
-               })
-               .catch(err => {
-                  const {cmd_number, date_cmd} = err.response.data.errors
+         element.style.width = width;
+         element.style.position = 'absolute';
+         element.style.visibility = 'hidden';
+         element.style.height = 'auto';
 
-                  if (cmd_number !== undefined)
-                     this.$notification.error(cmd_number[0])
-                  if (date_cmd !== undefined)
-                     this.$notification.error(date_cmd[0])
+         const height = getComputedStyle(element).height;
 
-                  console.log(err.response)
-               })
-         },
-         deleteItem(id) {
-            this.commands = this.commands.filter(i => {
-               return (id !== i.product_id)
-            })
-         },
-         // ANIMATION =============
-         enter(element) {
-            const width = getComputedStyle(element).width;
+         element.style.width = null;
+         element.style.position = null;
+         element.style.visibility = null;
+         element.style.height = 0;
 
-            element.style.width = width;
-            element.style.position = 'absolute';
-            element.style.visibility = 'hidden';
-            element.style.height = 'auto';
+         // Force repaint to make sure the
+         // animation is triggered correctly.
+         getComputedStyle(element).height;
 
-            const height = getComputedStyle(element).height;
-
-            element.style.width = null;
-            element.style.position = null;
-            element.style.visibility = null;
-            element.style.height = 0;
-
-            // Force repaint to make sure the
-            // animation is triggered correctly.
-            getComputedStyle(element).height;
-
-            // Trigger the animation.
-            // We use `setTimeout` because we need
-            // to make sure the browser has finished
-            // painting after setting the `height`
-            // to `0` in the line above.
-            setTimeout(() => {
-               element.style.height = height;
-            });
-         },
-         afterEnter(element) {
-            element.style.height = 'auto';
-         },
-         leave(element) {
-            const height = getComputedStyle(element).height;
-
+         // Trigger the animation.
+         // We use `setTimeout` because we need
+         // to make sure the browser has finished
+         // painting after setting the `height`
+         // to `0` in the line above.
+         setTimeout(() => {
             element.style.height = height;
-
-            // Force repaint to make sure the
-            // animation is triggered correctly.
-            getComputedStyle(element).height;
-
-            setTimeout(() => {
-               element.style.height = 0;
-            });
-         },
+         });
       },
-      watch: {
-         dateCmd: function (d) {
-            this.header_order.date_cmd = moment(d).format('DD/MM/YYYY');
-         },
-         putOrder: function (o) {
-            this.qte = []; // To Avoid Putting Invalid data to Commands
-            this.selected_order = {...o}
-         }
+      afterEnter(element) {
+         element.style.height = 'auto';
       },
+      leave(element) {
+         const height = getComputedStyle(element).height;
 
-   }
+         element.style.height = height;
+
+         // Force repaint to make sure the
+         // animation is triggered correctly.
+         getComputedStyle(element).height;
+
+         setTimeout(() => {
+            element.style.height = 0;
+         });
+      },
+   },
+   watch: {
+      dateCmd: function (d) {
+         this.header_order.date_cmd = moment(d).format('DD/MM/YYYY');
+      },
+      putOrder: function (o) {
+         this.qte = []; // To Avoid Putting Invalid data to Commands
+         this.selected_order = {...o}
+      }
+   },
+
+}
 </script>
 
 <style scoped>
-   .expand-enter-active,
-   .expand-leave-active {
-      transition: height .6s ease-in-out;
-      overflow: hidden;
-   }
+.expand-enter-active,
+.expand-leave-active {
+   transition: height .6s ease-in-out;
+   overflow: hidden;
+}
 
-   .expand-enter,
-   .expand-leave-to {
-      height: 0;
-   }
+.expand-enter,
+.expand-leave-to {
+   height: 0;
+}
 </style>

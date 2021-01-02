@@ -104,6 +104,6 @@ class ArrivalService
 
    public function containerDetail(Arrival $container)
    {
-      return $container->load('product');
+      return $container->load('product','product.unit');
    }
 }

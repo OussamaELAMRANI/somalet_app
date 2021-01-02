@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 
 /**
  * @method static filter(Request $request)
+ * @method static WhereNotIn(string $string, string[] $array)
  */
 class Arrival extends Model
 {

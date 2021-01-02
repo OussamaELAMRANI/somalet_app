@@ -108,7 +108,7 @@ class InventoryService extends AbstractService
 
    public function notYetValid()
    {
-      return Arrival::WhereNotIn('state', ['VALID'])->with('product', 'provider', 'user')->get();
+      return Arrival::WhereNotIn('state', ['VALID'])->with('product', 'provider', 'user')->last();
    }
 
    /**
