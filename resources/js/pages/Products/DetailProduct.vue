@@ -39,15 +39,16 @@
                      th Date
                      th Quantité
                      th Rapport
+                     th Total
                tbody
                   tr(v-for="(c, i) in detail.arrivals ")
                      td {{i+1}}
                      td {{c.n_dossier}}
                      td {{c.type}}
                      td {{c.date_facture | humane_date}}
-                     td {{c.pivot.qte_facture}}
-                        small.text-secondary  {{" ("+detail.type}})
-                     td {{c.pivot.rapport_qte}}
+                     td {{c.pivot.qte_reception}} {{showUnit(detail.unit)}}
+                     td {{c.pivot.qte_rapport_reception}} {{showUnit(detail.unit, false)}}
+                     td(v-html="calcTotal(c.pivot)+' '+showUnit(detail.unit, false)+'(s)'")
 
          .col-3(v-if="detail.type === 'PF'")
             table(class="table table-hover table-striped text-center")
@@ -64,57 +65,61 @@
 </template>
 
 <script>
-   import TableLayout from "@/components/layouts/TableLayout";
-   import store from "@/store";
+import TableLayout from "@/components/layouts/TableLayout";
+import store from "@/store";
 
-   export default {
-      name: "DetailProduct",
-      components: {TableLayout},
-      data() {
-         return {
-            roles: store.getters.roles,
-            detail: {
-               img: '',
-               reference: '',
-               name: '',
-               alertQte: '',
-               type: '',
-               unit: {},
-               subcategory: {},
-               color: {},
-               provider: {},
-               sell_price: 0,
-               buy_price: 0,
-            },
-            head_table: ['#', 'Image', 'Reference', 'Designation', 'Stock min', "Type", "Unité", "Catégorie", "Couleur", "Fournisseur"],
-         }
-      },
-      mounted() {
+export default {
+   name: "DetailProduct",
+   components: {TableLayout},
+   data() {
+      return {
+         roles: store.getters.roles,
+         detail: {
+            img: '',
+            reference: '',
+            name: '',
+            alertQte: '',
+            type: '',
+            unit: {},
+            subcategory: {},
+            color: {},
+            provider: {},
+            sell_price: 0,
+            buy_price: 0,
+         },
+         head_table: ['#', 'Image', 'Reference', 'Designation', 'Stock min', "Type", "Unité", "Catégorie", "Couleur", "Fournisseur"],
+      }
+   },
+   mounted() {
+      const id = this.$route.params.id
+      axios.get(`/api/products/${id}?with=unit,provider,color,category,arrivals,sizes`)
+         .then(({data}) => {
+            this.detail = {...data}
+         })
+         .catch(err => console.log(err.response))
+   },
+   methods: {
+      setPrice() {
          const id = this.$route.params.id
-         axios.get(`/api/products/${id}?with=unit,provider,color,category,arrivals,sizes`)
+         const {sell_price, buy_price} = this.detail;
+         axios.put(`/api/products/${id}/price`, {sell_price, buy_price})
             .then(({data}) => {
-               this.detail = {...data}
+               this.$notification.success("Prix a été bien modifier")
             })
             .catch(err => console.log(err.response))
       },
-      methods: {
-         setPrice() {
-            const id = this.$route.params.id
-            const {sell_price, buy_price} = this.detail;
-            axios.put(`/api/products/${id}/price`, {sell_price, buy_price})
-               .then(({data}) => {
-                  this.$notification.success("Prix a été bien modifier")
-               })
-               .catch(err => console.log(err.response))
-         }
-      },
-      filters: {
-         getWeight: function (w) {
-            if (!w) return '';
-            return w.weight;
-         }
+      calcTotal(p) {
+         const total = Number(p.qte_reception) * Number(p.qte_rapport_reception)
+         return `<strong>${total}</strong>`
+      }
+   },
+   filters: {
+      getWeight: function (w) {
+         if (!w) return '';
+         return w.weight;
       }
    }
+}
 </script>
 
 <style scoped>

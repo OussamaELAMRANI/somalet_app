@@ -27,11 +27,14 @@ class ReceptionController extends Controller
    /**
     * Display a listing of the resource.
     *
-    * @return Response
+    * @param Request $request
+    * @return \Illuminate\Http\JsonResponse
     */
-   public function index()
+   public function index(Request $request)
    {
-      return Arrival::WhereNotIn('state', ['VALID'])->with('product', 'provider', 'user')->get();
+      return \response()->json(
+         Arrival::WhereNotIn('state', ['VALID'])
+            ->filter($request)->last());
    }
 
    public function getNoValidArrivals()
