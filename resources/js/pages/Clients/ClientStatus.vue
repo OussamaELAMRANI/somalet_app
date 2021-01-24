@@ -40,7 +40,7 @@
                   </td>
                   <td class="font-weight-bolder">
                      <h5>
-                        {{ getTotal }} DH
+                        {{ getTotal | fixed_two}} DH
                      </h5>
                   </td>
                </tr>

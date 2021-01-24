@@ -70,10 +70,12 @@
                type: 'PF',
             },
             sizes: [],
+            unities: []
          }
       },
       mounted() {
          this.bootSizes();
+         this.getUnities();
       },
       methods: {
          bootSizes: function () {
@@ -107,6 +109,19 @@
 
 
          },
+         getUnities(){
+            axios.get('/api/unities')
+            .then(({data}) => {
+               this.unities = data
+               const unit  = this.unities.filter(unite => {
+                  const name = unite.name;
+                  if (name.toUpperCase() === "PAIRE" || name.toUpperCase() === 'PAIR')
+                     return unite
+               });
+               if (unit.length > 0)
+                  this.product.unit_id = unit[0].id
+            })
+         }
       },
       computed: {
          computeColors() {
