@@ -199,7 +199,8 @@
          filter(page = 1) {
             const by = this.filterBy
             const search = this.searchTxt
-            axios.get(`/api/products/search/${search}?by=${by}&with=unit,color,provider&page=${page}`)
+            axios.get(`/api/products/search`,
+               {params:{by, with: 'unit,color,provider', page, value: search }})
                .then(res => {
                   const data = res.data
                   this.products = data

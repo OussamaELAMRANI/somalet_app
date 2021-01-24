@@ -203,7 +203,7 @@
             }
             this.loading = true;
 
-            axios.get(`/api/products/search/${search}`, {params: {by: 'name'}})
+            axios.get(`/api/products/search`, {params: {by: 'name', value: search }})
                .then(({data}) => {
                   // console.log(data.data)
                   this.products = data.data;
