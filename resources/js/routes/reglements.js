@@ -5,7 +5,7 @@ export default [
       component: () => import('@/pages/Reglement/Reglements'),
       redirect: 'reglements/caisse',
       meta: {
-         title: 'Facturation', name: 'reglements', icon: 'fa fa-cash-register', roles: 'guest'
+         title: 'Facturation', name: 'reglements', icon: 'fa fa-cash-register', roles: 'COMMERCIAL'
       },
       children: [
 
@@ -40,7 +40,7 @@ export default [
             component: () => import('@/pages/Reglement/Banks'),
             redirect: 'banks/molsat',
             meta: {
-               title: "Banques", name: 'banks', icon: 'fa fa-gor', roles: 'ADMINE'
+               title: "Banques", name: 'banks', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
             children: [
                {
@@ -48,7 +48,7 @@ export default [
                   path: 'molsat',
                   component: () => import('@/pages/Reglement/banks/BankMolsat'),
                   meta: {
-                     title: "MOLSAT", name: 'bank_molsat', icon: 'fa fa-gor', roles: 'ADMINE'
+                     title: "MOLSAT", name: 'bank_molsat', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                   },
                },
                {
@@ -56,7 +56,7 @@ export default [
                   path: 'if',
                   component: () => import('@/pages/Reglement/banks/BankIf'),
                   meta: {
-                     title: "IF", name: 'bank_if', icon: 'fa fa-gor', roles: 'ADMINE'
+                     title: "IF", name: 'bank_if', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                   },
                },
                {
@@ -64,7 +64,7 @@ export default [
                   path: 'bb',
                   component: () => import('@/pages/Reglement/banks/BankBB'),
                   meta: {
-                     title: "IF", name: 'bank_bb', icon: 'fa fa-gor', roles: 'ADMINE'
+                     title: "BB", name: 'bank_bb', icon: 'fa fa-gor', roles: 'COMMERCIAL'
                   },
                },
             ]
@@ -74,7 +74,7 @@ export default [
             path: 'validate',
             component: () => import('@/pages/Reglement/ValidatePayments'),
             meta: {
-               title: "A encaissé", name: 'validatePayments', icon: 'fa fa-gor', roles: 'guest'
+               title: "A encaissé", name: 'validatePayments', icon: 'fa fa-gor', roles: 'ADMINE'
             },
          },
          {
@@ -82,7 +82,7 @@ export default [
             path: 'impaye',
             component: () => import('@/pages/Billings/OutstandingPayments'),
             meta: {
-               title: "Impayés", name: 'outstandingPayments', icon: 'fa fa-gor', roles: 'guest'
+               title: "Impayés", name: 'outstandingPayments', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
          },
          {
@@ -90,7 +90,7 @@ export default [
             path: 'transfer',
             component: () => import('@/pages/Reglement/TransferMoney'),
             meta: {
-               title: "Transfére d'argent", name: 'transferMoney', icon: 'fa fa-gor', roles: 'guest'
+               title: "Transfére d'argent", name: 'transferMoney', icon: 'fa fa-gor', roles: 'ADMINE'
             },
             hidden: true
          },
@@ -108,7 +108,7 @@ export default [
             path: ':id/adjust',
             component: () => import('@/pages/Billings/AdjustOustanding'),
             meta: {
-               title: "Régler les impayés", name: 'adjust', icon: 'fa fa-gor', roles: 'ADMINE'
+               title: "Régler les impayés", name: 'adjust', icon: 'fa fa-gor', roles: 'COMMERCIAL'
             },
             hidden: true
          },
