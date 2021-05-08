@@ -30,7 +30,7 @@
         "kalendar-vue": "^0.2.8",
         "laravel-mix": "^4.0.7",
         "laravel-vue-pagination": "^2.3.0",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.21",
         "moment": "^2.24.0",
         "nprogress": "^0.2.0",
         "nx-card": "^1.0.3",
